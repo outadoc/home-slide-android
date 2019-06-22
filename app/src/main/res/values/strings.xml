@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">QuickAssistant</string>
+    <string name="app_name">Quick Assistant</string>
     <string name="title_quick_access">Quick Actions</string>
-    <string name="tile_label">Home Assistant</string>
+    <string name="tile_label">Quick Home</string>
     <string name="ic_settings_contentDescription">Settings</string>
 </resources>

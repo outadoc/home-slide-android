@@ -2,6 +2,7 @@ package fr.outadoc.quickhass
 
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 
 class QuickAccessTileService : TileService() {
@@ -13,5 +14,12 @@ class QuickAccessTileService : TileService() {
             .addFlags(FLAG_ACTIVITY_NEW_TASK)
 
         startActivityAndCollapse(intent)
+    }
+
+    override fun onStartListening() {
+        with(qsTile) {
+            state = Tile.STATE_INACTIVE
+            updateTile()
+        }
     }
 }
