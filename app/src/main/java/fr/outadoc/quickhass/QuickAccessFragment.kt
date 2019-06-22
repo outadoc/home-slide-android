@@ -58,9 +58,12 @@ class QuickAccessFragment private constructor() : Fragment() {
                 insets.consumeSystemWindowInsets()
             }
 
+            val spacingInPixels = resources.getDimensionPixelSize(R.dimen.grid_spacing)
+
             with(recyclerView) {
                 adapter = itemAdapter
                 layoutManager = GridLayoutManager(context, GRID_SPAN_COUNT)
+                addItemDecoration(GridSpacingItemDecoration(GRID_SPAN_COUNT, spacingInPixels))
             }
         }
 
