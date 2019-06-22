@@ -30,8 +30,9 @@ class QuickAccessFragment private constructor() : Fragment() {
                 activity?.finish()
             }
 
-            ViewCompat.setOnApplyWindowInsetsListener(contentContainer) { view, insets ->
-                view.setPadding(0, 0, 0, insets.systemWindowInsetBottom)
+            ViewCompat.setOnApplyWindowInsetsListener(contentContainer) { contentContainer, insets ->
+                contentContainer.setPadding(0, 0, 0, insets.systemWindowInsetBottom)
+                view.setPadding(0, insets.systemWindowInsetTop, 0, 0)
                 insets.consumeSystemWindowInsets()
             }
         }
