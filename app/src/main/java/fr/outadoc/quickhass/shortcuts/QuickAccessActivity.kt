@@ -1,10 +1,8 @@
-package fr.outadoc.quickhass
+package fr.outadoc.quickhass.shortcuts
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.ViewGroup.LayoutParams.FILL_PARENT
 import android.view.Gravity
-import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 
 
 class QuickAccessActivity : AppCompatActivity() {

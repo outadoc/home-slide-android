@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass
+package fr.outadoc.quickhass.shortcuts
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.model.Shortcut
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder
 

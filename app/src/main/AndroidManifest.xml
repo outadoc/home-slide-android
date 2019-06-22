@@ -24,12 +24,12 @@
         </activity>
 
         <activity
-            android:name=".QuickAccessActivity"
+            android:name=".shortcuts.QuickAccessActivity"
             android:label="@string/title_quick_access"
             android:theme="@style/QuickAccessTheme" />
 
         <service
-            android:name=".QuickAccessTileService"
+            android:name=".shortcuts.QuickAccessTileService"
             android:icon="@drawable/ic_home"
             android:label="@string/tile_label"
             android:launchMode="singleTop"

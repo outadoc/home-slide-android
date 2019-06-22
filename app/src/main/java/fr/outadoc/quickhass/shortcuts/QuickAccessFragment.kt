@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass
+package fr.outadoc.quickhass.shortcuts
 
 import android.content.Context
 import android.content.Intent
@@ -13,6 +13,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import fr.outadoc.quickhass.GridSpacingItemDecoration
+import fr.outadoc.quickhass.MainActivity
+import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.model.Shortcut
 
 
@@ -44,7 +47,10 @@ class QuickAccessFragment private constructor() : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.fragment_quick_access, container, false)
 
-        viewHolder = ViewHolder(view, ShortcutAdapter()).apply {
+        viewHolder = ViewHolder(
+            view,
+            ShortcutAdapter()
+        ).apply {
             contentContainer.setOnClickListener {
                 // Prevent from bubbling event up to parent
             }
@@ -61,7 +67,10 @@ class QuickAccessFragment private constructor() : Fragment() {
 
             with(recyclerView) {
                 adapter = itemAdapter
-                layoutManager = GridLayoutManager(context, GRID_SPAN_COUNT)
+                layoutManager = GridLayoutManager(
+                    context,
+                    GRID_SPAN_COUNT
+                )
 
                 addItemDecoration(
                     GridSpacingItemDecoration(
