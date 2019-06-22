@@ -57,22 +57,39 @@ class QuickAccessFragment private constructor() : Fragment() {
             settingsButton.setOnClickListener {
                 val intent = Intent(context, MainActivity::class.java)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-
                 startActivity(intent)
             }
-
-            val spacingInPixels = resources.getDimensionPixelSize(R.dimen.grid_spacing)
 
             with(recyclerView) {
                 adapter = itemAdapter
                 layoutManager = GridLayoutManager(context, GRID_SPAN_COUNT)
-                addItemDecoration(GridSpacingItemDecoration(GRID_SPAN_COUNT, spacingInPixels))
+
+                addItemDecoration(
+                    GridSpacingItemDecoration(
+                        GRID_SPAN_COUNT,
+                        resources.getDimensionPixelSize(R.dimen.grid_spacing)
+                    )
+                )
             }
 
             ViewCompat.setOnApplyWindowInsetsListener(contentContainer) { contentContainer, insets ->
                 contentContainer.setPadding(0, 0, 0, insets.systemWindowInsetBottom)
+                insets.replaceSystemWindowInsets(
+                    insets.systemWindowInsetLeft,
+                    insets.systemWindowInsetTop,
+                    insets.systemWindowInsetRight,
+                    0
+                )
+            }
+
+            ViewCompat.setOnApplyWindowInsetsListener(view) { view, insets ->
                 view.setPadding(0, insets.systemWindowInsetTop, 0, 0)
-                insets.consumeSystemWindowInsets()
+                insets.replaceSystemWindowInsets(
+                    insets.systemWindowInsetLeft,
+                    0,
+                    insets.systemWindowInsetRight,
+                    insets.systemWindowInsetBottom
+                )
             }
         }
 

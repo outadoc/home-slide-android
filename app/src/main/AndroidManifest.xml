@@ -29,7 +29,7 @@
             android:theme="@style/QuickAccessTheme" />
 
         <service
-            android:name=".QuickAccessTile"
+            android:name=".QuickAccessTileService"
             android:icon="@drawable/ic_lightbulb"
             android:label="@string/tile_label"
             android:launchMode="singleTop"

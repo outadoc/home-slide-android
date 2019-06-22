@@ -4,7 +4,7 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.service.quicksettings.TileService
 
-class QuickAccessTile : TileService() {
+class QuickAccessTileService : TileService() {
 
     override fun onClick() {
         super.onClick()
