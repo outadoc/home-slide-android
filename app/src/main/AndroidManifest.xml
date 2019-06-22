@@ -41,7 +41,7 @@
 
             <meta-data
                 android:name="android.service.quicksettings.ACTIVE_TILE"
-                android:value="true" />
+                android:value="false" />
         </service>
 
     </application>

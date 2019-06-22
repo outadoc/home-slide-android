@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+
 
 class QuickAccessFragment private constructor() : Fragment() {
 
@@ -26,6 +28,11 @@ class QuickAccessFragment private constructor() : Fragment() {
 
             view.setOnClickListener {
                 activity?.finish()
+            }
+
+            ViewCompat.setOnApplyWindowInsetsListener(contentContainer) { view, insets ->
+                view.setPadding(0, 0, 0, insets.systemWindowInsetBottom)
+                insets.consumeSystemWindowInsets()
             }
         }
 
