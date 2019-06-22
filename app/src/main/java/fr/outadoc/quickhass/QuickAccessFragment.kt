@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageButton
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -71,26 +70,6 @@ class QuickAccessFragment private constructor() : Fragment() {
                     )
                 )
             }
-
-            ViewCompat.setOnApplyWindowInsetsListener(contentContainer) { contentContainer, insets ->
-                contentContainer.setPadding(0, 0, 0, insets.systemWindowInsetBottom)
-                insets.replaceSystemWindowInsets(
-                    insets.systemWindowInsetLeft,
-                    insets.systemWindowInsetTop,
-                    insets.systemWindowInsetRight,
-                    0
-                )
-            }
-
-            ViewCompat.setOnApplyWindowInsetsListener(view) { view, insets ->
-                view.setPadding(0, insets.systemWindowInsetTop, 0, 0)
-                insets.replaceSystemWindowInsets(
-                    insets.systemWindowInsetLeft,
-                    0,
-                    insets.systemWindowInsetRight,
-                    insets.systemWindowInsetBottom
-                )
-            }
         }
 
         return view
@@ -98,6 +77,9 @@ class QuickAccessFragment private constructor() : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
+        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
 
         activity?.window?.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
