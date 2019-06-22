@@ -1,5 +1,6 @@
 package fr.outadoc.quickhass
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.model.Shortcut
+import net.steamcrafted.materialiconlib.MaterialDrawableBuilder
 
 class ShortcutAdapter : RecyclerView.Adapter<ShortcutAdapter.ViewHolder>() {
 
@@ -21,8 +23,15 @@ class ShortcutAdapter : RecyclerView.Adapter<ShortcutAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
+
         with(holder) {
+            val mdi = MaterialDrawableBuilder.with(icon.context)
+                .setIcon(MaterialDrawableBuilder.IconValue.valueOf(item.icon.toUpperCase()))
+                .setColor(Color.parseColor("#fdd835"))
+                .build()
+
             label.text = item.label
+            icon.setImageDrawable(mdi)
         }
     }
 
