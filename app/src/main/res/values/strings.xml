@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">QuickAssistant</string>
-
-    <string name="tile_quick_access_title">Quick access</string>
+    <string name="tile_quick_access_title">Quick Access</string>
 </resources>
