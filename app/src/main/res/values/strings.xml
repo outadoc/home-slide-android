@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">QuickAssistant</string>
 
-    <string name="tile_default_title_1">HASS 1</string>
-    <string name="tile_default_title_2">HASS 2</string>
-    <string name="tile_default_title_3">HASS 3</string>
-    <string name="tile_default_title_4">HASS 4</string>
+    <string name="tile_quick_access_title">Quick access</string>
 </resources>
