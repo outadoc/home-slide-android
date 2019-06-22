@@ -19,7 +19,7 @@ class QuickAccessFragment private constructor() : Fragment() {
 
     companion object {
         fun newInstance() = QuickAccessFragment()
-        const val GRID_SPAN_COUNT = 4
+        const val GRID_SPAN_COUNT = 3
     }
 
     private lateinit var viewModel: QuickAccessViewModel

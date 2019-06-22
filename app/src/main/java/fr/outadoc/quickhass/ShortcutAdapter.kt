@@ -3,8 +3,9 @@ package fr.outadoc.quickhass
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.button.MaterialButton
 import fr.outadoc.quickhass.model.Shortcut
 
 class ShortcutAdapter : RecyclerView.Adapter<ShortcutAdapter.ViewHolder>() {
@@ -20,12 +21,13 @@ class ShortcutAdapter : RecyclerView.Adapter<ShortcutAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        with(holder.button) {
-            text = item.label
+        with(holder) {
+            label.text = item.label
         }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val button: MaterialButton = view.findViewById(R.id.item_button)
+        val label: TextView = view.findViewById(R.id.tv_shortcut_label)
+        val icon: ImageView = view.findViewById(R.id.imageView_shortcut_icon)
     }
 }
