@@ -14,13 +14,30 @@ class QuickAccessFragment private constructor() : Fragment() {
         fun newInstance() = QuickAccessFragment()
     }
 
+    private var viewHolder: ViewHolder? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.fragment_quick_access, container, false)
+
+        viewHolder = ViewHolder(view).apply {
+            contentContainer.setOnClickListener {
+                // Prevent from bubbling event up to parent
+            }
+
+            view.setOnClickListener {
+                activity?.finish()
+            }
+        }
+
         return view
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         activity?.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
+    }
+
+    private class ViewHolder(view: View) {
+        val contentContainer: ViewGroup = view.findViewById(R.id.container_quick_access)
     }
 }

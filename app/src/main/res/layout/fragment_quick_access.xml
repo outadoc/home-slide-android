@@ -11,6 +11,7 @@
         android:layout_height="300dp"
         android:layout_gravity="bottom"
         android:background="@android:color/background_light"
+        android:id="@+id/container_quick_access"
         tools:context=".QuickAccessActivity">
 
         <TextView
