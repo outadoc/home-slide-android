@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,14 +10,14 @@
     <FrameLayout
         android:id="@+id/container_quick_access"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_gravity="bottom"
+        android:layout_height="match_parent"
         android:background="@drawable/popup_background"
-        android:fitsSystemWindows="false">
+        app:behavior_peekHeight="400dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="24dp">
 
@@ -26,13 +27,13 @@
                 android:text="@string/title_quick_access"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
-            <androidx.viewpager2.widget.ViewPager2
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="200dp"
                 android:layout_marginTop="16dp"
                 android:background="@color/colorAccent"
                 android:orientation="horizontal" />
 
         </LinearLayout>
     </FrameLayout>
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
