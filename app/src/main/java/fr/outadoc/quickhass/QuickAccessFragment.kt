@@ -1,11 +1,13 @@
 package fr.outadoc.quickhass
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.ImageButton
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -52,10 +54,11 @@ class QuickAccessFragment private constructor() : Fragment() {
                 activity?.finish()
             }
 
-            ViewCompat.setOnApplyWindowInsetsListener(contentContainer) { contentContainer, insets ->
-                contentContainer.setPadding(0, 0, 0, insets.systemWindowInsetBottom)
-                view.setPadding(0, insets.systemWindowInsetTop, 0, 0)
-                insets.consumeSystemWindowInsets()
+            settingsButton.setOnClickListener {
+                val intent = Intent(context, MainActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+                startActivity(intent)
             }
 
             val spacingInPixels = resources.getDimensionPixelSize(R.dimen.grid_spacing)
@@ -64,6 +67,12 @@ class QuickAccessFragment private constructor() : Fragment() {
                 adapter = itemAdapter
                 layoutManager = GridLayoutManager(context, GRID_SPAN_COUNT)
                 addItemDecoration(GridSpacingItemDecoration(GRID_SPAN_COUNT, spacingInPixels))
+            }
+
+            ViewCompat.setOnApplyWindowInsetsListener(contentContainer) { contentContainer, insets ->
+                contentContainer.setPadding(0, 0, 0, insets.systemWindowInsetBottom)
+                view.setPadding(0, insets.systemWindowInsetTop, 0, 0)
+                insets.consumeSystemWindowInsets()
             }
         }
 
@@ -82,5 +91,6 @@ class QuickAccessFragment private constructor() : Fragment() {
     private class ViewHolder(view: View, val itemAdapter: ShortcutAdapter) {
         val contentContainer: ViewGroup = view.findViewById(R.id.container_quick_access)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView_shortcuts)
+        val settingsButton: ImageButton = view.findViewById(R.id.imageButton_settings)
     }
 }
