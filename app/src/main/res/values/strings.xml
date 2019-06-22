@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">QuickAssistant</string>
-    <string name="tile_quick_access_title">Quick Access</string>
+    <string name="title_quick_access">Quick Access</string>
+    <string name="tile_label">Home Assistant</string>
 </resources>
