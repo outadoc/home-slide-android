@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="fr.outadoc.quickhass">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"

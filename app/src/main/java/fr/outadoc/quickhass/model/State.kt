@@ -12,5 +12,7 @@ data class State(
     @Json(name = "last_updated")
     val lastUpdated: String,
     @Json(name = "state")
-    val state: String
+    val state: String,
+    @Json(name = "attributes")
+    val attributes: AttributeSet
 )

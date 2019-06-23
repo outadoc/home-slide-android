@@ -44,6 +44,8 @@ class QuickAccessFragment private constructor() : Fragment() {
                 notifyDataSetChanged()
             }
         })
+
+        //viewModel.loadShortcuts()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -64,7 +66,8 @@ class QuickAccessFragment private constructor() : Fragment() {
             settingsButton.setOnClickListener {
                 val intent = Intent(context, MainActivity::class.java)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
+                viewModel.loadShortcuts()
+                //startActivity(intent)
             }
 
             with(recyclerView) {
