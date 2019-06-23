@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -46,17 +47,17 @@ class QuickAccessFragment private constructor() : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val view = inflater.inflate(R.layout.fragment_quick_access, container, false)
+        val root = inflater.inflate(R.layout.fragment_quick_access, container, false)
 
         viewHolder = ViewHolder(
-            view,
+            root,
             ShortcutAdapter()
         ).apply {
             contentContainer.setOnClickListener {
                 // Prevent from bubbling event up to parent
             }
 
-            view.setOnClickListener {
+            root.setOnClickListener {
                 activity?.finish()
             }
 
@@ -81,8 +82,8 @@ class QuickAccessFragment private constructor() : Fragment() {
                 )
             }
 
-            ViewCompat.setOnApplyWindowInsetsListener(view) { view, insets ->
-                view.setPadding(0, insets.systemWindowInsetTop, 0, 0)
+            ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
+                v.setPadding(0, insets.systemWindowInsetTop, 0, 0)
                 insets.replaceSystemWindowInsets(
                     insets.systemWindowInsetLeft,
                     0,
@@ -92,7 +93,7 @@ class QuickAccessFragment private constructor() : Fragment() {
             }
         }
 
-        return view
+        return root
     }
 
     override fun onAttach(context: Context) {
@@ -107,7 +108,7 @@ class QuickAccessFragment private constructor() : Fragment() {
     }
 
     private class ViewHolder(view: View, val itemAdapter: ShortcutAdapter) {
-        val contentContainer: ViewGroup = view.findViewById(R.id.container_quick_access)
+        val contentContainer: FrameLayout = view.findViewById(R.id.frameLayout_content)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView_shortcuts)
         val settingsButton: ImageButton = view.findViewById(R.id.imageButton_settings)
     }
