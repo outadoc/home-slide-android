@@ -15,4 +15,6 @@ data class State(
     val state: String,
     @Json(name = "attributes")
     val attributes: AttributeSet
-)
+) {
+    val domain: String = entityId.takeWhile { it != '.' }
+}

@@ -8,13 +8,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.R
-import fr.outadoc.quickhass.model.Shortcut
+import fr.outadoc.quickhass.model.State
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder.IconValue
 
 class ShortcutAdapter : RecyclerView.Adapter<ShortcutAdapter.ViewHolder>() {
 
-    val items: MutableList<Shortcut> = mutableListOf()
+    val items: MutableList<State> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_shortcut, parent, false)
@@ -27,23 +27,32 @@ class ShortcutAdapter : RecyclerView.Adapter<ShortcutAdapter.ViewHolder>() {
         val item = items[position]
 
         with(holder) {
-            val iconValue = try {
-                if (item.icon != null) {
-                    IconValue.valueOf(item.icon.toUpperCase())
-                } else {
-                    DEFAULT_ICON
-                }
-            } catch (e: IllegalArgumentException) {
-                IconValue.ANDROID
-            }
-
+            val iconValue = item.getIconOrDefault()
             val mdi = MaterialDrawableBuilder.with(icon.context)
                 .setIcon(iconValue)
-                .setColor(Color.parseColor("#fdd835"))
+                .setColor(Color.BLACK)
                 .build()
 
-            label.text = item.label
+            label.text = item.attributes.friendlyName ?: item.entityId
             icon.setImageDrawable(mdi)
+        }
+    }
+
+    private fun State?.getIconOrDefault(): IconValue {
+        if (this == null) return DEFAULT_ICON
+
+        return attributes.icon?.toIcon() ?: when (domain) {
+            "light" -> IconValue.LIGHTBULB
+            "cover" -> IconValue.WINDOW_OPEN
+            else -> DEFAULT_ICON
+        }
+    }
+
+    private fun String.toIcon(): IconValue? {
+        return try {
+            IconValue.valueOf(this.takeLastWhile { it != ':' }.toUpperCase())
+        } catch (e: IllegalArgumentException) {
+            null
         }
     }
 

@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fr.outadoc.quickhass.model.Shortcut
 import fr.outadoc.quickhass.model.State
 import fr.outadoc.quickhass.rest.HomeAssistantServer
 import kotlinx.coroutines.Dispatchers
@@ -16,9 +15,9 @@ class QuickAccessViewModel : ViewModel() {
 
     private val server = HomeAssistantServer()
 
-    private val _shortcuts: MutableLiveData<List<Shortcut>> = MutableLiveData()
+    private val _shortcuts: MutableLiveData<List<State>> = MutableLiveData()
 
-    val shortcuts: LiveData<List<Shortcut>>
+    val shortcuts: LiveData<List<State>>
         get() = _shortcuts
 
     fun loadShortcuts() {
@@ -28,7 +27,7 @@ class QuickAccessViewModel : ViewModel() {
             withContext(Dispatchers.Main) {
                 try {
                     if (response.isSuccessful) {
-                        _shortcuts.value = response.body()?.toShortcuts() ?: emptyList()
+                        _shortcuts.value = response.body()?.filter { !it.attributes.hidden } ?: emptyList()
                     }
                 } catch (e: HttpException) {
                     e.printStackTrace()
@@ -38,12 +37,4 @@ class QuickAccessViewModel : ViewModel() {
             }
         }
     }
-
-    private fun List<State>.toShortcuts(): List<Shortcut> =
-        map { state ->
-            Shortcut(
-                state.attributes.friendlyName ?: state.entityId,
-                state.attributes.icon?.replace("mdi:", "")
-            )
-        }
 }
