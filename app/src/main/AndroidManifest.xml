@@ -25,14 +25,15 @@
 
         <activity
             android:name=".shortcuts.QuickAccessActivity"
+            android:excludeFromRecents="true"
             android:label="@string/title_quick_access"
+            android:launchMode="singleTop"
             android:theme="@style/QuickAccessTheme" />
 
         <service
             android:name=".shortcuts.QuickAccessTileService"
             android:icon="@drawable/ic_home"
             android:label="@string/tile_label"
-            android:launchMode="singleTop"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
 
             <intent-filter>
