@@ -27,7 +27,11 @@ class QuickAccessViewModel : ViewModel() {
             withContext(Dispatchers.Main) {
                 try {
                     if (response.isSuccessful) {
-                        _shortcuts.value = response.body()?.filter { !it.attributes.hidden } ?: emptyList()
+                        _shortcuts.value = response.body()
+                            ?.filter { !it.attributes.hidden }
+                            ?.filter { !INITIAL_DOMAIN_BLACKLIST.contains(it.domain) }
+                            ?.sortedBy { it.domain }
+                            ?: emptyList()
                     }
                 } catch (e: HttpException) {
                     e.printStackTrace()
@@ -36,5 +40,14 @@ class QuickAccessViewModel : ViewModel() {
                 }
             }
         }
+    }
+
+    companion object {
+        val INITIAL_DOMAIN_BLACKLIST = listOf(
+            "automation",
+            "device_tracker",
+            "update",
+            "camera"
+        )
     }
 }

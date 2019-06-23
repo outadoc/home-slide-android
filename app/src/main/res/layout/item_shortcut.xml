@@ -2,32 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="100dp"
     android:background="@drawable/shortcut_item_background"
     android:clickable="true"
     android:elevation="1dp"
     android:focusable="true"
     android:foreground="?selectableItemBackgroundBorderless"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="8dp">
 
     <ImageView
         android:id="@+id/imageView_shortcut_icon"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="4dp"
         android:src="@drawable/ic_lightbulb"
-        tools:ignore="ContentDescription"
-        android:layout_marginBottom="4dp" />
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/tv_shortcut_label"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
-        android:maxLines="1"
         android:ellipsize="end"
+        android:maxLines="2"
+        android:textAlignment="center"
         android:textAppearance="?textAppearanceButton" />
 
 </LinearLayout>

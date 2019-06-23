@@ -1,13 +1,9 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
-        <item name="textAppearanceButton">@style/TextAppearance.QuickHass.Button</item>
     </style>
 
     <style name="QuickAccessTheme" parent="AppTheme">
@@ -19,6 +15,8 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowTranslucentStatus">false</item>
+
+        <item name="textAppearanceButton">@style/TextAppearance.QuickHass.Button</item>
     </style>
 
     <style name="TextAppearance.QuickHass.Button" parent="TextAppearance.MaterialComponents.Button">
