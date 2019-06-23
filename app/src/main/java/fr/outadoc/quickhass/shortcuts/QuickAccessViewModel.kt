@@ -46,8 +46,9 @@ class QuickAccessViewModel : ViewModel() {
         val INITIAL_DOMAIN_BLACKLIST = listOf(
             "automation",
             "device_tracker",
-            "update",
-            "camera"
+            "updater",
+            "camera",
+            "persistent_notification"
         )
     }
 }

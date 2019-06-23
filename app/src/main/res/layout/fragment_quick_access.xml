@@ -18,7 +18,7 @@
             android:background="@drawable/popup_background"
             app:behavior_fitToContents="true"
             app:behavior_hideable="true"
-            app:behavior_peekHeight="328dp"
+            app:behavior_peekHeight="368dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <androidx.constraintlayout.widget.ConstraintLayout
