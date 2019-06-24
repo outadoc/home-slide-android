@@ -30,13 +30,24 @@
                 android:paddingTop="24dp"
                 android:paddingEnd="24dp">
 
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:contentDescription="@string/title_quick_access"
+                    android:src="@drawable/ic_home"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView" />
+
                 <TextView
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
                     android:text="@string/title_quick_access"
                     android:textAppearance="?textAppearanceHeadline6"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
