@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -86,6 +87,7 @@ class QuickAccessFragment private constructor() : Fragment() {
 
             ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
                 v.setPadding(0, insets.systemWindowInsetTop, 0, 0)
+
                 insets.replaceSystemWindowInsets(
                     insets.systemWindowInsetLeft,
                     0,
@@ -93,6 +95,19 @@ class QuickAccessFragment private constructor() : Fragment() {
                     insets.systemWindowInsetBottom
                 )
             }
+
+            ViewCompat.setOnApplyWindowInsetsListener(recyclerView) { v, insets ->
+                val newPaddingBottom = insets.systemWindowInsetBottom + constraintLayoutContainer.paddingTop
+                v.setPadding(0, 0, 0, newPaddingBottom)
+
+                insets.replaceSystemWindowInsets(
+                    insets.systemWindowInsetLeft,
+                    insets.systemWindowInsetTop,
+                    insets.systemWindowInsetRight,
+                    0
+                )
+            }
+
         }
 
         return root
@@ -111,6 +126,7 @@ class QuickAccessFragment private constructor() : Fragment() {
 
     private class ViewHolder(view: View, val itemAdapter: ShortcutAdapter) {
         val contentContainer: FrameLayout = view.findViewById(R.id.frameLayout_content)
+        val constraintLayoutContainer: ConstraintLayout = view.findViewById(R.id.constraintLayout_content)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView_shortcuts)
         val settingsButton: ImageButton = view.findViewById(R.id.imageButton_settings)
     }
