@@ -41,7 +41,7 @@ abstract class BaseServer<T>(type: Class<T>) {
     val api: T = retrofit.create(type)
 
     companion object {
-        private const val BASE_URL = "http://192.168.1.19:8123"
+        private const val BASE_URL = "https://***REMOVED***"
         private const val TOKEN =
             "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1YTlmZjgwZWU0NDA0MDlkOGZmYzg1OWVkMmU1NjU0YSIsImlhdCI6MTU2MTMwODE4NywiZXhwIjoxODc2NjY4MTg3fQ.ehSUIWsiCnPQCs6J21fUp2jl9DYw9oYNQNNYveTEZYg"
     }

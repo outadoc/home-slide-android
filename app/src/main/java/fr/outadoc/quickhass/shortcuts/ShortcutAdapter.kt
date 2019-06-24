@@ -44,6 +44,9 @@ class ShortcutAdapter : RecyclerView.Adapter<ShortcutAdapter.ViewHolder>() {
         return attributes.icon?.toIcon() ?: when (domain) {
             "light" -> IconValue.LIGHTBULB
             "cover" -> IconValue.WINDOW_OPEN
+            "person" -> IconValue.ACCOUNT
+            "sun" -> IconValue.WEATHER_SUNNY
+            "switch" -> IconValue.POWER_PLUG
             else -> DEFAULT_ICON
         }
     }
