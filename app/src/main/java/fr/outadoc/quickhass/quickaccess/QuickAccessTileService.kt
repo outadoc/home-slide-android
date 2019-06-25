@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass.shortcuts
+package fr.outadoc.quickhass.quickaccess
 
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK

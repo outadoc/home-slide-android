@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass.shortcuts
+package fr.outadoc.quickhass.quickaccess
 
 import android.content.Context
 import android.content.Intent

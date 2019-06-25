@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass.shortcuts
+package fr.outadoc.quickhass.quickaccess
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.model.Entity
+import fr.outadoc.quickhass.model.annotation.StringIcon
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder.IconValue
 
@@ -51,7 +52,7 @@ class ShortcutAdapter : RecyclerView.Adapter<ShortcutAdapter.ViewHolder>() {
         }
     }
 
-    private fun String.toIcon(): IconValue? {
+    private fun @StringIcon String.toIcon(): IconValue? {
         return try {
             IconValue.valueOf(this.takeLastWhile { it != ':' }.toUpperCase())
         } catch (e: IllegalArgumentException) {
