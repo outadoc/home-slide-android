@@ -54,7 +54,7 @@ class QuickAccessFragment private constructor() : Fragment() {
 
         viewHolder = ViewHolder(
             root,
-            ShortcutAdapter { entity: Entity ->
+            EntityAdapter { entity: Entity ->
                 viewModel.onEntityClick(entity)
             }
 
@@ -127,7 +127,7 @@ class QuickAccessFragment private constructor() : Fragment() {
         }
     }
 
-    private class ViewHolder(view: View, val itemAdapter: ShortcutAdapter) {
+    private class ViewHolder(view: View, val itemAdapter: EntityAdapter) {
         val contentContainer: FrameLayout = view.findViewById(R.id.frameLayout_content)
         val constraintLayoutContainer: ConstraintLayout = view.findViewById(R.id.constraintLayout_content)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView_shortcuts)
