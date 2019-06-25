@@ -24,7 +24,8 @@ sealed class Entity(state: State, defaultIcon: IconValue) {
 
     val isVisible: Boolean = !state.attributes.isHidden
 
-    open val isEnabled: Boolean = true
+    val isEnabled: Boolean
+        get() = primaryAction != null
 
     open val isOn: Boolean = false
 

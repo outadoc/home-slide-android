@@ -3,6 +3,4 @@
     <color name="colorPrimary">#0098F9</color>
     <color name="colorPrimaryDark">#1E88E5</color>
     <color name="colorAccent">#4FC3F7</color>
-    <color name="shortcutDefaultSurfaceColor">#FAFAFA</color>
-    <color name="shortcutSelectedSurfaceColor">@color/colorAccent</color>
 </resources>
