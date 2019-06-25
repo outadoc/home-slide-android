@@ -8,13 +8,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.R
-import fr.outadoc.quickhass.model.State
+import fr.outadoc.quickhass.model.Entity
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder.IconValue
 
 class ShortcutAdapter : RecyclerView.Adapter<ShortcutAdapter.ViewHolder>() {
 
-    val items: MutableList<State> = mutableListOf()
+    val items: MutableList<Entity> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_shortcut, parent, false)
@@ -38,7 +38,7 @@ class ShortcutAdapter : RecyclerView.Adapter<ShortcutAdapter.ViewHolder>() {
         }
     }
 
-    private fun State?.getIconOrDefault(): IconValue {
+    private fun Entity?.getIconOrDefault(): IconValue {
         if (this == null) return DEFAULT_ICON
 
         return attributes.icon?.toIcon() ?: when (domain) {

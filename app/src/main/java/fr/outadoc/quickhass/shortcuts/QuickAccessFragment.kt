@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.GridSpacingItemDecoration
 import fr.outadoc.quickhass.MainActivity
 import fr.outadoc.quickhass.R
-import fr.outadoc.quickhass.model.State
+import fr.outadoc.quickhass.model.Entity
 
 
 class QuickAccessFragment private constructor() : Fragment() {
@@ -38,7 +38,7 @@ class QuickAccessFragment private constructor() : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(QuickAccessViewModel::class.java)
 
-        viewModel.shortcuts.observe(this, Observer<List<State>> { shortcuts ->
+        viewModel.shortcuts.observe(this, Observer<List<Entity>> { shortcuts ->
             viewHolder?.itemAdapter?.apply {
                 items.clear()
                 items.addAll(shortcuts)

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fr.outadoc.quickhass.model.State
+import fr.outadoc.quickhass.model.Entity
 import fr.outadoc.quickhass.rest.HomeAssistantServer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,9 +15,9 @@ class QuickAccessViewModel : ViewModel() {
 
     private val server = HomeAssistantServer()
 
-    private val _shortcuts: MutableLiveData<List<State>> = MutableLiveData()
+    private val _shortcuts: MutableLiveData<List<Entity>> = MutableLiveData()
 
-    val shortcuts: LiveData<List<State>>
+    val shortcuts: LiveData<List<Entity>>
         get() = _shortcuts
 
     fun loadShortcuts() {
@@ -28,6 +28,7 @@ class QuickAccessViewModel : ViewModel() {
                 try {
                     if (response.isSuccessful) {
                         _shortcuts.value = response.body()
+                            ?.map { Entity(it) }
                             ?.filter { !it.attributes.hidden }
                             ?.filter { !INITIAL_DOMAIN_BLACKLIST.contains(it.domain) }
                             ?.sortedBy { it.domain }
