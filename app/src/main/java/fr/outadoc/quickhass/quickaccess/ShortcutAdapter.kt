@@ -31,12 +31,15 @@ class ShortcutAdapter : RecyclerView.Adapter<ShortcutAdapter.ViewHolder>() {
                 .setColor(Color.BLACK)
                 .build()
 
-            label.text = item.attributes.friendlyName ?: item.entityId
+            view.isEnabled = item.isEnabled
+            view.isActivated = item.isOn
+
+            label.text = item.friendlyName ?: item.entityId
             icon.setImageDrawable(mdi)
         }
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val label: TextView = view.findViewById(R.id.tv_shortcut_label)
         val icon: ImageView = view.findViewById(R.id.imageView_shortcut_icon)
     }
