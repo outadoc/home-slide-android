@@ -22,7 +22,7 @@ import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.model.Entity
 
 
-class QuickAccessFragment private constructor() : Fragment() {
+class QuickAccessFragment : Fragment() {
 
     companion object {
         fun newInstance() = QuickAccessFragment()
