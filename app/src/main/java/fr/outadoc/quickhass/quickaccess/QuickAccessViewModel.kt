@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.outadoc.quickhass.model.Entity
+import fr.outadoc.quickhass.model.EntityFactory
 import fr.outadoc.quickhass.rest.HomeAssistantServer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,7 +29,7 @@ class QuickAccessViewModel : ViewModel() {
                 try {
                     if (response.isSuccessful) {
                         _shortcuts.value = response.body()
-                            ?.map { Entity(it) }
+                            ?.map { EntityFactory.create(it) }
                             ?.filter { !it.attributes.hidden }
                             ?.filter { !INITIAL_DOMAIN_BLACKLIST.contains(it.domain) }
                             ?.sortedBy { it.domain }
