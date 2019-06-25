@@ -10,37 +10,36 @@ import fr.outadoc.quickhass.model.EntityFactory
 import fr.outadoc.quickhass.rest.HomeAssistantServer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import java.io.IOException
 
 class QuickAccessViewModel : ViewModel() {
 
     private val server = HomeAssistantServer()
 
-    private val _shortcuts: MutableLiveData<List<Entity>> = MutableLiveData()
+    private val _shortcuts = MutableLiveData<List<Entity>>()
+    val shortcuts: LiveData<List<Entity>> = _shortcuts
 
-    val shortcuts: LiveData<List<Entity>>
-        get() = _shortcuts
+    private val _error = MutableLiveData<Exception>()
+    val error: LiveData<Exception> = _error
 
     fun loadShortcuts() {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = server.getStates()
+            try {
+                val response = server.getStates()
 
-            withContext(Dispatchers.Main) {
-                try {
-                    if (response.isSuccessful) {
-                        _shortcuts.value = response.body()
-                            ?.map { EntityFactory.create(it) }
-                            ?.filter { it.isVisible }
-                            ?.filter { !INITIAL_DOMAIN_BLACKLIST.contains(it.domain) }
-                            ?.sortedBy { it.domain }
-                            ?: emptyList()
-                    }
-                } catch (e: HttpException) {
-                    e.printStackTrace()
-                } catch (e: Throwable) {
-                    e.printStackTrace()
+                if (response.isSuccessful) {
+                    _shortcuts.postValue(response.body()
+                        ?.map { EntityFactory.create(it) }
+                        ?.filter { it.isVisible }
+                        ?.filter { !INITIAL_DOMAIN_BLACKLIST.contains(it.domain) }
+                        ?.sortedBy { it.domain }
+                        ?: emptyList())
                 }
+            } catch (e: HttpException) {
+                _error.postValue(e)
+            } catch (e: IOException) {
+                _error.postValue(e)
             }
         }
     }

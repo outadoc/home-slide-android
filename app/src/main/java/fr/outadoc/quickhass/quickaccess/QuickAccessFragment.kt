@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -38,15 +39,22 @@ class QuickAccessFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(QuickAccessViewModel::class.java)
 
-        viewModel.shortcuts.observe(this, Observer<List<Entity>> { shortcuts ->
-            viewHolder?.itemAdapter?.apply {
-                items.clear()
-                items.addAll(shortcuts)
-                notifyDataSetChanged()
-            }
-        })
+        with(viewModel) {
+            shortcuts.observe(this@QuickAccessFragment, Observer { shortcuts ->
+                viewHolder?.itemAdapter?.apply {
+                    items.clear()
+                    items.addAll(shortcuts)
+                    notifyDataSetChanged()
+                }
+            })
 
-        viewModel.loadShortcuts()
+            error.observe(this@QuickAccessFragment, Observer { e ->
+                Toast.makeText(context, e.message ?: "An error occurred.", Toast.LENGTH_SHORT)
+                    .show()
+            })
+
+            loadShortcuts()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -127,10 +135,10 @@ class QuickAccessFragment : Fragment() {
         }
     }
 
-    private class ViewHolder(view: View, val itemAdapter: EntityAdapter) {
-        val contentContainer: FrameLayout = view.findViewById(R.id.frameLayout_content)
-        val constraintLayoutContainer: ConstraintLayout = view.findViewById(R.id.constraintLayout_content)
-        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView_shortcuts)
-        val settingsButton: ImageButton = view.findViewById(R.id.imageButton_settings)
+    private class ViewHolder(val root: View, val itemAdapter: EntityAdapter) {
+        val contentContainer: FrameLayout = root.findViewById(R.id.frameLayout_content)
+        val constraintLayoutContainer: ConstraintLayout = root.findViewById(R.id.constraintLayout_content)
+        val recyclerView: RecyclerView = root.findViewById(R.id.recyclerView_shortcuts)
+        val settingsButton: ImageButton = root.findViewById(R.id.imageButton_settings)
     }
 }
