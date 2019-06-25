@@ -2,6 +2,7 @@ package fr.outadoc.quickhass.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import fr.outadoc.quickhass.model.annotation.StringDomain
 import fr.outadoc.quickhass.model.annotation.StringEntityId
 import fr.outadoc.quickhass.model.annotation.StringState
 
@@ -19,4 +20,7 @@ data class State(
     val state: String,
     @Json(name = "attributes")
     val attributes: AttributeSet
-)
+) {
+    @StringDomain
+    val domain: String = entityId.takeWhile { it != '.' }
+}

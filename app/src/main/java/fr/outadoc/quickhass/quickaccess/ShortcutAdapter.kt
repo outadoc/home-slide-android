@@ -9,9 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.model.Entity
-import fr.outadoc.quickhass.model.annotation.StringIcon
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder
-import net.steamcrafted.materialiconlib.MaterialDrawableBuilder.IconValue
 
 class ShortcutAdapter : RecyclerView.Adapter<ShortcutAdapter.ViewHolder>() {
 
@@ -28,9 +26,8 @@ class ShortcutAdapter : RecyclerView.Adapter<ShortcutAdapter.ViewHolder>() {
         val item = items[position]
 
         with(holder) {
-            val iconValue = item.getIconOrDefault()
             val mdi = MaterialDrawableBuilder.with(icon.context)
-                .setIcon(iconValue)
+                .setIcon(item.icon)
                 .setColor(Color.BLACK)
                 .build()
 
@@ -39,33 +36,9 @@ class ShortcutAdapter : RecyclerView.Adapter<ShortcutAdapter.ViewHolder>() {
         }
     }
 
-    private fun Entity?.getIconOrDefault(): IconValue {
-        if (this == null) return DEFAULT_ICON
-
-        return attributes.icon?.toIcon() ?: when (domain) {
-            "light" -> IconValue.LIGHTBULB
-            "cover" -> IconValue.WINDOW_OPEN
-            "person" -> IconValue.ACCOUNT
-            "sun" -> IconValue.WEATHER_SUNNY
-            "switch" -> IconValue.POWER_PLUG
-            else -> DEFAULT_ICON
-        }
-    }
-
-    private fun @StringIcon String.toIcon(): IconValue? {
-        return try {
-            IconValue.valueOf(this.takeLastWhile { it != ':' }.toUpperCase())
-        } catch (e: IllegalArgumentException) {
-            null
-        }
-    }
-
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val label: TextView = view.findViewById(R.id.tv_shortcut_label)
         val icon: ImageView = view.findViewById(R.id.imageView_shortcut_icon)
     }
 
-    companion object {
-        private val DEFAULT_ICON = IconValue.ANDROID
-    }
 }
