@@ -12,5 +12,5 @@ data class AttributeSet(
     @StringIcon
     val icon: String?,
     @Json(name = "hidden")
-    val hidden: Boolean = false
+    val isHidden: Boolean = false
 )

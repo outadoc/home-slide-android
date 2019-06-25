@@ -12,15 +12,21 @@ sealed class Entity(state: State, defaultIcon: IconValue) {
     val entityId: String = state.entityId
 
     @StringState
-    val stateStr: String = state.state
+    protected val stateStr: String = state.state
 
     @StringDomain
     val domain: String = state.domain
 
-    val attributes: AttributeSet = state.attributes
-
     val icon: IconValue =
-        attributes.icon?.toIcon() ?: defaultIcon
+        state.attributes.icon?.toIcon() ?: defaultIcon
+
+    val friendlyName: String? = state.attributes.friendlyName
+
+    val isVisible: Boolean = !state.attributes.isHidden
+
+    open val isEnabled: Boolean = true
+
+    open val isOn: Boolean = false
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -46,12 +52,24 @@ private fun @StringIcon String.toIcon(): IconValue? {
     }
 }
 
+abstract class BinaryEntity(state: State, icon: IconValue) : Entity(state, icon) {
+    override val isOn: Boolean = stateStr == "on"
+}
+
 class GenericEntity(state: State) : Entity(state, IconValue.ANDROID)
-class LightEntity(state: State) : Entity(state, IconValue.LIGHTBULB)
-class CoverEntity(state: State) : Entity(state, IconValue.WINDOW_OPEN)
+
+class LightEntity(state: State) : BinaryEntity(state, IconValue.LIGHTBULB)
+
+class SwitchEntity(state: State) : BinaryEntity(state, IconValue.POWER_PLUG)
+
+class CoverEntity(state: State) : Entity(state, IconValue.WINDOW_OPEN) {
+    override val isOn: Boolean = stateStr == "open"
+}
+
 class PersonEntity(state: State) : Entity(state, IconValue.ACCOUNT)
+
 class SunEntity(state: State) : Entity(state, IconValue.WEATHER_SUNNY)
-class SwitchEntity(state: State) : Entity(state, IconValue.POWER_PLUG)
+
 
 object EntityFactory {
 
