@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass.shortcuts
+package fr.outadoc.quickhass.quickaccess
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
