@@ -28,6 +28,8 @@ sealed class Entity(state: State, defaultIcon: IconValue) {
 
     open val isOn: Boolean = false
 
+    open val primaryAction: Action? = null
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -54,6 +56,10 @@ private fun @StringIcon String.toIcon(): IconValue? {
 
 abstract class BinaryEntity(state: State, icon: IconValue) : Entity(state, icon) {
     override val isOn: Boolean = stateStr == "on"
+
+    override val primaryAction = Action(
+        "homeassistant", "toggle", entityId
+    )
 }
 
 class GenericEntity(state: State) : Entity(state, IconValue.ANDROID)
