@@ -3,6 +3,7 @@ package fr.outadoc.quickhass.rest
 import fr.outadoc.quickhass.model.Service
 import fr.outadoc.quickhass.model.State
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -18,6 +19,7 @@ interface HomeAssistantApi {
     @POST("/api/services/{domain}/{service}")
     suspend fun callService(
         @Path("domain") domain: String,
-        @Path("service") service: String
+        @Path("service") service: String,
+        @Body params: Map<String, String>
     ): Response<List<State>>
 }

@@ -30,7 +30,7 @@ class QuickAccessViewModel : ViewModel() {
                     if (response.isSuccessful) {
                         _shortcuts.value = response.body()
                             ?.map { EntityFactory.create(it) }
-                            ?.filter { !it.attributes.hidden }
+                            ?.filter { it.isVisible }
                             ?.filter { !INITIAL_DOMAIN_BLACKLIST.contains(it.domain) }
                             ?.sortedBy { it.domain }
                             ?: emptyList()
