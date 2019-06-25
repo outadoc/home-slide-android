@@ -11,7 +11,7 @@ import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.model.Entity
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder
 
-class ShortcutAdapter : RecyclerView.Adapter<ShortcutAdapter.ViewHolder>() {
+class ShortcutAdapter(val onItemClick: (Entity) -> Unit) : RecyclerView.Adapter<ShortcutAdapter.ViewHolder>() {
 
     val items: MutableList<Entity> = mutableListOf()
 
@@ -33,6 +33,8 @@ class ShortcutAdapter : RecyclerView.Adapter<ShortcutAdapter.ViewHolder>() {
 
             view.isEnabled = item.isEnabled
             view.isActivated = item.isOn
+
+            view.setOnClickListener { onItemClick(item) }
 
             label.text = item.friendlyName ?: item.entityId
             icon.setImageDrawable(mdi)

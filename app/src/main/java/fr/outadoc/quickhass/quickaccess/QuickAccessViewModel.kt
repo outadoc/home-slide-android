@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import fr.outadoc.quickhass.model.Action
 import fr.outadoc.quickhass.model.Entity
 import fr.outadoc.quickhass.model.EntityFactory
 import fr.outadoc.quickhass.rest.HomeAssistantServer
@@ -42,6 +43,20 @@ class QuickAccessViewModel : ViewModel() {
                 }
             }
         }
+    }
+
+    fun onEntityClick(item: Entity) {
+        if (item.primaryAction == null)
+            return
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = server.callService(item.primaryAction as Action)
+
+            if (response.isSuccessful) {
+                loadShortcuts()
+            }
+        }
+
     }
 
     companion object {

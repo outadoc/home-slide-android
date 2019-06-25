@@ -54,7 +54,10 @@ class QuickAccessFragment private constructor() : Fragment() {
 
         viewHolder = ViewHolder(
             root,
-            ShortcutAdapter()
+            ShortcutAdapter { entity: Entity ->
+                viewModel.onEntityClick(entity)
+            }
+
         ).apply {
             contentContainer.setOnClickListener {
                 // Prevent from bubbling event up to parent
