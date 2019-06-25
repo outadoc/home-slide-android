@@ -76,6 +76,7 @@ class PersonEntity(state: State) : Entity(state, IconValue.ACCOUNT)
 
 class SunEntity(state: State) : Entity(state, IconValue.WEATHER_SUNNY)
 
+class SensorEntity(state: State) : Entity(state, IconValue.EYE)
 
 object EntityFactory {
 
@@ -85,6 +86,7 @@ object EntityFactory {
         "person" -> PersonEntity(state)
         "sun" -> SunEntity(state)
         "switch" -> SwitchEntity(state)
+        "sensor" -> SensorEntity(state)
         else -> GenericEntity(state)
     }
 }
