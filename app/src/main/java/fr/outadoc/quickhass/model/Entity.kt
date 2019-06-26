@@ -144,7 +144,7 @@ class WeatherEntity(state: State) : Entity(state, IconValue.WEATHER_CLOUDY) {
         }
 }
 
-class InputBooleanEntity(state: State) : BinaryEntity(state, IconValue.SWITCH_ICON)
+class InputBooleanEntity(state: State) : BinaryEntity(state, IconValue.DIP_SWITCH)
 
 object EntityFactory {
 
