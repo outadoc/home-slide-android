@@ -49,7 +49,11 @@ sealed class Entity(state: State, defaultIcon: IconValue) {
 
 private fun @StringIcon String.toIcon(): IconValue? {
     return try {
-        IconValue.valueOf(this.takeLastWhile { it != ':' }.toUpperCase())
+        IconValue.valueOf(
+            takeLastWhile { it != ':' }
+                .replace('-', '_')
+                .toUpperCase()
+        )
     } catch (e: IllegalArgumentException) {
         null
     }
