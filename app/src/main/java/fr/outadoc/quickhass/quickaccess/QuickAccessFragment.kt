@@ -12,6 +12,7 @@ import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -19,6 +20,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import fr.outadoc.quickhass.GridSpacingItemDecoration
 import fr.outadoc.quickhass.MainActivity
 import fr.outadoc.quickhass.R
@@ -104,6 +106,29 @@ class QuickAccessFragment : Fragment() {
                 )
             }
 
+            setBottomSheetCallback(this)
+            setWindowInsets(this)
+        }
+
+        return root
+    }
+
+    private fun setBottomSheetCallback(viewHolder: ViewHolder) {
+        val p = viewHolder.contentContainer.layoutParams as CoordinatorLayout.LayoutParams
+        val behavior = p.behavior as BottomSheetBehavior
+
+        behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    activity?.finish()
+                }
+            }
+        })
+    }
+
+    private fun setWindowInsets(viewHolder: ViewHolder) {
+        with(viewHolder) {
             ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
                 v.setPadding(0, insets.systemWindowInsetTop, 0, 0)
 
@@ -126,10 +151,7 @@ class QuickAccessFragment : Fragment() {
                     0
                 )
             }
-
         }
-
-        return root
     }
 
     override fun onAttach(context: Context) {
