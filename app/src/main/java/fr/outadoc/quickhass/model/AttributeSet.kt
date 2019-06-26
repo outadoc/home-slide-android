@@ -12,5 +12,7 @@ data class AttributeSet(
     @StringIcon
     val icon: String?,
     @Json(name = "hidden")
-    val isHidden: Boolean = false
+    val isHidden: Boolean = false,
+    @Json(name = "operation_list")
+    val operationList: List<String>?
 )

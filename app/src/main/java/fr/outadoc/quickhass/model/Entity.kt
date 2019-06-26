@@ -37,6 +37,8 @@ sealed class Entity(private val state: State, private val defaultIcon: IconValue
     val icon: IconValue
         get() = state.attributes.icon?.toIcon() ?: fallbackIcon ?: defaultIcon
 
+    val additionalAttributes = state.attributes
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -81,6 +83,13 @@ class SwitchEntity(state: State) : BinaryEntity(state, IconValue.POWER_PLUG)
 
 class CoverEntity(state: State) : Entity(state, IconValue.WINDOW_OPEN) {
     override val isOn: Boolean = stateStr == "open"
+
+    override val primaryAction: Action?
+        get() = when (stateStr) {
+            "open" -> Action("cover", "close_cover", entityId)
+            "closed" -> Action("cover", "open_cover", entityId)
+            else -> null
+        }
 }
 
 class PersonEntity(state: State) : Entity(state, IconValue.ACCOUNT)
@@ -89,15 +98,30 @@ class SunEntity(state: State) : Entity(state, IconValue.WEATHER_SUNNY)
 
 class SensorEntity(state: State) : Entity(state, IconValue.EYE)
 
-class ScriptEntity(state: State) : Entity(state, IconValue.FILE_DOCUMENT)
+class ScriptEntity(state: State) : Entity(state, IconValue.FILE_DOCUMENT) {
+
+    private val scriptName = entityId.takeLastWhile { it != '.' }
+
+    override val primaryAction: Action?
+        get() = Action("script", scriptName, entityId)
+}
 
 class AutomationEntity(state: State) : Entity(state, IconValue.PLAYLIST_PLAY)
 
 class GroupEntity(state: State) : Entity(state, IconValue.GOOGLE_CIRCLES_COMMUNITIES)
 
-class ClimateEntity(state: State) : Entity(state, IconValue.THERMOSTAT)
+class ClimateEntity(state: State) : Entity(state, IconValue.THERMOSTAT) {
+    override val isOn: Boolean
+        get() = stateStr != "off"
 
-class MediaPlayerEntity(state: State) : Entity(state, IconValue.CAST)
+    override val primaryAction: Action?
+        get() = when (stateStr) {
+            "off" -> Action("climate", "turn_on", entityId)
+            else -> Action("climate", "turn_off", entityId)
+        }
+}
+
+class MediaPlayerEntity(state: State) : BinaryEntity(state, IconValue.CAST)
 
 class WeatherEntity(state: State) : Entity(state, IconValue.WEATHER_CLOUDY) {
     override val fallbackIcon: IconValue?
@@ -120,6 +144,8 @@ class WeatherEntity(state: State) : Entity(state, IconValue.WEATHER_CLOUDY) {
         }
 }
 
+class InputBooleanEntity(state: State) : BinaryEntity(state, IconValue.SWITCH_ICON)
+
 object EntityFactory {
 
     fun create(state: State): Entity = when (state.domain) {
@@ -135,6 +161,7 @@ object EntityFactory {
         "climate" -> ClimateEntity(state)
         "media_player" -> MediaPlayerEntity(state)
         "weather" -> WeatherEntity(state)
+        "input_boolean" -> InputBooleanEntity(state)
         else -> GenericEntity(state)
     }
 }
