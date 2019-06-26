@@ -23,9 +23,14 @@ class QuickAccessViewModel : ViewModel() {
     private val _error = MutableLiveData<Exception>()
     val error: LiveData<Exception> = _error
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
     fun loadShortcuts() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                _isLoading.postValue(true)
+
                 val response = server.getStates()
 
                 if (response.isSuccessful) {
@@ -41,6 +46,8 @@ class QuickAccessViewModel : ViewModel() {
             } catch (e: IOException) {
                 _error.postValue(e)
             }
+
+            _isLoading.postValue(false)
         }
     }
 
@@ -49,11 +56,15 @@ class QuickAccessViewModel : ViewModel() {
             return
 
         viewModelScope.launch(Dispatchers.IO) {
+            _isLoading.postValue(true)
+
             val response = server.callService(item.primaryAction as Action)
 
             if (response.isSuccessful) {
                 loadShortcuts()
             }
+
+            _isLoading.postValue(false)
         }
 
     }

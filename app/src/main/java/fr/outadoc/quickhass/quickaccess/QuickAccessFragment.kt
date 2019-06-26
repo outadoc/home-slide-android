@@ -9,9 +9,11 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -51,6 +53,12 @@ class QuickAccessFragment : Fragment() {
             error.observe(this@QuickAccessFragment, Observer { e ->
                 Toast.makeText(context, e.message ?: "An error occurred.", Toast.LENGTH_SHORT)
                     .show()
+            })
+
+            isLoading.observe(this@QuickAccessFragment, Observer { isLoading ->
+                viewHolder?.apply {
+                    progress.isVisible = isLoading
+                }
             })
 
             loadShortcuts()
@@ -140,5 +148,6 @@ class QuickAccessFragment : Fragment() {
         val constraintLayoutContainer: ConstraintLayout = root.findViewById(R.id.constraintLayout_content)
         val recyclerView: RecyclerView = root.findViewById(R.id.recyclerView_shortcuts)
         val settingsButton: ImageButton = root.findViewById(R.id.imageButton_settings)
+        val progress: ProgressBar = root.findViewById(R.id.progress_main)
     }
 }
