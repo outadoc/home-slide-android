@@ -6,7 +6,8 @@
     android:layout_height="100dp"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="@color/color_background_shortcut_item"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="8dp"
+    android:layout_margin="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
