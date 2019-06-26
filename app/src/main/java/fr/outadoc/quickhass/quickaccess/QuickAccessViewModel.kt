@@ -12,6 +12,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
+import java.util.*
+import kotlin.concurrent.schedule
+
 
 class QuickAccessViewModel : ViewModel() {
 
@@ -25,6 +28,8 @@ class QuickAccessViewModel : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
+
+    private val timer = Timer("Periodic refresh", false)
 
     fun loadShortcuts() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -48,6 +53,10 @@ class QuickAccessViewModel : ViewModel() {
             }
 
             _isLoading.postValue(false)
+
+            timer.schedule(REFRESH_INTERVAL) {
+                loadShortcuts()
+            }
         }
     }
 
@@ -69,7 +78,14 @@ class QuickAccessViewModel : ViewModel() {
 
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        timer.cancel()
+    }
+
     companion object {
+        const val REFRESH_INTERVAL = 10000L
+
         val INITIAL_DOMAIN_BLACKLIST = listOf(
             "automation",
             "device_tracker",
