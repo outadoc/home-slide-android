@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="100dp"
+    android:layout_margin="4dp"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="@color/color_background_shortcut_item"
-    app:cardCornerRadius="8dp"
-    android:layout_margin="4dp">
+    app:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,16 +16,21 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imageView_shortcut_icon"
+        <TextView
+            android:id="@+id/tv_shortcut_icon"
             android:layout_width="0dp"
-            android:layout_height="32dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.MaterialDesignIcons"
+            android:textColor="@color/color_on_background_shortcut_item"
+            android:textSize="32sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            tools:text="" />
 
         <TextView
             android:id="@+id/tv_shortcut_label"
@@ -40,7 +45,7 @@
             android:textColor="@color/color_on_background_shortcut_item"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageView_shortcut_icon"
+            app:layout_constraintTop_toBottomOf="@id/tv_shortcut_icon"
             tools:layout_editor_absoluteX="8dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

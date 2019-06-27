@@ -1,12 +1,13 @@
 package fr.outadoc.quickhass.model
 
+import fr.outadoc.mdi.FontIcon
+import fr.outadoc.mdi.IconMap
+import fr.outadoc.mdi.IconStringRef
 import fr.outadoc.quickhass.model.annotation.StringDomain
 import fr.outadoc.quickhass.model.annotation.StringEntityId
-import fr.outadoc.quickhass.model.annotation.StringIcon
 import fr.outadoc.quickhass.model.annotation.StringState
-import net.steamcrafted.materialiconlib.MaterialDrawableBuilder.IconValue
 
-sealed class Entity(private val state: State, private val defaultIcon: IconValue) {
+sealed class Entity(private val state: State, private val defaultIcon: FontIcon) {
 
     @StringEntityId
     val entityId: String = state.entityId
@@ -32,9 +33,9 @@ sealed class Entity(private val state: State, private val defaultIcon: IconValue
      * Can be overridden by children to provide a contextual icon.
      * e.g. different icon for different weather
      */
-    open val fallbackIcon: IconValue? = null
+    open val fallbackIcon: FontIcon? = null
 
-    val icon: IconValue
+    val icon: FontIcon
         get() = state.attributes.icon?.toIcon() ?: fallbackIcon ?: defaultIcon
 
     val additionalAttributes = state.attributes
@@ -55,19 +56,11 @@ sealed class Entity(private val state: State, private val defaultIcon: IconValue
     }
 }
 
-private fun @StringIcon String.toIcon(): IconValue? {
-    return try {
-        IconValue.valueOf(
-            takeLastWhile { it != ':' }
-                .replace('-', '_')
-                .toUpperCase()
-        )
-    } catch (e: IllegalArgumentException) {
-        null
-    }
+private fun @IconStringRef String.toIcon(): FontIcon? {
+    return IconMap.getIcon(this)
 }
 
-abstract class BinaryEntity(state: State, icon: IconValue) : Entity(state, icon) {
+abstract class BinaryEntity(state: State, defaultIcon: FontIcon) : Entity(state, defaultIcon) {
     override val isOn: Boolean = stateStr == "on"
 
     override val primaryAction = Action(
@@ -75,13 +68,13 @@ abstract class BinaryEntity(state: State, icon: IconValue) : Entity(state, icon)
     )
 }
 
-class GenericEntity(state: State) : Entity(state, IconValue.BOOKMARK)
+class GenericEntity(state: State) : Entity(state, "bookmark".toIcon()!!)
 
-class LightEntity(state: State) : BinaryEntity(state, IconValue.LIGHTBULB)
+class LightEntity(state: State) : BinaryEntity(state, "lightbulb".toIcon()!!)
 
-class SwitchEntity(state: State) : BinaryEntity(state, IconValue.POWER_PLUG)
+class SwitchEntity(state: State) : BinaryEntity(state, "power-plug".toIcon()!!)
 
-class CoverEntity(state: State) : Entity(state, IconValue.WINDOW_OPEN) {
+class CoverEntity(state: State) : Entity(state, "window-open".toIcon()!!) {
     override val isOn: Boolean = stateStr == "open"
 
     override val primaryAction: Action?
@@ -92,13 +85,13 @@ class CoverEntity(state: State) : Entity(state, IconValue.WINDOW_OPEN) {
         }
 }
 
-class PersonEntity(state: State) : Entity(state, IconValue.ACCOUNT)
+class PersonEntity(state: State) : Entity(state, "account".toIcon()!!)
 
-class SunEntity(state: State) : Entity(state, IconValue.WEATHER_SUNNY)
+class SunEntity(state: State) : Entity(state, "weather-sunny".toIcon()!!)
 
-class SensorEntity(state: State) : Entity(state, IconValue.EYE)
+class SensorEntity(state: State) : Entity(state, "eye".toIcon()!!)
 
-class ScriptEntity(state: State) : Entity(state, IconValue.FILE_DOCUMENT) {
+class ScriptEntity(state: State) : Entity(state, "file-document".toIcon()!!) {
 
     private val scriptName = entityId.takeLastWhile { it != '.' }
 
@@ -106,11 +99,11 @@ class ScriptEntity(state: State) : Entity(state, IconValue.FILE_DOCUMENT) {
         get() = Action("script", scriptName, entityId)
 }
 
-class AutomationEntity(state: State) : Entity(state, IconValue.PLAYLIST_PLAY)
+class AutomationEntity(state: State) : Entity(state, "playlist-play".toIcon()!!)
 
-class GroupEntity(state: State) : Entity(state, IconValue.GOOGLE_CIRCLES_COMMUNITIES)
+class GroupEntity(state: State) : Entity(state, "google-circles-communities".toIcon()!!)
 
-class ClimateEntity(state: State) : Entity(state, IconValue.THERMOSTAT) {
+class ClimateEntity(state: State) : Entity(state, "thermostat".toIcon()!!) {
     override val isOn: Boolean
         get() = stateStr != "off"
 
@@ -121,30 +114,31 @@ class ClimateEntity(state: State) : Entity(state, IconValue.THERMOSTAT) {
         }
 }
 
-class MediaPlayerEntity(state: State) : BinaryEntity(state, IconValue.CAST)
+class MediaPlayerEntity(state: State) : BinaryEntity(state, "cast".toIcon()!!)
 
-class WeatherEntity(state: State) : Entity(state, IconValue.WEATHER_CLOUDY) {
-    override val fallbackIcon: IconValue?
+class WeatherEntity(state: State) : Entity(state, "weather-cloudy".toIcon()!!) {
+
+    override val fallbackIcon: FontIcon?
         get() = when (stateStr) {
-            "clear-night" -> IconValue.WEATHER_NIGHT
-            "cloudy" -> IconValue.WEATHER_CLOUDY
-            "fog" -> IconValue.WEATHER_FOG
-            "hail" -> IconValue.WEATHER_HAIL
-            "lightning" -> IconValue.WEATHER_LIGHTNING
-            "lightning-rainy" -> IconValue.WEATHER_LIGHTNING_RAINY
-            "partlycloudy" -> IconValue.WEATHER_PARTLYCLOUDY
-            "pouring" -> IconValue.WEATHER_POURING
-            "rainy" -> IconValue.WEATHER_RAINY
-            "snowy" -> IconValue.WEATHER_SNOWY
-            "snowy-rainy" -> IconValue.WEATHER_SNOWY_RAINY
-            "sunny" -> IconValue.WEATHER_SUNNY
-            "windy" -> IconValue.WEATHER_WINDY
-            "windy-variant" -> IconValue.WEATHER_WINDY_VARIANT
+            "clear-night" -> "weather-night"
+            "cloudy" -> "weather-cloudy"
+            "fog" -> "weather-fog"
+            "hail" -> "weather-hail"
+            "lightning" -> "weather-lightning"
+            "lightning-rainy" -> "weather-lightning-rainy"
+            "partlycloudy" -> "weather-partlycloudy"
+            "pouring" -> "weather-pouring"
+            "rainy" -> "weather-rainy"
+            "snowy" -> "weather-snowy"
+            "snowy-rainy" -> "weather-snowy-rainy"
+            "sunny" -> "weather-sunny"
+            "windy" -> "weather-windy"
+            "windy-variant" -> "weather-windy-variant"
             else -> null
-        }
+        }?.toIcon()
 }
 
-class InputBooleanEntity(state: State) : BinaryEntity(state, IconValue.DIP_SWITCH)
+class InputBooleanEntity(state: State) : BinaryEntity(state, "dip-switch".toIcon()!!)
 
 object EntityFactory {
 
