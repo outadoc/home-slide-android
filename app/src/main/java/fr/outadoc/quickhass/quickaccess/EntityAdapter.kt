@@ -23,12 +23,15 @@ class EntityAdapter(val onItemClick: (Entity) -> Unit) : RecyclerView.Adapter<En
         val item = items[position]
 
         with(holder) {
-            // Disable the view if it can't be controlled
-            view.isEnabled = item.isEnabled
-
             // Activate the view if the entity is "on"
             view.isActivated = item.isOn
-            view.setOnClickListener { onItemClick(item) }
+
+            view.setOnClickListener {
+                if (item.isEnabled) {
+                    view.isActivated = !view.isActivated
+                    onItemClick(item)
+                }
+            }
 
             label.text = item.friendlyName ?: item.entityId
             icon.text = item.icon.unicodePoint
