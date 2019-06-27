@@ -33,9 +33,9 @@ class QuickAccessViewModel : ViewModel() {
 
     fun loadShortcuts() {
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                _isLoading.postValue(true)
+            _isLoading.postValue(true)
 
+            try {
                 val response = server.getStates()
 
                 if (response.isSuccessful) {
@@ -45,14 +45,17 @@ class QuickAccessViewModel : ViewModel() {
                         ?.filter { !INITIAL_DOMAIN_BLACKLIST.contains(it.domain) }
                         ?.sortedBy { it.domain }
                         ?: emptyList())
+                } else {
+                    _error.postValue(HttpException(response))
                 }
+
             } catch (e: HttpException) {
                 _error.postValue(e)
             } catch (e: IOException) {
                 _error.postValue(e)
+            } finally {
+                _isLoading.postValue(false)
             }
-
-            _isLoading.postValue(false)
 
             timer.schedule(REFRESH_INTERVAL) {
                 loadShortcuts()
@@ -67,13 +70,22 @@ class QuickAccessViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.postValue(true)
 
-            val response = server.callService(item.primaryAction as Action)
+            try {
+                val response = server.callService(item.primaryAction as Action)
 
-            if (response.isSuccessful) {
-                loadShortcuts()
+                if (response.isSuccessful) {
+                    loadShortcuts()
+                } else {
+                    _error.postValue(HttpException(response))
+                }
+
+            } catch (e: HttpException) {
+                _error.postValue(e)
+            } catch (e: IOException) {
+                _error.postValue(e)
+            } finally {
+                _isLoading.postValue(false)
             }
-
-            _isLoading.postValue(false)
         }
 
     }
