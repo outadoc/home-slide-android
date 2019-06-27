@@ -57,7 +57,7 @@ sealed class Entity(private val state: State, private val defaultIcon: FontIcon)
 }
 
 private fun @IconStringRef String.toIcon(): FontIcon? {
-    return IconMap.getIcon(this)
+    return IconMap.getIcon(takeLastWhile { it != ':' })
 }
 
 abstract class BinaryEntity(state: State, defaultIcon: FontIcon) : Entity(state, defaultIcon) {
