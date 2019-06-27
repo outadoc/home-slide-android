@@ -29,13 +29,3 @@ annotation class StringState
 )
 @Retention(AnnotationRetention.SOURCE)
 annotation class StringEntityId
-
-@Target(
-    AnnotationTarget.LOCAL_VARIABLE,
-    AnnotationTarget.FIELD,
-    AnnotationTarget.PROPERTY,
-    AnnotationTarget.TYPE,
-    AnnotationTarget.VALUE_PARAMETER
-)
-@Retention(AnnotationRetention.SOURCE)
-annotation class StringIcon
