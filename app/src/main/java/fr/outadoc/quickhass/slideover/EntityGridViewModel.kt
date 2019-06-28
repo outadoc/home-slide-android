@@ -7,18 +7,17 @@ import androidx.lifecycle.viewModelScope
 import fr.outadoc.quickhass.model.Action
 import fr.outadoc.quickhass.model.Entity
 import fr.outadoc.quickhass.model.EntityFactory
-import fr.outadoc.quickhass.rest.HomeAssistantServer
+import fr.outadoc.quickhass.rest.HomeAssistantServerImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import java.io.IOException
 import java.util.*
 import kotlin.concurrent.schedule
 
 
 class EntityGridViewModel : ViewModel() {
 
-    private val server = HomeAssistantServer()
+    private val server = HomeAssistantServerImpl()
 
     private val _shortcuts = MutableLiveData<List<Entity>>()
     val shortcuts: LiveData<List<Entity>> = _shortcuts
@@ -49,9 +48,7 @@ class EntityGridViewModel : ViewModel() {
                     _error.postValue(HttpException(response))
                 }
 
-            } catch (e: HttpException) {
-                _error.postValue(e)
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 _error.postValue(e)
             } finally {
                 _isLoading.postValue(false)
@@ -79,9 +76,7 @@ class EntityGridViewModel : ViewModel() {
                     _error.postValue(HttpException(response))
                 }
 
-            } catch (e: HttpException) {
-                _error.postValue(e)
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 _error.postValue(e)
             } finally {
                 _isLoading.postValue(false)

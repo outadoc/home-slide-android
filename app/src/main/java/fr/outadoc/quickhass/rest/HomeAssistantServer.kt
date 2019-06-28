@@ -1,13 +1,14 @@
 package fr.outadoc.quickhass.rest
 
 import fr.outadoc.quickhass.model.Action
+import fr.outadoc.quickhass.model.Service
+import fr.outadoc.quickhass.model.State
+import retrofit2.Response
 
-class HomeAssistantServer : BaseServer<HomeAssistantApi>(HomeAssistantApi::class.java) {
+interface HomeAssistantServer {
 
-    suspend fun getStates() = api.getStates()
+    suspend fun getStates(): Response<List<State>>
+    suspend fun getServices(): Response<List<Service>>
+    suspend fun callService(action: Action): Response<List<State>>
 
-    suspend fun getServices() = api.getServices()
-
-    suspend fun callService(action: Action) =
-        api.callService(action.domain, action.service, action.allParams)
 }
