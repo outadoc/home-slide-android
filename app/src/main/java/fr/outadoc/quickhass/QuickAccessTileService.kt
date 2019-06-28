@@ -1,16 +1,17 @@
-package fr.outadoc.quickhass.quickaccess
+package fr.outadoc.quickhass
 
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
+import fr.outadoc.quickhass.slideover.SlideOverActivity
 
 class QuickAccessTileService : TileService() {
 
     override fun onClick() {
         super.onClick()
 
-        val intent = Intent(this, QuickAccessActivity::class.java)
+        val intent = Intent(this, SlideOverActivity::class.java)
             .addFlags(FLAG_ACTIVITY_NEW_TASK)
 
         startActivityAndCollapse(intent)
