@@ -27,14 +27,14 @@
         </activity>
 
         <activity
-            android:name=".quickaccess.QuickAccessActivity"
+            android:name=".slideover.SlideOverActivity"
             android:excludeFromRecents="true"
             android:label="@string/title_quick_access"
             android:launchMode="singleTop"
             android:theme="@style/QuickAccessTheme" />
 
         <service
-            android:name=".quickaccess.QuickAccessTileService"
+            android:name=".QuickAccessTileService"
             android:icon="@drawable/ic_home"
             android:label="@string/tile_label"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">

@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass.quickaccess
+package fr.outadoc.quickhass.slideover
 
 import android.view.LayoutInflater
 import android.view.View

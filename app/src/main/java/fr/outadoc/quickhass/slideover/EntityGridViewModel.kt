@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass.quickaccess
+package fr.outadoc.quickhass.slideover
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,7 +16,7 @@ import java.util.*
 import kotlin.concurrent.schedule
 
 
-class QuickAccessViewModel : ViewModel() {
+class EntityGridViewModel : ViewModel() {
 
     private val server = HomeAssistantServer()
 
