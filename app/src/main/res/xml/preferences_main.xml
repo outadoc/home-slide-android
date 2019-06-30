@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditTextPreference
+        app:defaultValue="http://hass.local:8123"
+        app:key="et_pref_instance_base_url"
+        app:singleLine="true"
+        app:summary="Base URL of your Home Assistant instance."
+        app:title="Home Assistant URL" />
+
+    <EditTextPreference
+        app:key="et_pref_auth_token"
+        app:singleLine="false"
+        app:summary="You can get one on your Profile page in Home Assistant."
+        app:title="Long-lived access token" />
+
+</PreferenceScreen>
