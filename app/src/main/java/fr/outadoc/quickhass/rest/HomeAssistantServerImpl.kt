@@ -1,8 +1,10 @@
 package fr.outadoc.quickhass.rest
 
 import fr.outadoc.quickhass.model.Action
+import fr.outadoc.quickhass.preferences.PreferenceRepository
 
-class HomeAssistantServerImpl : BaseServer<HomeAssistantApi>(HomeAssistantApi::class.java),
+class HomeAssistantServerImpl(prefs: PreferenceRepository) :
+    BaseServer<HomeAssistantApi>(HomeAssistantApi::class.java, prefs),
     HomeAssistantServer {
 
     override suspend fun getStates() = api.getStates()

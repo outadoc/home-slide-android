@@ -1,12 +1,14 @@
 package fr.outadoc.quickhass.slideover
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.outadoc.quickhass.model.Action
 import fr.outadoc.quickhass.model.Entity
 import fr.outadoc.quickhass.model.EntityFactory
+import fr.outadoc.quickhass.preferences.PreferenceRepositoryImpl
 import fr.outadoc.quickhass.rest.HomeAssistantServerImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,9 +17,10 @@ import java.util.*
 import kotlin.concurrent.schedule
 
 
-class EntityGridViewModel : ViewModel() {
+class EntityGridViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val server = HomeAssistantServerImpl()
+    private val prefs = PreferenceRepositoryImpl(application.applicationContext)
+    private val server = HomeAssistantServerImpl(prefs)
 
     private val _shortcuts = MutableLiveData<List<Entity>>()
     val shortcuts: LiveData<List<Entity>> = _shortcuts
@@ -28,9 +31,18 @@ class EntityGridViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    private val _shouldAskForInitialValues = MutableLiveData<Boolean>()
+    val shouldAskForInitialValues: LiveData<Boolean> = _shouldAskForInitialValues
+
     private val timer = Timer("Periodic refresh", false)
 
     fun loadShortcuts() {
+        println(prefs.shouldAskForInitialValues)
+        if (prefs.shouldAskForInitialValues) {
+            _shouldAskForInitialValues.value = prefs.shouldAskForInitialValues
+            return
+        }
+
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.postValue(true)
 

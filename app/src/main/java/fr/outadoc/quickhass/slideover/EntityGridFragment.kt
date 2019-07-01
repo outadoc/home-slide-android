@@ -59,6 +59,22 @@ class EntityGridFragment private constructor() : Fragment() {
                 }
             })
 
+            shouldAskForInitialValues.observe(
+                this@EntityGridFragment,
+                Observer { shouldAskForInitialValues ->
+                    if (shouldAskForInitialValues) {
+                        Toast.makeText(
+                            context,
+                            "You must configure the app before using it.",
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+
+                        val i = Intent(activity, MainActivity::class.java)
+                        startActivity(i)
+                    }
+                })
+
             loadShortcuts()
         }
     }

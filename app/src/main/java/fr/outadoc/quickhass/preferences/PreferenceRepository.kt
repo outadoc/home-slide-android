@@ -2,6 +2,8 @@ package fr.outadoc.quickhass.preferences
 
 interface PreferenceRepository {
 
-    val instanceBaseUrl: String?
-    val accessToken: String?
+    val instanceBaseUrl: String
+    val accessToken: String
+
+    val shouldAskForInitialValues: Boolean
 }
