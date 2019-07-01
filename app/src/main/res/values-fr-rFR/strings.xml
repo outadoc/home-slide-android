@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Quick Assistant</string>
+    <string name="ic_settings_contentDescription">Réglages</string>
+    <string name="pref_auth_token_summary">Vous pouvez en générer un dans votre Profil sur Home Assistant.</string>
+    <string name="pref_auth_token_title">Jeton d\'accès de longue durée</string>
+    <string name="pref_base_url_summary">URL de votre instance Home Assistant.</string>
+    <string name="pref_base_url_title">URL de Home Assistant</string>
+    <string name="pref_cat_app_title">Réglages de l\'application</string>
+    <string name="pref_cat_hass_title">Réglages Home Assistant</string>
+    <string name="pref_theme_title">Thème de l\'application</string>
+    <string name="tile_label">Maison</string>
+    <string name="title_quick_access">Actions rapides</string>
+    <string name="toast_config_needed_title">Vous devez configurer l\'app avant de l\'utiliser.</string>
+    <string name="toast_generic_error_title">Une erreur est survenue.</string>
+
+    <string-array name="pref_theme_entry_names">
+        <item>Système</item>
+        <item>Mode clair</item>
+        <item>Mode sombre</item>
+    </string-array>
+</resources>
