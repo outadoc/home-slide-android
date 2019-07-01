@@ -72,11 +72,7 @@ class EntityGridFragment private constructor() : Fragment() {
                             R.string.toast_config_needed_title,
                             Toast.LENGTH_LONG
                         ).show()
-
-                        Intent(activity, MainActivity::class.java).let { i ->
-                            startActivity(i)
-                            activity?.finish()
-                        }
+                        openSettings()
                     }
                 })
 
@@ -95,17 +91,12 @@ class EntityGridFragment private constructor() : Fragment() {
 
         ).apply {
             settingsButton.setOnClickListener {
-                val intent = Intent(context, MainActivity::class.java)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
+                openSettings()
             }
 
             with(recyclerView) {
                 adapter = itemAdapter
-                layoutManager = GridLayoutManager(
-                    context,
-                    GRID_SPAN_COUNT
-                )
+                layoutManager = GridLayoutManager(context, GRID_SPAN_COUNT)
 
                 addItemDecoration(
                     GridSpacingItemDecoration(
@@ -119,6 +110,13 @@ class EntityGridFragment private constructor() : Fragment() {
         }
 
         return root
+    }
+
+    private fun openSettings() {
+        Intent(activity, MainActivity::class.java).let { i ->
+            startActivity(i)
+            activity?.finish()
+        }
     }
 
     private fun setWindowInsets(viewHolder: ViewHolder) {
