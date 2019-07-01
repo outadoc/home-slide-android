@@ -17,10 +17,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import fr.outadoc.quickhass.GridSpacingItemDecoration
-import fr.outadoc.quickhass.MainActivity
 import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.model.Entity
+import fr.outadoc.quickhass.preferences.MainActivity
 
 
 class EntityGridFragment private constructor() : Fragment() {

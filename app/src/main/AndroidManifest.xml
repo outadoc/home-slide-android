@@ -17,7 +17,7 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".preferences.MainActivity"
             android:label="@string/app_name">
 
             <intent-filter>
@@ -34,7 +34,7 @@
             android:theme="@style/QuickAccessTheme" />
 
         <service
-            android:name=".QuickAccessTileService"
+            android:name=".service.QuickAccessTileService"
             android:icon="@drawable/ic_home"
             android:label="@string/tile_label"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
