@@ -5,7 +5,7 @@ import androidx.preference.PreferenceFragmentCompat
 import fr.outadoc.quickhass.R
 
 
-class AppPreferencesFragment private constructor() : PreferenceFragmentCompat() {
+class AppPreferencesFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences_main, rootKey)

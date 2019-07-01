@@ -1,9 +1,9 @@
 package fr.outadoc.quickhass.preferences
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import fr.outadoc.quickhass.DayNightActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : DayNightActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

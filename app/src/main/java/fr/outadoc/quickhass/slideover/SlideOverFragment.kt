@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import fr.outadoc.quickhass.R
 
-class SlideOverFragment private constructor() : Fragment() {
+class SlideOverFragment : Fragment() {
 
     companion object {
         fun newInstance() = SlideOverFragment()

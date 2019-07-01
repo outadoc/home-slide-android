@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <EditTextPreference
-        app:defaultValue="http://hass.local:8123"
-        app:key="et_pref_instance_base_url"
-        app:singleLine="true"
-        app:summary="@string/pref_base_url_summary"
-        app:title="@string/pref_base_url_title" />
+    <PreferenceCategory app:title="@string/pref_cat_hass_title">
+        <EditTextPreference
+            app:defaultValue="http://hass.local:8123"
+            app:key="et_pref_instance_base_url"
+            app:singleLine="true"
+            app:summary="@string/pref_base_url_summary"
+            app:title="@string/pref_base_url_title" />
 
-    <EditTextPreference
-        app:key="et_pref_auth_token"
-        app:singleLine="false"
-        app:summary="@string/pref_auth_token_summary"
-        app:title="@string/pref_auth_token_title" />
+        <EditTextPreference
+            app:key="et_pref_auth_token"
+            app:singleLine="false"
+            app:summary="@string/pref_auth_token_summary"
+            app:title="@string/pref_auth_token_title" />
+    </PreferenceCategory>
 
+    <PreferenceCategory app:title="@string/pref_cat_app_title">
+        <ListPreference
+            app:key="list_pref_theme"
+            app:defaultValue="system"
+            app:entries="@array/pref_theme_entry_names"
+            app:entryValues="@array/pref_theme_entry_values"
+            app:title="@string/pref_theme_title" />
+    </PreferenceCategory>
 </PreferenceScreen>
