@@ -20,6 +20,7 @@
         <ListPreference
             app:key="list_pref_theme"
             app:defaultValue="system"
+            app:summary="%s"
             app:entries="@array/pref_theme_entry_names"
             app:entryValues="@array/pref_theme_entry_values"
             app:title="@string/pref_theme_title" />
