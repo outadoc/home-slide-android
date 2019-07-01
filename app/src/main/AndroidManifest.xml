@@ -30,8 +30,10 @@
             android:name=".slideover.SlideOverActivity"
             android:excludeFromRecents="true"
             android:label="@string/title_quick_access"
+            android:showWhenLocked="true"
             android:launchMode="singleInstance"
-            android:theme="@style/QuickAccessTheme" />
+            android:theme="@style/QuickAccessTheme"
+            tools:targetApi="o_mr1" />
 
         <service
             android:name=".service.QuickAccessTileService"
