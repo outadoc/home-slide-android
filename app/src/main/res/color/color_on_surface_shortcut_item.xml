@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:color="#3D3D3D" android:state_enabled="false" />
-    <item android:color="#fff" android:state_activated="true" />
-    <item android:color="#000" />
+    <item android:color="@color/colorOnAccent" android:state_activated="true" />
+    <item android:color="?colorOnBackground" />
 </selector>
