@@ -30,7 +30,7 @@
             android:name=".slideover.SlideOverActivity"
             android:excludeFromRecents="true"
             android:label="@string/title_quick_access"
-            android:launchMode="singleTop"
+            android:launchMode="singleInstance"
             android:theme="@style/QuickAccessTheme" />
 
         <service

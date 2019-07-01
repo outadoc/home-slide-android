@@ -49,7 +49,11 @@ class EntityGridFragment private constructor() : Fragment() {
             })
 
             error.observe(this@EntityGridFragment, Observer { e ->
-                Toast.makeText(context, e.message ?: "An error occurred.", Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    context,
+                    e.message ?: getString(R.string.toast_generic_error_title),
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             })
 
@@ -65,13 +69,14 @@ class EntityGridFragment private constructor() : Fragment() {
                     if (shouldAskForInitialValues) {
                         Toast.makeText(
                             context,
-                            "You must configure the app before using it.",
+                            R.string.toast_config_needed_title,
                             Toast.LENGTH_LONG
-                        )
-                            .show()
+                        ).show()
 
-                        val i = Intent(activity, MainActivity::class.java)
-                        startActivity(i)
+                        Intent(activity, MainActivity::class.java).let { i ->
+                            startActivity(i)
+                            activity?.finish()
+                        }
                     }
                 })
 
