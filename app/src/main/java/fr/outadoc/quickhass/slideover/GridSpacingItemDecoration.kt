@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass
+package fr.outadoc.quickhass.slideover
 
 import android.graphics.Rect
 import android.view.View
