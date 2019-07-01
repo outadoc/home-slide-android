@@ -22,7 +22,7 @@ import fr.outadoc.quickhass.model.Entity
 import fr.outadoc.quickhass.preferences.MainActivity
 
 
-class EntityGridFragment private constructor() : Fragment() {
+class EntityGridFragment : Fragment() {
 
     companion object {
         fun newInstance() = EntityGridFragment()

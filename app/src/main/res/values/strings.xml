@@ -9,4 +9,19 @@
     <string name="pref_base_url_title">Home Assistant URL</string>
     <string name="pref_auth_token_summary">You can get one on your Profile page in Home Assistant.</string>
     <string name="pref_auth_token_title">Long-lived access token</string>
+    <string name="pref_theme_title">Theme</string>
+    <string name="pref_cat_hass_title">Home Assistant Settings</string>
+    <string name="pref_cat_app_title">Application Settings</string>
+
+    <string-array name="pref_theme_entry_names">
+        <item>System</item>
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+
+    <string-array name="pref_theme_entry_values">
+        <item>system</item>
+        <item>day</item>
+        <item>night</item>
+    </string-array>
 </resources>
