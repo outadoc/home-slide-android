@@ -8,7 +8,8 @@ import retrofit2.Response
 interface HomeAssistantServer {
 
     suspend fun getStates(): Response<List<State>>
-    suspend fun getServices(): Response<List<Service>>
-    suspend fun callService(action: Action): Response<List<State>>
 
+    suspend fun getServices(): Response<List<Service>>
+
+    suspend fun callService(action: Action): Response<List<State>>
 }

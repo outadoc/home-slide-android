@@ -8,11 +8,14 @@ class PreferenceRepositoryImpl(context: Context) : PreferenceRepository {
 
     var authPrefs = PreferenceManager.getDefaultSharedPreferences(context)!!
 
-    override val instanceBaseUrl: String?
-        get() = authPrefs.getString(KEY_INSTANCE_BASE_URL, null)
+    override val instanceBaseUrl: String
+        get() = authPrefs.getString(KEY_INSTANCE_BASE_URL, "")!!
 
-    override val accessToken: String?
-        get() = authPrefs.getString(KEY_ACCESS_TOKEN, null)
+    override val accessToken: String
+        get() = authPrefs.getString(KEY_ACCESS_TOKEN, "")!!
+
+    override val shouldAskForInitialValues: Boolean
+        get() = accessToken == ""
 
     companion object {
         const val KEY_INSTANCE_BASE_URL = "et_pref_instance_base_url"
