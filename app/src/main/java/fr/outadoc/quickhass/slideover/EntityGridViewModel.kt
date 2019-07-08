@@ -5,9 +5,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.room.Room
 import fr.outadoc.quickhass.model.Action
 import fr.outadoc.quickhass.model.Entity
 import fr.outadoc.quickhass.model.EntityFactory
+import fr.outadoc.quickhass.persistence.EntityDatabase
+import fr.outadoc.quickhass.persistence.model.PersistedEntity
 import fr.outadoc.quickhass.preferences.PreferenceRepositoryImpl
 import fr.outadoc.quickhass.rest.HomeAssistantServerImpl
 import kotlinx.coroutines.Dispatchers
@@ -37,6 +40,20 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
 
     private var threadPoolExecutor: ScheduledExecutorService? = null
 
+    private val db = Room.databaseBuilder(
+        application.applicationContext,
+        EntityDatabase::class.java, EntityDatabase.DB_NAME
+    ).build()
+
+    private var entityOrder = hashSetOf<String>()
+
+    fun startLoading() {
+        viewModelScope.launch(Dispatchers.IO) {
+            refreshEntitiesOrder()
+            loadShortcuts()
+        }
+    }
+
     fun loadShortcuts() {
         if (prefs.shouldAskForInitialValues) {
             _shouldAskForInitialValues.value = prefs.shouldAskForInitialValues
@@ -50,12 +67,20 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
                 val response = server.getStates()
 
                 if (response.isSuccessful) {
-                    _shortcuts.postValue(response.body()
-                        ?.map { EntityFactory.create(it) }
-                        ?.filter { it.isVisible }
-                        ?.filter { !INITIAL_DOMAIN_BLACKLIST.contains(it.domain) }
-                        ?.sortedBy { it.domain }
-                        ?: emptyList())
+                    _shortcuts.postValue(
+                        response.body()
+                            ?.asSequence()
+                            ?.map { EntityFactory.create(it) }
+                            ?.filter { it.isVisible }
+                            ?.filter { !INITIAL_DOMAIN_BLACKLIST.contains(it.domain) }
+                            ?.sortedWith(
+                                compareBy(
+                                    { entityOrder.indexOf(it.entityId) },
+                                    { it.domain })
+                            )
+                            ?.toList()
+                            ?: emptyList()
+                    )
                 } else {
                     _error.postValue(HttpException(response))
                 }
@@ -79,6 +104,11 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
         threadPoolExecutor?.schedule({
             loadShortcuts()
         }, REFRESH_INTERVAL_S, TimeUnit.SECONDS)
+    }
+
+    private fun cancelRefresh() {
+        threadPoolExecutor?.shutdown()
+        threadPoolExecutor = null
     }
 
     fun onEntityClick(item: Entity) {
@@ -107,13 +137,32 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun onReorderedEntities(items: List<Entity>) {
+        cancelRefresh()
 
+        viewModelScope.launch(Dispatchers.IO) {
+            with(db.entityDao()) {
+                val persistedEntities = items.mapIndexed { idx, item ->
+                    PersistedEntity(item.entityId, idx)
+                }
+
+                deleteAllPersistedEntities()
+                insertAll(persistedEntities)
+            }
+
+            refreshEntitiesOrder()
+        }
+    }
+
+    private fun refreshEntitiesOrder() {
+        with(db.entityDao()) {
+            val persistedEntities = getPersistedEntities()
+            entityOrder = persistedEntities.map { it.entityId }.toHashSet()
+        }
     }
 
     override fun onCleared() {
         super.onCleared()
-        threadPoolExecutor?.shutdown()
-        threadPoolExecutor = null
+        cancelRefresh()
     }
 
     companion object {

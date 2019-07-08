@@ -75,7 +75,7 @@ class EntityGridFragment : Fragment() {
                     }
                 })
 
-            loadShortcuts()
+            startLoading()
         }
     }
 
