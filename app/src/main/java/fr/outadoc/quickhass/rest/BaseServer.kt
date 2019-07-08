@@ -7,6 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.lang.Exception
 
 
 abstract class BaseServer<T>(
@@ -40,24 +41,25 @@ abstract class BaseServer<T>(
 
     private val altBaseUrlInterceptor = Interceptor { chain ->
         val req = chain.request()
-        val res = chain.proceed(req)
 
-        if (res.isSuccessful && altBaseUri != null) {
-            res
-        } else {
-            val oldUrl = req.url().toString()
-            val newUrl = HttpUrl.parse(oldUrl.replace(baseUri.toString(), baseUri.toString()))
+        try {
+            chain.proceed(req)
+        } catch (e: Exception) {
+            if (altBaseUri != null) {
+                val oldUrl = req.url().toString()
+                val newUrl = HttpUrl.parse(oldUrl.replace(baseUri.toString(), altBaseUri.toString()))
 
-            if (newUrl != null && newUrl != req.url()) {
-                val newRequest = chain.request()
-                    .newBuilder()
-                    .url(newUrl)
-                    .build()
+                if (newUrl != null && newUrl != req.url()) {
+                    val newRequest = chain.request()
+                        .newBuilder()
+                        .url(newUrl)
+                        .build()
 
-                chain.proceed(newRequest)
-            } else {
-                res
+                    return@Interceptor chain.proceed(newRequest)
+                }
             }
+
+            throw e
         }
     }
 
