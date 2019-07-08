@@ -5,8 +5,10 @@
     <string name="ic_settings_contentDescription">Settings</string>
     <string name="toast_config_needed_title">You must configure the app before using it.</string>
     <string name="toast_generic_error_title">An error occurred.</string>
-    <string name="pref_base_url_summary">Base URL of your Home Assistant instance.</string>
+    <string name="pref_base_url_summary">URL of your Home Assistant instance.</string>
     <string name="pref_base_url_title">Home Assistant URL</string>
+    <string name="pref_alt_base_url_summary">Optional. Internet-accessible URL of your Home Assistant instance.</string>
+    <string name="pref_alt_base_url_title">Home Assistant Outside URL</string>
     <string name="pref_auth_token_summary">You can get one on your Profile page in Home Assistant.</string>
     <string name="pref_auth_token_title">Long-lived access token</string>
     <string name="pref_theme_title">Application Theme</string>
