@@ -45,7 +45,7 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
         EntityDatabase::class.java, EntityDatabase.DB_NAME
     ).build()
 
-    private var entityOrder = hashSetOf<String>()
+    private var entityOrder = mapOf<String, Int>()
 
     fun startLoading() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -54,7 +54,7 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
-    fun loadShortcuts() {
+    private fun loadShortcuts() {
         if (prefs.shouldAskForInitialValues) {
             _shouldAskForInitialValues.value = prefs.shouldAskForInitialValues
             return
@@ -75,7 +75,7 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
                             ?.filter { !INITIAL_DOMAIN_BLACKLIST.contains(it.domain) }
                             ?.sortedWith(
                                 compareBy(
-                                    { entityOrder.indexOf(it.entityId) },
+                                    { entityOrder[it.entityId] },
                                     { it.domain })
                             )
                             ?.toList()
@@ -156,7 +156,7 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
     private fun refreshEntitiesOrder() {
         with(db.entityDao()) {
             val persistedEntities = getPersistedEntities()
-            entityOrder = persistedEntities.map { it.entityId }.toHashSet()
+            entityOrder = persistedEntities.map { it.entityId to it.order }.toMap()
         }
     }
 
