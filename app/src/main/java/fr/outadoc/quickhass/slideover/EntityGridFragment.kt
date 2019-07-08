@@ -16,9 +16,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.R
-import fr.outadoc.quickhass.model.Entity
 import fr.outadoc.quickhass.preferences.MainActivity
 
 
@@ -79,15 +79,16 @@ class EntityGridFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         val root = inflater.inflate(R.layout.fragment_entity_grid, container, false)
 
         viewHolder = ViewHolder(
             root,
-            EntityAdapter { entity: Entity ->
-                viewModel.onEntityClick(entity)
-            }
-
+            EntityAdapter(viewModel::onEntityClick, viewModel::onReorderedEntities)
         ).apply {
             settingsButton.setOnClickListener {
                 openSettings()
@@ -96,6 +97,7 @@ class EntityGridFragment : Fragment() {
             with(recyclerView) {
                 adapter = itemAdapter
                 layoutManager = GridLayoutManager(context, GRID_SPAN_COUNT)
+                itemTouchHelper.attachToRecyclerView(recyclerView)
 
                 addItemDecoration(
                     GridSpacingItemDecoration(
@@ -143,6 +145,38 @@ class EntityGridFragment : Fragment() {
                 WindowManager.LayoutParams.MATCH_PARENT
             )
         }
+    }
+
+    private val itemTouchHelper by lazy {
+
+        val simpleItemTouchCallback =
+            object : ItemTouchHelper.SimpleCallback(
+                ItemTouchHelper.UP or
+                        ItemTouchHelper.DOWN or
+                        ItemTouchHelper.START or
+                        ItemTouchHelper.END, 0
+            ) {
+
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    val adapter = recyclerView.adapter as ReorderableRecyclerViewAdapter
+
+                    val from = viewHolder.adapterPosition
+                    val to = target.adapterPosition
+
+                    adapter.moveItem(from = viewHolder.adapterPosition, to = target.adapterPosition)
+                    adapter.notifyItemMoved(from, to)
+
+                    return true
+                }
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
+            }
+
+        ItemTouchHelper(simpleItemTouchCallback)
     }
 
     private class ViewHolder(val root: View, val itemAdapter: EntityAdapter) {
