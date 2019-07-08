@@ -106,6 +106,10 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
 
     }
 
+    fun onReorderedEntities(items: List<Entity>) {
+
+    }
+
     override fun onCleared() {
         super.onCleared()
         threadPoolExecutor?.shutdown()
