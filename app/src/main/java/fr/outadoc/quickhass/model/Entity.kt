@@ -54,6 +54,10 @@ sealed class Entity(private val state: State, private val defaultIcon: FontIcon)
     override fun hashCode(): Int {
         return entityId.hashCode()
     }
+
+    override fun toString(): String {
+        return entityId
+    }
 }
 
 private fun @IconStringRef String.toIcon(): FontIcon? {
