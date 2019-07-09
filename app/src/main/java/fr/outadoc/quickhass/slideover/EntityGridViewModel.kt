@@ -40,14 +40,12 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
         EntityDatabase::class.java, EntityDatabase.DB_NAME
     ).build()
 
-    private var entityOrder = mapOf<String, Int>()
+    private val persistedEntityCache: List<PersistedEntity>
+        get() = db.entityDao().getPersistedEntities()
 
-    fun startLoading() {
-        viewModelScope.launch(Dispatchers.IO) {
-            refreshEntitiesOrder()
-            loadShortcuts()
-        }
-    }
+    private val entityOrder: Map<String, Int>
+        get() = persistedEntityCache.map { it.entityId to it.order }.toMap()
+
 
     fun loadShortcuts() {
         if (prefs.shouldAskForInitialValues) {
@@ -115,23 +113,17 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
 
     fun onReorderedEntities(items: List<Entity>) {
         viewModelScope.launch(Dispatchers.IO) {
-            with(db.entityDao()) {
-                val persistedEntities = items.mapIndexed { idx, item ->
-                    PersistedEntity(item.entityId, idx)
-                }
-
-                deleteAllPersistedEntities()
-                insertAll(persistedEntities)
+            val toBePersisted = items.mapIndexed { idx, item ->
+                PersistedEntity(item.entityId, idx)
             }
 
-            refreshEntitiesOrder()
-        }
-    }
-
-    private fun refreshEntitiesOrder() {
-        with(db.entityDao()) {
-            val persistedEntities = getPersistedEntities()
-            entityOrder = persistedEntities.map { it.entityId to it.order }.toMap()
+            // Update database
+            with(db.entityDao()) {
+                deleteAllPersistedEntities()
+                insertAll(toBePersisted)
+                println("new persisted === ")
+                println(entityOrder)
+            }
         }
     }
 
