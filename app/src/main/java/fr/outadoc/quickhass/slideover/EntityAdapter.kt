@@ -6,14 +6,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.R
-import fr.outadoc.quickhass.extensions.swap
 import fr.outadoc.quickhass.model.Entity
+import java.util.*
 
 class EntityAdapter(
     val onItemClick: (Entity) -> Unit,
     val onReordered: (List<Entity>) -> Unit
 ) : ReorderableRecyclerViewAdapter<EntityAdapter.ViewHolder>() {
-    val items: MutableList<Entity> = mutableListOf()
+    val items: LinkedList<Entity> = LinkedList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
@@ -43,7 +43,13 @@ class EntityAdapter(
     }
 
     override fun moveItem(from: Int, to: Int) {
-        items.swap(from, to)
+        if (from == to || from !in 0 until items.size || to !in 0 until items.size)
+            return
+
+        val itemToMove = items[from]
+        items.remove(itemToMove)
+        items.add(to, itemToMove)
+
         onReordered(items)
     }
 

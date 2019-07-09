@@ -119,10 +119,7 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
 
             // Update database
             with(db.entityDao()) {
-                deleteAllPersistedEntities()
-                insertAll(toBePersisted)
-                println("new persisted === ")
-                println(entityOrder)
+                replaceAll(toBePersisted)
             }
         }
     }
