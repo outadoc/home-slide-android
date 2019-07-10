@@ -46,7 +46,7 @@
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_shortcut_icon"
-            tools:layout_editor_absoluteX="8dp" />
+            tools:text="@tools:sample/first_names" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
