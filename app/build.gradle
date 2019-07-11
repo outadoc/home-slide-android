@@ -30,6 +30,7 @@ android {
 dependencies {
     def room_version = "2.1.0"
     def lifecycle_version = "2.2.0-alpha02"
+    def nav_version_ktx = "2.1.0-alpha06"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -56,6 +57,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version_ktx"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version_ktx"
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.8.0'
     kapt "androidx.room:room-compiler:$room_version"
 
