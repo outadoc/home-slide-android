@@ -3,6 +3,7 @@
     <string name="title_quick_access">Quick Actions</string>
     <string name="tile_label">Home</string>
     <string name="title_preferences">Settings</string>
+    <string name="title_onboarding">Quick Assistant Setup</string>
     <string name="ic_settings_contentDescription">Open Settings</string>
     <string name="ic_edit_contentDescription">Enter Edit Mode</string>
     <string name="toast_config_needed_title">You must configure the app before using it.</string>
@@ -23,6 +24,7 @@
         <item>Dark</item>
     </string-array>
 
+    <!-- TODO: Remove or change this placeholder text -->
     <string-array name="pref_theme_entry_values">
         <item>system</item>
         <item>day</item>
