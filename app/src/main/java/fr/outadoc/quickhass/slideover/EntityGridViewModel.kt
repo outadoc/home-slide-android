@@ -12,7 +12,7 @@ import fr.outadoc.quickhass.model.EntityFactory
 import fr.outadoc.quickhass.persistence.EntityDatabase
 import fr.outadoc.quickhass.persistence.model.PersistedEntity
 import fr.outadoc.quickhass.preferences.PreferenceRepositoryImpl
-import fr.outadoc.quickhass.rest.HomeAssistantServerImpl
+import fr.outadoc.quickhass.rest.EntityRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -21,7 +21,7 @@ import retrofit2.HttpException
 class EntityGridViewModel(application: Application) : AndroidViewModel(application) {
 
     private val prefs = PreferenceRepositoryImpl(application.applicationContext)
-    private val server = HomeAssistantServerImpl(prefs)
+    private val server = EntityRepositoryImpl(prefs)
 
     private val _shortcuts = MutableLiveData<List<Entity>>()
     val shortcuts: LiveData<List<Entity>> = _shortcuts
