@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Quick Assistant</string>
-    <string name="ic_settings_contentDescription">Réglages</string>
+    <string name="ic_settings_contentDescription">Ouvrir les Réglages</string>
     <string name="pref_auth_token_summary">Vous pouvez en générer un dans votre Profil sur Home Assistant.</string>
     <string name="pref_auth_token_title">Jeton d\'accès de longue durée</string>
     <string name="pref_base_url_summary">URL de votre instance Home Assistant.</string>
@@ -21,4 +21,5 @@
     </string-array>
     <string name="pref_alt_base_url_summary">Optionnelle. URL de votre instance Home Assistant accessible depuis Internet. (ex : DynDNS, Hass.io...)</string>
     <string name="pref_alt_base_url_title">URL de Home Assistant (sur Internet)</string>
+    <string name="title_preferences">Réglages</string>
 </resources>
