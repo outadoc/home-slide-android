@@ -19,7 +19,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_DRAG
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.preferences.MainActivity
@@ -72,6 +71,19 @@ class EntityGridFragment : Fragment() {
                 }
             })
 
+            isEditingMode.observe(this@EntityGridFragment, Observer { isEditingMode ->
+                if (isEditingMode) {
+                    cancelRefresh()
+                } else {
+                    scheduleRefresh()
+                }
+
+                viewHolder?.itemAdapter?.apply {
+                    this.isEditingMode = isEditingMode
+                    notifyDataSetChanged()
+                }
+            })
+
             shouldAskForInitialValues.observe(
                 this@EntityGridFragment,
                 Observer { shouldAskForInitialValues ->
@@ -102,6 +114,10 @@ class EntityGridFragment : Fragment() {
         ).apply {
             settingsButton.setOnClickListener {
                 openSettings()
+            }
+
+            editButton.setOnClickListener {
+                viewModel.onEditClick()
             }
 
             with(recyclerView) {
@@ -178,61 +194,14 @@ class EntityGridFragment : Fragment() {
     }
 
     private val itemTouchHelper by lazy {
-
-        val simpleItemTouchCallback =
-            object : ItemTouchHelper.SimpleCallback(
-                ItemTouchHelper.UP or
-                        ItemTouchHelper.DOWN or
-                        ItemTouchHelper.START or
-                        ItemTouchHelper.END, 0
-            ) {
-
-                override fun onMove(
-                    recyclerView: RecyclerView,
-                    viewHolder: RecyclerView.ViewHolder,
-                    target: RecyclerView.ViewHolder
-                ): Boolean {
-                    val adapter = recyclerView.adapter as ReorderableRecyclerViewAdapter
-
-                    val from = viewHolder.adapterPosition
-                    val to = target.adapterPosition
-
-                    adapter.moveItem(from, to)
-                    adapter.notifyItemMoved(from, to)
-
-                    return true
-                }
-
-                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
-
-                override fun onSelectedChanged(
-                    viewHolder: RecyclerView.ViewHolder?,
-                    actionState: Int
-                ) {
-                    super.onSelectedChanged(viewHolder, actionState)
-
-                    if (actionState == ACTION_STATE_DRAG) {
-                        viewHolder?.itemView?.alpha = 0.5f
-                        cancelRefresh()
-                    }
-                }
-
-                override fun clearView(
-                    recyclerView: RecyclerView,
-                    viewHolder: RecyclerView.ViewHolder
-                ) {
-                    super.clearView(recyclerView, viewHolder)
-                    viewHolder.itemView.alpha = 1.0f
-                    scheduleRefresh()
-                }
-            }
-
-        ItemTouchHelper(simpleItemTouchCallback)
+        ItemTouchHelper(EditingModeCallback(viewModel))
     }
 
     private class ViewHolder(val root: View, val itemAdapter: EntityAdapter) {
         val recyclerView: RecyclerView = root.findViewById(R.id.recyclerView_shortcuts)
         val settingsButton: ImageButton = root.findViewById(R.id.imageButton_settings)
+        val editButton: ImageButton = root.findViewById(R.id.imageButton_edit)
         val progress: ProgressBar = root.findViewById(R.id.progress_main)
     }
 }
+

@@ -4,6 +4,7 @@
     <string name="tile_label">Home</string>
     <string name="title_preferences">Settings</string>
     <string name="ic_settings_contentDescription">Open Settings</string>
+    <string name="ic_edit_contentDescription">Enter Edit Mode</string>
     <string name="toast_config_needed_title">You must configure the app before using it.</string>
     <string name="toast_generic_error_title">An error occurred.</string>
     <string name="pref_base_url_summary">URL of your Home Assistant instance.</string>

@@ -13,7 +13,9 @@ class EntityAdapter(
     val onItemClick: (Entity) -> Unit,
     val onReordered: (List<Entity>) -> Unit
 ) : ReorderableRecyclerViewAdapter<EntityAdapter.ViewHolder>() {
+
     val items: LinkedList<Entity> = LinkedList()
+    var isEditingMode = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
@@ -27,6 +29,8 @@ class EntityAdapter(
         val item = items[position]
 
         with(holder) {
+            view.alpha = if (isEditingMode) 0.5f else 1.0f
+
             // Activate the view if the entity is "on"
             view.isActivated = item.isOn
 
