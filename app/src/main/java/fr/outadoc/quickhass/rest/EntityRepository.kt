@@ -5,7 +5,7 @@ import fr.outadoc.quickhass.model.Service
 import fr.outadoc.quickhass.model.State
 import retrofit2.Response
 
-interface HomeAssistantServer {
+interface EntityRepository {
 
     suspend fun getStates(): Response<List<State>>
 
