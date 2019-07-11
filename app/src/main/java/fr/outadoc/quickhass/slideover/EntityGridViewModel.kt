@@ -35,6 +35,9 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
     private val _shouldAskForInitialValues = MutableLiveData<Boolean>()
     val shouldAskForInitialValues: LiveData<Boolean> = _shouldAskForInitialValues
 
+    private val _isEditingMode = MutableLiveData(false)
+    val isEditingMode: LiveData<Boolean> = _isEditingMode
+
     private val db = Room.databaseBuilder(
         application.applicationContext,
         EntityDatabase::class.java, EntityDatabase.DB_NAME
@@ -122,6 +125,10 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
                 replaceAll(toBePersisted)
             }
         }
+    }
+
+    fun onEditClick() {
+        _isEditingMode.value = _isEditingMode.value != true
     }
 
     companion object {

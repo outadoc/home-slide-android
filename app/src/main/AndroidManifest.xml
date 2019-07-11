@@ -25,6 +25,7 @@
             android:excludeFromRecents="true"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
+            android:resizeableActivity="false"
             android:showWhenLocked="true"
             android:theme="@style/QuickAccessTheme"
             tools:targetApi="o_mr1">

@@ -21,6 +21,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView" />
 
+
+    <ImageButton
+        android:id="@+id/imageButton_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/ic_settings_contentDescription"
+        android:src="@drawable/ic_mode_edit"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton_settings"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
