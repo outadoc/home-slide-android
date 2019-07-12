@@ -55,8 +55,9 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun onEntityClick(item: Entity) {
-        if (item.primaryAction == null)
+        if (item.primaryAction == null) {
             return
+        }
 
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.postValue(true)
@@ -73,6 +74,10 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun onReorderedEntities(items: List<Entity>) {
+        if (items.isEmpty()) {
+            return
+        }
+
         viewModelScope.launch(Dispatchers.IO) {
             val toBePersisted = items.mapIndexed { idx, item ->
                 PersistedEntity(item.entityId, idx)

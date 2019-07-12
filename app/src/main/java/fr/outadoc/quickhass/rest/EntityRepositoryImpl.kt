@@ -7,9 +7,7 @@ import fr.outadoc.quickhass.persistence.EntityDatabase
 import fr.outadoc.quickhass.persistence.model.PersistedEntity
 import fr.outadoc.quickhass.preferences.PreferenceRepository
 
-class EntityRepositoryImpl(context: Context, prefs: PreferenceRepository) :
-    BaseApiRepository<HomeAssistantApi>(HomeAssistantApi::class.java, prefs),
-    EntityRepository {
+class EntityRepositoryImpl(context: Context, prefs: PreferenceRepository) : EntityRepository {
 
     private val db = Room.databaseBuilder(
         context,
@@ -22,9 +20,10 @@ class EntityRepositoryImpl(context: Context, prefs: PreferenceRepository) :
     private val entityOrder: Map<String, Int>
         get() = persistedEntityCache.map { it.entityId to it.order }.toMap()
 
+    private val client = RestClient.create<HomeAssistantApi>(prefs)
 
     override suspend fun getEntities(): Result<List<Entity>> =
-        wrapResponse { api.getStates() }.map { states ->
+        wrapResponse { client.getStates() }.map { states ->
             states.asSequence()
                 .map { EntityFactory.create(it) }
                 .filter { it.isVisible }
@@ -38,10 +37,10 @@ class EntityRepositoryImpl(context: Context, prefs: PreferenceRepository) :
         }
 
     override suspend fun getServices(): Result<List<Service>> =
-        wrapResponse { api.getServices() }
+        wrapResponse { client.getServices() }
 
     override suspend fun callService(action: Action): Result<List<State>> =
-        wrapResponse { api.callService(action.domain, action.service, action.allParams) }
+        wrapResponse { client.callService(action.domain, action.service, action.allParams) }
 
     companion object {
         val INITIAL_DOMAIN_BLACKLIST = listOf(
