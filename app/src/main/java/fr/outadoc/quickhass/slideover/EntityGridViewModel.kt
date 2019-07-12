@@ -8,26 +8,21 @@ import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import fr.outadoc.quickhass.model.Action
 import fr.outadoc.quickhass.model.Entity
-import fr.outadoc.quickhass.model.EntityFactory
 import fr.outadoc.quickhass.persistence.EntityDatabase
 import fr.outadoc.quickhass.persistence.model.PersistedEntity
 import fr.outadoc.quickhass.preferences.PreferenceRepositoryImpl
 import fr.outadoc.quickhass.rest.EntityRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
 
 class EntityGridViewModel(application: Application) : AndroidViewModel(application) {
 
     private val prefs = PreferenceRepositoryImpl(application.applicationContext)
-    private val repository = EntityRepositoryImpl(prefs)
+    private val repository = EntityRepositoryImpl(application.applicationContext, prefs)
 
-    private val _shortcuts = MutableLiveData<List<Entity>>()
-    val shortcuts: LiveData<List<Entity>> = _shortcuts
-
-    private val _error = MutableLiveData<Exception>()
-    val error: LiveData<Exception> = _error
+    private val _result = MutableLiveData<Result<List<Entity>>>()
+    val result: LiveData<Result<List<Entity>>> = _result
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -43,13 +38,6 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
         EntityDatabase::class.java, EntityDatabase.DB_NAME
     ).build()
 
-    private val persistedEntityCache: List<PersistedEntity>
-        get() = db.entityDao().getPersistedEntities()
-
-    private val entityOrder: Map<String, Int>
-        get() = persistedEntityCache.map { it.entityId to it.order }.toMap()
-
-
     fun loadShortcuts() {
         if (prefs.shouldAskForInitialValues) {
             _shouldAskForInitialValues.value = prefs.shouldAskForInitialValues
@@ -59,33 +47,10 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.postValue(true)
 
-            try {
-                val response = repository.getStates()
+            val res = repository.getEntities()
+            _result.postValue(res)
 
-                if (response.isSuccessful) {
-                    _shortcuts.postValue(
-                        response.body()
-                            ?.asSequence()
-                            ?.map { EntityFactory.create(it) }
-                            ?.filter { it.isVisible }
-                            ?.filter { !INITIAL_DOMAIN_BLACKLIST.contains(it.domain) }
-                            ?.sortedWith(
-                                compareBy(
-                                    { entityOrder[it.entityId] },
-                                    { it.domain })
-                            )
-                            ?.toList()
-                            ?: emptyList()
-                    )
-                } else {
-                    _error.postValue(HttpException(response))
-                }
-
-            } catch (e: Exception) {
-                _error.postValue(e)
-            } finally {
-                _isLoading.postValue(false)
-            }
+            _isLoading.postValue(false)
         }
     }
 
@@ -96,22 +61,15 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.postValue(true)
 
-            try {
-                val response = repository.callService(item.primaryAction as Action)
-
-                if (response.isSuccessful) {
+            repository.callService(item.primaryAction as Action)
+                .onSuccess {
                     loadShortcuts()
-                } else {
-                    _error.postValue(HttpException(response))
+                }.onFailure {
+                    _result.postValue(Result.failure(it))
                 }
 
-            } catch (e: Exception) {
-                _error.postValue(e)
-            } finally {
-                _isLoading.postValue(false)
-            }
+            _isLoading.postValue(false)
         }
-
     }
 
     fun onReorderedEntities(items: List<Entity>) {
@@ -129,15 +87,5 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
 
     fun onEditClick() {
         _isEditingMode.value = _isEditingMode.value != true
-    }
-
-    companion object {
-        val INITIAL_DOMAIN_BLACKLIST = listOf(
-            "automation",
-            "device_tracker",
-            "updater",
-            "camera",
-            "persistent_notification"
-        )
     }
 }

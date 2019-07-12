@@ -45,24 +45,26 @@ class EntityGridFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(EntityGridViewModel::class.java)
 
         with(viewModel) {
-            shortcuts.observe(this@EntityGridFragment, Observer { shortcuts ->
-                viewHolder?.itemAdapter?.apply {
-                    items.clear()
-                    items.addAll(shortcuts)
-                    notifyDataSetChanged()
-                }
+            result.observe(this@EntityGridFragment, Observer { shortcuts ->
+                shortcuts
+                    .onFailure { e ->
+                        Toast.makeText(
+                            context,
+                            e.message ?: getString(R.string.toast_generic_error_title),
+                            Toast.LENGTH_SHORT
+                        ).show()
 
-                scheduleRefresh()
-            })
+                        scheduleRefresh()
+                    }
+                    .onSuccess {
+                        viewHolder?.itemAdapter?.apply {
+                            items.clear()
+                            items.addAll(shortcuts.getOrDefault(emptyList()))
+                            notifyDataSetChanged()
+                        }
 
-            error.observe(this@EntityGridFragment, Observer { e ->
-                Toast.makeText(
-                    context,
-                    e.message ?: getString(R.string.toast_generic_error_title),
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                scheduleRefresh()
+                        scheduleRefresh()
+                    }
             })
 
             isLoading.observe(this@EntityGridFragment, Observer { isLoading ->
@@ -140,6 +142,9 @@ class EntityGridFragment : Fragment() {
     }
 
     private fun scheduleRefresh() {
+        // Only one refresh scheduled at once
+        cancelRefresh()
+
         handler.postDelayed(REFRESH_INTERVAL_MS) {
             viewModel.loadShortcuts()
         }
