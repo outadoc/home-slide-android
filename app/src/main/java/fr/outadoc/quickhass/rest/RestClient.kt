@@ -9,7 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 
-abstract class BaseApiRepository<T>(
+class RestClient<T>(
     private val type: Class<T>,
     private val prefs: PreferenceRepository
 ) {
@@ -77,4 +77,9 @@ abstract class BaseApiRepository<T>(
 
     val api: T
         get() = retrofit.create(type)
+
+    companion object {
+        inline fun <reified T> create(prefs: PreferenceRepository): T =
+            RestClient(T::class.java, prefs).api
+    }
 }
