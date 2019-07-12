@@ -21,7 +21,7 @@ import retrofit2.HttpException
 class EntityGridViewModel(application: Application) : AndroidViewModel(application) {
 
     private val prefs = PreferenceRepositoryImpl(application.applicationContext)
-    private val server = EntityRepositoryImpl(prefs)
+    private val repository = EntityRepositoryImpl(prefs)
 
     private val _shortcuts = MutableLiveData<List<Entity>>()
     val shortcuts: LiveData<List<Entity>> = _shortcuts
@@ -60,7 +60,7 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
             _isLoading.postValue(true)
 
             try {
-                val response = server.getStates()
+                val response = repository.getStates()
 
                 if (response.isSuccessful) {
                     _shortcuts.postValue(
@@ -97,7 +97,7 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
             _isLoading.postValue(true)
 
             try {
-                val response = server.callService(item.primaryAction as Action)
+                val response = repository.callService(item.primaryAction as Action)
 
                 if (response.isSuccessful) {
                     loadShortcuts()

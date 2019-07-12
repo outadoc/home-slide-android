@@ -1,5 +1,6 @@
 package fr.outadoc.quickhass.rest
 
+import fr.outadoc.quickhass.model.DiscoveryInfo
 import fr.outadoc.quickhass.model.Service
 import fr.outadoc.quickhass.model.State
 import retrofit2.Response
@@ -22,4 +23,7 @@ interface HomeAssistantApi {
         @Path("service") service: String,
         @Body params: Map<String, String>
     ): Response<List<State>>
+
+    @GET("/api/discovery_info")
+    suspend fun getDiscoveryInfo(): Response<DiscoveryInfo>
 }
