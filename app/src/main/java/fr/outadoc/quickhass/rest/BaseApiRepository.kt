@@ -7,10 +7,9 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.lang.Exception
 
 
-abstract class BaseServer<T>(
+abstract class BaseApiRepository<T>(
     private val type: Class<T>,
     private val prefs: PreferenceRepository
 ) {
