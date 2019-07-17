@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/setupHostFragment"
-        android:name="fr.outadoc.quickhass.onboarding.SetupHostFragment"
+        android:name="fr.outadoc.quickhass.onboarding.HostSetupFragment"
         android:label="fragment_setup_host"
         tools:layout="@layout/fragment_setup_host">
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/setupAuthFragment"
-        android:name="fr.outadoc.quickhass.onboarding.SetupAuthFragment"
+        android:name="fr.outadoc.quickhass.onboarding.AuthSetupFragment"
         android:label="fragment_setup_auth"
         tools:layout="@layout/fragment_setup_auth">
         <action
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/setupShortcutFragment"
-        android:name="fr.outadoc.quickhass.onboarding.SetupShortcutFragment"
+        android:name="fr.outadoc.quickhass.onboarding.ShortcutSetupFragment"
         android:label="fragment_setup_shortcut"
         tools:layout="@layout/fragment_setup_shortcut">
         <action

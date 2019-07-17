@@ -20,7 +20,7 @@ class PreferenceRepositoryImpl(context: Context) : PreferenceRepository {
     override val theme: String
         get() = authPrefs.getString(KEY_THEME, "system")!!
 
-    override val shouldAskForInitialValues: Boolean
+    override val isOnboardingDone: Boolean
         get() = accessToken == ""
 
     companion object {

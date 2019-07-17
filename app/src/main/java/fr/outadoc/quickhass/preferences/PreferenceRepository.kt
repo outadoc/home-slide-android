@@ -7,5 +7,5 @@ interface PreferenceRepository {
     val accessToken: String
     val theme: String
 
-    val shouldAskForInitialValues: Boolean
+    val isOnboardingDone: Boolean
 }
