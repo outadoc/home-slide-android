@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="fr.outadoc.quickhass.onboarding.screen.welcome.WelcomeFragment"
+        android:name="fr.outadoc.quickhass.feature.onboarding.ui.WelcomeFragment"
         android:label="fragment_welcome"
         tools:layout="@layout/fragment_welcome">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/setupHostFragment"
-        android:name="fr.outadoc.quickhass.onboarding.screen.host.HostSetupFragment"
+        android:name="fr.outadoc.quickhass.feature.onboarding.ui.HostSetupFragment"
         android:label="fragment_setup_host"
         tools:layout="@layout/fragment_setup_host">
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/setupAuthFragment"
-        android:name="fr.outadoc.quickhass.onboarding.AuthSetupFragment"
+        android:name="fr.outadoc.quickhass.feature.onboarding.ui.AuthSetupFragment"
         android:label="fragment_setup_auth"
         tools:layout="@layout/fragment_setup_auth">
         <action
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/setupShortcutFragment"
-        android:name="fr.outadoc.quickhass.onboarding.ShortcutSetupFragment"
+        android:name="fr.outadoc.quickhass.feature.onboarding.ui.ShortcutSetupFragment"
         android:label="fragment_setup_shortcut"
         tools:layout="@layout/fragment_setup_shortcut">
         <action
@@ -43,7 +43,7 @@
     </fragment>
     <fragment
         android:id="@+id/successFragment"
-        android:name="fr.outadoc.quickhass.onboarding.SuccessFragment"
+        android:name="fr.outadoc.quickhass.feature.onboarding.ui.SuccessFragment"
         android:label="fragment_success"
         tools:layout="@layout/fragment_success">
         <action
@@ -52,7 +52,7 @@
     </fragment>
     <activity
         android:id="@+id/slideOverActivity"
-        android:name="fr.outadoc.quickhass.slideover.SlideOverActivity"
+        android:name="fr.outadoc.quickhass.feature.slideover.SlideOverActivity"
         android:label="fragment_slideover"
         tools:layout="@layout/fragment_slideover" />
 </navigation>
