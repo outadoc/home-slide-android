@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="fr.outadoc.quickhass.onboarding.WelcomeFragment"
+        android:name="fr.outadoc.quickhass.onboarding.screen.welcome.WelcomeFragment"
         android:label="fragment_welcome"
         tools:layout="@layout/fragment_welcome">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/setupHostFragment"
-        android:name="fr.outadoc.quickhass.onboarding.HostSetupFragment"
+        android:name="fr.outadoc.quickhass.onboarding.screen.host.HostSetupFragment"
         android:label="fragment_setup_host"
         tools:layout="@layout/fragment_setup_host">
         <action

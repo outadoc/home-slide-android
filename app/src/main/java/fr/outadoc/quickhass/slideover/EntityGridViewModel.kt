@@ -39,8 +39,8 @@ class EntityGridViewModel(application: Application) : AndroidViewModel(applicati
     ).build()
 
     fun loadShortcuts() {
-        if (prefs.isOnboardingDone) {
-            _shouldAskForInitialValues.value = prefs.isOnboardingDone
+        if (!prefs.isOnboardingDone) {
+            _shouldAskForInitialValues.value = !prefs.isOnboardingDone
             return
         }
 

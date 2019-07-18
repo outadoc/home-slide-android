@@ -1,6 +1,6 @@
 package fr.outadoc.quickhass.onboarding.rest
 
-import fr.outadoc.quickhass.model.DiscoveryInfo
+import fr.outadoc.quickhass.onboarding.model.DiscoveryInfo
 
 interface DiscoveryRepository {
 
