@@ -6,12 +6,16 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import fr.outadoc.quickhass.R
+import fr.outadoc.quickhass.onboarding.model.NavigationFlow
 
 class HostSetupFragment : Fragment() {
 
@@ -29,13 +33,21 @@ class HostSetupFragment : Fragment() {
                             else -> "✅"
                         }
             })
+
+            canContinue.observe(this@HostSetupFragment, Observer { canContinue ->
+                viewHolder.continueButton.isEnabled = canContinue
+            })
+
+            navigateTo.observe(this@HostSetupFragment, Observer {
+                when (it.pop()) {
+                    NavigationFlow.NEXT -> viewHolder.navController.navigate(R.id.action_setupHostFragment_to_setupAuthFragment)
+                    else -> viewHolder.navController.navigateUp()
+                }
+            })
         }
     }
 
-    override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_setup_host, container, false)
 
         viewHolder = ViewHolder(view).apply {
@@ -47,16 +59,23 @@ class HostSetupFragment : Fragment() {
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     s?.let { viewModel.onInstanceUrlChange(s.toString()) }
                 }
-
             })
+
+            continueButton.setOnClickListener {
+                viewModel.onContinueClicked()
+            }
         }
 
         return view
     }
 
-    private class ViewHolder(view: View) {
+    private class ViewHolder(private val view: View) {
         val baseUrlEditText: EditText = view.findViewById(R.id.et_instance_base_url)
         val discoveryResult: TextView = view.findViewById(R.id.lbl_discovery_result)
+        val continueButton: Button = view.findViewById(R.id.btn_continue)
+
+        val navController: NavController
+            get() = view.findNavController()
     }
 
     companion object {

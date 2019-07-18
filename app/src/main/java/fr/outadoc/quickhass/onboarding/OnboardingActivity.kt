@@ -11,10 +11,8 @@ class OnboardingActivity : DayNightActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_onboarding)
 
-        findNavController(
-            this,
-            R.id.nav_host_fragment
-        ).navigate(R.id.welcomeFragment)
+        findNavController(this, R.id.nav_host_fragment)
+                .navigate(R.id.welcomeFragment)
     }
 
     override fun onSupportNavigateUp(): Boolean {
