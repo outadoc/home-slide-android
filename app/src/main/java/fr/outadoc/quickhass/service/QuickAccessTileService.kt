@@ -4,7 +4,7 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
-import fr.outadoc.quickhass.slideover.SlideOverActivity
+import fr.outadoc.quickhass.feature.slideover.SlideOverActivity
 
 class QuickAccessTileService : TileService() {
 
