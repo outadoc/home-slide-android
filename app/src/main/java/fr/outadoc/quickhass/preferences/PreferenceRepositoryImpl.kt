@@ -6,27 +6,31 @@ import android.preference.PreferenceManager
 
 class PreferenceRepositoryImpl(context: Context) : PreferenceRepository {
 
-    var authPrefs = PreferenceManager.getDefaultSharedPreferences(context)!!
+    private var appPrefs = PreferenceManager.getDefaultSharedPreferences(context)!!
 
-    override val instanceBaseUrl: String
-        get() = authPrefs.getString(KEY_INSTANCE_BASE_URL, "")!!
+    override var instanceBaseUrl: String
+        get() = appPrefs.getString(KEY_INSTANCE_BASE_URL, "")!!
+        set(value) {
+            appPrefs.edit().putString(KEY_INSTANCE_BASE_URL, value).apply()
+        }
 
     override val altInstanceBaseUrl: String?
-        get() = authPrefs.getString(KEY_INSTANCE_ALT_BASE_URL, null)
+        get() = appPrefs.getString(KEY_INSTANCE_ALT_BASE_URL, null)
 
     override val accessToken: String
-        get() = authPrefs.getString(KEY_ACCESS_TOKEN, "")!!
+        get() = appPrefs.getString(KEY_ACCESS_TOKEN, "")!!
 
     override val theme: String
-        get() = authPrefs.getString(KEY_THEME, "system")!!
+        get() = appPrefs.getString(KEY_THEME, "system")!!
 
     override val isOnboardingDone: Boolean
-        get() = accessToken == ""
+        get() = appPrefs.getBoolean(KEY_IS_ONBOARDING_DONE, false)
 
     companion object {
         const val KEY_INSTANCE_BASE_URL = "et_pref_instance_base_url"
         const val KEY_INSTANCE_ALT_BASE_URL = "et_pref_instance_alt_base_url"
         const val KEY_ACCESS_TOKEN = "et_pref_auth_token"
         const val KEY_THEME = "list_pref_theme"
+        const val KEY_IS_ONBOARDING_DONE = "chk_pref_onboarding_ok"
     }
 }

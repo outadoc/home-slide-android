@@ -14,6 +14,11 @@ class OnboardingActivity : DayNightActivity() {
         findNavController(
             this,
             R.id.nav_host_fragment
-        ).navigate(R.id.action_welcomeFragment_to_setupHostFragment)
+        ).navigate(R.id.welcomeFragment)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return findNavController(this, R.id.nav_host_fragment)
+                .navigateUp()
     }
 }

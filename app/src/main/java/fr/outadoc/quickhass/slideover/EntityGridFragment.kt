@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.R
-import fr.outadoc.quickhass.preferences.MainActivity
+import fr.outadoc.quickhass.onboarding.OnboardingActivity
 
 
 class EntityGridFragment : Fragment() {
@@ -95,7 +95,7 @@ class EntityGridFragment : Fragment() {
                             R.string.toast_config_needed_title,
                             Toast.LENGTH_LONG
                         ).show()
-                        openSettings()
+                        startOnboarding()
                     }
                 })
 
@@ -115,7 +115,7 @@ class EntityGridFragment : Fragment() {
             EntityAdapter(viewModel::onEntityClick, viewModel::onReorderedEntities)
         ).apply {
             settingsButton.setOnClickListener {
-                openSettings()
+                startOnboarding()
             }
 
             editButton.setOnClickListener {
@@ -154,8 +154,8 @@ class EntityGridFragment : Fragment() {
         handler.removeCallbacksAndMessages(null)
     }
 
-    private fun openSettings() {
-        Intent(activity, MainActivity::class.java).let { i ->
+    private fun startOnboarding() {
+        Intent(activity, OnboardingActivity::class.java).let { i ->
             startActivity(i)
             activity?.finish()
         }
