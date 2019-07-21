@@ -5,16 +5,38 @@
     android:layout_height="match_parent">
 
 
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Step 3"
+        android:textAppearance="?textAppearanceHeadline5"
+        app:layout_constraintBottom_toTopOf="@+id/textView9"
+        app:layout_constraintEnd_toEndOf="@+id/textView9"
+        app:layout_constraintStart_toStartOf="@+id/textView9" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:text="Enable quick access"
+        android:textAppearance="?textAppearanceHeadline4"
+        app:layout_constraintBottom_toTopOf="@+id/txt_quick_settings_instructions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/txt_quick_settings_instructions" />
+
     <Button
         android:id="@+id/btn_continue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:enabled="true"
-        android:text="Continue"
+        android:text="Finish"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/txt_quick_settings_instructions"
         app:layout_constraintTop_toBottomOf="@+id/txt_quick_settings_instructions"
         app:layout_constraintVertical_chainStyle="packed" />
 
@@ -22,9 +44,9 @@
         android:id="@+id/txt_quick_settings_instructions"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="32dp"
         android:text='In your quick settings panel, click "Edit", then drag the "Home" tile to your other shortcuts.'
         android:textAppearance="?textAppearanceBody1"
         app:layout_constraintBottom_toTopOf="@id/btn_continue"
