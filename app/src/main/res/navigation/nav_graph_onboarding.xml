@@ -10,49 +10,76 @@
         android:name="fr.outadoc.quickhass.feature.onboarding.ui.WelcomeFragment"
         android:label="fragment_welcome"
         tools:layout="@layout/fragment_welcome">
+
         <action
             android:id="@+id/action_welcomeFragment_to_setupHostFragment"
-            app:destination="@id/setupHostFragment" />
+            app:destination="@id/setupHostFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
+
     <fragment
         android:id="@+id/setupHostFragment"
         android:name="fr.outadoc.quickhass.feature.onboarding.ui.HostSetupFragment"
         android:label="fragment_setup_host"
         tools:layout="@layout/fragment_setup_host">
+
         <action
             android:id="@+id/action_setupHostFragment_to_setupAuthFragment"
-            app:destination="@id/setupAuthFragment" />
+            app:destination="@id/setupAuthFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
+
     <fragment
         android:id="@+id/setupAuthFragment"
         android:name="fr.outadoc.quickhass.feature.onboarding.ui.AuthSetupFragment"
         android:label="fragment_setup_auth"
         tools:layout="@layout/fragment_setup_auth">
+
         <action
             android:id="@+id/action_setupAuthFragment_to_setupShortcutFragment"
-            app:destination="@id/setupShortcutFragment" />
+            app:destination="@id/setupShortcutFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
+
     <fragment
         android:id="@+id/setupShortcutFragment"
         android:name="fr.outadoc.quickhass.feature.onboarding.ui.ShortcutSetupFragment"
         android:label="fragment_setup_shortcut"
         tools:layout="@layout/fragment_setup_shortcut">
+
         <action
             android:id="@+id/action_setupShortcutFragment_to_successFragment"
-            app:destination="@id/successFragment" />
+            app:destination="@id/successFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
+
     <fragment
         android:id="@+id/successFragment"
         android:name="fr.outadoc.quickhass.feature.onboarding.ui.SuccessFragment"
         android:label="fragment_success"
         tools:layout="@layout/fragment_success">
+
         <action
             android:id="@+id/action_successFragment_to_slideOverActivity"
             app:destination="@id/slideOverActivity" />
     </fragment>
+
     <activity
         android:id="@+id/slideOverActivity"
         android:name="fr.outadoc.quickhass.feature.slideover.SlideOverActivity"
         android:label="fragment_slideover"
         tools:layout="@layout/fragment_slideover" />
+
 </navigation>
