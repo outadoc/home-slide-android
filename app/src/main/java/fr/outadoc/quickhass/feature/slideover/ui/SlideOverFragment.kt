@@ -13,10 +13,6 @@ import fr.outadoc.quickhass.R
 
 class SlideOverFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = SlideOverFragment()
-    }
-
     private var viewHolder: ViewHolder? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,10 +20,7 @@ class SlideOverFragment : Fragment() {
 
         childFragmentManager
             .beginTransaction()
-            .replace(
-                R.id.content,
-                EntityGridFragment.newInstance()
-            )
+            .replace(R.id.content, EntityGridFragment.newInstance())
             .commit()
     }
 
@@ -86,5 +79,9 @@ class SlideOverFragment : Fragment() {
 
     private class ViewHolder(val root: View) {
         val contentContainer: FrameLayout = root.findViewById(R.id.frameLayout_content)
+    }
+
+    companion object {
+        fun newInstance() = SlideOverFragment()
     }
 }
