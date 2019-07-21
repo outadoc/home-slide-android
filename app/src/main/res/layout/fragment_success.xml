@@ -5,18 +5,18 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/lbl_success_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:text="We're done!"
         android:textAppearance="?textAppearanceHeadline2"
+        app:layout_constraintBottom_toTopOf="@+id/lbl_success_subtitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/textView10"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <Button
@@ -26,23 +26,23 @@
         android:layout_marginTop="8dp"
         android:text="Let's begin"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textView10"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
+        app:layout_constraintEnd_toEndOf="@+id/lbl_success_subtitle"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_success_subtitle"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/lbl_success_subtitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
-        android:textAppearance="?textAppearanceHeadline4"
         android:text="Enjoy :)"
+        android:textAppearance="?textAppearanceHeadline4"
         app:layout_constraintBottom_toTopOf="@+id/btn_continue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_success_title"
         app:layout_constraintVertical_chainStyle="packed" />
 
 
