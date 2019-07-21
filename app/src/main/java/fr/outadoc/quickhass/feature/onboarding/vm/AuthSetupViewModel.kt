@@ -28,6 +28,8 @@ class AuthSetupViewModel(application: Application) : AndroidViewModel(applicatio
     private var inputJwt: String? = null
 
     fun onTokenChanged(token: String) {
+        inputJwt = token
+
         if (!token.isValidJwt()) {
             _apiStatus.value = Result.failure(InvalidTokenException())
         }

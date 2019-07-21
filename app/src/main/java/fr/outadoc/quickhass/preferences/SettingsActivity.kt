@@ -3,7 +3,7 @@ package fr.outadoc.quickhass.preferences
 import android.os.Bundle
 import fr.outadoc.quickhass.DayNightActivity
 
-class MainActivity : DayNightActivity() {
+class SettingsActivity : DayNightActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

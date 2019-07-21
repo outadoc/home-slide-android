@@ -26,8 +26,11 @@ class PreferenceRepositoryImpl(context: Context) : PreferenceRepository {
     override val theme: String
         get() = appPrefs.getString(KEY_THEME, "system")!!
 
-    override val isOnboardingDone: Boolean
+    override var isOnboardingDone: Boolean
         get() = appPrefs.getBoolean(KEY_IS_ONBOARDING_DONE, false)
+        set(value) {
+            appPrefs.edit().putBoolean(KEY_IS_ONBOARDING_DONE, value).apply()
+        }
 
     companion object {
         const val KEY_INSTANCE_BASE_URL = "et_pref_instance_base_url"

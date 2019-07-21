@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.feature.onboarding.OnboardingActivity
 import fr.outadoc.quickhass.feature.slideover.vm.EntityGridViewModel
+import fr.outadoc.quickhass.preferences.SettingsActivity
 
 
 class EntityGridFragment : Fragment() {
@@ -114,7 +115,7 @@ class EntityGridFragment : Fragment() {
             )
         ).apply {
             settingsButton.setOnClickListener {
-                startOnboarding()
+                openSettings()
             }
 
             editButton.setOnClickListener {
@@ -161,6 +162,14 @@ class EntityGridFragment : Fragment() {
             startActivity(i)
             activity?.finish()
         }
+    }
+
+    private fun openSettings() {
+        Intent(activity, SettingsActivity::class.java).let { i ->
+            startActivity(i)
+            activity?.finish()
+        }
+
     }
 
     private fun setWindowInsets(viewHolder: ViewHolder) {
