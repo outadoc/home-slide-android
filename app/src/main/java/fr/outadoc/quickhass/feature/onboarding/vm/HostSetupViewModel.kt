@@ -24,11 +24,9 @@ class HostSetupViewModel(application: Application) : AndroidViewModel(applicatio
 
     private var inputInstanceUrl: String? = null
 
-    val canContinue = instanceDiscoveryInfo.map {
-        it.isSuccess
-    }
+    val canContinue = instanceDiscoveryInfo.map { it.isSuccess }
 
-    fun onInstanceUrlChange(instanceUrl: String) {
+    fun onInstanceUrlChanged(instanceUrl: String) {
         instanceUrl.sanitizeBaseUrl()?.let { sanitizedUrl ->
             inputInstanceUrl = sanitizedUrl
             viewModelScope.launch(Dispatchers.IO) {
@@ -39,13 +37,22 @@ class HostSetupViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
+    fun onContinueClicked() {
+        inputInstanceUrl?.let { instanceUrl ->
+            if (canContinue.value!!) {
+                prefs.instanceBaseUrl = instanceUrl
+                _navigateTo.value = Event(NavigationFlow.NEXT)
+            }
+        }
+    }
+
     private fun String?.sanitizeBaseUrl(): String? {
         if (this == null)
             return null
 
         val str = this
-                .trim()
-                .ensureProtocol()
+            .trim()
+            .ensureProtocol()
 
         if (str.isEmpty() || str.length < 3) return null
 
@@ -66,14 +73,4 @@ class HostSetupViewModel(application: Application) : AndroidViewModel(applicatio
             else -> "http://$this"
         }
     }
-
-    fun onContinueClicked() {
-        inputInstanceUrl?.let { instanceUrl ->
-            if (canContinue.value!!) {
-                prefs.instanceBaseUrl = instanceUrl
-                _navigateTo.value = Event(NavigationFlow.NEXT)
-            }
-        }
-    }
-
 }

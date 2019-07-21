@@ -91,11 +91,6 @@ class EntityGridFragment : Fragment() {
                 this@EntityGridFragment,
                 Observer { shouldAskForInitialValues ->
                     if (shouldAskForInitialValues) {
-                        Toast.makeText(
-                            context,
-                            R.string.toast_config_needed_title,
-                            Toast.LENGTH_LONG
-                        ).show()
                         startOnboarding()
                     }
                 })

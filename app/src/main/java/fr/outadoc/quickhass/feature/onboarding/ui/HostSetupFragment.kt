@@ -58,7 +58,7 @@ class HostSetupFragment : Fragment() {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    s?.let { viewModel.onInstanceUrlChange(s.toString()) }
+                    s?.let { viewModel.onInstanceUrlChanged(s.toString()) }
                 }
             })
 
