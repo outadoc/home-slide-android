@@ -10,6 +10,7 @@ import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepositoryImpl
 import fr.outadoc.quickhass.lifecycle.Event
 import fr.outadoc.quickhass.preferences.PreferenceRepositoryImpl
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class AuthSetupViewModel(application: Application) : AndroidViewModel(application) {
@@ -26,6 +27,7 @@ class AuthSetupViewModel(application: Application) : AndroidViewModel(applicatio
     val canContinue = apiStatus.map { it.isSuccess }
 
     private var inputJwt: String? = null
+    private var apiStatusJob: Job? = null
 
     fun onTokenChanged(token: String) {
         inputJwt = token
@@ -34,7 +36,8 @@ class AuthSetupViewModel(application: Application) : AndroidViewModel(applicatio
             _apiStatus.value = Result.failure(InvalidTokenException())
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
+        apiStatusJob?.cancel()
+        apiStatusJob = viewModelScope.launch(Dispatchers.IO) {
             _apiStatus.postValue(
                 repository.getApiStatus(prefs.instanceBaseUrl, token)
             )

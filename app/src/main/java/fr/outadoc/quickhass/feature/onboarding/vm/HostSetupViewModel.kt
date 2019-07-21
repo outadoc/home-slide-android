@@ -9,6 +9,7 @@ import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepositoryImpl
 import fr.outadoc.quickhass.lifecycle.Event
 import fr.outadoc.quickhass.preferences.PreferenceRepositoryImpl
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class HostSetupViewModel(application: Application) : AndroidViewModel(application) {
@@ -22,16 +23,19 @@ class HostSetupViewModel(application: Application) : AndroidViewModel(applicatio
     private val _navigateTo = MutableLiveData<Event<NavigationFlow>>()
     val navigateTo: LiveData<Event<NavigationFlow>> = _navigateTo
 
-    private var inputInstanceUrl: String? = null
-
     val canContinue = instanceDiscoveryInfo.map { it.isSuccess }
+
+    private var inputInstanceUrl: String? = null
+    private var discoveryJob: Job? = null
 
     fun onInstanceUrlChanged(instanceUrl: String) {
         instanceUrl.sanitizeBaseUrl()?.let { sanitizedUrl ->
             inputInstanceUrl = sanitizedUrl
-            viewModelScope.launch(Dispatchers.IO) {
+
+            discoveryJob?.cancel()
+            discoveryJob = viewModelScope.launch(Dispatchers.IO) {
                 _instanceDiscoveryInfo.postValue(
-                        repository.getDiscoveryInfo(sanitizedUrl)
+                    repository.getDiscoveryInfo(sanitizedUrl)
                 )
             }
         }
