@@ -25,6 +25,7 @@ class AuthSetupFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         viewModel = ViewModelProviders.of(this).get(AuthSetupViewModel::class.java).apply {
             apiStatus.observe(this@AuthSetupFragment, Observer { status ->
                 viewHolder.tokenValidationResult.text =
