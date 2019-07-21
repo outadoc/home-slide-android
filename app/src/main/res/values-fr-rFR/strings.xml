@@ -38,8 +38,8 @@
     <string name="onboarding_setup_auth_subtitle">Authentifiez-vous</string>
     <string name="onboarding_setup_host_continue">Continuer</string>
     <string name="onboarding_setup_host_hint">URL de Home Assistant</string>
-    <string name="onboarding_setup_host_subtitle">Trouver votre installation</string>
+    <string name="onboarding_setup_host_subtitle">Trouvez votre installation</string>
     <string name="onboarding_setup_shortcut_continue">Terminer</string>
     <string name="onboarding_setup_shortcut_instructions">Dans le panneau de réglages rapides, cliquez sur <b>Modifier</b>, puis faites glisser la tuile <b>Maison</b> sur vos autres raccourcis.</string>
-    <string name="onboarding_setup_shortcut_subtitle">Activer l\'accès rapide</string>
+    <string name="onboarding_setup_shortcut_subtitle">Activez l\'accès rapide</string>
 </resources>
