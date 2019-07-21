@@ -28,13 +28,6 @@ import fr.outadoc.quickhass.preferences.SettingsActivity
 
 class EntityGridFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = EntityGridFragment()
-
-        const val GRID_SPAN_COUNT = 3
-        const val REFRESH_INTERVAL_MS = 10000L
-    }
-
     private lateinit var viewModel: EntityGridViewModel
 
     private var viewHolder: ViewHolder? = null
@@ -219,5 +212,13 @@ class EntityGridFragment : Fragment() {
         val editButton: ImageButton = root.findViewById(R.id.imageButton_edit)
         val progress: ProgressBar = root.findViewById(R.id.progress_main)
     }
+
+    companion object {
+        fun newInstance() = EntityGridFragment()
+
+        const val GRID_SPAN_COUNT = 3
+        const val REFRESH_INTERVAL_MS = 10000L
+    }
+
 }
 

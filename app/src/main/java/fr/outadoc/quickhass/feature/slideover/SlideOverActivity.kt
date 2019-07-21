@@ -17,14 +17,15 @@ class SlideOverActivity : DayNightActivity() {
 
         supportFragmentManager
             .beginTransaction()
-            .replace(
-                R.id.slideover_content,
-                SlideOverFragment.newInstance()
-            )
+            .replace(R.id.slideover_content, SlideOverFragment.newInstance())
             .commit()
 
         window.setGravity(Gravity.BOTTOM)
+        applyCompatFlags()
+    }
 
+    @Suppress("DEPRECATION")
+    fun applyCompatFlags() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O_MR1) {
             window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
             window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD)
