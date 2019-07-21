@@ -6,18 +6,18 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/lbl_step_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="Step 2"
         android:textAppearance="?textAppearanceHeadline5"
-        app:layout_constraintBottom_toTopOf="@+id/textView7"
-        app:layout_constraintEnd_toEndOf="@+id/textView7"
-        app:layout_constraintStart_toStartOf="@+id/textView7" />
+        app:layout_constraintBottom_toTopOf="@+id/lbl_step_subtitle"
+        app:layout_constraintEnd_toEndOf="@+id/lbl_step_subtitle"
+        app:layout_constraintStart_toStartOf="@+id/lbl_step_subtitle" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/lbl_step_subtitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
