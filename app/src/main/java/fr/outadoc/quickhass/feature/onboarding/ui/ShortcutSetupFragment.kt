@@ -25,8 +25,10 @@ class ShortcutSetupFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(ShortcutSetupViewModel::class.java).apply {
             navigateTo.observe(this@ShortcutSetupFragment, Observer {
                 when (it.pop()) {
-                    NavigationFlow.NEXT -> viewHolder.navController.navigate(R.id.action_setupShortcutFragment_to_successFragment)
-                    else -> viewHolder.navController.navigateUp()
+                    NavigationFlow.Next -> viewHolder.navController.navigate(R.id.action_setupShortcutFragment_to_successFragment)
+                    NavigationFlow.Back -> viewHolder.navController.navigateUp()
+                    else -> {
+                    }
                 }
             })
         }

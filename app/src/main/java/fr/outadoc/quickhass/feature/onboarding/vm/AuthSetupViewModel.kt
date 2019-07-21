@@ -1,6 +1,7 @@
 package fr.outadoc.quickhass.feature.onboarding.vm
 
 import android.app.Application
+import android.net.Uri
 import androidx.lifecycle.*
 import com.auth0.android.jwt.DecodeException
 import com.auth0.android.jwt.JWT
@@ -48,7 +49,7 @@ class AuthSetupViewModel(application: Application) : AndroidViewModel(applicatio
         inputJwt?.let { jwt ->
             if (canContinue.value!!) {
                 prefs.accessToken = jwt
-                _navigateTo.value = Event(NavigationFlow.NEXT)
+                _navigateTo.value = Event(NavigationFlow.Next)
             }
         }
     }
@@ -59,6 +60,15 @@ class AuthSetupViewModel(application: Application) : AndroidViewModel(applicatio
         } catch (e: DecodeException) {
             false
         }
+    }
+
+    fun onClickHelpLink() {
+        val profilePage = Uri.parse(prefs.instanceBaseUrl)
+            .buildUpon()
+            .appendPath("profile")
+            .build()
+
+        _navigateTo.postValue(Event(NavigationFlow.Url(profilePage)))
     }
 
     class InvalidTokenException(message: String? = null) : Exception(message)

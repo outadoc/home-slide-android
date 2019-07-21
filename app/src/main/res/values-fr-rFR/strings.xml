@@ -42,4 +42,6 @@
     <string name="onboarding_setup_shortcut_continue">Terminer</string>
     <string name="onboarding_setup_shortcut_instructions">Dans le panneau de réglages rapides, cliquez sur <b>Modifier</b>, puis faites glisser la tuile <b>Maison</b> sur vos autres raccourcis.</string>
     <string name="onboarding_setup_shortcut_subtitle">Activez l\'accès rapide</string>
+    <string name="onboarding_setup_auth_help_link"><u>Générer un jeton sur votre page Profil</u></string>
+    <string name="onboarding_setup_auth_help">Vous pouvez générer un jeton d\'accès de longue durée sur votre page Profil dans Home Assistant.</string>
 </resources>

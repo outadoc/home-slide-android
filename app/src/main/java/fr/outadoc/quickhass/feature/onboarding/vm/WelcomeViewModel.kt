@@ -12,6 +12,6 @@ class WelcomeViewModel : ViewModel() {
     val navigateTo: LiveData<Event<NavigationFlow>> = _navigateTo
 
     fun onContinueClicked() {
-        _navigateTo.value = Event(NavigationFlow.NEXT)
+        _navigateTo.value = Event(NavigationFlow.Next)
     }
 }

@@ -5,4 +5,5 @@
     <color name="colorAccent">#4FC3F7</color>
     <color name="colorSurfaceLight">#FAFAFA</color>
     <color name="colorOnAccent">#FFF</color>
+    <color name="colorLink">#3949AB</color>
 </resources>

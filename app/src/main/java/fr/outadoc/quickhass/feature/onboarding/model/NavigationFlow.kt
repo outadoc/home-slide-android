@@ -1,5 +1,9 @@
 package fr.outadoc.quickhass.feature.onboarding.model
 
-enum class NavigationFlow {
-    NEXT, BACK
+import android.net.Uri
+
+sealed class NavigationFlow {
+    object Next : NavigationFlow()
+    object Back : NavigationFlow()
+    class Url(val url: Uri) : NavigationFlow()
 }

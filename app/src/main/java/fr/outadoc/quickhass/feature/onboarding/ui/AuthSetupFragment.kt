@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -40,9 +41,13 @@ class AuthSetupFragment : Fragment() {
             })
 
             navigateTo.observe(this@AuthSetupFragment, Observer {
-                when (it.pop()) {
-                    NavigationFlow.NEXT -> viewHolder.navController.navigate(R.id.action_setupAuthFragment_to_setupShortcutFragment)
-                    else -> viewHolder.navController.navigateUp()
+                when (val dest = it.pop()) {
+                    NavigationFlow.Next -> viewHolder.navController.navigate(R.id.action_setupAuthFragment_to_setupShortcutFragment)
+                    NavigationFlow.Back -> viewHolder.navController.navigateUp()
+                    is NavigationFlow.Url -> {
+                        val intent = CustomTabsIntent.Builder().build()
+                        intent.launchUrl(context, dest.url)
+                    }
                 }
             })
 
@@ -72,6 +77,10 @@ class AuthSetupFragment : Fragment() {
             continueButton.setOnClickListener {
                 viewModel.onContinueClicked()
             }
+
+            helpLink.setOnClickListener {
+                viewModel.onClickHelpLink()
+            }
         }
 
         return view
@@ -81,6 +90,7 @@ class AuthSetupFragment : Fragment() {
         val tokenEditText: EditText = view.findViewById(R.id.et_token)
         val tokenValidationResult: TextView = view.findViewById(R.id.lbl_token_result)
         val continueButton: Button = view.findViewById(R.id.btn_continue)
+        val helpLink: TextView = view.findViewById(R.id.lbl_auth_help_link)
 
         val navController: NavController
             get() = view.findNavController()
