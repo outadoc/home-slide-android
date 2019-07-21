@@ -25,11 +25,13 @@ class SuccessFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(SuccessViewModel::class.java).apply {
             navigateTo.observe(this@SuccessFragment, Observer {
                 when (it.pop()) {
-                    NavigationFlow.NEXT -> {
+                    NavigationFlow.Next -> {
                         viewHolder.navController.navigate(R.id.action_successFragment_to_slideOverActivity)
                         activity?.finish()
                     }
-                    else -> viewHolder.navController.navigateUp()
+                    NavigationFlow.Back -> viewHolder.navController.navigateUp()
+                    else -> {
+                    }
                 }
             })
         }

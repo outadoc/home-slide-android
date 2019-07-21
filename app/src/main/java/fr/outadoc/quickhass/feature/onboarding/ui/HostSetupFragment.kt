@@ -41,8 +41,10 @@ class HostSetupFragment : Fragment() {
 
             navigateTo.observe(this@HostSetupFragment, Observer {
                 when (it.pop()) {
-                    NavigationFlow.NEXT -> viewHolder.navController.navigate(R.id.action_setupHostFragment_to_setupAuthFragment)
-                    else -> viewHolder.navController.navigateUp()
+                    NavigationFlow.Next -> viewHolder.navController.navigate(R.id.action_setupHostFragment_to_setupAuthFragment)
+                    NavigationFlow.Back -> viewHolder.navController.navigateUp()
+                    else -> {
+                    }
                 }
             })
         }

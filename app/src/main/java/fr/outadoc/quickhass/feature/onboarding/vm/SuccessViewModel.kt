@@ -17,6 +17,6 @@ class SuccessViewModel(application: Application) : AndroidViewModel(application)
 
     fun onContinueClicked() {
         prefs.isOnboardingDone = true
-        _navigateTo.value = Event(NavigationFlow.NEXT)
+        _navigateTo.value = Event(NavigationFlow.Next)
     }
 }

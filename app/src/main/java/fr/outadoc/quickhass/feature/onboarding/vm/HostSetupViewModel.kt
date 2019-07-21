@@ -45,7 +45,7 @@ class HostSetupViewModel(application: Application) : AndroidViewModel(applicatio
         inputInstanceUrl?.let { instanceUrl ->
             if (canContinue.value!!) {
                 prefs.instanceBaseUrl = instanceUrl
-                _navigateTo.value = Event(NavigationFlow.NEXT)
+                _navigateTo.value = Event(NavigationFlow.Next)
             }
         }
     }

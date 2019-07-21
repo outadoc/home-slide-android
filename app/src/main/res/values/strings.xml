@@ -35,6 +35,8 @@
     <string name="onboarding_setup_shortcut_subtitle">Enable quick access</string>
     <string name="onboarding_setup_shortcut_continue">Finish</string>
     <string name="onboarding_setup_shortcut_instructions">In your quick settings panel, click <b>Edit</b>, then drag the <b>Home</b> tile to your other shortcuts.</string>
+    <string name="onboarding_setup_auth_help_link"><u>Generate a token on your Profile page</u></string>
+    <string name="onboarding_setup_auth_help">You can generate a long-lived access token on your Profile page in Home Assistant.</string>
 
     <string-array name="pref_theme_entry_names">
         <item>System</item>

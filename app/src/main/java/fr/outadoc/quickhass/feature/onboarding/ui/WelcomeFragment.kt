@@ -25,8 +25,10 @@ class WelcomeFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(WelcomeViewModel::class.java).apply {
             navigateTo.observe(this@WelcomeFragment, Observer {
                 when (it.pop()) {
-                    NavigationFlow.NEXT -> viewHolder.navController.navigate(R.id.action_welcomeFragment_to_setupHostFragment)
-                    else -> viewHolder.navController.navigateUp()
+                    NavigationFlow.Next -> viewHolder.navController.navigate(R.id.action_welcomeFragment_to_setupHostFragment)
+                    NavigationFlow.Back -> viewHolder.navController.navigateUp()
+                    else -> {
+                    }
                 }
             })
         }
