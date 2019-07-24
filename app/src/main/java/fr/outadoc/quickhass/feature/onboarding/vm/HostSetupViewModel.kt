@@ -1,6 +1,7 @@
 package fr.outadoc.quickhass.feature.onboarding.vm
 
 import android.app.Application
+import android.os.Handler
 import androidx.core.net.toUri
 import androidx.lifecycle.*
 import fr.outadoc.quickhass.feature.onboarding.model.CallStatus
@@ -31,18 +32,25 @@ class HostSetupViewModel(application: Application) : AndroidViewModel(applicatio
     private var inputInstanceUrl: String? = null
     private var discoveryJob: Job? = null
 
+    private val handler = Handler()
+
     fun onInstanceUrlChanged(instanceUrl: String) {
         instanceUrl.sanitizeBaseUrl()?.let { sanitizedUrl ->
             inputInstanceUrl = sanitizedUrl
 
-            discoveryJob?.cancel()
-            _instanceDiscoveryInfo.value = CallStatus.Loading
+            handler.removeCallbacksAndMessages(null)
+            handler.postDelayed({ doOnInstanceUrlChanged(sanitizedUrl) }, UPDATE_TIME_INTERVAL)
+        }
+    }
 
-            discoveryJob = viewModelScope.launch(Dispatchers.IO) {
-                _instanceDiscoveryInfo.postValue(
-                    CallStatus.Done(repository.getDiscoveryInfo(sanitizedUrl))
-                )
-            }
+    private fun doOnInstanceUrlChanged(instanceUrl: String) {
+        discoveryJob?.cancel()
+        _instanceDiscoveryInfo.value = CallStatus.Loading
+
+        discoveryJob = viewModelScope.launch(Dispatchers.IO) {
+            _instanceDiscoveryInfo.postValue(
+                CallStatus.Done(repository.getDiscoveryInfo(instanceUrl))
+            )
         }
     }
 
@@ -85,5 +93,6 @@ class HostSetupViewModel(application: Application) : AndroidViewModel(applicatio
 
     companion object {
         private const val DEFAULT_INSTANCE_URL = "http://hassio.local:8123"
+        private const val UPDATE_TIME_INTERVAL = 500L
     }
 }

@@ -2,6 +2,7 @@ package fr.outadoc.quickhass.feature.onboarding.vm
 
 import android.app.Application
 import android.net.Uri
+import android.os.Handler
 import androidx.lifecycle.*
 import com.auth0.android.jwt.DecodeException
 import com.auth0.android.jwt.JWT
@@ -31,6 +32,8 @@ class AuthSetupViewModel(application: Application) : AndroidViewModel(applicatio
     private var inputJwt: String? = null
     private var apiStatusJob: Job? = null
 
+    private val handler = Handler()
+
     fun onTokenChanged(token: String) {
         inputJwt = token
 
@@ -38,6 +41,11 @@ class AuthSetupViewModel(application: Application) : AndroidViewModel(applicatio
             _apiStatus.value = CallStatus.Done(Result.failure(InvalidTokenException()))
         }
 
+        handler.removeCallbacksAndMessages(null)
+        handler.postDelayed({ doOnTokenChanged(token) }, UPDATE_TIME_INTERVAL)
+    }
+
+    private fun doOnTokenChanged(token: String) {
         apiStatusJob?.cancel()
         _apiStatus.value = CallStatus.Loading
 
@@ -72,6 +80,10 @@ class AuthSetupViewModel(application: Application) : AndroidViewModel(applicatio
             .build()
 
         _navigateTo.postValue(Event(NavigationFlow.Url(profilePage)))
+    }
+
+    companion object {
+        private const val UPDATE_TIME_INTERVAL = 500L
     }
 
     class InvalidTokenException(message: String? = null) : Exception(message)
