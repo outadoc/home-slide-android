@@ -27,28 +27,26 @@ class AuthSetupFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(AuthSetupViewModel::class.java)
 
-        viewModel = ViewModelProviders.of(this).get(AuthSetupViewModel::class.java).apply {
-            apiStatus.observe(this@AuthSetupFragment, Observer { status ->
-                viewHolder.tokenValidationResult.state = status.toViewStatus()
-            })
+        viewModel.apiStatus.observe(this, Observer { status ->
+            viewHolder.tokenValidationResult.state = status.toViewStatus()
+        })
 
-            canContinue.observe(this@AuthSetupFragment, Observer { canContinue ->
-                viewHolder.continueButton.isEnabled = canContinue
-            })
+        viewModel.canContinue.observe(this, Observer { canContinue ->
+            viewHolder.continueButton.isEnabled = canContinue
+        })
 
-            navigateTo.observe(this@AuthSetupFragment, Observer {
-                when (val dest = it.pop()) {
-                    NavigationFlow.Next -> viewHolder.navController.navigate(R.id.action_setupAuthFragment_to_setupShortcutFragment)
-                    NavigationFlow.Back -> viewHolder.navController.navigateUp()
-                    is NavigationFlow.Url -> {
-                        val intent = CustomTabsIntent.Builder().build()
-                        intent.launchUrl(context, dest.url)
-                    }
+        viewModel.navigateTo.observe(this, Observer {
+            when (val dest = it.pop()) {
+                NavigationFlow.Next -> viewHolder.navController.navigate(R.id.action_setupAuthFragment_to_setupShortcutFragment)
+                NavigationFlow.Back -> viewHolder.navController.navigateUp()
+                is NavigationFlow.Url -> {
+                    val intent = CustomTabsIntent.Builder().build()
+                    intent.launchUrl(context, dest.url)
                 }
-            })
-
-        }
+            }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,12 +56,7 @@ class AuthSetupFragment : Fragment() {
             tokenEditText.addTextChangedListener(object : TextWatcher {
 
                 override fun afterTextChanged(s: Editable?) {}
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
