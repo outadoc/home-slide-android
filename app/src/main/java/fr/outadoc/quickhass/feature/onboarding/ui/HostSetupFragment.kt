@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -28,10 +27,10 @@ class HostSetupFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(HostSetupViewModel::class.java).apply {
             instanceDiscoveryInfo.observe(this@HostSetupFragment, Observer { discovery ->
-                viewHolder.discoveryResult.text =
+                viewHolder.discoveryResult.state =
                         when (if (discovery.isSuccess) discovery.getOrNull() else null) {
-                            null -> "❌"
-                            else -> "✅"
+                            null -> ResultIconView.State.ERROR
+                            else -> ResultIconView.State.SUCCESS
                         }
             })
 
@@ -84,7 +83,7 @@ class HostSetupFragment : Fragment() {
 
     private class ViewHolder(private val view: View) {
         val baseUrlEditText: EditText = view.findViewById(R.id.et_instance_base_url)
-        val discoveryResult: TextView = view.findViewById(R.id.lbl_discovery_result)
+        val discoveryResult: ResultIconView = view.findViewById(R.id.view_discovery_result)
         val continueButton: Button = view.findViewById(R.id.btn_continue)
 
         val navController: NavController

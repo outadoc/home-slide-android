@@ -29,10 +29,10 @@ class AuthSetupFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(AuthSetupViewModel::class.java).apply {
             apiStatus.observe(this@AuthSetupFragment, Observer { status ->
-                viewHolder.tokenValidationResult.text =
+                viewHolder.tokenValidationResult.state =
                     when (if (status.isSuccess) status.getOrNull() else null) {
-                        null -> "❌"
-                        else -> "✅"
+                        null -> ResultIconView.State.ERROR
+                        else -> ResultIconView.State.SUCCESS
                     }
             })
 
@@ -88,7 +88,7 @@ class AuthSetupFragment : Fragment() {
 
     private class ViewHolder(private val view: View) {
         val tokenEditText: EditText = view.findViewById(R.id.et_token)
-        val tokenValidationResult: TextView = view.findViewById(R.id.lbl_token_result)
+        val tokenValidationResult: ResultIconView = view.findViewById(R.id.view_token_result)
         val continueButton: Button = view.findViewById(R.id.btn_continue)
         val helpLink: TextView = view.findViewById(R.id.lbl_auth_help_link)
 
