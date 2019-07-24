@@ -72,6 +72,16 @@ class HostSetupFragment : Fragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewHolder.baseUrlEditText.apply {
+            if (text.isEmpty()) {
+                setText(viewModel.defaultInstanceUrl)
+            }
+        }
+    }
+
     private class ViewHolder(private val view: View) {
         val baseUrlEditText: EditText = view.findViewById(R.id.et_instance_base_url)
         val discoveryResult: TextView = view.findViewById(R.id.lbl_discovery_result)

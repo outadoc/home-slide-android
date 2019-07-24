@@ -25,6 +25,8 @@ class HostSetupViewModel(application: Application) : AndroidViewModel(applicatio
 
     val canContinue = instanceDiscoveryInfo.map { it.isSuccess }
 
+    val defaultInstanceUrl = DEFAULT_INSTANCE_URL
+
     private var inputInstanceUrl: String? = null
     private var discoveryJob: Job? = null
 
@@ -76,5 +78,9 @@ class HostSetupViewModel(application: Application) : AndroidViewModel(applicatio
             this.startsWith("http://") || this.startsWith("https://") -> this
             else -> "http://$this"
         }
+    }
+
+    companion object {
+        private const val DEFAULT_INSTANCE_URL = "http://hassio.local:8123"
     }
 }
