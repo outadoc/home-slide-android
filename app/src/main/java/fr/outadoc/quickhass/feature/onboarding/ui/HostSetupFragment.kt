@@ -25,25 +25,24 @@ class HostSetupFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(HostSetupViewModel::class.java)
 
-        viewModel = ViewModelProviders.of(this).get(HostSetupViewModel::class.java).apply {
-            instanceDiscoveryInfo.observe(this@HostSetupFragment, Observer { discovery ->
-                viewHolder.discoveryResult.state = discovery.toViewStatus()
-            })
+        viewModel.instanceDiscoveryInfo.observe(this, Observer { discovery ->
+            viewHolder.discoveryResult.state = discovery.toViewStatus()
+        })
 
-            canContinue.observe(this@HostSetupFragment, Observer { canContinue ->
-                viewHolder.continueButton.isEnabled = canContinue
-            })
+        viewModel.canContinue.observe(this, Observer { canContinue ->
+            viewHolder.continueButton.isEnabled = canContinue
+        })
 
-            navigateTo.observe(this@HostSetupFragment, Observer {
-                when (it.pop()) {
-                    NavigationFlow.Next -> viewHolder.navController.navigate(R.id.action_setupHostFragment_to_setupAuthFragment)
-                    NavigationFlow.Back -> viewHolder.navController.navigateUp()
-                    else -> {
-                    }
+        viewModel.navigateTo.observe(this, Observer {
+            when (it.pop()) {
+                NavigationFlow.Next -> viewHolder.navController.navigate(R.id.action_setupHostFragment_to_setupAuthFragment)
+                NavigationFlow.Back -> viewHolder.navController.navigateUp()
+                else -> {
                 }
-            })
-        }
+            }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

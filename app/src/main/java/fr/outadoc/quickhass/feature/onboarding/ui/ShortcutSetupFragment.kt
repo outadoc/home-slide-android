@@ -21,17 +21,16 @@ class ShortcutSetupFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(ShortcutSetupViewModel::class.java)
 
-        viewModel = ViewModelProviders.of(this).get(ShortcutSetupViewModel::class.java).apply {
-            navigateTo.observe(this@ShortcutSetupFragment, Observer {
-                when (it.pop()) {
-                    NavigationFlow.Next -> viewHolder.navController.navigate(R.id.action_setupShortcutFragment_to_successFragment)
-                    NavigationFlow.Back -> viewHolder.navController.navigateUp()
-                    else -> {
-                    }
+        viewModel.navigateTo.observe(this, Observer {
+            when (it.pop()) {
+                NavigationFlow.Next -> viewHolder.navController.navigate(R.id.action_setupShortcutFragment_to_successFragment)
+                NavigationFlow.Back -> viewHolder.navController.navigateUp()
+                else -> {
                 }
-            })
-        }
+            }
+        })
     }
 
     override fun onCreateView(
