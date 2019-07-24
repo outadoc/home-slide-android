@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -17,18 +16,15 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
         app:layout_constraintVertical_chainStyle="packed" />
 
-    <TextView
-        android:id="@+id/lbl_discovery_result"
+    <fr.outadoc.quickhass.feature.onboarding.ui.ResultIconView
+        android:id="@+id/view_discovery_result"
         android:layout_width="24dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_weight="1"
-        android:gravity="center"
-        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/textInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textInputLayout"
-        tools:text="✅" />
+        app:layout_constraintTop_toTopOf="@+id/textInputLayout" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
@@ -39,7 +35,7 @@
         android:layout_marginEnd="8dp"
         android:hint="@string/onboarding_setup_host_hint"
         app:layout_constraintBottom_toTopOf="@id/btn_continue"
-        app:layout_constraintEnd_toStartOf="@+id/lbl_discovery_result"
+        app:layout_constraintEnd_toStartOf="@+id/view_discovery_result"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed">

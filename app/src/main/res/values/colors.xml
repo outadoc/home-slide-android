@@ -6,4 +6,5 @@
     <color name="colorSurfaceLight">#FAFAFA</color>
     <color name="colorOnAccent">#FFF</color>
     <color name="colorLink">#3949AB</color>
+    <color name="colorSuccess">#7CB342</color>
 </resources>
