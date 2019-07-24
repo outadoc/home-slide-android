@@ -3,6 +3,7 @@ package fr.outadoc.quickhass.feature.onboarding.vm
 import android.app.Application
 import androidx.core.net.toUri
 import androidx.lifecycle.*
+import fr.outadoc.quickhass.feature.onboarding.model.CallStatus
 import fr.outadoc.quickhass.feature.onboarding.model.DiscoveryInfo
 import fr.outadoc.quickhass.feature.onboarding.model.NavigationFlow
 import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepositoryImpl
@@ -17,13 +18,13 @@ class HostSetupViewModel(application: Application) : AndroidViewModel(applicatio
     private val prefs = PreferenceRepositoryImpl(application.applicationContext)
     private val repository = DiscoveryRepositoryImpl()
 
-    private val _instanceDiscoveryInfo = MutableLiveData<Result<DiscoveryInfo>>()
-    val instanceDiscoveryInfo: LiveData<Result<DiscoveryInfo>> = _instanceDiscoveryInfo
+    private val _instanceDiscoveryInfo = MutableLiveData<CallStatus<DiscoveryInfo>>()
+    val instanceDiscoveryInfo: LiveData<CallStatus<DiscoveryInfo>> = _instanceDiscoveryInfo
 
     private val _navigateTo = MutableLiveData<Event<NavigationFlow>>()
     val navigateTo: LiveData<Event<NavigationFlow>> = _navigateTo
 
-    val canContinue = instanceDiscoveryInfo.map { it.isSuccess }
+    val canContinue = instanceDiscoveryInfo.map { it is CallStatus.Done && it.value.isSuccess }
 
     val defaultInstanceUrl = DEFAULT_INSTANCE_URL
 
@@ -35,9 +36,11 @@ class HostSetupViewModel(application: Application) : AndroidViewModel(applicatio
             inputInstanceUrl = sanitizedUrl
 
             discoveryJob?.cancel()
+            _instanceDiscoveryInfo.value = CallStatus.Loading
+
             discoveryJob = viewModelScope.launch(Dispatchers.IO) {
                 _instanceDiscoveryInfo.postValue(
-                    repository.getDiscoveryInfo(sanitizedUrl)
+                    CallStatus.Done(repository.getDiscoveryInfo(sanitizedUrl))
                 )
             }
         }

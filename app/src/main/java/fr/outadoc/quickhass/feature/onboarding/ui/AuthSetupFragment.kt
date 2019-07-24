@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.quickhass.R
+import fr.outadoc.quickhass.feature.onboarding.extensions.toViewStatus
 import fr.outadoc.quickhass.feature.onboarding.model.NavigationFlow
 import fr.outadoc.quickhass.feature.onboarding.vm.AuthSetupViewModel
 
@@ -29,11 +30,7 @@ class AuthSetupFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(AuthSetupViewModel::class.java).apply {
             apiStatus.observe(this@AuthSetupFragment, Observer { status ->
-                viewHolder.tokenValidationResult.state =
-                    when (if (status.isSuccess) status.getOrNull() else null) {
-                        null -> ResultIconView.State.ERROR
-                        else -> ResultIconView.State.SUCCESS
-                    }
+                viewHolder.tokenValidationResult.state = status.toViewStatus()
             })
 
             canContinue.observe(this@AuthSetupFragment, Observer { canContinue ->

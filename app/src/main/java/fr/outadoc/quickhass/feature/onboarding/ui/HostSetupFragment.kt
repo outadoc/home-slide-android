@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.quickhass.R
+import fr.outadoc.quickhass.feature.onboarding.extensions.toViewStatus
 import fr.outadoc.quickhass.feature.onboarding.model.NavigationFlow
 import fr.outadoc.quickhass.feature.onboarding.vm.HostSetupViewModel
 
@@ -27,11 +28,7 @@ class HostSetupFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(HostSetupViewModel::class.java).apply {
             instanceDiscoveryInfo.observe(this@HostSetupFragment, Observer { discovery ->
-                viewHolder.discoveryResult.state =
-                        when (if (discovery.isSuccess) discovery.getOrNull() else null) {
-                            null -> ResultIconView.State.ERROR
-                            else -> ResultIconView.State.SUCCESS
-                        }
+                viewHolder.discoveryResult.state = discovery.toViewStatus()
             })
 
             canContinue.observe(this@HostSetupFragment, Observer { canContinue ->

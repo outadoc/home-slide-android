@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import com.auth0.android.jwt.DecodeException
 import com.auth0.android.jwt.JWT
 import fr.outadoc.quickhass.feature.onboarding.model.ApiStatus
+import fr.outadoc.quickhass.feature.onboarding.model.CallStatus
 import fr.outadoc.quickhass.feature.onboarding.model.NavigationFlow
 import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepositoryImpl
 import fr.outadoc.quickhass.lifecycle.Event
@@ -19,13 +20,13 @@ class AuthSetupViewModel(application: Application) : AndroidViewModel(applicatio
     private val prefs = PreferenceRepositoryImpl(application.applicationContext)
     private val repository = DiscoveryRepositoryImpl()
 
-    private val _apiStatus = MutableLiveData<Result<ApiStatus>>()
-    val apiStatus: LiveData<Result<ApiStatus>> = _apiStatus
+    private val _apiStatus = MutableLiveData<CallStatus<ApiStatus>>()
+    val apiStatus: LiveData<CallStatus<ApiStatus>> = _apiStatus
 
     private val _navigateTo = MutableLiveData<Event<NavigationFlow>>()
     val navigateTo: LiveData<Event<NavigationFlow>> = _navigateTo
 
-    val canContinue = apiStatus.map { it.isSuccess }
+    val canContinue = apiStatus.map { it is CallStatus.Done && it.value.isSuccess }
 
     private var inputJwt: String? = null
     private var apiStatusJob: Job? = null
@@ -34,13 +35,15 @@ class AuthSetupViewModel(application: Application) : AndroidViewModel(applicatio
         inputJwt = token
 
         if (!token.isValidJwt()) {
-            _apiStatus.value = Result.failure(InvalidTokenException())
+            _apiStatus.value = CallStatus.Done(Result.failure(InvalidTokenException()))
         }
 
         apiStatusJob?.cancel()
+        _apiStatus.value = CallStatus.Loading
+
         apiStatusJob = viewModelScope.launch(Dispatchers.IO) {
             _apiStatus.postValue(
-                repository.getApiStatus(prefs.instanceBaseUrl, token)
+                CallStatus.Done(repository.getApiStatus(prefs.instanceBaseUrl, token))
             )
         }
     }
