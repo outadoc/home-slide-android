@@ -7,4 +7,9 @@
     <color name="colorOnAccent">#FFF</color>
     <color name="colorLink">#3949AB</color>
     <color name="colorSuccess">#7CB342</color>
+
+    <color name="lt_yellow">#fce18a</color>
+    <color name="lt_orange">#ff726d</color>
+    <color name="lt_purple">#b48def</color>
+    <color name="lt_pink">#f4306d</color>
 </resources>
