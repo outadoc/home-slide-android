@@ -4,18 +4,21 @@
     <PreferenceCategory app:title="@string/pref_cat_hass_title">
         <EditTextPreference
             app:defaultValue="http://hass.local:8123"
+            app:icon="@drawable/ic_local_network"
             app:key="et_pref_instance_base_url"
             app:singleLine="true"
             app:summary="@string/pref_base_url_summary"
             app:title="@string/pref_base_url_title" />
 
         <EditTextPreference
+            app:icon="@drawable/ic_remote_network"
             app:key="et_pref_instance_alt_base_url"
             app:singleLine="true"
             app:summary="@string/pref_alt_base_url_summary"
             app:title="@string/pref_alt_base_url_title" />
 
         <EditTextPreference
+            app:icon="@drawable/ic_key"
             app:key="et_pref_auth_token"
             app:singleLine="false"
             app:summary="@string/pref_auth_token_summary"
@@ -27,6 +30,7 @@
             app:defaultValue="system"
             app:entries="@array/pref_theme_entry_names"
             app:entryValues="@array/pref_theme_entry_values"
+            app:icon="@drawable/ic_invert_colors"
             app:key="list_pref_theme"
             app:summary="%s"
             app:title="@string/pref_theme_title" />
