@@ -24,11 +24,17 @@
 
     <PreferenceCategory app:title="@string/pref_cat_app_title">
         <ListPreference
-            app:key="list_pref_theme"
             app:defaultValue="system"
-            app:summary="%s"
             app:entries="@array/pref_theme_entry_names"
             app:entryValues="@array/pref_theme_entry_values"
+            app:key="list_pref_theme"
+            app:summary="%s"
             app:title="@string/pref_theme_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pref_about_title">
+        <Preference
+            app:key="pref_about_version"
+            app:title="@string/app_name" />
     </PreferenceCategory>
 </PreferenceScreen>

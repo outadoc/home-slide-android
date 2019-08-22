@@ -45,4 +45,8 @@
     <string name="onboarding_setup_shortcut_subtitle">Activez l\'accès rapide</string>
     <string name="onboarding_setup_auth_help_link"><u>Générer un jeton sur votre page Profil</u></string>
     <string name="onboarding_setup_auth_help">Vous pouvez générer un jeton d\'accès de longue durée sur votre page Profil dans Home Assistant.</string>
+    <string name="result_contentDescription_error">Erreur</string>
+    <string name="result_contentDescription_loading">Chargement</string>
+    <string name="result_contentDescription_success">Succès</string>
+    <string name="version_name">Version %1$s</string>
 </resources>
