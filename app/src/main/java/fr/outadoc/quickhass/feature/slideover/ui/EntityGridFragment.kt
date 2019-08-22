@@ -11,6 +11,7 @@ import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
@@ -20,6 +21,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.faltenreich.skeletonlayout.applySkeleton
 import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.feature.onboarding.OnboardingActivity
 import fr.outadoc.quickhass.feature.slideover.vm.EntityGridViewModel
@@ -65,6 +67,7 @@ class EntityGridFragment : Fragment() {
             isLoading.observe(this@EntityGridFragment, Observer { isLoading ->
                 viewHolder?.apply {
                     progress.isVisible = isLoading
+                    if (!isLoading) skeleton.showOriginal()
                 }
             })
 
@@ -88,8 +91,6 @@ class EntityGridFragment : Fragment() {
                         startOnboarding()
                     }
                 })
-
-            loadShortcuts()
         }
     }
 
@@ -107,31 +108,13 @@ class EntityGridFragment : Fragment() {
                 viewModel::onReorderedEntities
             )
         ).apply {
-            settingsButton.setOnClickListener {
-                openSettings()
-            }
+            settingsButton.setOnClickListener { openSettings() }
+            editButton.setOnClickListener { viewModel.onEditClick() }
 
-            editButton.setOnClickListener {
-                viewModel.onEditClick()
-            }
-
-            with(recyclerView) {
-                adapter = itemAdapter
-                layoutManager = GridLayoutManager(
-                    context,
-                    GRID_SPAN_COUNT
-                )
-                itemTouchHelper.attachToRecyclerView(recyclerView)
-
-                addItemDecoration(
-                    GridSpacingItemDecoration(
-                        GRID_SPAN_COUNT,
-                        resources.getDimensionPixelSize(R.dimen.grid_spacing)
-                    )
-                )
-            }
-
+            itemTouchHelper.attachToRecyclerView(recyclerView)
             setWindowInsets(this)
+
+            skeleton.showSkeleton()
         }
 
         return root
@@ -207,10 +190,26 @@ class EntityGridFragment : Fragment() {
     }
 
     private class ViewHolder(val root: View, val itemAdapter: EntityAdapter) {
-        val recyclerView: RecyclerView = root.findViewById(R.id.recyclerView_shortcuts)
         val settingsButton: ImageButton = root.findViewById(R.id.imageButton_settings)
         val editButton: ImageButton = root.findViewById(R.id.imageButton_edit)
         val progress: ProgressBar = root.findViewById(R.id.progress_main)
+
+        val recyclerView: RecyclerView = root.findViewById<RecyclerView>(R.id.recyclerView_shortcuts).apply {
+            adapter = itemAdapter
+            layoutManager = GridLayoutManager(context, GRID_SPAN_COUNT)
+
+            addItemDecoration(
+                GridSpacingItemDecoration(
+                    GRID_SPAN_COUNT,
+                    resources.getDimensionPixelSize(R.dimen.grid_spacing)
+                )
+            )
+        }
+
+        val skeleton = recyclerView.applySkeleton(R.layout.item_shortcut, GRID_SPAN_COUNT * 15).apply {
+            maskColor = ContextCompat.getColor(recyclerView.context, R.color.skeleton_maskColor)
+            shimmerColor = ContextCompat.getColor(recyclerView.context, R.color.skeleton_shimmerColor)
+        }
     }
 
     companion object {
