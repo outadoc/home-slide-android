@@ -11,12 +11,14 @@ class OnboardingActivity : DayNightActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_onboarding)
 
+        setSupportActionBar(findViewById(R.id.toolbar))
+
         findNavController(this, R.id.nav_host_fragment)
-                .navigate(R.id.welcomeFragment)
+            .navigate(R.id.welcomeFragment)
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return findNavController(this, R.id.nav_host_fragment)
-                .navigateUp()
+            .navigateUp()
     }
 }

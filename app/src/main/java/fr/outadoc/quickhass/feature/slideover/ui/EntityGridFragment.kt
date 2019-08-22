@@ -141,11 +141,7 @@ class EntityGridFragment : Fragment() {
     }
 
     private fun openSettings() {
-        Intent(activity, SettingsActivity::class.java).let { i ->
-            startActivity(i)
-            activity?.finish()
-        }
-
+        startActivity(Intent(activity, SettingsActivity::class.java))
     }
 
     private fun setWindowInsets(viewHolder: ViewHolder) {
