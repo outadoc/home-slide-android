@@ -6,6 +6,7 @@ import fr.outadoc.mdi.IconStringRef
 import fr.outadoc.quickhass.feature.slideover.model.annotation.StringDomain
 import fr.outadoc.quickhass.feature.slideover.model.annotation.StringEntityId
 import fr.outadoc.quickhass.feature.slideover.model.annotation.StringState
+import java.text.DecimalFormat
 
 sealed class Entity(private val state: State, private val defaultIcon: FontIcon) {
 
@@ -28,6 +29,8 @@ sealed class Entity(private val state: State, private val defaultIcon: FontIcon)
     open val isOn: Boolean = false
 
     open val primaryAction: Action? = null
+
+    open val formattedState: String? = null
 
     /**
      * Can be overridden by children to provide a contextual icon.
@@ -93,7 +96,15 @@ class PersonEntity(state: State) : Entity(state, "account".toIcon()!!)
 
 class SunEntity(state: State) : Entity(state, "weather-sunny".toIcon()!!)
 
-class SensorEntity(state: State) : Entity(state, "eye".toIcon()!!)
+class SensorEntity(state: State) : Entity(state, "eye".toIcon()!!) {
+
+    private val decFormatter = DecimalFormat("#.#")
+
+    override val formattedState: String?
+        get() = stateStr.toFloatOrNull()?.let { dec ->
+            "${decFormatter.format(dec)} ${additionalAttributes.unit ?: ""}".trim()
+        }
+}
 
 class ScriptEntity(state: State) : Entity(state, "file-document".toIcon()!!) {
 

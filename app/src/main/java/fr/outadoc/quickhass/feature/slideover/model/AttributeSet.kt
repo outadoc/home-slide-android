@@ -14,5 +14,9 @@ data class AttributeSet(
     @Json(name = "hidden")
     val isHidden: Boolean = false,
     @Json(name = "operation_list")
-    val operationList: List<String>?
+    val operationList: List<String>?,
+    @Json(name = "current_temperature")
+    val currentTemperature: Float? = null,
+    @Json(name = "unit_of_measurement")
+    val unit: String? = null
 )
