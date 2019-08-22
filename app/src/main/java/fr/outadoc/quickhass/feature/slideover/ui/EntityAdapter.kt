@@ -42,7 +42,15 @@ class EntityAdapter(
             }
 
             label.text = item.friendlyName ?: item.entityId
-            icon.text = item.icon.unicodePoint
+
+            icon.visibility = if (item.formattedState == null) View.VISIBLE else View.INVISIBLE
+            state.visibility = if (item.formattedState != null) View.VISIBLE else View.INVISIBLE
+
+            if (item.formattedState == null) {
+                icon.text = item.icon.unicodePoint
+            } else {
+                state.text = item.formattedState
+            }
         }
     }
 
@@ -60,5 +68,6 @@ class EntityAdapter(
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val label: TextView = view.findViewById(R.id.tv_shortcut_label)
         val icon: TextView = view.findViewById(R.id.tv_shortcut_icon)
+        val state: TextView = view.findViewById(R.id.tv_extra_state)
     }
 }
