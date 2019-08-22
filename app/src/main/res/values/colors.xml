@@ -12,4 +12,7 @@
     <color name="lt_orange">#ff726d</color>
     <color name="lt_purple">#b48def</color>
     <color name="lt_pink">#f4306d</color>
+
+    <color name="skeleton_maskColor">#E0E0E0</color>
+    <color name="skeleton_shimmerColor">#d5d5d5</color>
 </resources>
