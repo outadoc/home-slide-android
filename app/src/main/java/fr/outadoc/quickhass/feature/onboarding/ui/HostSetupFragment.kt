@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.quickhass.R
@@ -21,11 +21,10 @@ import fr.outadoc.quickhass.feature.onboarding.vm.HostSetupViewModel
 class HostSetupFragment : Fragment() {
 
     private lateinit var viewHolder: ViewHolder
-    private lateinit var viewModel: HostSetupViewModel
+    private val viewModel: HostSetupViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(HostSetupViewModel::class.java)
 
         viewModel.instanceDiscoveryInfo.observe(this, Observer { discovery ->
             viewHolder.discoveryResult.state = discovery.toViewStatus()
@@ -39,8 +38,7 @@ class HostSetupFragment : Fragment() {
             when (it.pop()) {
                 NavigationFlow.Next -> viewHolder.navController.navigate(R.id.action_setupHostFragment_to_setupAuthFragment)
                 NavigationFlow.Back -> viewHolder.navController.navigateUp()
-                else -> {
-                }
+                else -> Unit
             }
         })
     }

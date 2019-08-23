@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.quickhass.R
@@ -20,27 +20,24 @@ import nl.dionsegijn.konfetti.models.Size
 
 class SuccessFragment : Fragment() {
 
-    private lateinit var viewModel: SuccessViewModel
     private lateinit var viewHolder: ViewHolder
+    private val viewModel: SuccessViewModel by viewModels()
 
     private val confettiColors = intArrayOf(R.color.lt_yellow, R.color.lt_orange, R.color.lt_purple, R.color.lt_pink)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(SuccessViewModel::class.java).apply {
-            navigateTo.observe(this@SuccessFragment, Observer {
-                when (it.pop()) {
-                    NavigationFlow.Next -> {
-                        viewHolder.navController.navigate(R.id.action_successFragment_to_slideOverActivity)
-                        activity?.finish()
-                    }
-                    NavigationFlow.Back -> viewHolder.navController.navigateUp()
-                    else -> {
-                    }
+        viewModel.navigateTo.observe(this@SuccessFragment, Observer {
+            when (it.pop()) {
+                NavigationFlow.Next -> {
+                    viewHolder.navController.navigate(R.id.action_successFragment_to_slideOverActivity)
+                    activity?.finish()
                 }
-            })
-        }
+                NavigationFlow.Back -> viewHolder.navController.navigateUp()
+                else -> Unit
+            }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
