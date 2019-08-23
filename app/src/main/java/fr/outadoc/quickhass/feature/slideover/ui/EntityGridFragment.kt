@@ -16,8 +16,8 @@ import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -30,16 +30,13 @@ import fr.outadoc.quickhass.preferences.SettingsActivity
 
 class EntityGridFragment : Fragment() {
 
-    private lateinit var viewModel: EntityGridViewModel
-
     private var viewHolder: ViewHolder? = null
+    private val viewModel: EntityGridViewModel by viewModels()
 
     private val handler: Handler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = ViewModelProviders.of(this).get(EntityGridViewModel::class.java)
 
         with(viewModel) {
             result.observe(this@EntityGridFragment, Observer { shortcuts ->

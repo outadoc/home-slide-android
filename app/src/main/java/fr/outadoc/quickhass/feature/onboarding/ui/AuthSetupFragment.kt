@@ -11,8 +11,8 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.quickhass.R
@@ -23,11 +23,10 @@ import fr.outadoc.quickhass.feature.onboarding.vm.AuthSetupViewModel
 class AuthSetupFragment : Fragment() {
 
     private lateinit var viewHolder: ViewHolder
-    private lateinit var viewModel: AuthSetupViewModel
+    private val viewModel: AuthSetupViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(AuthSetupViewModel::class.java)
 
         viewModel.apiStatus.observe(this, Observer { status ->
             viewHolder.tokenValidationResult.state = status.toViewStatus()
