@@ -41,4 +41,22 @@
             app:key="pref_about_version"
             app:title="@string/app_name" />
     </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pref_legal_title">
+        <Preference
+            app:key="pref_oss_apache2"
+            app:title="@string/pref_oss_apache2_title" />
+
+        <Preference
+            app:key="pref_oss_mit"
+            app:title="@string/pref_oss_mit_title" />
+
+        <Preference
+            app:key="pref_oss_isc"
+            app:title="@string/pref_oss_isc_title" />
+
+        <Preference
+            app:key="pref_oss_ofl"
+            app:title="@string/pref_oss_ofl_title" />
+    </PreferenceCategory>
 </PreferenceScreen>

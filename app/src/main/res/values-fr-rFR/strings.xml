@@ -50,4 +50,9 @@
     <string name="result_contentDescription_success">Succès</string>
     <string name="version_name">Version %1$s</string>
     <string name="pref_about_title">À propos</string>
+    <string name="pref_legal_title">Logiciels cool qu\'on utilise</string>
+    <string name="pref_oss_apache2_title">Licence Apache 2.0</string>
+    <string name="pref_oss_isc_title">Licence ISC</string>
+    <string name="pref_oss_mit_title">Licence MIT</string>
+    <string name="pref_oss_ofl_title">SIL Open Font License</string>
 </resources>
