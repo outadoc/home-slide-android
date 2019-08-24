@@ -80,6 +80,6 @@
         android:id="@+id/slideOverActivity"
         android:name="fr.outadoc.quickhass.feature.slideover.SlideOverActivity"
         android:label="fragment_slideover"
-        tools:layout="@layout/fragment_slideover" />
+        tools:layout="@layout/fragment_entity_grid" />
 
 </navigation>
