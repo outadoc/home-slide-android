@@ -58,5 +58,9 @@
         <Preference
             app:key="pref_oss_ofl"
             app:title="@string/pref_oss_ofl_title" />
+
+        <Preference
+            app:key="pref_oss_ccby"
+            app:title="@string/pref_oss_ccby_title" />
     </PreferenceCategory>
 </PreferenceScreen>
