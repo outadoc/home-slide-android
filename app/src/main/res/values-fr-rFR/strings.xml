@@ -16,7 +16,7 @@
     <string name="toast_generic_error_title">Une erreur est survenue.</string>
 
     <string-array name="pref_theme_entry_names">
-        <item>Système</item>
+        <item>Par défaut</item>
         <item>Mode clair</item>
         <item>Mode sombre</item>
     </string-array>
@@ -56,4 +56,5 @@
     <string name="pref_oss_isc_title">Licence ISC</string>
     <string name="pref_oss_mit_title">Licence MIT</string>
     <string name="pref_oss_ofl_title">SIL Open Font License</string>
+    <string name="pref_oss_ccby_title">Creative Commons BY 3.0</string>
 </resources>
