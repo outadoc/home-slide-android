@@ -42,12 +42,7 @@ class EntityGridFragment : Fragment() {
             result.observe(this@EntityGridFragment, Observer { shortcuts ->
                 shortcuts
                     .onFailure { e ->
-                        Toast.makeText(
-                            context,
-                            e.message ?: getString(R.string.toast_generic_error_title),
-                            Toast.LENGTH_SHORT
-                        ).show()
-
+                        Toast.makeText(context, e.message ?: getString(R.string.toast_generic_error_title), Toast.LENGTH_SHORT).show()
                         scheduleRefresh()
                     }
                     .onSuccess {
@@ -64,7 +59,10 @@ class EntityGridFragment : Fragment() {
             isLoading.observe(this@EntityGridFragment, Observer { isLoading ->
                 viewHolder?.apply {
                     progress.isVisible = isLoading
-                    if (!isLoading) skeleton.showOriginal()
+
+                    if (!isLoading && skeleton.isSkeleton()) {
+                        skeleton.showOriginal()
+                    }
                 }
             })
 
@@ -100,10 +98,7 @@ class EntityGridFragment : Fragment() {
 
         viewHolder = ViewHolder(
             root,
-            EntityAdapter(
-                viewModel::onEntityClick,
-                viewModel::onReorderedEntities
-            )
+            EntityAdapter(viewModel::onEntityClick, viewModel::onReorderedEntities)
         ).apply {
             settingsButton.setOnClickListener { openSettings() }
             editButton.setOnClickListener { viewModel.onEditClick() }
