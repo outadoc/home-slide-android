@@ -6,8 +6,9 @@ import fr.outadoc.quickhass.feature.slideover.rest.wrapResponse
 
 class DiscoveryRepositoryImpl : DiscoveryRepository {
 
-    private val client =
+    private val client: DiscoveryApi by lazy {
         SimpleRestClient.create<DiscoveryApi>()
+    }
 
     override suspend fun getDiscoveryInfo(baseUrl: String): Result<DiscoveryInfo> =
         wrapResponse { client.getDiscoveryInfo(baseUrl) }
