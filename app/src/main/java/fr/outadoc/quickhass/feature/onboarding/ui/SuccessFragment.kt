@@ -20,7 +20,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class SuccessFragment : Fragment() {
 
-    private lateinit var viewHolder: ViewHolder
+    private var viewHolder: ViewHolder? = null
     private val vm: SuccessViewModel by viewModel()
 
     private val confettiColors = intArrayOf(R.color.lt_yellow, R.color.lt_orange, R.color.lt_purple, R.color.lt_pink)
@@ -31,10 +31,10 @@ class SuccessFragment : Fragment() {
         vm.navigateTo.observe(this@SuccessFragment, Observer {
             when (it.pop()) {
                 NavigationFlow.Next -> {
-                    viewHolder.navController.navigate(R.id.action_successFragment_to_slideOverActivity)
+                    viewHolder?.navController?.navigate(R.id.action_successFragment_to_slideOverActivity)
                     activity?.finish()
                 }
-                NavigationFlow.Back -> viewHolder.navController.navigateUp()
+                NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
                 else -> Unit
             }
         })
@@ -55,7 +55,7 @@ class SuccessFragment : Fragment() {
     }
 
     private fun confetti() {
-        viewHolder.confettiView.apply {
+        viewHolder?.confettiView?.apply {
             build()
                 .addColors(confettiColors.map { context.getColor(it) })
                 .setDirection(0.0, 359.0)
@@ -67,6 +67,11 @@ class SuccessFragment : Fragment() {
                 .setPosition(-50f, width + 50f, -50f, -50f)
                 .streamFor(300, 2000L)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewHolder = null
     }
 
     private class ViewHolder(private val view: View) {

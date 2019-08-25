@@ -16,21 +16,19 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class WelcomeFragment : Fragment() {
 
-    private lateinit var viewHolder: ViewHolder
+    private var viewHolder: ViewHolder? = null
     private val vm: WelcomeViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        vm.apply {
-            navigateTo.observe(this@WelcomeFragment, Observer {
-                when (it.pop()) {
-                    NavigationFlow.Next -> viewHolder.navController.navigate(R.id.action_welcomeFragment_to_setupHostFragment)
-                    NavigationFlow.Back -> viewHolder.navController.navigateUp()
-                    else -> Unit
-                }
-            })
-        }
+        vm.navigateTo.observe(this@WelcomeFragment, Observer {
+            when (it.pop()) {
+                NavigationFlow.Next -> viewHolder?.navController?.navigate(R.id.action_welcomeFragment_to_setupHostFragment)
+                NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
+                else -> Unit
+            }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -43,6 +41,11 @@ class WelcomeFragment : Fragment() {
         }
 
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewHolder = null
     }
 
     private class ViewHolder(private val view: View) {
