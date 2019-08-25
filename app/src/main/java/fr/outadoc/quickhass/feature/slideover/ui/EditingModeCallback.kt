@@ -13,11 +13,7 @@ class EditingModeCallback(private val viewModel: EntityGridViewModel) :
                 ItemTouchHelper.END, 0
     ) {
 
-    override fun onMove(
-        recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder,
-        target: RecyclerView.ViewHolder
-    ): Boolean {
+    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
         val adapter = recyclerView.adapter as ReorderableRecyclerViewAdapter
 
         val from = viewHolder.adapterPosition
@@ -31,10 +27,7 @@ class EditingModeCallback(private val viewModel: EntityGridViewModel) :
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
 
-    override fun onSelectedChanged(
-        viewHolder: RecyclerView.ViewHolder?,
-        actionState: Int
-    ) {
+    override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         super.onSelectedChanged(viewHolder, actionState)
 
         if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
@@ -42,10 +35,7 @@ class EditingModeCallback(private val viewModel: EntityGridViewModel) :
         }
     }
 
-    override fun clearView(
-        recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder
-    ) {
+    override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
         viewHolder.itemView.scale(1.0f, 0.0f)
     }

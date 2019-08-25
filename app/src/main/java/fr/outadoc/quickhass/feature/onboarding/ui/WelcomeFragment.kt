@@ -6,23 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.feature.onboarding.model.NavigationFlow
 import fr.outadoc.quickhass.feature.onboarding.vm.WelcomeViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class WelcomeFragment : Fragment() {
 
     private lateinit var viewHolder: ViewHolder
-    private val viewModel: WelcomeViewModel by viewModels()
+    private val vm: WelcomeViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.apply {
+        vm.apply {
             navigateTo.observe(this@WelcomeFragment, Observer {
                 when (it.pop()) {
                     NavigationFlow.Next -> viewHolder.navController.navigate(R.id.action_welcomeFragment_to_setupHostFragment)
@@ -38,7 +38,7 @@ class WelcomeFragment : Fragment() {
 
         viewHolder = ViewHolder(view).apply {
             continueButton.setOnClickListener {
-                viewModel.onContinueClicked()
+                vm.onContinueClicked()
             }
         }
 

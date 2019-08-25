@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import fr.outadoc.quickhass.preferences.PreferenceRepository
-import fr.outadoc.quickhass.preferences.PreferenceRepositoryImpl
+import org.koin.android.ext.android.inject
 
 abstract class DayNightActivity : AppCompatActivity() {
+
+    private val prefs: PreferenceRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -14,8 +16,6 @@ abstract class DayNightActivity : AppCompatActivity() {
     }
 
     private fun applyPreferredTheme() {
-        val prefs: PreferenceRepository = PreferenceRepositoryImpl(applicationContext)
-
         AppCompatDelegate.setDefaultNightMode(
             when (prefs.theme) {
                 "day" -> AppCompatDelegate.MODE_NIGHT_NO

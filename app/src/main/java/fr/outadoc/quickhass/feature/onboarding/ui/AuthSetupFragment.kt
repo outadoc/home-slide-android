@@ -11,7 +11,6 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -19,24 +18,25 @@ import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.feature.onboarding.extensions.toViewStatus
 import fr.outadoc.quickhass.feature.onboarding.model.NavigationFlow
 import fr.outadoc.quickhass.feature.onboarding.vm.AuthSetupViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class AuthSetupFragment : Fragment() {
 
     private lateinit var viewHolder: ViewHolder
-    private val viewModel: AuthSetupViewModel by viewModels()
+    private val vm: AuthSetupViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.apiStatus.observe(this, Observer { status ->
+        vm.apiStatus.observe(this, Observer { status ->
             viewHolder.tokenValidationResult.state = status.toViewStatus()
         })
 
-        viewModel.canContinue.observe(this, Observer { canContinue ->
+        vm.canContinue.observe(this, Observer { canContinue ->
             viewHolder.continueButton.isEnabled = canContinue
         })
 
-        viewModel.navigateTo.observe(this, Observer {
+        vm.navigateTo.observe(this, Observer {
             when (val dest = it.pop()) {
                 NavigationFlow.Next -> viewHolder.navController.navigate(R.id.action_setupAuthFragment_to_setupShortcutFragment)
                 NavigationFlow.Back -> viewHolder.navController.navigateUp()
@@ -59,16 +59,16 @@ class AuthSetupFragment : Fragment() {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    s?.let { viewModel.onTokenChanged(s.toString()) }
+                    s?.let { vm.onTokenChanged(s.toString()) }
                 }
             })
 
             continueButton.setOnClickListener {
-                viewModel.onContinueClicked()
+                vm.onContinueClicked()
             }
 
             helpLink.setOnClickListener {
-                viewModel.onClickHelpLink()
+                vm.onClickHelpLink()
             }
         }
 

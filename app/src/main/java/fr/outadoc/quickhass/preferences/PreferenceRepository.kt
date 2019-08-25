@@ -2,10 +2,10 @@ package fr.outadoc.quickhass.preferences
 
 interface PreferenceRepository {
 
-    val instanceBaseUrl: String
+    var instanceBaseUrl: String
     val altInstanceBaseUrl: String?
-    val accessToken: String
+    var accessToken: String
     val theme: String
 
-    val isOnboardingDone: Boolean
+    var isOnboardingDone: Boolean
 }
