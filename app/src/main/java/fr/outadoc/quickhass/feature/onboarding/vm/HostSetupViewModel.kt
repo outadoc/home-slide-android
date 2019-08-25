@@ -1,23 +1,22 @@
 package fr.outadoc.quickhass.feature.onboarding.vm
 
-import android.app.Application
 import android.os.Handler
 import androidx.core.net.toUri
 import androidx.lifecycle.*
 import fr.outadoc.quickhass.feature.onboarding.model.CallStatus
 import fr.outadoc.quickhass.feature.onboarding.model.DiscoveryInfo
 import fr.outadoc.quickhass.feature.onboarding.model.NavigationFlow
-import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepositoryImpl
+import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepository
 import fr.outadoc.quickhass.lifecycle.Event
-import fr.outadoc.quickhass.preferences.PreferenceRepositoryImpl
+import fr.outadoc.quickhass.preferences.PreferenceRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class HostSetupViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val prefs = PreferenceRepositoryImpl(application.applicationContext)
-    private val repository = DiscoveryRepositoryImpl()
+class HostSetupViewModel(
+    private val prefs: PreferenceRepository,
+    private val repository: DiscoveryRepository
+) : ViewModel() {
 
     private val _instanceDiscoveryInfo = MutableLiveData<CallStatus<DiscoveryInfo>>()
     val instanceDiscoveryInfo: LiveData<CallStatus<DiscoveryInfo>> = _instanceDiscoveryInfo

@@ -1,6 +1,5 @@
 package fr.outadoc.quickhass.feature.onboarding.vm
 
-import android.app.Application
 import android.net.Uri
 import android.os.Handler
 import androidx.lifecycle.*
@@ -9,17 +8,17 @@ import com.auth0.android.jwt.JWT
 import fr.outadoc.quickhass.feature.onboarding.model.ApiStatus
 import fr.outadoc.quickhass.feature.onboarding.model.CallStatus
 import fr.outadoc.quickhass.feature.onboarding.model.NavigationFlow
-import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepositoryImpl
+import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepository
 import fr.outadoc.quickhass.lifecycle.Event
-import fr.outadoc.quickhass.preferences.PreferenceRepositoryImpl
+import fr.outadoc.quickhass.preferences.PreferenceRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class AuthSetupViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val prefs = PreferenceRepositoryImpl(application.applicationContext)
-    private val repository = DiscoveryRepositoryImpl()
+class AuthSetupViewModel(
+    private val repository: DiscoveryRepository,
+    private val prefs: PreferenceRepository
+) : ViewModel() {
 
     private val _apiStatus = MutableLiveData<CallStatus<ApiStatus>>()
     val apiStatus: LiveData<CallStatus<ApiStatus>> = _apiStatus

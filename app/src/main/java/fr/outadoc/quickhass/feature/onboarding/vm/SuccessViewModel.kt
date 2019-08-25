@@ -1,16 +1,13 @@
 package fr.outadoc.quickhass.feature.onboarding.vm
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import fr.outadoc.quickhass.feature.onboarding.model.NavigationFlow
 import fr.outadoc.quickhass.lifecycle.Event
-import fr.outadoc.quickhass.preferences.PreferenceRepositoryImpl
+import fr.outadoc.quickhass.preferences.PreferenceRepository
 
-class SuccessViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val prefs = PreferenceRepositoryImpl(application.applicationContext)
+class SuccessViewModel(private val prefs: PreferenceRepository) : ViewModel() {
 
     private val _navigateTo = MutableLiveData<Event<NavigationFlow>>()
     val navigateTo: LiveData<Event<NavigationFlow>> = _navigateTo

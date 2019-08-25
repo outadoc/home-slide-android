@@ -16,7 +16,6 @@ import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -26,19 +25,20 @@ import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.feature.onboarding.OnboardingActivity
 import fr.outadoc.quickhass.feature.slideover.vm.EntityGridViewModel
 import fr.outadoc.quickhass.preferences.SettingsActivity
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class EntityGridFragment : Fragment() {
 
     private var viewHolder: ViewHolder? = null
-    private val viewModel: EntityGridViewModel by viewModels()
+    private val vm: EntityGridViewModel by viewModel()
 
     private val handler: Handler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        with(viewModel) {
+        with(vm) {
             result.observe(this@EntityGridFragment, Observer { shortcuts ->
                 shortcuts
                     .onFailure { e ->
@@ -98,10 +98,10 @@ class EntityGridFragment : Fragment() {
 
         viewHolder = ViewHolder(
             root,
-            EntityAdapter(viewModel::onEntityClick, viewModel::onReorderedEntities)
+            EntityAdapter(vm::onEntityClick, vm::onReorderedEntities)
         ).apply {
             settingsButton.setOnClickListener { openSettings() }
-            editButton.setOnClickListener { viewModel.onEditClick() }
+            editButton.setOnClickListener { vm.onEditClick() }
 
             itemTouchHelper.attachToRecyclerView(recyclerView)
             setWindowInsets(this)
@@ -117,7 +117,7 @@ class EntityGridFragment : Fragment() {
         cancelRefresh()
 
         handler.postDelayed(REFRESH_INTERVAL_MS) {
-            viewModel.loadShortcuts()
+            vm.loadShortcuts()
         }
     }
 
@@ -170,11 +170,11 @@ class EntityGridFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.loadShortcuts()
+        vm.loadShortcuts()
     }
 
     private val itemTouchHelper by lazy {
-        ItemTouchHelper(EditingModeCallback(viewModel))
+        ItemTouchHelper(EditingModeCallback(vm))
     }
 
     private class ViewHolder(val root: View, val itemAdapter: EntityAdapter) {

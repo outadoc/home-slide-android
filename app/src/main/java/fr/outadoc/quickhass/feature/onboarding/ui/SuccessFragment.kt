@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -17,18 +16,19 @@ import fr.outadoc.quickhass.feature.onboarding.vm.SuccessViewModel
 import nl.dionsegijn.konfetti.KonfettiView
 import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class SuccessFragment : Fragment() {
 
     private lateinit var viewHolder: ViewHolder
-    private val viewModel: SuccessViewModel by viewModels()
+    private val vm: SuccessViewModel by viewModel()
 
     private val confettiColors = intArrayOf(R.color.lt_yellow, R.color.lt_orange, R.color.lt_purple, R.color.lt_pink)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.navigateTo.observe(this@SuccessFragment, Observer {
+        vm.navigateTo.observe(this@SuccessFragment, Observer {
             when (it.pop()) {
                 NavigationFlow.Next -> {
                     viewHolder.navController.navigate(R.id.action_successFragment_to_slideOverActivity)
@@ -45,7 +45,7 @@ class SuccessFragment : Fragment() {
 
         viewHolder = ViewHolder(view).apply {
             continueButton.setOnClickListener {
-                viewModel.onContinueClicked()
+                vm.onContinueClicked()
             }
 
             confettiView.doOnNextLayout { confetti() }

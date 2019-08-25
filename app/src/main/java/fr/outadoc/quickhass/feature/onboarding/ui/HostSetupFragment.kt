@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -17,24 +16,25 @@ import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.feature.onboarding.extensions.toViewStatus
 import fr.outadoc.quickhass.feature.onboarding.model.NavigationFlow
 import fr.outadoc.quickhass.feature.onboarding.vm.HostSetupViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class HostSetupFragment : Fragment() {
 
     private lateinit var viewHolder: ViewHolder
-    private val viewModel: HostSetupViewModel by viewModels()
+    private val vm: HostSetupViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.instanceDiscoveryInfo.observe(this, Observer { discovery ->
+        vm.instanceDiscoveryInfo.observe(this, Observer { discovery ->
             viewHolder.discoveryResult.state = discovery.toViewStatus()
         })
 
-        viewModel.canContinue.observe(this, Observer { canContinue ->
+        vm.canContinue.observe(this, Observer { canContinue ->
             viewHolder.continueButton.isEnabled = canContinue
         })
 
-        viewModel.navigateTo.observe(this, Observer {
+        vm.navigateTo.observe(this, Observer {
             when (it.pop()) {
                 NavigationFlow.Next -> viewHolder.navController.navigate(R.id.action_setupHostFragment_to_setupAuthFragment)
                 NavigationFlow.Back -> viewHolder.navController.navigateUp()
@@ -53,12 +53,12 @@ class HostSetupFragment : Fragment() {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    s?.let { viewModel.onInstanceUrlChanged(s.toString()) }
+                    s?.let { vm.onInstanceUrlChanged(s.toString()) }
                 }
             })
 
             continueButton.setOnClickListener {
-                viewModel.onContinueClicked()
+                vm.onContinueClicked()
             }
         }
 
@@ -70,7 +70,7 @@ class HostSetupFragment : Fragment() {
 
         viewHolder.baseUrlEditText.apply {
             if (text.isEmpty()) {
-                setText(viewModel.defaultInstanceUrl)
+                setText(vm.defaultInstanceUrl)
             }
         }
     }

@@ -9,10 +9,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 
-class RestClient<T>(
-    private val type: Class<T>,
-    private val prefs: PreferenceRepository
-) {
+class RestClient<T>(private val type: Class<T>, private val prefs: PreferenceRepository) {
+
     private val baseUri: HttpUrl?
         get() = HttpUrl.parse(prefs.instanceBaseUrl)
 
