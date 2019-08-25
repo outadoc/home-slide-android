@@ -20,7 +20,9 @@ class EntityRepositoryImpl(context: Context, prefs: PreferenceRepository) : Enti
     private val entityOrder: Map<String, Int>
         get() = persistedEntityCache.map { it.entityId to it.order }.toMap()
 
-    private val client = RestClient.create<HomeAssistantApi>(prefs)
+    private val client: HomeAssistantApi by lazy {
+        RestClient.create<HomeAssistantApi>(prefs)
+    }
 
     override suspend fun getEntities(): Result<List<Entity>> =
         wrapResponse { client.getStates() }.map { states ->
