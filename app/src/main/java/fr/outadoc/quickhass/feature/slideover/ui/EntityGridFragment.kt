@@ -89,11 +89,7 @@ class EntityGridFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val root = inflater.inflate(R.layout.fragment_entity_grid, container, false)
 
         viewHolder = ViewHolder(
@@ -171,6 +167,11 @@ class EntityGridFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         vm.loadShortcuts()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewHolder = null
     }
 
     private val itemTouchHelper by lazy {

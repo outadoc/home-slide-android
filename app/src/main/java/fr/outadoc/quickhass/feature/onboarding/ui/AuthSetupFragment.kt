@@ -22,24 +22,24 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class AuthSetupFragment : Fragment() {
 
-    private lateinit var viewHolder: ViewHolder
+    private var viewHolder: ViewHolder? = null
     private val vm: AuthSetupViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         vm.apiStatus.observe(this, Observer { status ->
-            viewHolder.tokenValidationResult.state = status.toViewStatus()
+            viewHolder?.tokenValidationResult?.state = status.toViewStatus()
         })
 
         vm.canContinue.observe(this, Observer { canContinue ->
-            viewHolder.continueButton.isEnabled = canContinue
+            viewHolder?.continueButton?.isEnabled = canContinue
         })
 
         vm.navigateTo.observe(this, Observer {
             when (val dest = it.pop()) {
-                NavigationFlow.Next -> viewHolder.navController.navigate(R.id.action_setupAuthFragment_to_setupShortcutFragment)
-                NavigationFlow.Back -> viewHolder.navController.navigateUp()
+                NavigationFlow.Next -> viewHolder?.navController?.navigate(R.id.action_setupAuthFragment_to_setupShortcutFragment)
+                NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
                 is NavigationFlow.Url -> {
                     val intent = CustomTabsIntent.Builder().build()
                     intent.launchUrl(context, dest.url)
@@ -73,6 +73,11 @@ class AuthSetupFragment : Fragment() {
         }
 
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewHolder = null
     }
 
     private class ViewHolder(private val view: View) {

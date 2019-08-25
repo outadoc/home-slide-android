@@ -16,7 +16,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class ShortcutSetupFragment : Fragment() {
 
-    private lateinit var viewHolder: ViewHolder
+    private var viewHolder: ViewHolder? = null
     private val vm: ShortcutSetupViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,19 +24,14 @@ class ShortcutSetupFragment : Fragment() {
 
         vm.navigateTo.observe(this, Observer {
             when (it.pop()) {
-                NavigationFlow.Next -> viewHolder.navController.navigate(R.id.action_setupShortcutFragment_to_successFragment)
-                NavigationFlow.Back -> viewHolder.navController.navigateUp()
-                else -> {
-                }
+                NavigationFlow.Next -> viewHolder?.navController?.navigate(R.id.action_setupShortcutFragment_to_successFragment)
+                NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
+                else -> Unit
             }
         })
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_setup_shortcut, container, false)
 
         viewHolder = ViewHolder(view).apply {
@@ -46,6 +41,11 @@ class ShortcutSetupFragment : Fragment() {
         }
 
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewHolder = null
     }
 
     private class ViewHolder(private val view: View) {

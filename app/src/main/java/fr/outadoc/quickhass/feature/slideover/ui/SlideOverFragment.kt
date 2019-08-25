@@ -24,11 +24,7 @@ class SlideOverFragment : Fragment() {
             .commit()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val root = inflater.inflate(R.layout.fragment_slideover, container, false)
 
         viewHolder = ViewHolder(root).apply {
@@ -75,6 +71,12 @@ class SlideOverFragment : Fragment() {
                 )
             }
         }
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewHolder = null
     }
 
     private class ViewHolder(val root: View) {

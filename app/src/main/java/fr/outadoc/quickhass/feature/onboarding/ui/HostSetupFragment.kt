@@ -20,24 +20,24 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class HostSetupFragment : Fragment() {
 
-    private lateinit var viewHolder: ViewHolder
+    private var viewHolder: ViewHolder? = null
     private val vm: HostSetupViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         vm.instanceDiscoveryInfo.observe(this, Observer { discovery ->
-            viewHolder.discoveryResult.state = discovery.toViewStatus()
+            viewHolder?.discoveryResult?.state = discovery.toViewStatus()
         })
 
         vm.canContinue.observe(this, Observer { canContinue ->
-            viewHolder.continueButton.isEnabled = canContinue
+            viewHolder?.continueButton?.isEnabled = canContinue
         })
 
         vm.navigateTo.observe(this, Observer {
             when (it.pop()) {
-                NavigationFlow.Next -> viewHolder.navController.navigate(R.id.action_setupHostFragment_to_setupAuthFragment)
-                NavigationFlow.Back -> viewHolder.navController.navigateUp()
+                NavigationFlow.Next -> viewHolder?.navController?.navigate(R.id.action_setupHostFragment_to_setupAuthFragment)
+                NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
                 else -> Unit
             }
         })
@@ -68,11 +68,16 @@ class HostSetupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewHolder.baseUrlEditText.apply {
+        viewHolder?.baseUrlEditText?.apply {
             if (text.isEmpty()) {
                 setText(vm.defaultInstanceUrl)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewHolder = null
     }
 
     private class ViewHolder(private val view: View) {
