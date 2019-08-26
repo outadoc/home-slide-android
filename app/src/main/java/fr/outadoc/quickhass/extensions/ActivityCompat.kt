@@ -1,7 +1,9 @@
 package fr.outadoc.quickhass.extensions
 
 import android.app.Activity
+import android.content.Context
 import android.os.Build
+import android.os.PowerManager
 import android.view.WindowManager
 
 @Suppress("DEPRECATION")
@@ -20,4 +22,9 @@ fun Activity.setShowWhenLockedCompat(showWhenLocked: Boolean) {
     } else {
         setShowWhenLocked(showWhenLocked)
     }
+}
+
+fun Activity.isInteractive(): Boolean {
+    val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
+    return pm.isInteractive
 }

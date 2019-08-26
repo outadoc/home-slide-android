@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Gravity
 import fr.outadoc.quickhass.DayNightActivity
 import fr.outadoc.quickhass.R
+import fr.outadoc.quickhass.extensions.isInteractive
 import fr.outadoc.quickhass.extensions.setShowWhenLockedCompat
 import fr.outadoc.quickhass.feature.slideover.ui.SlideOverFragment
 import fr.outadoc.quickhass.preferences.PreferenceRepository
@@ -29,6 +30,15 @@ class SlideOverActivity : DayNightActivity() {
     override fun onResume() {
         super.onResume()
         applyShowWhenLocked()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        if (!isInteractive()) {
+            // Close slideover when locking the screen
+            finish()
+        }
     }
 
     private fun applyShowWhenLocked() {
