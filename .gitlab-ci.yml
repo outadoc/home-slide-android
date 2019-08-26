@@ -44,7 +44,7 @@ debugTests:
     - ./gradlew -Pci --console=plain :app:testDebug
 
 bundleRelease:
-  stage: package
+  stage: build
   script:
     - ./gradlew bundleRelease
   artifacts:
