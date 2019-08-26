@@ -26,6 +26,13 @@
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/pref_cat_app_title">
+        <SwitchPreference
+            app:defaultValue="false"
+            app:icon="@drawable/ic_screen_lock"
+            app:key="chk_pref_show_when_locked"
+            app:summary="@string/pref_show_when_locked_summary"
+            app:title="@string/pref_show_when_locked_title" />
+
         <ListPreference
             app:defaultValue="system"
             app:entries="@array/pref_theme_entry_names"

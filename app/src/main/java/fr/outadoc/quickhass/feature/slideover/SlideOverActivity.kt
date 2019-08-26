@@ -1,15 +1,18 @@
 package fr.outadoc.quickhass.feature.slideover
 
-import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
-import android.view.WindowManager
 import fr.outadoc.quickhass.DayNightActivity
 import fr.outadoc.quickhass.R
+import fr.outadoc.quickhass.extensions.setShowWhenLockedCompat
 import fr.outadoc.quickhass.feature.slideover.ui.SlideOverFragment
+import fr.outadoc.quickhass.preferences.PreferenceRepository
+import org.koin.android.ext.android.inject
 
 
 class SlideOverActivity : DayNightActivity() {
+
+    private val prefs: PreferenceRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,15 +24,14 @@ class SlideOverActivity : DayNightActivity() {
             .commit()
 
         window.setGravity(Gravity.BOTTOM)
-        applyCompatFlags()
     }
 
-    @Suppress("DEPRECATION")
-    fun applyCompatFlags() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O_MR1) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
-            window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD)
-            window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
-        }
+    override fun onResume() {
+        super.onResume()
+        applyShowWhenLocked()
+    }
+
+    private fun applyShowWhenLocked() {
+        setShowWhenLockedCompat(prefs.showWhenLocked)
     }
 }
