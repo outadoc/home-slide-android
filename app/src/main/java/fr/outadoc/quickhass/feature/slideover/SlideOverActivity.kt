@@ -29,7 +29,7 @@ class SlideOverActivity : DayNightActivity() {
 
     override fun onResume() {
         super.onResume()
-        applyShowWhenLocked()
+        setShowWhenLockedCompat(prefs.showWhenLocked)
     }
 
     override fun onPause() {
@@ -39,9 +39,5 @@ class SlideOverActivity : DayNightActivity() {
             // Close slideover when locking the screen
             finish()
         }
-    }
-
-    private fun applyShowWhenLocked() {
-        setShowWhenLockedCompat(prefs.showWhenLocked)
     }
 }
