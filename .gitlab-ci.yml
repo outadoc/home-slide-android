@@ -42,3 +42,11 @@ debugTests:
   stage: test
   script:
     - ./gradlew -Pci --console=plain :app:testDebug
+
+bundleRelease:
+  stage: package
+  script:
+    - ./gradlew bundleRelease
+  artifacts:
+    paths:
+      - app/build/outputs/
