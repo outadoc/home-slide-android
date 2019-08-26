@@ -14,7 +14,7 @@
     <string name="pref_alt_base_url_summary">Optional. Internet-accessible URL of your Home Assistant instance.</string>
     <string name="pref_alt_base_url_title">Home Assistant Outside URL</string>
     <string name="pref_auth_token_summary">You can get one on your Profile page in Home Assistant.</string>
-    <string name="pref_auth_token_title">Long-lived access token</string>
+    <string name="pref_auth_token_title">Long-Lived Access Token</string>
     <string name="pref_theme_title">Application Theme</string>
     <string name="pref_cat_hass_title">Home Assistant Settings</string>
     <string name="pref_cat_app_title">Application Settings</string>
@@ -44,6 +44,8 @@
     <string name="version_name">Version %1$s</string>
     <string name="pref_about_title">About</string>
     <string name="pref_legal_title">Awesome Software We Use</string>
+    <string name="pref_show_when_locked_title">Allow on Lock Screen</string>
+    <string name="pref_show_when_locked_summary">Control your home without having to unlock your device.</string>
 
     <string name="pref_oss_mit_title">MIT License</string>
     <string-array name="pref_oss_mit_summary">
