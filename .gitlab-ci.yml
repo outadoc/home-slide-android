@@ -25,6 +25,11 @@ before_script:
   - yes | android-sdk-linux/tools/bin/sdkmanager --licenses
   - set -o pipefail
 
+stages:
+  - build
+  - test
+  - package
+
 lintDebug:
   stage: build
   script:
@@ -44,7 +49,10 @@ debugTests:
     - ./gradlew -Pci --console=plain :app:testDebug
 
 bundleRelease:
-  stage: build
+  stage: package
+  only:
+    - develop
+    - master
   script:
     - ./gradlew bundleRelease
   artifacts:
