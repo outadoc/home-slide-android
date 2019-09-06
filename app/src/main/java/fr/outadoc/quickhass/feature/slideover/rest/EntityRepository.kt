@@ -1,9 +1,9 @@
 package fr.outadoc.quickhass.feature.slideover.rest
 
 import fr.outadoc.quickhass.feature.slideover.model.Action
-import fr.outadoc.quickhass.feature.slideover.model.Entity
 import fr.outadoc.quickhass.feature.slideover.model.Service
 import fr.outadoc.quickhass.feature.slideover.model.State
+import fr.outadoc.quickhass.feature.slideover.model.entity.Entity
 
 interface EntityRepository {
 

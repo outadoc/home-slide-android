@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.R
-import fr.outadoc.quickhass.feature.slideover.model.Entity
+import fr.outadoc.quickhass.feature.slideover.model.entity.Entity
 import java.util.*
 
 class EntityAdapter(
