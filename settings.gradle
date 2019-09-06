@@ -1,1 +1,1 @@
-include ':app', ':materialdesignicons', ':mdi'
+include ':app', ':mdi'
