@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'kotlin-kapt'
 
 android {
@@ -14,7 +13,6 @@ android {
         targetSdkVersion 28
         versionCode 2
         versionName "1.0.1"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -41,8 +39,8 @@ android {
 
 dependencies {
     def room_version = "2.1.0"
-    def lifecycle_version = "2.2.0-alpha03"
-    def nav_version_ktx = "2.2.0-alpha01"
+    def lifecycle_version = "2.2.0-alpha04"
+    def nav_version_ktx = "2.2.0-alpha02"
     def koin_version = '2.0.1'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -52,10 +50,10 @@ dependencies {
 
     // Kotlin runtime
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0'
 
     // UI libs
-    implementation 'com.google.android.material:material:1.1.0-alpha09'
+    implementation 'com.google.android.material:material:1.1.0-alpha10'
     implementation 'nl.dionsegijn:konfetti:1.1.3'
     implementation 'com.faltenreich:skeletonlayout:2.0.0'
 
@@ -68,9 +66,9 @@ dependencies {
     kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.8.0'
 
     // AndroidX libs
-    implementation 'androidx.core:core-ktx:1.0.2'
+    implementation 'androidx.core:core-ktx:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 
     // AndroidX lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
@@ -83,7 +81,7 @@ dependencies {
     implementation 'com.android.support:customtabs:28.0.0'
 
     // Preferences & persistence
-    implementation 'androidx.preference:preference-ktx:1.1.0-rc01'
+    implementation 'androidx.preference:preference-ktx:1.1.0'
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
@@ -92,10 +90,4 @@ dependencies {
     implementation "org.koin:koin-core:$koin_version"
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-android-viewmodel:$koin_version"
-
-
-    // Testing
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
