@@ -1,6 +1,7 @@
 package fr.outadoc.quickhass
 
 import android.app.Application
+import android.os.Vibrator
 import androidx.room.Room
 import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepository
 import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepositoryImpl
@@ -17,6 +18,7 @@ import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
+
 @Suppress("unused")
 class MainApplication : Application() {
 
@@ -25,6 +27,8 @@ class MainApplication : Application() {
         single { EntityRepositoryImpl(get(), get()) as EntityRepository }
         single { PreferenceRepositoryImpl(get()) as PreferenceRepository }
         single { Room.databaseBuilder(get(), EntityDatabase::class.java, EntityDatabase.DB_NAME).build() }
+
+        single { getSystemService(VIBRATOR_SERVICE) as Vibrator }
 
         viewModel { WelcomeViewModel() }
         viewModel { HostSetupViewModel(get(), get()) }
