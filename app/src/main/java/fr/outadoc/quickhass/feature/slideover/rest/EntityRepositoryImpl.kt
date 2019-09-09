@@ -36,7 +36,7 @@ class EntityRepositoryImpl(context: Context, prefs: PreferenceRepository) : Enti
                 .filter { !INITIAL_DOMAIN_BLACKLIST.contains(it.domain) }
                 .sortedWith(
                     compareBy(
-                        { entityOrder[it.entityId] },
+                        { entityOrder[it.entityId] ?: Int.MAX_VALUE },
                         { it.domain })
                 )
                 .toList()
