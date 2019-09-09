@@ -20,6 +20,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.faltenreich.skeletonlayout.applySkeleton
 import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.feature.onboarding.OnboardingActivity
@@ -37,6 +38,9 @@ class EntityGridFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val doneToEditAvd = AnimatedVectorDrawableCompat.create(requireContext(), R.drawable.avd_done_to_edit)
+        val editToDoneAvd = AnimatedVectorDrawableCompat.create(requireContext(), R.drawable.avd_edit_to_done)
 
         with(vm) {
             result.observe(this@EntityGridFragment, Observer { shortcuts ->
@@ -71,6 +75,16 @@ class EntityGridFragment : Fragment() {
                     cancelRefresh()
                 } else {
                     scheduleRefresh()
+                }
+
+                viewHolder?.apply {
+                    val drawable = when (isEditingMode) {
+                        true -> editToDoneAvd
+                        false -> doneToEditAvd
+                    }
+
+                    editButton.setImageDrawable(drawable)
+                    drawable?.start()
                 }
 
                 viewHolder?.itemAdapter?.apply {
