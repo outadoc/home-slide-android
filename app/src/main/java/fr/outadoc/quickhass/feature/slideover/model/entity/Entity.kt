@@ -8,7 +8,7 @@ import fr.outadoc.quickhass.feature.slideover.model.annotation.StringDomain
 import fr.outadoc.quickhass.feature.slideover.model.annotation.StringEntityId
 import fr.outadoc.quickhass.feature.slideover.model.annotation.StringState
 
-open class Entity(private val state: State, private val defaultIcon: FontIcon) {
+abstract class Entity(private val state: State, private val defaultIcon: FontIcon) {
 
     @StringEntityId
     val entityId: String = state.entityId
