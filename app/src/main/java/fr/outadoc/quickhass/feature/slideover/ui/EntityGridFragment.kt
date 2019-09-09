@@ -38,6 +38,8 @@ class EntityGridFragment : Fragment() {
 
     private val handler: Handler = Handler()
 
+    private var isInitialEditing = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -73,7 +75,11 @@ class EntityGridFragment : Fragment() {
             })
 
             isEditingMode.observe(this@EntityGridFragment, Observer { isEditingMode ->
-                vibrate()
+                if (isInitialEditing) {
+                    isInitialEditing = false
+                } else {
+                    vibrate()
+                }
 
                 if (isEditingMode) {
                     cancelRefresh()
