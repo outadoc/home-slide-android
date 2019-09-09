@@ -2,8 +2,7 @@ package fr.outadoc.quickhass.feature.slideover.ui
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.os.Handler
+import android.os.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +25,7 @@ import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.feature.onboarding.OnboardingActivity
 import fr.outadoc.quickhass.feature.slideover.vm.EntityGridViewModel
 import fr.outadoc.quickhass.preferences.SettingsActivity
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -33,6 +33,8 @@ class EntityGridFragment : Fragment() {
 
     private var viewHolder: ViewHolder? = null
     private val vm: EntityGridViewModel by viewModel()
+
+    private val vibrator: Vibrator by inject()
 
     private val handler: Handler = Handler()
 
@@ -71,6 +73,8 @@ class EntityGridFragment : Fragment() {
             })
 
             isEditingMode.observe(this@EntityGridFragment, Observer { isEditingMode ->
+                vibrate()
+
                 if (isEditingMode) {
                     cancelRefresh()
                 } else {
@@ -108,7 +112,10 @@ class EntityGridFragment : Fragment() {
 
         viewHolder = ViewHolder(
             root,
-            EntityAdapter(vm::onEntityClick, vm::onReorderedEntities)
+            EntityAdapter({
+                vibrate()
+                vm.onEntityClick(it)
+            }, vm::onReorderedEntities)
         ).apply {
             settingsButton.setOnClickListener { openSettings() }
             editButton.setOnClickListener { vm.onEditClick() }
@@ -188,6 +195,15 @@ class EntityGridFragment : Fragment() {
         viewHolder = null
     }
 
+    private fun vibrate() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(CLICK_VIBRATION_LENGTH_MS, VibrationEffect.DEFAULT_AMPLITUDE))
+        } else {
+            @Suppress("DEPRECATION")
+            vibrator.vibrate(CLICK_VIBRATION_LENGTH_MS)
+        }
+    }
+
     private val itemTouchHelper by lazy {
         ItemTouchHelper(EditingModeCallback(vm))
     }
@@ -220,6 +236,7 @@ class EntityGridFragment : Fragment() {
 
         const val GRID_SPAN_COUNT = 3
         const val REFRESH_INTERVAL_MS = 10000L
+        const val CLICK_VIBRATION_LENGTH_MS = 50L
     }
 
 }
