@@ -1,10 +1,14 @@
 package fr.outadoc.quickhass.feature.slideover.model.entity
 
 import fr.outadoc.mdi.toIcon
-import fr.outadoc.quickhass.feature.slideover.model.State
+import fr.outadoc.quickhass.feature.slideover.model.EntityState
 import java.text.DecimalFormat
 
-class SensorEntity(state: State) : Entity(state, "eye".toIcon()!!) {
+class SensorEntity(state: EntityState) : Entity(state, "eye".toIcon()!!) {
+
+    companion object {
+        const val DOMAIN = "sensor"
+    }
 
     private val decFormatter = DecimalFormat("#.#")
 

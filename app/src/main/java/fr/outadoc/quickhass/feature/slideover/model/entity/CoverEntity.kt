@@ -2,9 +2,13 @@ package fr.outadoc.quickhass.feature.slideover.model.entity
 
 import fr.outadoc.mdi.toIcon
 import fr.outadoc.quickhass.feature.slideover.model.Action
-import fr.outadoc.quickhass.feature.slideover.model.State
+import fr.outadoc.quickhass.feature.slideover.model.EntityState
 
-class CoverEntity(state: State) : Entity(state, "window-open".toIcon()!!) {
+class CoverEntity(state: EntityState) : Entity(state, "window-open".toIcon()!!) {
+    companion object {
+        const val DOMAIN = "cover"
+    }
+
     override val isOn: Boolean = stateStr == "open"
 
     override val primaryAction: Action?

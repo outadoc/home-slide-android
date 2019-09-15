@@ -3,12 +3,12 @@ package fr.outadoc.quickhass.feature.slideover.model.entity
 import fr.outadoc.mdi.FontIcon
 import fr.outadoc.mdi.toIcon
 import fr.outadoc.quickhass.feature.slideover.model.Action
-import fr.outadoc.quickhass.feature.slideover.model.State
+import fr.outadoc.quickhass.feature.slideover.model.EntityState
 import fr.outadoc.quickhass.feature.slideover.model.annotation.StringDomain
 import fr.outadoc.quickhass.feature.slideover.model.annotation.StringEntityId
 import fr.outadoc.quickhass.feature.slideover.model.annotation.StringState
 
-abstract class Entity(private val state: State, private val defaultIcon: FontIcon) {
+abstract class Entity(val state: EntityState, private val defaultIcon: FontIcon) {
 
     @StringEntityId
     val entityId: String = state.entityId

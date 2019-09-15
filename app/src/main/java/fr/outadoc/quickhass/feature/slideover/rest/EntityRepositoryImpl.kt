@@ -3,8 +3,8 @@ package fr.outadoc.quickhass.feature.slideover.rest
 import android.content.Context
 import androidx.room.Room
 import fr.outadoc.quickhass.feature.slideover.model.Action
+import fr.outadoc.quickhass.feature.slideover.model.EntityState
 import fr.outadoc.quickhass.feature.slideover.model.Service
-import fr.outadoc.quickhass.feature.slideover.model.State
 import fr.outadoc.quickhass.feature.slideover.model.entity.Entity
 import fr.outadoc.quickhass.feature.slideover.model.entity.EntityFactory
 import fr.outadoc.quickhass.persistence.EntityDatabase
@@ -45,7 +45,7 @@ class EntityRepositoryImpl(context: Context, prefs: PreferenceRepository) : Enti
     override suspend fun getServices(): Result<List<Service>> =
         wrapResponse { client.getServices() }
 
-    override suspend fun callService(action: Action): Result<List<State>> =
+    override suspend fun callService(action: Action): Result<List<EntityState>> =
         wrapResponse { client.callService(action.domain, action.service, action.allParams) }
 
     companion object {
