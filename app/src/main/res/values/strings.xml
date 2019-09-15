@@ -71,6 +71,7 @@
     </string-array>
 
     <string name="pref_oss_ccby_title">Creative Commons BY 3.0</string>
+    <string name="back_action">Go Back</string>
     <string-array name="pref_oss_ccby_summary">
         <item>\"Home Page\" by Freepik from www.flaticon.com</item>
     </string-array>

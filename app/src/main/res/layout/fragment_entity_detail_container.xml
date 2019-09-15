@@ -10,15 +10,16 @@
     android:paddingEnd="24dp"
     android:paddingBottom="24dp">
 
-    <ImageView
-        android:id="@+id/imageView"
+    <ImageButton
+        android:id="@+id/imageButton_back"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:contentDescription="@string/title_quick_access"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/back_action"
         android:src="@drawable/ic_arrow"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_entityName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="@+id/textView_entityName" />
 
     <ProgressBar
         android:id="@+id/progress_main"
@@ -26,18 +27,18 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_entityName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView_entityName"
         tools:visibility="visible" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textView_entityName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:textAppearance="?textAppearanceHeadline6"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/imageButton_back"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Living room" />
 
@@ -49,7 +50,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView_entityName"
         tools:layout_height="300dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
