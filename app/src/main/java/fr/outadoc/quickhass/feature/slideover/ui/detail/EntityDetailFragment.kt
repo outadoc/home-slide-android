@@ -13,13 +13,13 @@ import fr.outadoc.quickhass.feature.slideover.model.entity.LightEntity
 class EntityDetailFragment private constructor() : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_slideover, container, false)
+        return inflater.inflate(R.layout.fragment_entity_detail_container, container, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        savedInstanceState?.getParcelable<EntityState>(ARGS_STATE)?.let { state ->
+        arguments?.getParcelable<EntityState>(ARGS_STATE)?.let { state ->
             childFragmentManager
                 .beginTransaction()
                 .replace(R.id.frameLayout_detailsContent, getChildFragment(state))
@@ -35,7 +35,8 @@ class EntityDetailFragment private constructor() : Fragment() {
 
     companion object {
 
-        private fun hasDetailsScreen(entity: Entity) = entity.domain in listOf(LightEntity.DOMAIN)
+        private fun hasDetailsScreen(entity: Entity) =
+            entity.domain in listOf(LightEntity.DOMAIN)
 
         fun newInstance(entity: Entity) =
             if (hasDetailsScreen(entity)) {

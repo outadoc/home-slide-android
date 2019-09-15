@@ -34,7 +34,7 @@ class LightEntityDetailFragment private constructor() : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        savedInstanceState?.getParcelable<EntityState>(ARGS_STATE)?.let { state ->
+        arguments?.getParcelable<EntityState>(ARGS_STATE)?.let { state ->
             entity = EntityFactory.create(state) as? LightEntity
         }
     }

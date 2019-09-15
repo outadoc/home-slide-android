@@ -11,7 +11,8 @@ import java.util.*
 
 class EntityAdapter(
     val onItemClick: (Entity) -> Unit,
-    val onReordered: (List<Entity>) -> Unit
+    val onReordered: (List<Entity>) -> Unit,
+    val onItemLongPress: (Entity) -> Boolean
 ) : ReorderableRecyclerViewAdapter<EntityAdapter.ViewHolder>() {
 
     val items: LinkedList<Entity> = LinkedList()
@@ -39,6 +40,10 @@ class EntityAdapter(
                     view.isActivated = !view.isActivated
                     onItemClick(item)
                 }
+            }
+
+            view.setOnLongClickListener {
+                onItemLongPress(item)
             }
 
             label.text = item.friendlyName ?: item.entityId

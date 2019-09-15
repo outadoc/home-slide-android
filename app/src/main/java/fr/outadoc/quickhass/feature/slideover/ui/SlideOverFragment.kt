@@ -5,13 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.activity.addCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import fr.outadoc.quickhass.R
 
-class SlideOverFragment : Fragment() {
+class SlideOverFragment : Fragment(), SlideOverNavigator {
 
     private var viewHolder: ViewHolder? = null
 
@@ -22,6 +23,10 @@ class SlideOverFragment : Fragment() {
             .beginTransaction()
             .replace(R.id.content, EntityGridFragment.newInstance())
             .commit()
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            childFragmentManager.popBackStack()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -43,6 +48,13 @@ class SlideOverFragment : Fragment() {
         return root
     }
 
+    override fun replaceSlideOverFragment(fragment: Fragment) {
+        childFragmentManager
+            .beginTransaction()
+            .replace(R.id.content, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
 
     private fun setBottomSheetCallback(viewHolder: ViewHolder) {
         val p = viewHolder.contentContainer.layoutParams as CoordinatorLayout.LayoutParams
@@ -72,7 +84,6 @@ class SlideOverFragment : Fragment() {
             }
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
