@@ -1,23 +1,23 @@
 package fr.outadoc.quickhass.feature.slideover.model.entity
 
-import fr.outadoc.quickhass.feature.slideover.model.State
+import fr.outadoc.quickhass.feature.slideover.model.EntityState
 
 object EntityFactory {
 
-    fun create(state: State) = when (state.domain) {
-        "light" -> LightEntity(state)
-        "cover" -> CoverEntity(state)
-        "person" -> PersonEntity(state)
-        "sun" -> SunEntity(state)
-        "switch" -> SwitchEntity(state)
-        "sensor" -> SensorEntity(state)
-        "script" -> ScriptEntity(state)
-        "automation" -> AutomationEntity(state)
-        "group" -> GroupEntity(state)
-        "climate" -> ClimateEntity(state)
-        "media_player" -> MediaPlayerEntity(state)
-        "weather" -> WeatherEntity(state)
-        "input_boolean" -> InputBooleanEntity(state)
+    fun create(state: EntityState) = when (state.domain) {
+        LightEntity.DOMAIN -> LightEntity(state)
+        CoverEntity.DOMAIN -> CoverEntity(state)
+        PersonEntity.DOMAIN -> PersonEntity(state)
+        SunEntity.DOMAIN -> SunEntity(state)
+        SwitchEntity.DOMAIN -> SwitchEntity(state)
+        SensorEntity.DOMAIN -> SensorEntity(state)
+        ScriptEntity.DOMAIN -> ScriptEntity(state)
+        AutomationEntity.DOMAIN -> AutomationEntity(state)
+        GroupEntity.DOMAIN -> GroupEntity(state)
+        ClimateEntity.DOMAIN -> ClimateEntity(state)
+        MediaPlayerEntity.DOMAIN -> MediaPlayerEntity(state)
+        WeatherEntity.DOMAIN -> WeatherEntity(state)
+        InputBooleanEntity.DOMAIN -> InputBooleanEntity(state)
         else -> GenericEntity(state)
     }
 }

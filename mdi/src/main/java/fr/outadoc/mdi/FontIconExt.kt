@@ -1,5 +1,6 @@
 package fr.outadoc.mdi
 
-fun @IconStringRef String.toIcon(): FontIcon? {
-    return IconMap.getIcon(takeLastWhile { it != ':' }.toLowerCase())
-}
+import java.util.*
+
+fun @IconStringRef String.toIcon() =
+    IconMap.getIcon(takeLastWhile { it != ':' }.toLowerCase(Locale.ROOT))

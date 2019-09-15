@@ -1,6 +1,11 @@
 package fr.outadoc.quickhass.feature.slideover.model.entity
 
 import fr.outadoc.mdi.toIcon
-import fr.outadoc.quickhass.feature.slideover.model.State
+import fr.outadoc.quickhass.feature.slideover.model.EntityState
 
-class GroupEntity(state: State) : Entity(state, "google-circles-communities".toIcon()!!)
+class GroupEntity(state: EntityState) : Entity(state, "google-circles-communities".toIcon()!!) {
+
+    companion object {
+        const val DOMAIN = "group"
+    }
+}

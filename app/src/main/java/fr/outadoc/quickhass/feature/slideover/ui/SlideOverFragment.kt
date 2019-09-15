@@ -48,14 +48,14 @@ class SlideOverFragment : Fragment() {
         val p = viewHolder.contentContainer.layoutParams as CoordinatorLayout.LayoutParams
         val behavior = p.behavior as BottomSheetBehavior
 
-        behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        behavior.bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     activity?.finish()
                 }
             }
-        })
+        }
     }
 
     private fun setWindowInsets(viewHolder: ViewHolder) {

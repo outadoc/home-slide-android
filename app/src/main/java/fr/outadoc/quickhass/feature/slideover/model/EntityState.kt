@@ -1,13 +1,17 @@
 package fr.outadoc.quickhass.feature.slideover.model
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import fr.outadoc.quickhass.feature.slideover.model.annotation.StringDomain
 import fr.outadoc.quickhass.feature.slideover.model.annotation.StringEntityId
 import fr.outadoc.quickhass.feature.slideover.model.annotation.StringState
+import kotlinx.android.parcel.IgnoredOnParcel
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 @JsonClass(generateAdapter = true)
-data class State(
+data class EntityState(
     @Json(name = "entity_id")
     @StringEntityId
     val entityId: String,
@@ -20,7 +24,9 @@ data class State(
     val state: String,
     @Json(name = "attributes")
     val attributes: AttributeSet
-) {
+) : Parcelable {
+
+    @IgnoredOnParcel
     @StringDomain
     val domain: String = entityId.takeWhile { it != '.' }
 }
