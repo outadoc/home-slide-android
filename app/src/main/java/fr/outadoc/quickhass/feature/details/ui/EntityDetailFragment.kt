@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass.feature.slideover.ui.detail
+package fr.outadoc.quickhass.feature.details.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
