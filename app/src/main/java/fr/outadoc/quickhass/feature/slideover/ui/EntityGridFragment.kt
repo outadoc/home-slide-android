@@ -23,6 +23,8 @@ import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.faltenreich.skeletonlayout.applySkeleton
 import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.feature.onboarding.OnboardingActivity
+import fr.outadoc.quickhass.feature.slideover.model.entity.Entity
+import fr.outadoc.quickhass.feature.slideover.ui.detail.EntityDetailFragment
 import fr.outadoc.quickhass.feature.slideover.vm.EntityGridViewModel
 import fr.outadoc.quickhass.preferences.SettingsActivity
 import org.koin.android.ext.android.inject
@@ -39,6 +41,9 @@ class EntityGridFragment : Fragment() {
     private val handler: Handler = Handler()
 
     private var isInitialEditing = true
+
+    private val navigator: SlideOverNavigator?
+        get() = parentFragment as? SlideOverNavigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,7 +126,7 @@ class EntityGridFragment : Fragment() {
             EntityAdapter({
                 vibrate()
                 vm.onEntityClick(it)
-            }, vm::onReorderedEntities)
+            }, vm::onReorderedEntities, ::onItemLongPress)
         ).apply {
             settingsButton.setOnClickListener { openSettings() }
             editButton.setOnClickListener { vm.onEditClick() }
@@ -133,6 +138,15 @@ class EntityGridFragment : Fragment() {
         }
 
         return root
+    }
+
+    private fun onItemLongPress(entity: Entity): Boolean {
+        EntityDetailFragment.newInstance(entity)?.let {
+            navigator?.replaceSlideOverFragment(it)
+            return true
+        }
+
+        return false
     }
 
     private fun scheduleRefresh() {
