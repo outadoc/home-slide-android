@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import fr.outadoc.quickhass.R
+import fr.outadoc.quickhass.feature.grid.ui.EntityGridFragment
 
 class SlideOverFragment : Fragment(), SlideOverNavigator {
 

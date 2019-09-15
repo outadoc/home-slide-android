@@ -1,9 +1,9 @@
-package fr.outadoc.quickhass.feature.slideover.ui
+package fr.outadoc.quickhass.feature.grid.ui
 
 import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import fr.outadoc.quickhass.feature.slideover.vm.EntityGridViewModel
+import fr.outadoc.quickhass.feature.grid.vm.EntityGridViewModel
 
 class EditingModeCallback(private val viewModel: EntityGridViewModel) :
     ItemTouchHelper.SimpleCallback(

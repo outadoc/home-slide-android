@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass.feature.slideover.vm
+package fr.outadoc.quickhass.feature.grid.vm
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

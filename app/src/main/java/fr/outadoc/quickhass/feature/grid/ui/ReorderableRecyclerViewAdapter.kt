@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass.feature.slideover.ui
+package fr.outadoc.quickhass.feature.grid.ui
 
 import androidx.recyclerview.widget.RecyclerView
 

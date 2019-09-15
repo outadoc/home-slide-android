@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass.feature.slideover.ui
+package fr.outadoc.quickhass.feature.grid.ui
 
 import android.content.Context
 import android.content.Intent
@@ -22,10 +22,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.faltenreich.skeletonlayout.applySkeleton
 import fr.outadoc.quickhass.R
+import fr.outadoc.quickhass.feature.details.ui.EntityDetailFragment
+import fr.outadoc.quickhass.feature.grid.vm.EntityGridViewModel
 import fr.outadoc.quickhass.feature.onboarding.OnboardingActivity
 import fr.outadoc.quickhass.feature.slideover.model.entity.Entity
-import fr.outadoc.quickhass.feature.slideover.ui.detail.EntityDetailFragment
-import fr.outadoc.quickhass.feature.slideover.vm.EntityGridViewModel
+import fr.outadoc.quickhass.feature.slideover.ui.SlideOverNavigator
 import fr.outadoc.quickhass.preferences.SettingsActivity
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel

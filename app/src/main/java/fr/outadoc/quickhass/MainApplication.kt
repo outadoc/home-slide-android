@@ -3,12 +3,12 @@ package fr.outadoc.quickhass
 import android.app.Application
 import android.os.Vibrator
 import androidx.room.Room
+import fr.outadoc.quickhass.feature.grid.vm.EntityGridViewModel
 import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepository
 import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepositoryImpl
 import fr.outadoc.quickhass.feature.onboarding.vm.*
 import fr.outadoc.quickhass.feature.slideover.rest.EntityRepository
 import fr.outadoc.quickhass.feature.slideover.rest.EntityRepositoryImpl
-import fr.outadoc.quickhass.feature.slideover.vm.EntityGridViewModel
 import fr.outadoc.quickhass.persistence.EntityDatabase
 import fr.outadoc.quickhass.preferences.PreferenceRepository
 import fr.outadoc.quickhass.preferences.PreferenceRepositoryImpl
