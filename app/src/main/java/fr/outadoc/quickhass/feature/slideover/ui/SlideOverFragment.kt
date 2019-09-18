@@ -52,6 +52,7 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
     override fun navigateTo(fragment: Fragment) {
         childFragmentManager
             .beginTransaction()
+            .setCustomAnimations(R.anim.fragment_open_enter, R.anim.fragment_close_enter)
             .add(R.id.content, fragment)
             .addToBackStack(null)
             .commit()

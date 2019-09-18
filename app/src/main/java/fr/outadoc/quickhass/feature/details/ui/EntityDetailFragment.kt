@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.feature.details.vm.EntityDetailViewModel
-import fr.outadoc.quickhass.feature.grid.ui.EntityAdapter
 import fr.outadoc.quickhass.feature.slideover.model.EntityState
 import fr.outadoc.quickhass.feature.slideover.model.entity.Entity
 import fr.outadoc.quickhass.feature.slideover.model.entity.EntityFactory
 import fr.outadoc.quickhass.feature.slideover.model.entity.LightEntity
+import fr.outadoc.quickhass.feature.slideover.ui.EntityAdapter
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class EntityDetailFragment private constructor() : Fragment() {
