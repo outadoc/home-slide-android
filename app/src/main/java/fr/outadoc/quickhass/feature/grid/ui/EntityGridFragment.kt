@@ -26,6 +26,7 @@ import fr.outadoc.quickhass.feature.details.ui.EntityDetailFragment
 import fr.outadoc.quickhass.feature.grid.vm.EntityGridViewModel
 import fr.outadoc.quickhass.feature.onboarding.OnboardingActivity
 import fr.outadoc.quickhass.feature.slideover.model.entity.Entity
+import fr.outadoc.quickhass.feature.slideover.ui.EntityAdapter
 import fr.outadoc.quickhass.feature.slideover.ui.SlideOverNavigator
 import fr.outadoc.quickhass.preferences.SettingsActivity
 import org.koin.android.ext.android.inject
