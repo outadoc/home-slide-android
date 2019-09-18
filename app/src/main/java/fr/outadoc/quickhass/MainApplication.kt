@@ -3,6 +3,7 @@ package fr.outadoc.quickhass
 import android.app.Application
 import android.os.Vibrator
 import androidx.room.Room
+import fr.outadoc.quickhass.feature.details.vm.EntityDetailViewModel
 import fr.outadoc.quickhass.feature.grid.vm.EntityGridViewModel
 import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepository
 import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepositoryImpl
@@ -37,6 +38,7 @@ class MainApplication : Application() {
         viewModel { SuccessViewModel(get()) }
 
         viewModel { EntityGridViewModel(get(), get(), get()) }
+        viewModel { EntityDetailViewModel() }
     }
 
     override fun onCreate() {
