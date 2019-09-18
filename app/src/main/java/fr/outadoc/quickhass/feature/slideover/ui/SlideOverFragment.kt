@@ -49,10 +49,10 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
         return root
     }
 
-    override fun replaceSlideOverFragment(fragment: Fragment) {
+    override fun navigateTo(fragment: Fragment) {
         childFragmentManager
             .beginTransaction()
-            .replace(R.id.content, fragment)
+            .add(R.id.content, fragment)
             .addToBackStack(null)
             .commit()
     }

@@ -143,7 +143,7 @@ class EntityGridFragment : Fragment() {
 
     private fun onItemLongPress(entity: Entity): Boolean {
         EntityDetailFragment.newInstance(entity)?.let {
-            navigator?.replaceSlideOverFragment(it)
+            navigator?.navigateTo(it)
             return true
         }
 

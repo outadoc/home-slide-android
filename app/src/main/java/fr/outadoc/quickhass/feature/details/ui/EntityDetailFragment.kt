@@ -5,41 +5,54 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.R
+import fr.outadoc.quickhass.feature.details.vm.EntityDetailViewModel
+import fr.outadoc.quickhass.feature.grid.ui.EntityAdapter
 import fr.outadoc.quickhass.feature.slideover.model.EntityState
 import fr.outadoc.quickhass.feature.slideover.model.entity.Entity
 import fr.outadoc.quickhass.feature.slideover.model.entity.EntityFactory
 import fr.outadoc.quickhass.feature.slideover.model.entity.LightEntity
-import kotlin.properties.Delegates
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class EntityDetailFragment private constructor() : Fragment() {
 
     private var viewHolder: ViewHolder? = null
-    private var entity: Entity? by Delegates.observable(null) { _, _: Entity?, newValue: Entity? ->
-        newValue?.let {
-            viewHolder?.entityName?.text = it.friendlyName
-        }
-    }
+    private val vm: EntityDetailViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val root = inflater.inflate(R.layout.fragment_entity_detail_container, container, false)
-        viewHolder = ViewHolder(root).apply {
+
+        val entityAdapter = EntityAdapter({
+            Toast.makeText(context, "lol click", Toast.LENGTH_SHORT).show()
+        }, onReordered = { }, onItemLongPress = { false })
+
+        viewHolder = ViewHolder(root, entityAdapter).apply {
             backButton.setOnClickListener {
                 activity?.onBackPressed()
             }
-
-            entityName.text = entity?.friendlyName
         }
+
         return root
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        vm.entity.observe(this, Observer { entity ->
+            viewHolder?.itemAdapter?.apply {
+                items.clear()
+                items.add(entity)
+                notifyDataSetChanged()
+            }
+        })
+
         arguments?.getParcelable<EntityState>(ARGS_STATE)?.let { state ->
-            entity = EntityFactory.create(state) as? LightEntity
+            vm.setEntity(EntityFactory.create(state))
 
             childFragmentManager
                 .beginTransaction()
@@ -59,9 +72,13 @@ class EntityDetailFragment private constructor() : Fragment() {
         viewHolder = null
     }
 
-    private class ViewHolder(view: View) {
+    private class ViewHolder(view: View, val itemAdapter: EntityAdapter) {
         val backButton: ImageButton = view.findViewById(R.id.imageButton_back)
-        val entityName: TextView = view.findViewById(R.id.textView_entityName)
+        val itemPreview = (view.findViewById(R.id.recyclerView_itemPreview) as RecyclerView).apply {
+            adapter = itemAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+
     }
 
     companion object {
