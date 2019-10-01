@@ -53,16 +53,21 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
         childFragmentManager
             .beginTransaction()
             .setCustomAnimations(R.anim.fragment_open_enter, R.anim.fragment_close_enter)
-            .add(R.id.content, fragment)
+            .replace(R.id.content, fragment)
             .addToBackStack(null)
             .commit()
     }
 
-    private fun setBottomSheetCallback(viewHolder: ViewHolder) {
-        val p = viewHolder.contentContainer.layoutParams as CoordinatorLayout.LayoutParams
-        val behavior = p.behavior as BottomSheetBehavior
+    override fun collapseSheet() {
+        viewHolder?.bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
+    }
 
-        behavior.bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
+    override fun restoreSheet() {
+        viewHolder?.bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
+    private fun setBottomSheetCallback(viewHolder: ViewHolder) {
+        viewHolder.bottomSheetBehavior.bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
@@ -94,6 +99,11 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
 
     private class ViewHolder(val root: View) {
         val contentContainer: FrameLayout = root.findViewById(R.id.frameLayout_content)
+        val bottomSheetBehavior: BottomSheetBehavior<*>
+            get() {
+                val p = contentContainer.layoutParams as CoordinatorLayout.LayoutParams
+                return p.behavior as BottomSheetBehavior
+            }
     }
 
     companion object {

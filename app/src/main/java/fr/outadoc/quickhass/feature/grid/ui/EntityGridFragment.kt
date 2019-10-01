@@ -144,7 +144,10 @@ class EntityGridFragment : Fragment() {
 
     private fun onItemLongPress(entity: Entity): Boolean {
         EntityDetailFragment.newInstance(entity)?.let {
-            navigator?.navigateTo(it)
+            navigator?.apply {
+                navigateTo(it)
+                collapseSheet()
+            }
             return true
         }
 
