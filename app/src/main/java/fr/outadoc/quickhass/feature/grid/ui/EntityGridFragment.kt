@@ -8,14 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageButton
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -71,69 +68,67 @@ class EntityGridFragment : Fragment() {
             skeleton.showSkeleton()
         }
 
-        with(vm) {
-            result.observe(viewLifecycleOwner) { shortcuts ->
-                shortcuts
-                    .onFailure { e ->
-                        Toast.makeText(context, e.message ?: getString(R.string.toast_generic_error_title), Toast.LENGTH_SHORT).show()
-                        scheduleRefresh()
-                    }
-                    .onSuccess {
-                        viewHolder?.itemAdapter?.apply {
-                            items.clear()
-                            items.addAll(shortcuts.getOrDefault(emptyList()))
-                            notifyDataSetChanged()
-                        }
-
-                        scheduleRefresh()
-                    }
-            }
-
-            isLoading.observe(viewLifecycleOwner) { isLoading ->
-                viewHolder?.apply {
-                    if (!isLoading && skeleton.isSkeleton()) {
-                        skeleton.showOriginal()
-                    }
-                }
-            }
-
-            loadingEntityIds.observe(viewLifecycleOwner) { entityIds ->
-                viewHolder?.itemAdapter?.loadingEntityIds = entityIds
-            }
-
-            isEditingMode.observe(viewLifecycleOwner) { isEditingMode ->
-                if (isInitialEditing) {
-                    isInitialEditing = false
-                } else {
-                    vibrate()
-                }
-
-                if (isEditingMode) {
-                    cancelRefresh()
-                } else {
+        vm.result.observe(viewLifecycleOwner) { shortcuts ->
+            shortcuts
+                .onFailure { e ->
+                    Toast.makeText(context, e.message ?: getString(R.string.toast_generic_error_title), Toast.LENGTH_SHORT).show()
                     scheduleRefresh()
                 }
-
-                viewHolder?.apply {
-                    val drawable = when (isEditingMode) {
-                        true -> editToDoneAvd
-                        false -> doneToEditAvd
+                .onSuccess {
+                    viewHolder?.itemAdapter?.apply {
+                        items.clear()
+                        items.addAll(shortcuts.getOrDefault(emptyList()))
+                        notifyDataSetChanged()
                     }
 
-                    editButton.setImageDrawable(drawable)
-                    drawable?.start()
+                    scheduleRefresh()
                 }
+        }
 
-                viewHolder?.itemAdapter?.apply {
-                    this.isEditingMode = isEditingMode
-                    notifyDataSetChanged()
+        vm.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            viewHolder?.apply {
+                if (!isLoading && skeleton.isSkeleton()) {
+                    skeleton.showOriginal()
                 }
             }
+        }
 
-            shouldAskForInitialValues.observe(viewLifecycleOwner) { shouldAskForInitialValues ->
-                if (shouldAskForInitialValues) {
-                    startOnboarding()
+        vm.loadingEntityIds.observe(viewLifecycleOwner) { entityIds ->
+            viewHolder?.itemAdapter?.loadingEntityIds = entityIds
+        }
+
+        vm.isEditingMode.observe(viewLifecycleOwner) { isEditingMode ->
+            if (isInitialEditing) {
+                isInitialEditing = false
+            } else {
+                vibrate()
+            }
+
+            if (isEditingMode) {
+                cancelRefresh()
+            } else {
+                scheduleRefresh()
+            }
+
+            viewHolder?.apply {
+                val drawable = when (isEditingMode) {
+                    true -> editToDoneAvd
+                    false -> doneToEditAvd
                 }
+
+                editButton.setImageDrawable(drawable)
+                drawable?.start()
+            }
+
+            viewHolder?.itemAdapter?.apply {
+                this.isEditingMode = isEditingMode
+                notifyDataSetChanged()
+            }
+        }
+
+        vm.shouldAskForInitialValues.observe(viewLifecycleOwner) { shouldAskForInitialValues ->
+            if (shouldAskForInitialValues) {
+                startOnboarding()
             }
         }
 

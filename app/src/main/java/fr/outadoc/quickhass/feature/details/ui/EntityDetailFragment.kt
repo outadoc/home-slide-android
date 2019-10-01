@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.R
@@ -24,6 +24,19 @@ class EntityDetailFragment private constructor() : Fragment() {
     private var viewHolder: ViewHolder? = null
     private val vm: EntityDetailViewModel by viewModel()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.getParcelable<EntityState>(ARGS_STATE)?.let { state ->
+            vm.setEntity(EntityFactory.create(state))
+
+            childFragmentManager
+                .beginTransaction()
+                .replace(R.id.frameLayout_detailsContent, getChildFragment(state))
+                .commit()
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val root = inflater.inflate(R.layout.fragment_entity_detail_container, container, false)
 
@@ -37,28 +50,15 @@ class EntityDetailFragment private constructor() : Fragment() {
             }
         }
 
-        return root
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        vm.entity.observe(this, Observer { entity ->
+        vm.entity.observe(viewLifecycleOwner) { entity ->
             viewHolder?.itemAdapter?.apply {
                 items.clear()
                 items.add(entity)
                 notifyDataSetChanged()
             }
-        })
-
-        arguments?.getParcelable<EntityState>(ARGS_STATE)?.let { state ->
-            vm.setEntity(EntityFactory.create(state))
-
-            childFragmentManager
-                .beginTransaction()
-                .replace(R.id.frameLayout_detailsContent, getChildFragment(state))
-                .commit()
         }
+
+        return root
     }
 
     private fun getChildFragment(state: EntityState): Fragment =

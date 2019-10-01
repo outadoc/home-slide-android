@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.quickhass.R
@@ -22,26 +22,6 @@ class HostSetupFragment : Fragment() {
 
     private var viewHolder: ViewHolder? = null
     private val vm: HostSetupViewModel by viewModel()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        vm.instanceDiscoveryInfo.observe(this, Observer { discovery ->
-            viewHolder?.discoveryResult?.state = discovery.toViewStatus()
-        })
-
-        vm.canContinue.observe(this, Observer { canContinue ->
-            viewHolder?.continueButton?.isEnabled = canContinue
-        })
-
-        vm.navigateTo.observe(this, Observer {
-            when (it.pop()) {
-                NavigationFlow.Next -> viewHolder?.navController?.navigate(R.id.action_setupHostFragment_to_setupAuthFragment)
-                NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
-                else -> Unit
-            }
-        })
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_setup_host, container, false)
@@ -59,6 +39,22 @@ class HostSetupFragment : Fragment() {
 
             continueButton.setOnClickListener {
                 vm.onContinueClicked()
+            }
+        }
+
+        vm.instanceDiscoveryInfo.observe(viewLifecycleOwner) { discovery ->
+            viewHolder?.discoveryResult?.state = discovery.toViewStatus()
+        }
+
+        vm.canContinue.observe(viewLifecycleOwner) { canContinue ->
+            viewHolder?.continueButton?.isEnabled = canContinue
+        }
+
+        vm.navigateTo.observe(viewLifecycleOwner) {
+            when (it.pop()) {
+                NavigationFlow.Next -> viewHolder?.navController?.navigate(R.id.action_setupHostFragment_to_setupAuthFragment)
+                NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
+                else -> Unit
             }
         }
 

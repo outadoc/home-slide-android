@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.quickhass.R
@@ -19,24 +19,20 @@ class ShortcutSetupFragment : Fragment() {
     private var viewHolder: ViewHolder? = null
     private val vm: ShortcutSetupViewModel by viewModel()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        vm.navigateTo.observe(this, Observer {
-            when (it.pop()) {
-                NavigationFlow.Next -> viewHolder?.navController?.navigate(R.id.action_setupShortcutFragment_to_successFragment)
-                NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
-                else -> Unit
-            }
-        })
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_setup_shortcut, container, false)
 
         viewHolder = ViewHolder(view).apply {
             continueButton.setOnClickListener {
                 vm.onContinueClicked()
+            }
+        }
+
+        vm.navigateTo.observe(viewLifecycleOwner) {
+            when (it.pop()) {
+                NavigationFlow.Next -> viewHolder?.navController?.navigate(R.id.action_setupShortcutFragment_to_successFragment)
+                NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
+                else -> Unit
             }
         }
 

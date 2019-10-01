@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.quickhass.R
@@ -25,21 +25,6 @@ class SuccessFragment : Fragment() {
 
     private val confettiColors = intArrayOf(R.color.lt_yellow, R.color.lt_orange, R.color.lt_purple, R.color.lt_pink)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        vm.navigateTo.observe(this@SuccessFragment, Observer {
-            when (it.pop()) {
-                NavigationFlow.Next -> {
-                    viewHolder?.navController?.navigate(R.id.action_successFragment_to_slideOverActivity)
-                    activity?.finish()
-                }
-                NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
-                else -> Unit
-            }
-        })
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_success, container, false)
 
@@ -49,6 +34,17 @@ class SuccessFragment : Fragment() {
             }
 
             confettiView.doOnNextLayout { confetti() }
+        }
+
+        vm.navigateTo.observe(viewLifecycleOwner) {
+            when (it.pop()) {
+                NavigationFlow.Next -> {
+                    viewHolder?.navController?.navigate(R.id.action_successFragment_to_slideOverActivity)
+                    activity?.finish()
+                }
+                NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
+                else -> Unit
+            }
         }
 
         return view

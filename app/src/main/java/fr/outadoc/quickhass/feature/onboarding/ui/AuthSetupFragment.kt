@@ -11,7 +11,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.quickhass.R
@@ -24,29 +24,6 @@ class AuthSetupFragment : Fragment() {
 
     private var viewHolder: ViewHolder? = null
     private val vm: AuthSetupViewModel by viewModel()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        vm.apiStatus.observe(this, Observer { status ->
-            viewHolder?.tokenValidationResult?.state = status.toViewStatus()
-        })
-
-        vm.canContinue.observe(this, Observer { canContinue ->
-            viewHolder?.continueButton?.isEnabled = canContinue
-        })
-
-        vm.navigateTo.observe(this, Observer {
-            when (val dest = it.pop()) {
-                NavigationFlow.Next -> viewHolder?.navController?.navigate(R.id.action_setupAuthFragment_to_setupShortcutFragment)
-                NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
-                is NavigationFlow.Url -> {
-                    val intent = CustomTabsIntent.Builder().build()
-                    intent.launchUrl(context, dest.url)
-                }
-            }
-        })
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_setup_auth, container, false)
@@ -69,6 +46,25 @@ class AuthSetupFragment : Fragment() {
 
             helpLink.setOnClickListener {
                 vm.onClickHelpLink()
+            }
+        }
+
+        vm.apiStatus.observe(viewLifecycleOwner) { status ->
+            viewHolder?.tokenValidationResult?.state = status.toViewStatus()
+        }
+
+        vm.canContinue.observe(viewLifecycleOwner) { canContinue ->
+            viewHolder?.continueButton?.isEnabled = canContinue
+        }
+
+        vm.navigateTo.observe(viewLifecycleOwner) {
+            when (val dest = it.pop()) {
+                NavigationFlow.Next -> viewHolder?.navController?.navigate(R.id.action_setupAuthFragment_to_setupShortcutFragment)
+                NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
+                is NavigationFlow.Url -> {
+                    val intent = CustomTabsIntent.Builder().build()
+                    intent.launchUrl(context, dest.url)
+                }
             }
         }
 
