@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.outadoc.quickhass.feature.slideover.model.Action
+import fr.outadoc.quickhass.feature.slideover.model.annotation.StringEntityId
 import fr.outadoc.quickhass.feature.slideover.model.entity.Entity
 import fr.outadoc.quickhass.feature.slideover.rest.EntityRepository
 import fr.outadoc.quickhass.persistence.EntityDatabase
@@ -32,6 +33,9 @@ class EntityGridViewModel(
     private val _isEditingMode = MutableLiveData(false)
     val isEditingMode: LiveData<Boolean> = _isEditingMode
 
+    private val _loadingEntityIds = MutableLiveData<Set<@StringEntityId String>>()
+    val loadingEntityIds: LiveData<Set<@StringEntityId String>> = _loadingEntityIds
+
     fun loadShortcuts() {
         if (!prefs.isOnboardingDone) {
             _shouldAskForInitialValues.value = !prefs.isOnboardingDone
@@ -55,6 +59,7 @@ class EntityGridViewModel(
 
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.postValue(true)
+            onEntityLoadStart(item)
 
             repository.callService(item.primaryAction as Action)
                 .onSuccess {
@@ -63,6 +68,7 @@ class EntityGridViewModel(
                     _result.postValue(Result.failure(it))
                 }
 
+            onEntityLoadStop(item)
             _isLoading.postValue(false)
         }
     }
@@ -82,6 +88,20 @@ class EntityGridViewModel(
                 replaceAll(toBePersisted)
             }
         }
+    }
+
+    fun onEntityLoadStart(entity: Entity) {
+        val loadingIds = loadingEntityIds.value ?: emptySet()
+        _loadingEntityIds.postValue(
+            loadingIds.plus(entity.entityId)
+        )
+    }
+
+    fun onEntityLoadStop(entity: Entity) {
+        val loadingIds = loadingEntityIds.value ?: emptySet()
+        _loadingEntityIds.postValue(
+            loadingIds.minus(entity.entityId)
+        )
     }
 
     fun onEditClick() {

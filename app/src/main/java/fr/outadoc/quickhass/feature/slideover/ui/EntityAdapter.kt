@@ -3,12 +3,19 @@ package fr.outadoc.quickhass.feature.slideover.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.view.isGone
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.feature.grid.ui.ReorderableRecyclerViewAdapter
+import fr.outadoc.quickhass.feature.slideover.model.annotation.StringEntityId
 import fr.outadoc.quickhass.feature.slideover.model.entity.Entity
 import java.util.*
+import kotlin.properties.Delegates
 
 class EntityAdapter(
     val onItemClick: (Entity) -> Unit,
@@ -18,6 +25,10 @@ class EntityAdapter(
 
     val items: LinkedList<Entity> = LinkedList()
     var isEditingMode = false
+
+    var loadingEntityIds: Set<@StringEntityId String> by Delegates.observable(emptySet()) { _, _, _ ->
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
@@ -49,13 +60,21 @@ class EntityAdapter(
 
             label.text = item.friendlyName ?: item.entityId
 
-            icon.visibility = if (item.formattedState == null) View.VISIBLE else View.INVISIBLE
-            state.visibility = if (item.formattedState != null) View.VISIBLE else View.INVISIBLE
-
             if (item.formattedState == null) {
                 icon.text = item.icon.unicodePoint
             } else {
                 state.text = item.formattedState
+            }
+
+            val isLoading = item.entityId in loadingEntityIds
+            loadingIndicator.isVisible = isLoading
+
+            if (isLoading) {
+                icon.isInvisible = true
+                state.isInvisible = true
+            } else {
+                icon.isInvisible = item.formattedState != null
+                state.isInvisible = item.formattedState == null
             }
         }
     }
@@ -75,5 +94,6 @@ class EntityAdapter(
         val label: TextView = view.findViewById(R.id.tv_shortcut_label)
         val icon: TextView = view.findViewById(R.id.tv_shortcut_icon)
         val state: TextView = view.findViewById(R.id.tv_extra_state)
+        val loadingIndicator: ProgressBar = view.findViewById(R.id.pb_shortcut_loading)
     }
 }

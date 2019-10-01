@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -48,14 +49,30 @@ class EntityGridFragment : Fragment() {
     private val navigator: SlideOverNavigator?
         get() = parentFragment as? SlideOverNavigator
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        val root = inflater.inflate(R.layout.fragment_entity_grid, container, false)
 
         val doneToEditAvd = AnimatedVectorDrawableCompat.create(requireContext(), R.drawable.avd_done_to_edit)
         val editToDoneAvd = AnimatedVectorDrawableCompat.create(requireContext(), R.drawable.avd_edit_to_done)
 
+        viewHolder = ViewHolder(
+            root,
+            EntityAdapter({
+                vibrate()
+                vm.onEntityClick(it)
+            }, vm::onReorderedEntities, ::onItemLongPress)
+        ).apply {
+            settingsButton.setOnClickListener { openSettings() }
+            editButton.setOnClickListener { vm.onEditClick() }
+
+            itemTouchHelper.attachToRecyclerView(recyclerView)
+            setWindowInsets(this)
+
+            skeleton.showSkeleton()
+        }
+
         with(vm) {
-            result.observe(this@EntityGridFragment, Observer { shortcuts ->
+            result.observe(viewLifecycleOwner) { shortcuts ->
                 shortcuts
                     .onFailure { e ->
                         Toast.makeText(context, e.message ?: getString(R.string.toast_generic_error_title), Toast.LENGTH_SHORT).show()
@@ -70,19 +87,21 @@ class EntityGridFragment : Fragment() {
 
                         scheduleRefresh()
                     }
-            })
+            }
 
-            isLoading.observe(this@EntityGridFragment, Observer { isLoading ->
+            isLoading.observe(viewLifecycleOwner) { isLoading ->
                 viewHolder?.apply {
-                    progress.isVisible = isLoading
-
                     if (!isLoading && skeleton.isSkeleton()) {
                         skeleton.showOriginal()
                     }
                 }
-            })
+            }
 
-            isEditingMode.observe(this@EntityGridFragment, Observer { isEditingMode ->
+            loadingEntityIds.observe(viewLifecycleOwner) { entityIds ->
+                viewHolder?.itemAdapter?.loadingEntityIds = entityIds
+            }
+
+            isEditingMode.observe(viewLifecycleOwner) { isEditingMode ->
                 if (isInitialEditing) {
                     isInitialEditing = false
                 } else {
@@ -109,35 +128,13 @@ class EntityGridFragment : Fragment() {
                     this.isEditingMode = isEditingMode
                     notifyDataSetChanged()
                 }
-            })
+            }
 
-            shouldAskForInitialValues.observe(
-                this@EntityGridFragment,
-                Observer { shouldAskForInitialValues ->
-                    if (shouldAskForInitialValues) {
-                        startOnboarding()
-                    }
-                })
-        }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val root = inflater.inflate(R.layout.fragment_entity_grid, container, false)
-
-        viewHolder = ViewHolder(
-            root,
-            EntityAdapter({
-                vibrate()
-                vm.onEntityClick(it)
-            }, vm::onReorderedEntities, ::onItemLongPress)
-        ).apply {
-            settingsButton.setOnClickListener { openSettings() }
-            editButton.setOnClickListener { vm.onEditClick() }
-
-            itemTouchHelper.attachToRecyclerView(recyclerView)
-            setWindowInsets(this)
-
-            skeleton.showSkeleton()
+            shouldAskForInitialValues.observe(viewLifecycleOwner) { shouldAskForInitialValues ->
+                if (shouldAskForInitialValues) {
+                    startOnboarding()
+                }
+            }
         }
 
         return root
@@ -242,7 +239,6 @@ class EntityGridFragment : Fragment() {
     private class ViewHolder(val root: View, val itemAdapter: EntityAdapter) {
         val settingsButton: ImageButton = root.findViewById(R.id.imageButton_settings)
         val editButton: ImageButton = root.findViewById(R.id.imageButton_edit)
-        val progress: ProgressBar = root.findViewById(R.id.progress_main)
 
         val recyclerView: RecyclerView = root.findViewById<RecyclerView>(R.id.recyclerView_shortcuts).apply {
             adapter = itemAdapter
