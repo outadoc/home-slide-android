@@ -20,12 +20,16 @@ android {
     }
 
     buildTypes {
+        def ENABLE_DETAILS = "ENABLE_DETAILS"
+
         debug {
             applicationIdSuffix ".debug"
+            buildConfigField "Boolean", ENABLE_DETAILS, 'false'
         }
 
         release {
             minifyEnabled false
+            buildConfigField "Boolean", ENABLE_DETAILS, 'false'
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
