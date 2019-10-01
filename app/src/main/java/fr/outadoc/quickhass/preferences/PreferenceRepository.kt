@@ -4,6 +4,8 @@ interface PreferenceRepository {
 
     var instanceBaseUrl: String
     val altInstanceBaseUrl: String?
+    var preferredBaseUrl: PreferredBaseUrl
+
     var accessToken: String
 
     val theme: String

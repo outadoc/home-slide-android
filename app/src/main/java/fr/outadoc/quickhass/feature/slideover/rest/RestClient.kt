@@ -1,6 +1,7 @@
 package fr.outadoc.quickhass.feature.slideover.rest
 
 import fr.outadoc.quickhass.preferences.PreferenceRepository
+import fr.outadoc.quickhass.preferences.PreferredBaseUrl
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -8,14 +9,33 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-
 class RestClient<T>(private val type: Class<T>, private val prefs: PreferenceRepository) {
 
     private val baseUri: HttpUrl?
-        get() = HttpUrl.parse(prefs.instanceBaseUrl)
+        get() = prefs.instanceBaseUrl.toUrlOrNull()
 
     private val altBaseUri: HttpUrl?
-        get() = if (prefs.altInstanceBaseUrl != null) HttpUrl.parse(prefs.altInstanceBaseUrl!!) else null
+        get() = prefs.altInstanceBaseUrl.toUrlOrNull()
+
+    private val preferredBaseUrl: PreferredBaseUrl
+        get() = prefs.preferredBaseUrl
+
+    private fun getUrlsToTry(requestUrl: HttpUrl): List<Pair<PreferredBaseUrl, HttpUrl>> {
+        fun replaceBaseUrl(newBase: HttpUrl?): HttpUrl? {
+            if (newBase == null) return null
+            return requestUrl.toString().replace(PLACEHOLDER_BASE_URL, newBase.toString()).toUrl()
+        }
+
+        val internalUrl = PreferredBaseUrl.PRIMARY to replaceBaseUrl(baseUri)
+        val externalUrl = PreferredBaseUrl.ALTERNATIVE to replaceBaseUrl(altBaseUri)
+
+        return when (preferredBaseUrl) {
+            PreferredBaseUrl.PRIMARY -> listOf(internalUrl, externalUrl)
+            PreferredBaseUrl.ALTERNATIVE -> listOf(externalUrl, internalUrl)
+        }.mapNotNull { (type, url) ->
+            if (url != null) type to url else null
+        }
+    }
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
@@ -39,25 +59,26 @@ class RestClient<T>(private val type: Class<T>, private val prefs: PreferenceRep
     private val altBaseUrlInterceptor = Interceptor { chain ->
         val req = chain.request()
 
-        try {
-            chain.proceed(req)
-        } catch (e: Exception) {
-            if (altBaseUri != null) {
-                val oldUrl = req.url().toString()
-                val newUrl = HttpUrl.parse(oldUrl.replace(baseUri.toString(), altBaseUri.toString()))
+        getUrlsToTry(req.url())
+            .map { (type, url) ->
+                type to chain.request()
+                    .newBuilder()
+                    .url(url)
+                    .build()
+            }.forEach { (type, req) ->
+                try {
+                    val res = chain.proceed(req)
+                    if (res.isSuccessful) {
+                        prefs.preferredBaseUrl = type
+                        return@Interceptor res
+                    }
 
-                if (newUrl != null && newUrl != req.url()) {
-                    val newRequest = chain.request()
-                        .newBuilder()
-                        .url(newUrl)
-                        .build()
-
-                    return@Interceptor chain.proceed(newRequest)
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
             }
 
-            throw e
-        }
+        chain.proceed(req)
     }
 
     private val client = OkHttpClient.Builder()
@@ -68,7 +89,7 @@ class RestClient<T>(private val type: Class<T>, private val prefs: PreferenceRep
 
     private val retrofit: Retrofit
         get() = Retrofit.Builder()
-            .baseUrl(baseUri.toString())
+            .baseUrl(PLACEHOLDER_BASE_URL)
             .client(client)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
@@ -77,6 +98,8 @@ class RestClient<T>(private val type: Class<T>, private val prefs: PreferenceRep
         get() = retrofit.create(type)
 
     companion object {
+        const val PLACEHOLDER_BASE_URL = "https://example.com/"
+
         inline fun <reified T> create(prefs: PreferenceRepository): T =
             RestClient(T::class.java, prefs).api
     }
