@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.faltenreich.skeletonlayout.applySkeleton
+import fr.outadoc.quickhass.BuildConfig
 import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.feature.details.ui.EntityDetailFragment
 import fr.outadoc.quickhass.feature.grid.vm.EntityGridViewModel
@@ -143,11 +144,16 @@ class EntityGridFragment : Fragment() {
     }
 
     private fun onItemLongPress(entity: Entity): Boolean {
+        if (!BuildConfig.ENABLE_DETAILS) {
+            return false
+        }
+
         EntityDetailFragment.newInstance(entity)?.let {
             navigator?.apply {
                 navigateTo(it)
                 collapseSheet()
             }
+
             return true
         }
 
