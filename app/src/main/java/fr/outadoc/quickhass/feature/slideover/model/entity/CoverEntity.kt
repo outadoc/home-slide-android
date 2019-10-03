@@ -4,7 +4,7 @@ import fr.outadoc.mdi.toIcon
 import fr.outadoc.quickhass.feature.slideover.model.Action
 import fr.outadoc.quickhass.feature.slideover.model.EntityState
 
-class CoverEntity(state: EntityState) : Entity(state, "window-open".toIcon()!!) {
+class CoverEntity(state: EntityState) : BaseEntity(state, "window-open".toIcon()!!) {
     companion object {
         const val DOMAIN = "cover"
     }

@@ -4,7 +4,7 @@ import fr.outadoc.mdi.FontIcon
 import fr.outadoc.quickhass.feature.slideover.model.Action
 import fr.outadoc.quickhass.feature.slideover.model.EntityState
 
-abstract class BinaryEntity(state: EntityState, defaultIcon: FontIcon) : Entity(state, defaultIcon) {
+abstract class BinaryEntity(state: EntityState, defaultIcon: FontIcon) : BaseEntity(state, defaultIcon) {
 
     override val isOn: Boolean = stateStr == "on"
 
