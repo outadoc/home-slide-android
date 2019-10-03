@@ -4,7 +4,7 @@ import fr.outadoc.mdi.toIcon
 import fr.outadoc.quickhass.feature.slideover.model.EntityState
 import java.text.DecimalFormat
 
-class SensorEntity(state: EntityState) : Entity(state, "eye".toIcon()!!) {
+class SensorEntity(state: EntityState) : BaseEntity(state, "eye".toIcon()!!) {
 
     companion object {
         const val DOMAIN = "sensor"

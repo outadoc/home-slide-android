@@ -4,7 +4,7 @@ import fr.outadoc.mdi.FontIcon
 import fr.outadoc.mdi.toIcon
 import fr.outadoc.quickhass.feature.slideover.model.EntityState
 
-class WeatherEntity(state: EntityState) : Entity(state, "weather-cloudy".toIcon()!!) {
+class WeatherEntity(state: EntityState) : BaseEntity(state, "weather-cloudy".toIcon()!!) {
 
     companion object {
         const val DOMAIN = "weather"
