@@ -13,21 +13,21 @@ class SimpleRestClient<T>(private val type: Class<T>) {
     }
 
     private val client = OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
-            .build()
+        .addInterceptor(loggingInterceptor)
+        .build()
 
     private val retrofit: Retrofit
         get() = Retrofit.Builder()
-                .client(client)
-                .baseUrl("http://example.com/")
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build()
+            .client(client)
+            .baseUrl("https://example.com/")
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build()
 
     val api: T
         get() = retrofit.create(type)
 
     companion object {
         inline fun <reified T> create(): T =
-                SimpleRestClient(T::class.java).api
+            SimpleRestClient(T::class.java).api
     }
 }

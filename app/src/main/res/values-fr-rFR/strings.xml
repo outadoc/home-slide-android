@@ -8,7 +8,7 @@
     <string name="pref_base_url_summary">URL de votre instance Home Assistant.</string>
     <string name="pref_base_url_title">URL de Home Assistant</string>
     <string name="pref_cat_app_title">Réglages de l\'application</string>
-    <string name="pref_cat_hass_title">Réglages Home Assistant</string>
+    <string name="pref_cat_hass_title">Réglages de Home Assistant</string>
     <string name="pref_theme_title">Thème de l\'application</string>
     <string name="tile_label">Maison</string>
     <string name="title_quick_access">Actions rapides</string>
@@ -60,4 +60,6 @@
     <string name="pref_show_when_locked_summary">Contrôlez votre maison sans avoir à déverrouiller votre appareil.</string>
     <string name="pref_show_when_locked_title">Autoriser sur l\'écran de verrouillage</string>
     <string name="back_action">Retour</string>
+    <string name="pref_refresh_interval_summary">Fréquence à laquelle rafraîchir l\'état de vos appareils, en secondes.</string>
+    <string name="pref_refresh_inverval_title">Fréquence d\'actualisation</string>
 </resources>

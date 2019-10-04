@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 
 class RestClient<T>(private val type: Class<T>, private val prefs: PreferenceRepository) {
 
@@ -82,6 +83,7 @@ class RestClient<T>(private val type: Class<T>, private val prefs: PreferenceRep
     }
 
     private val client = OkHttpClient.Builder()
+        .connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
         .addInterceptor(loggingInterceptor)
         .addInterceptor(authInterceptor)
         .addInterceptor(altBaseUrlInterceptor)
@@ -99,6 +101,7 @@ class RestClient<T>(private val type: Class<T>, private val prefs: PreferenceRep
 
     companion object {
         const val PLACEHOLDER_BASE_URL = "https://example.com/"
+        const val CONNECT_TIMEOUT_SECONDS = 3L
 
         inline fun <reified T> create(prefs: PreferenceRepository): T =
             RestClient(T::class.java, prefs).api

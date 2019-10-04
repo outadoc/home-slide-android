@@ -36,6 +36,9 @@ class EntityGridViewModel(
     private val _loadingEntityIds = MutableLiveData<Set<@StringEntityId String>>()
     val loadingEntityIds: LiveData<Set<@StringEntityId String>> = _loadingEntityIds
 
+    val refreshIntervalSeconds: Int
+        get() = prefs.refreshIntervalSeconds
+
     fun loadShortcuts() {
         if (!prefs.isOnboardingDone) {
             _shouldAskForInitialValues.value = !prefs.isOnboardingDone

@@ -156,7 +156,7 @@ class EntityGridFragment : Fragment() {
         // Only one refresh scheduled at once
         cancelRefresh()
 
-        handler.postDelayed(REFRESH_INTERVAL_MS) {
+        handler.postDelayed(vm.refreshIntervalSeconds * 1000L) {
             vm.loadShortcuts()
         }
     }
@@ -257,7 +257,6 @@ class EntityGridFragment : Fragment() {
         fun newInstance() = EntityGridFragment()
 
         const val GRID_SPAN_COUNT = 3
-        const val REFRESH_INTERVAL_MS = 10000L
         const val CLICK_VIBRATION_LENGTH_MS = 50L
     }
 

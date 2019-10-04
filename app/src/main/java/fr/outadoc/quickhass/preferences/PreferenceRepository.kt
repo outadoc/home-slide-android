@@ -4,11 +4,11 @@ interface PreferenceRepository {
 
     var instanceBaseUrl: String
     val altInstanceBaseUrl: String?
-    var preferredBaseUrl: PreferredBaseUrl
-
     var accessToken: String
-
-    val theme: String
-    var isOnboardingDone: Boolean
+    val refreshIntervalSeconds: Int
     val showWhenLocked: Boolean
+    val theme: String
+
+    var isOnboardingDone: Boolean
+    var preferredBaseUrl: PreferredBaseUrl
 }
