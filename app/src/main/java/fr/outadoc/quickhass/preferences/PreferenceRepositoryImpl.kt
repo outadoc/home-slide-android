@@ -5,7 +5,7 @@ import android.preference.PreferenceManager
 
 class PreferenceRepositoryImpl(context: Context) : PreferenceRepository {
 
-    private var appPrefs = PreferenceManager.getDefaultSharedPreferences(context)!!
+    private val appPrefs = PreferenceManager.getDefaultSharedPreferences(context)!!
 
     override var instanceBaseUrl: String
         get() = appPrefs.getString(KEY_INSTANCE_BASE_URL, "")!!
@@ -43,6 +43,9 @@ class PreferenceRepositoryImpl(context: Context) : PreferenceRepository {
     override val showWhenLocked: Boolean
         get() = appPrefs.getBoolean(KEY_SHOW_WHEN_LOCKED, false)
 
+    override val refreshIntervalSeconds: Int
+        get() = appPrefs.getInt(KEY_REFRESH_INTERVAL, 10)
+
     companion object {
         const val KEY_INSTANCE_BASE_URL = "et_pref_instance_base_url"
         const val KEY_INSTANCE_ALT_BASE_URL = "et_pref_instance_alt_base_url"
@@ -51,5 +54,6 @@ class PreferenceRepositoryImpl(context: Context) : PreferenceRepository {
         const val KEY_THEME = "list_pref_theme"
         const val KEY_IS_ONBOARDING_DONE = "chk_pref_onboarding_ok"
         const val KEY_SHOW_WHEN_LOCKED = "chk_pref_show_when_locked"
+        const val KEY_REFRESH_INTERVAL = "seek_pref_refresh_interval_s"
     }
 }

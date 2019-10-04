@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/pref_cat_hass_title">
         <EditTextPreference
@@ -33,6 +34,17 @@
             app:summary="@string/pref_show_when_locked_summary"
             app:title="@string/pref_show_when_locked_title" />
 
+        <SeekBarPreference
+            android:max="60"
+            app:defaultValue="10"
+            app:icon="@drawable/ic_refresh"
+            app:key="seek_pref_refresh_interval_s"
+            app:min="3"
+            app:seekBarIncrement="5"
+            app:showSeekBarValue="true"
+            app:summary="@string/pref_refresh_interval_summary"
+            app:title="@string/pref_refresh_inverval_title" />
+
         <ListPreference
             app:defaultValue="system"
             app:entries="@array/pref_theme_entry_names"
@@ -49,7 +61,9 @@
             app:title="@string/app_name" />
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/pref_legal_title">
+    <PreferenceCategory
+        app:title="@string/pref_legal_title"
+        app:iconSpaceReserved="false">
         <Preference
             app:key="pref_oss_apache2"
             app:title="@string/pref_oss_apache2_title" />

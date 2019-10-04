@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Home Slide</string>
 
+    <string name="back_action">Go Back</string>
     <string name="title_quick_access">Quick Actions</string>
     <string name="tile_label">Home</string>
     <string name="title_preferences">Settings</string>
@@ -46,6 +47,8 @@
     <string name="pref_legal_title">Awesome Software We Use</string>
     <string name="pref_show_when_locked_title">Allow on Lock Screen</string>
     <string name="pref_show_when_locked_summary">Control your home without having to unlock your device.</string>
+    <string name="pref_refresh_inverval_title">Refresh Interval</string>
+    <string name="pref_refresh_interval_summary">How often to refresh the state of your devices, in seconds.</string>
 
     <string name="pref_oss_mit_title">MIT License</string>
     <string-array name="pref_oss_mit_summary">
@@ -71,7 +74,7 @@
     </string-array>
 
     <string name="pref_oss_ccby_title">Creative Commons BY 3.0</string>
-    <string name="back_action">Go Back</string>
+
     <string-array name="pref_oss_ccby_summary">
         <item>\"Home Page\" by Freepik from www.flaticon.com</item>
     </string-array>
