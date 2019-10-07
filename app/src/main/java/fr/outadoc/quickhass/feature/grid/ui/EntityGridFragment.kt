@@ -14,7 +14,6 @@ import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
@@ -236,18 +235,17 @@ class EntityGridFragment : Fragment() {
         val editButton: ImageButton = root.findViewById(R.id.imageButton_edit)
 
         val recyclerView: RecyclerView = root.findViewById<RecyclerView>(R.id.recyclerView_shortcuts).apply {
+            val gridLayout = GridAutoSpanLayoutManager(context, resources.getDimension(R.dimen.item_height).toInt())
+
             adapter = itemAdapter
-            layoutManager = GridLayoutManager(context, GRID_SPAN_COUNT)
+            layoutManager = gridLayout
 
             addItemDecoration(
-                GridSpacingItemDecoration(
-                    GRID_SPAN_COUNT,
-                    resources.getDimensionPixelSize(R.dimen.grid_spacing)
-                )
+                GridSpacingItemDecoration(gridLayout, resources.getDimensionPixelSize(R.dimen.grid_spacing))
             )
         }
 
-        val skeleton = recyclerView.applySkeleton(R.layout.item_shortcut, GRID_SPAN_COUNT * 15).apply {
+        val skeleton = recyclerView.applySkeleton(R.layout.item_shortcut, 30).apply {
             maskColor = ContextCompat.getColor(recyclerView.context, R.color.skeleton_maskColor)
             shimmerColor = ContextCompat.getColor(recyclerView.context, R.color.skeleton_shimmerColor)
         }
@@ -256,7 +254,6 @@ class EntityGridFragment : Fragment() {
     companion object {
         fun newInstance() = EntityGridFragment()
 
-        const val GRID_SPAN_COUNT = 3
         const val CLICK_VIBRATION_LENGTH_MS = 50L
     }
 
