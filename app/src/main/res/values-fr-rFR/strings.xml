@@ -2,7 +2,9 @@
 <resources>
     <string name="app_name">Home Slide</string>
 
-    <string name="ic_settings_contentDescription">Ouvrir les Réglages</string>
+    <string name="menu_item_settings">Réglages</string>
+    <string name="menu_item_edit">Réorganiser</string>
+    <string name="menu_item_done">Terminé</string>
     <string name="pref_auth_token_summary">Vous pouvez en générer un dans votre Profil sur Home Assistant.</string>
     <string name="pref_auth_token_title">Jeton d\'accès de longue durée</string>
     <string name="pref_base_url_summary">URL de votre instance Home Assistant.</string>
@@ -24,7 +26,6 @@
     <string name="pref_alt_base_url_summary">Optionnelle. URL de votre instance Home Assistant accessible depuis Internet. (ex : DynDNS, Hass.io…)</string>
     <string name="pref_alt_base_url_title">URL de Home Assistant (sur Internet)</string>
     <string name="title_preferences">Réglages</string>
-    <string name="ic_edit_contentDescription">Activer le mode édition</string>
     <string name="title_onboarding">Configuration Home Slide</string>
     <string name="onboarding_setup_auth_continue">Continuer</string>
     <string name="onboarding_success_continue">Commençons</string>

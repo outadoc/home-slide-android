@@ -3,20 +3,18 @@ package fr.outadoc.quickhass.feature.grid.ui
 import android.content.Context
 import android.content.Intent
 import android.os.*
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.ImageButton
+import android.view.*
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
+import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.faltenreich.skeletonlayout.applySkeleton
 import fr.outadoc.quickhass.BuildConfig
 import fr.outadoc.quickhass.R
@@ -29,7 +27,6 @@ import fr.outadoc.quickhass.feature.slideover.ui.SlideOverNavigator
 import fr.outadoc.quickhass.preferences.SettingsActivity
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
-
 
 class EntityGridFragment : Fragment() {
 
@@ -45,27 +42,40 @@ class EntityGridFragment : Fragment() {
     private val navigator: SlideOverNavigator?
         get() = parentFragment as? SlideOverNavigator
 
+    private val itemTouchHelper by lazy {
+        ItemTouchHelper(EditingModeCallback(vm))
+    }
+
+    private enum class MenuState {
+        STATE_NORMAL, STATE_EDITING
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val root = inflater.inflate(R.layout.fragment_entity_grid, container, false)
 
-        val doneToEditAvd = AnimatedVectorDrawableCompat.create(requireContext(), R.drawable.avd_done_to_edit)
-        val editToDoneAvd = AnimatedVectorDrawableCompat.create(requireContext(), R.drawable.avd_edit_to_done)
-
         viewHolder = ViewHolder(
             root,
-            EntityAdapter({
-                vibrate()
-                vm.onEntityClick(it)
-            }, vm::onReorderedEntities, ::onItemLongPress)
-        ).apply {
-            settingsButton.setOnClickListener { openSettings() }
-            editButton.setOnClickListener { vm.onEditClick() }
+            EntityAdapter(
+                onItemClick = {
+                    vibrate()
+                    vm.onEntityClick(it)
+                },
+                onReordered = vm::onReorderedEntities,
+                onItemLongPress = ::onItemLongPress
+            )
+        )
 
-            itemTouchHelper.attachToRecyclerView(recyclerView)
-            setWindowInsets(this)
-
-            skeleton.showSkeleton()
+        viewHolder?.recyclerView?.let {
+            itemTouchHelper.attachToRecyclerView(it)
         }
+
+        viewHolder?.toolbar?.let {
+            (activity as? AppCompatActivity)?.setSupportActionBar(it)
+        }
+
+        viewHolder?.let { setWindowInsets(it) }
+
+        setHasOptionsMenu(true)
 
         vm.result.observe(viewLifecycleOwner) { shortcuts ->
             shortcuts
@@ -109,16 +119,6 @@ class EntityGridFragment : Fragment() {
                 scheduleRefresh()
             }
 
-            viewHolder?.apply {
-                val drawable = when (isEditingMode) {
-                    true -> editToDoneAvd
-                    false -> doneToEditAvd
-                }
-
-                editButton.setImageDrawable(drawable)
-                drawable?.start()
-            }
-
             viewHolder?.itemAdapter?.apply {
                 this.isEditingMode = isEditingMode
                 notifyDataSetChanged()
@@ -131,7 +131,47 @@ class EntityGridFragment : Fragment() {
             }
         }
 
+        viewHolder?.skeleton?.showSkeleton()
+
         return root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_grid_main, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menuItem_edit -> {
+                setMenuState(MenuState.STATE_EDITING)
+                vm.onEditClick()
+                true
+            }
+
+            R.id.menuItem_settings -> {
+                openSettings()
+                true
+            }
+
+            R.id.menuItem_done -> {
+                setMenuState(MenuState.STATE_NORMAL)
+                vm.onEditClick()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun setMenuState(state: MenuState) {
+        val menu = viewHolder?.toolbar?.menu ?: return
+        menu.forEach { item ->
+            when (item.itemId) {
+                R.id.menuItem_done -> item.isVisible = state == MenuState.STATE_EDITING
+                else -> item.isVisible = state == MenuState.STATE_NORMAL
+            }
+        }
     }
 
     private fun onItemLongPress(entity: Entity): Boolean {
@@ -179,7 +219,7 @@ class EntityGridFragment : Fragment() {
         with(viewHolder) {
             ViewCompat.setOnApplyWindowInsetsListener(recyclerView) { v, insets ->
                 val newPaddingBottom = insets.systemWindowInsetBottom + root.paddingTop
-                v.setPadding(0, 0, 0, newPaddingBottom)
+                v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, newPaddingBottom)
 
                 insets.replaceSystemWindowInsets(
                     insets.systemWindowInsetLeft,
@@ -226,13 +266,8 @@ class EntityGridFragment : Fragment() {
         }
     }
 
-    private val itemTouchHelper by lazy {
-        ItemTouchHelper(EditingModeCallback(vm))
-    }
-
     private class ViewHolder(val root: View, val itemAdapter: EntityAdapter) {
-        val settingsButton: ImageButton = root.findViewById(R.id.imageButton_settings)
-        val editButton: ImageButton = root.findViewById(R.id.imageButton_edit)
+        val toolbar: Toolbar = root.findViewById(R.id.grid_toolbar)
 
         val recyclerView: RecyclerView = root.findViewById<RecyclerView>(R.id.recyclerView_shortcuts).apply {
             val gridLayout = GridAutoSpanLayoutManager(context, resources.getDimension(R.dimen.item_height).toInt())
