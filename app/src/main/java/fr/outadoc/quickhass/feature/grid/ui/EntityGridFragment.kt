@@ -245,7 +245,7 @@ class EntityGridFragment : Fragment() {
             )
         }
 
-        val skeleton = recyclerView.applySkeleton(R.layout.item_shortcut, 30).apply {
+        val skeleton = recyclerView.applySkeleton(R.layout.item_shortcut, SKELETON_ITEM_COUNT).apply {
             maskColor = ContextCompat.getColor(recyclerView.context, R.color.skeleton_maskColor)
             shimmerColor = ContextCompat.getColor(recyclerView.context, R.color.skeleton_shimmerColor)
         }
@@ -254,7 +254,8 @@ class EntityGridFragment : Fragment() {
     companion object {
         fun newInstance() = EntityGridFragment()
 
-        const val CLICK_VIBRATION_LENGTH_MS = 50L
+        private const val SKELETON_ITEM_COUNT = 30
+        private const val CLICK_VIBRATION_LENGTH_MS = 50L
     }
 
 }
