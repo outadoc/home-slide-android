@@ -14,12 +14,13 @@
 
         <FrameLayout
             android:id="@+id/frameLayout_content"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/slideover_content_width"
             android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
             android:background="@drawable/popup_background"
             app:behavior_fitToContents="true"
             app:behavior_hideable="true"
-            app:behavior_peekHeight="368dp"
+            app:behavior_peekHeight="@dimen/slideover_peekHeight"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <FrameLayout
