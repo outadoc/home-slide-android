@@ -218,8 +218,12 @@ class EntityGridFragment : Fragment() {
     private fun setWindowInsets(viewHolder: ViewHolder) {
         with(viewHolder) {
             ViewCompat.setOnApplyWindowInsetsListener(recyclerView) { v, insets ->
-                val newPaddingBottom = insets.systemWindowInsetBottom + root.paddingTop
-                v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, newPaddingBottom)
+                v.setPadding(
+                    v.paddingLeft,
+                    v.paddingTop,
+                    v.paddingRight,
+                    v.paddingBottom + insets.systemWindowInsetBottom
+                )
 
                 insets.replaceSystemWindowInsets(
                     insets.systemWindowInsetLeft,
