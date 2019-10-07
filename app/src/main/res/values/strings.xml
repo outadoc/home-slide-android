@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">Home Slide</string>
-
     <string name="back_action">Go Back</string>
     <string name="title_quick_access">Quick Actions</string>
     <string name="tile_label">Home</string>
