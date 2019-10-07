@@ -10,6 +10,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetBehavior.*
 import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.feature.grid.ui.EntityGridFragment
 
@@ -29,7 +30,7 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
             if (childFragmentManager.backStackEntryCount > 0) {
                 childFragmentManager.popBackStack()
             } else {
-                activity?.onBackPressed()
+                viewHolder?.bottomSheetBehavior?.state = STATE_HIDDEN
             }
         }
     }
@@ -63,18 +64,18 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
     }
 
     override fun collapseSheet() {
-        viewHolder?.bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
+        viewHolder?.bottomSheetBehavior?.state = STATE_COLLAPSED
     }
 
     override fun restoreSheet() {
-        viewHolder?.bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+        viewHolder?.bottomSheetBehavior?.state = STATE_EXPANDED
     }
 
     private fun setBottomSheetCallback(viewHolder: ViewHolder) {
         viewHolder.bottomSheetBehavior.bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                if (newState == STATE_HIDDEN) {
                     activity?.finish()
                 }
             }
