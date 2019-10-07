@@ -22,6 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingHorizontal="24dp"
+        android:paddingBottom="24dp"
+        android:clipToPadding="false"
         tools:itemCount="20"
         tools:layoutManager="GridLayoutManager"
         tools:listitem="@layout/item_shortcut"
