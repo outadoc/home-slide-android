@@ -84,8 +84,13 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
     private fun setWindowInsets(viewHolder: ViewHolder) {
         with(viewHolder) {
             ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
+                // Set top padding to account for status bar
                 v.setPadding(0, insets.systemWindowInsetTop, 0, 0)
 
+                val peekHeight = resources.getDimension(R.dimen.slideover_peekHeight).toInt()
+                bottomSheetBehavior.peekHeight = peekHeight + insets.systemWindowInsetBottom
+
+                // Tell system we've consumed our insets
                 insets.replaceSystemWindowInsets(
                     insets.systemWindowInsetLeft,
                     0,
