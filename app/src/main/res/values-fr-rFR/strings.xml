@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Home Slide</string>
-
     <string name="menu_item_settings">Réglages</string>
     <string name="menu_item_edit">Réorganiser</string>
     <string name="menu_item_done">Terminé</string>
