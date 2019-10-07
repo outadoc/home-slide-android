@@ -26,7 +26,11 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
             .commit()
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            childFragmentManager.popBackStack()
+            if (childFragmentManager.backStackEntryCount > 0) {
+                childFragmentManager.popBackStack()
+            } else {
+                activity?.onBackPressed()
+            }
         }
     }
 
