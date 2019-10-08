@@ -2,10 +2,11 @@ package fr.outadoc.quickhass.preferences
 
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import fr.outadoc.quickhass.R
-
+import fr.outadoc.quickhass.extensions.setupToolbar
 
 class AppPreferencesFragment : PreferenceFragmentCompat() {
 
@@ -19,6 +20,7 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences_main, rootKey)
+        setupToolbar(R.string.title_preferences, true)
 
         findPreference<Preference>("pref_about_version")?.apply {
             summary = try {
@@ -35,6 +37,16 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
                 resources
                     .getStringArray(content)
                     .joinToString(separator = "\n")
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                activity?.onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

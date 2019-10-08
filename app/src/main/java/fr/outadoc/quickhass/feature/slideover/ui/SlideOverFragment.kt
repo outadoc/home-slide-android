@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
+import android.widget.LinearLayout
 import androidx.activity.addCallback
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -51,13 +53,16 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
             setWindowInsets(this)
         }
 
+        val toolbar: Toolbar = root.findViewById(R.id.grid_toolbar)
+        (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
+
         return root
     }
 
     override fun navigateTo(fragment: Fragment) {
         childFragmentManager
             .beginTransaction()
-            .setCustomAnimations(R.anim.fragment_open_enter, R.anim.fragment_close_enter)
+            .setCustomAnimations(R.anim.fragment_fade_enter, R.anim.fragment_fade_exit)
             .replace(R.id.content, fragment)
             .addToBackStack(null)
             .commit()
@@ -108,7 +113,7 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
     }
 
     private class ViewHolder(val root: View) {
-        val contentContainer: FrameLayout = root.findViewById(R.id.frameLayout_content)
+        val contentContainer: LinearLayout = root.findViewById(R.id.frameLayout_content)
         val bottomSheetBehavior: BottomSheetBehavior<*>
             get() {
                 val p = contentContainer.layoutParams as CoordinatorLayout.LayoutParams

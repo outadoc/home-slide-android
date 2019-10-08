@@ -5,8 +5,6 @@ import android.content.Intent
 import android.os.*
 import android.view.*
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
@@ -18,26 +16,28 @@ import androidx.recyclerview.widget.RecyclerView
 import com.faltenreich.skeletonlayout.applySkeleton
 import fr.outadoc.quickhass.BuildConfig
 import fr.outadoc.quickhass.R
+import fr.outadoc.quickhass.extensions.setupToolbar
 import fr.outadoc.quickhass.feature.details.ui.EntityDetailFragment
 import fr.outadoc.quickhass.feature.grid.vm.EntityGridViewModel
 import fr.outadoc.quickhass.feature.onboarding.OnboardingActivity
 import fr.outadoc.quickhass.feature.slideover.model.entity.Entity
 import fr.outadoc.quickhass.feature.slideover.ui.EntityAdapter
 import fr.outadoc.quickhass.feature.slideover.ui.SlideOverNavigator
-import fr.outadoc.quickhass.preferences.SettingsActivity
+import fr.outadoc.quickhass.preferences.AppPreferencesFragment
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class EntityGridFragment : Fragment() {
 
     private var viewHolder: ViewHolder? = null
-    private val vm: EntityGridViewModel by viewModel()
 
+    private val vm: EntityGridViewModel by viewModel()
     private val vibrator: Vibrator by inject()
 
     private val handler: Handler = Handler()
 
     private var isInitialEditing = true
+    private var menu: Menu? = null
 
     private val navigator: SlideOverNavigator?
         get() = parentFragment as? SlideOverNavigator
@@ -52,6 +52,7 @@ class EntityGridFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val root = inflater.inflate(R.layout.fragment_entity_grid, container, false)
+        setupToolbar(R.string.title_quick_access, false)
 
         viewHolder = ViewHolder(
             root,
@@ -69,13 +70,7 @@ class EntityGridFragment : Fragment() {
             itemTouchHelper.attachToRecyclerView(it)
         }
 
-        viewHolder?.toolbar?.let {
-            (activity as? AppCompatActivity)?.setSupportActionBar(it)
-        }
-
         viewHolder?.let { setWindowInsets(it) }
-
-        setHasOptionsMenu(true)
 
         vm.result.observe(viewLifecycleOwner) { shortcuts ->
             shortcuts
@@ -138,6 +133,7 @@ class EntityGridFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_grid_main, menu)
+        this.menu = menu
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -165,8 +161,7 @@ class EntityGridFragment : Fragment() {
     }
 
     private fun setMenuState(state: MenuState) {
-        val menu = viewHolder?.toolbar?.menu ?: return
-        menu.forEach { item ->
+        menu?.forEach { item ->
             when (item.itemId) {
                 R.id.menuItem_done -> item.isVisible = state == MenuState.STATE_EDITING
                 else -> item.isVisible = state == MenuState.STATE_NORMAL
@@ -212,7 +207,7 @@ class EntityGridFragment : Fragment() {
     }
 
     private fun openSettings() {
-        startActivity(Intent(activity, SettingsActivity::class.java))
+        navigator?.navigateTo(AppPreferencesFragment.newInstance())
     }
 
     private fun setWindowInsets(viewHolder: ViewHolder) {
@@ -270,9 +265,7 @@ class EntityGridFragment : Fragment() {
         }
     }
 
-    private class ViewHolder(val root: View, val itemAdapter: EntityAdapter) {
-        val toolbar: Toolbar = root.findViewById(R.id.grid_toolbar)
-
+    private class ViewHolder(root: View, val itemAdapter: EntityAdapter) {
         val recyclerView: RecyclerView = root.findViewById<RecyclerView>(R.id.recyclerView_shortcuts).apply {
             val gridLayout = GridAutoSpanLayoutManager(context, resources.getDimension(R.dimen.item_height).toInt())
 
@@ -298,4 +291,3 @@ class EntityGridFragment : Fragment() {
     }
 
 }
-

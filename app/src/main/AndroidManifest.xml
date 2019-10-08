@@ -19,16 +19,6 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-            android:name=".preferences.SettingsActivity"
-            android:label="@string/title_preferences"
-            android:parentActivityName=".feature.slideover.SlideOverActivity">
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".feature.slideover.SlideOverActivity" />
-        </activity>
-
-        <activity
             android:name="fr.outadoc.quickhass.feature.onboarding.OnboardingActivity"
             android:label="@string/title_preferences" />
 
