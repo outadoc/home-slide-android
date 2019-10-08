@@ -12,22 +12,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/frameLayout_content"
             android:layout_width="@dimen/slideover_content_width"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/popup_background"
+            android:orientation="vertical"
             app:behavior_fitToContents="true"
             app:behavior_hideable="true"
             app:behavior_peekHeight="@dimen/slideover_peekHeight"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+            tools:layout_width="match_parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/grid_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="8dp"
+                tools:title="@string/title_quick_access" />
 
             <FrameLayout
                 android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-        </FrameLayout>
+        </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </FrameLayout>
