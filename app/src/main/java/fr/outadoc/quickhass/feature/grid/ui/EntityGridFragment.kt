@@ -35,8 +35,6 @@ class EntityGridFragment : Fragment() {
     private val vibrator: Vibrator by inject()
 
     private val handler: Handler = Handler()
-
-    private var isInitialEditing = true
     private var menu: Menu? = null
 
     private val navigator: SlideOverNavigator?
@@ -102,12 +100,6 @@ class EntityGridFragment : Fragment() {
         }
 
         vm.isEditingMode.observe(viewLifecycleOwner) { isEditingMode ->
-            if (isInitialEditing) {
-                isInitialEditing = false
-            } else {
-                vibrate()
-            }
-
             if (isEditingMode) {
                 cancelRefresh()
             } else {
