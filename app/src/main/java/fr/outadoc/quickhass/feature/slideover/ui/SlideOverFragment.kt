@@ -63,8 +63,8 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
         childFragmentManager
             .beginTransaction()
             .setCustomAnimations(
-                R.anim.fragment_fade_enter, R.anim.fragment_fade_exit,
-                R.anim.fragment_fade_enter, R.anim.fragment_fade_exit
+                R.anim.slide_out_down, R.anim.slide_in_down,
+                R.anim.slide_in_up, R.anim.slide_out_up
             )
             .replace(R.id.content, fragment)
             .addToBackStack(null)
