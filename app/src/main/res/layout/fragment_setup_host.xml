@@ -34,6 +34,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:hint="@string/onboarding_setup_host_hint"
+        app:endIconMode="clear_text"
         app:layout_constraintBottom_toTopOf="@id/btn_continue"
         app:layout_constraintEnd_toStartOf="@+id/view_discovery_result"
         app:layout_constraintStart_toStartOf="parent"
