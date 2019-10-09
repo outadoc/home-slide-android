@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import fr.outadoc.quickhass.DayNightActivity
 import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.extensions.setupToolbar
 
@@ -29,6 +30,13 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
                 null
+            }
+        }
+
+        findPreference<Preference>("list_pref_theme")?.apply {
+            setOnPreferenceChangeListener { _, newValue ->
+                (activity as? DayNightActivity)?.refreshTheme(newValue as String)
+                true
             }
         }
 

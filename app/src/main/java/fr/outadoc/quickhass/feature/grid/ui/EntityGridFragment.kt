@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.*
 import android.view.*
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
@@ -14,6 +13,7 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.faltenreich.skeletonlayout.applySkeleton
+import com.google.android.material.snackbar.Snackbar
 import fr.outadoc.quickhass.BuildConfig
 import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.extensions.setupToolbar
@@ -26,6 +26,7 @@ import fr.outadoc.quickhass.feature.slideover.ui.SlideOverNavigator
 import fr.outadoc.quickhass.preferences.AppPreferencesFragment
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.concurrent.TimeUnit
 
 class EntityGridFragment : Fragment() {
 
@@ -73,7 +74,19 @@ class EntityGridFragment : Fragment() {
         vm.result.observe(viewLifecycleOwner) { shortcuts ->
             shortcuts
                 .onFailure { e ->
-                    Toast.makeText(context, e.message ?: getString(R.string.toast_generic_error_title), Toast.LENGTH_SHORT).show()
+                    val message = e.localizedMessage
+                        ?.let { getString(R.string.snackbar_loading_error_title, it) }
+                        ?: getString(R.string.snackbar_generic_error_title)
+
+                    viewHolder?.recyclerView?.let {
+                        Snackbar.make(it, message, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.snackbar_error_action_retry) {
+                                cancelRefresh()
+                                vm.loadShortcuts()
+                            }
+                            .show()
+                    }
+
                     scheduleRefresh()
                 }
                 .onSuccess {
@@ -182,7 +195,7 @@ class EntityGridFragment : Fragment() {
         // Only one refresh scheduled at once
         cancelRefresh()
 
-        handler.postDelayed(vm.refreshIntervalSeconds * 1000L) {
+        handler.postDelayed(TimeUnit.SECONDS.toMillis(vm.refreshIntervalSeconds)) {
             vm.loadShortcuts()
         }
     }

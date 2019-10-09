@@ -12,17 +12,22 @@ abstract class DayNightActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        applyPreferredTheme()
+        applyPreferredTheme(prefs.theme)
     }
 
-    private fun applyPreferredTheme() {
+    private fun applyPreferredTheme(mode: String?) {
         AppCompatDelegate.setDefaultNightMode(
-            when (prefs.theme) {
+            when (mode) {
                 "day" -> AppCompatDelegate.MODE_NIGHT_NO
                 "night" -> AppCompatDelegate.MODE_NIGHT_YES
                 else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
             }
         )
+    }
+
+    fun refreshTheme(updatedValue: String?) {
+        applyPreferredTheme(updatedValue)
+        delegate.applyDayNight()
     }
 
 }
