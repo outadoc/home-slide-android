@@ -49,6 +49,7 @@
     <string name="pref_show_when_locked_summary">Control your home without having to unlock your device.</string>
     <string name="pref_refresh_inverval_title">Refresh Interval</string>
     <string name="pref_refresh_interval_summary">How often to refresh the state of your devices, in seconds.</string>
+    <string name="grid_nocontent_label">Nothing here.</string>
 
     <string name="pref_oss_mit_title">MIT License</string>
     <string-array name="pref_oss_mit_summary">
@@ -77,6 +78,7 @@
 
     <string-array name="pref_oss_ccby_summary">
         <item>\"Home Page\" by Freepik from www.flaticon.com</item>
+        <item>\"Halloween Black Cat\" by Freepik from www.flaticon.com</item>
     </string-array>
 
     <string-array name="pref_theme_entry_names">

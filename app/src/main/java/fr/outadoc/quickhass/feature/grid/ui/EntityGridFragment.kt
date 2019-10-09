@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
 import androidx.core.view.forEach
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -74,6 +75,8 @@ class EntityGridFragment : Fragment() {
         vm.result.observe(viewLifecycleOwner) { shortcuts ->
             shortcuts
                 .onFailure { e ->
+                    showRecyclerViewIfContent()
+
                     val message = e.localizedMessage
                         ?.let { getString(R.string.snackbar_loading_error_title, it) }
                         ?: getString(R.string.snackbar_generic_error_title)
@@ -96,6 +99,7 @@ class EntityGridFragment : Fragment() {
                         notifyDataSetChanged()
                     }
 
+                    showRecyclerViewIfContent()
                     scheduleRefresh()
                 }
         }
@@ -134,6 +138,14 @@ class EntityGridFragment : Fragment() {
         viewHolder?.skeleton?.showSkeleton()
 
         return root
+    }
+
+    fun showRecyclerViewIfContent() {
+        viewHolder?.apply {
+            val hasContent = itemAdapter.itemCount > 0
+            viewHolder?.recyclerView?.isVisible = hasContent
+            viewHolder?.noContent?.isVisible = !hasContent
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -271,6 +283,7 @@ class EntityGridFragment : Fragment() {
     }
 
     private class ViewHolder(root: View, val itemAdapter: EntityAdapter) {
+        val noContent: View = root.findViewById(R.id.layout_noContent)
         val recyclerView: RecyclerView = root.findViewById<RecyclerView>(R.id.recyclerView_shortcuts).apply {
             val gridLayout = GridAutoSpanLayoutManager(context, resources.getDimension(R.dimen.item_height).toInt())
 
