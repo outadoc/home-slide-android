@@ -12,8 +12,9 @@
     <string name="pref_theme_title">Thème de l\'application</string>
     <string name="tile_label">Maison</string>
     <string name="title_quick_access">Actions rapides</string>
-    <string name="toast_config_needed_title">Vous devez configurer l\'app avant de l\'utiliser.</string>
-    <string name="toast_generic_error_title">Une erreur est survenue.</string>
+    <string name="snackbar_generic_error_title">Une erreur est survenue.</string>
+    <string name="snackbar_loading_error_title">Impossible de charger vos appareils : %s</string>
+    <string name="snackbar_error_action_retry">Réessayer</string>
 
     <string-array name="pref_theme_entry_names">
         <item>Par défaut</item>

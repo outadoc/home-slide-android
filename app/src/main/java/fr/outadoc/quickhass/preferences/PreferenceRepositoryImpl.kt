@@ -43,8 +43,8 @@ class PreferenceRepositoryImpl(context: Context) : PreferenceRepository {
     override val showWhenLocked: Boolean
         get() = appPrefs.getBoolean(KEY_SHOW_WHEN_LOCKED, false)
 
-    override val refreshIntervalSeconds: Int
-        get() = appPrefs.getInt(KEY_REFRESH_INTERVAL, 10)
+    override val refreshIntervalSeconds: Long
+        get() = appPrefs.getInt(KEY_REFRESH_INTERVAL, 10).toLong()
 
     companion object {
         const val KEY_INSTANCE_BASE_URL = "et_pref_instance_base_url"

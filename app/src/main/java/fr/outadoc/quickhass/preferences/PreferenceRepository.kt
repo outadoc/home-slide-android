@@ -5,7 +5,7 @@ interface PreferenceRepository {
     var instanceBaseUrl: String
     val altInstanceBaseUrl: String?
     var accessToken: String
-    val refreshIntervalSeconds: Int
+    val refreshIntervalSeconds: Long
     val showWhenLocked: Boolean
     val theme: String
 
