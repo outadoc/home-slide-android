@@ -59,11 +59,14 @@
         <Preference
             app:key="pref_about_version"
             app:title="@string/app_name" />
+
+        <Preference
+            app:key="pref_about_author"
+            app:summary="@string/pref_author_summary"
+            app:title="@string/pref_author_title" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        app:title="@string/pref_legal_title"
-        app:iconSpaceReserved="false">
+    <PreferenceCategory app:title="@string/pref_legal_title">
         <Preference
             app:key="pref_oss_apache2"
             app:title="@string/pref_oss_apache2_title" />
