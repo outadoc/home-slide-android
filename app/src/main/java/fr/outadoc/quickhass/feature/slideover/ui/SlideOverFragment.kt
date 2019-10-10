@@ -80,14 +80,14 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
     }
 
     private fun setBottomSheetCallback(viewHolder: ViewHolder) {
-        viewHolder.bottomSheetBehavior.bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
+        viewHolder.bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == STATE_HIDDEN) {
                     activity?.finish()
                 }
             }
-        }
+        })
     }
 
     private fun setWindowInsets(viewHolder: ViewHolder) {
