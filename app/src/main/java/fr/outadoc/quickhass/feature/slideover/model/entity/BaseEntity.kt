@@ -2,6 +2,7 @@ package fr.outadoc.quickhass.feature.slideover.model.entity
 
 import fr.outadoc.mdi.FontIcon
 import fr.outadoc.mdi.toIcon
+import fr.outadoc.mdi.toIconOrNull
 import fr.outadoc.quickhass.feature.slideover.model.Action
 import fr.outadoc.quickhass.feature.slideover.model.EntityState
 import fr.outadoc.quickhass.feature.slideover.model.annotation.StringDomain
@@ -42,7 +43,7 @@ abstract class BaseEntity(
     open val fallbackIcon: FontIcon? = null
 
     override val icon: FontIcon
-        get() = state.attributes.icon?.toIcon() ?: fallbackIcon ?: defaultIcon
+        get() = state.attributes.icon?.toIconOrNull() ?: fallbackIcon ?: defaultIcon
 
     protected val additionalAttributes = state.attributes
 
