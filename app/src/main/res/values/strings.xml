@@ -7,6 +7,7 @@
     <string name="menu_item_settings">Settings</string>
     <string name="menu_item_edit">Reorganize</string>
     <string name="menu_item_done">Done</string>
+    <string name="grid_nocontent_label">Nothing here.</string>
     <string name="snackbar_generic_error_title">An error occurred.</string>
     <string name="snackbar_loading_error_title">Could not load your devices: %s</string>
     <string name="snackbar_error_action_retry">Retry</string>
@@ -49,7 +50,8 @@
     <string name="pref_show_when_locked_summary">Control your home without having to unlock your device.</string>
     <string name="pref_refresh_inverval_title">Refresh Interval</string>
     <string name="pref_refresh_interval_summary">How often to refresh the state of your devices, in seconds.</string>
-    <string name="grid_nocontent_label">Nothing here.</string>
+    <string name="pref_author_summary">All rights reserved.</string>
+    <string name="pref_author_title">Created by Baptiste Candellier</string>
 
     <string name="pref_oss_mit_title">MIT License</string>
     <string-array name="pref_oss_mit_summary">
