@@ -140,10 +140,9 @@ class EntityGridFragment : Fragment() {
         return root
     }
 
-    fun showRecyclerViewIfContent() {
+    private fun showRecyclerViewIfContent() {
         viewHolder?.apply {
             val hasContent = itemAdapter.itemCount > 0
-            viewHolder?.recyclerView?.isVisible = hasContent
             viewHolder?.noContent?.isVisible = !hasContent
         }
     }
