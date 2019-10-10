@@ -1,97 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <string name="back_action">Go Back</string>
-    <string name="title_quick_access">Quick Actions</string>
-    <string name="tile_label">Home</string>
-    <string name="title_preferences">Settings</string>
-    <string name="title_onboarding">Home Slide Setup</string>
-    <string name="menu_item_settings">Settings</string>
-    <string name="menu_item_edit">Reorganize</string>
-    <string name="menu_item_done">Done</string>
     <string name="grid_nocontent_label">Nothing here.</string>
-    <string name="snackbar_generic_error_title">An error occurred.</string>
-    <string name="snackbar_loading_error_title">Could not load your devices: %s</string>
-    <string name="snackbar_error_action_retry">Retry</string>
-    <string name="pref_base_url_summary">URL of your Home Assistant instance.</string>
-    <string name="pref_base_url_title">Home Assistant URL</string>
-    <string name="pref_alt_base_url_summary">Optional. Internet-accessible URL of your Home Assistant instance.</string>
-    <string name="pref_alt_base_url_title">Home Assistant Outside URL</string>
-    <string name="pref_auth_token_summary">You can get one on your Profile page in Home Assistant.</string>
-    <string name="pref_auth_token_title">Long-Lived Access Token</string>
-    <string name="pref_theme_title">Application Theme</string>
-    <string name="pref_cat_hass_title">Home Assistant Settings</string>
-    <string name="pref_cat_app_title">Application Settings</string>
-    <string name="onboarding_welcome_title">Welcome</string>
-    <string name="onboarding_welcome_continue">Begin</string>
-    <string name="onboarding_welcome_details">Before you can start controlling your home, we have a few things to set up.</string>
-    <string name="onboarding_success_title">We\'re done!</string>
-    <string name="onboarding_success_continue">Let\'s begin</string>
-    <string name="onboarding_success_subtitle">Enjoy :)</string>
+    <string name="grid_snackbar_error_action_retry">Retry</string>
+    <string name="grid_snackbar_generic_error_title">An error occurred.</string>
+    <string name="grid_snackbar_loading_error_title">Could not load your devices: %s</string>
+
+    <string name="menu_item_done">Done</string>
+    <string name="menu_item_edit">Reorganize</string>
+    <string name="menu_item_settings">Settings</string>
+
+    <string name="onboarding_setup_auth_continue">Continue</string>
+    <string name="onboarding_setup_auth_help">You can generate a long-lived access token on your Profile page in Home Assistant.</string>
+    <string name="onboarding_setup_auth_help_link">
+        <u>Generate a token on your Profile page</u>
+    </string>
+    <string name="onboarding_setup_auth_hint">Access Token</string>
+    <string name="onboarding_setup_auth_subtitle">Authenticate</string>
+    <string name="onboarding_setup_auth_title">Step 2</string>
     <string name="onboarding_setup_host_continue">Continue</string>
     <string name="onboarding_setup_host_hint">Home Assistant URL</string>
     <string name="onboarding_setup_host_subtitle">Find your installation</string>
     <string name="onboarding_setup_host_title">Step 1</string>
-    <string name="onboarding_setup_auth_title">Step 2</string>
-    <string name="onboarding_setup_auth_subtitle">Authenticate</string>
-    <string name="onboarding_setup_auth_continue">Continue</string>
-    <string name="onboarding_setup_auth_hint">Access Token</string>
-    <string name="onboarding_setup_shortcut_title">Step 3</string>
-    <string name="onboarding_setup_shortcut_subtitle">Enable quick access</string>
     <string name="onboarding_setup_shortcut_continue">Finish</string>
     <string name="onboarding_setup_shortcut_instructions">In your quick settings panel, click <b>Edit</b>, then drag the <b>Home</b> tile to your other shortcuts.</string>
-    <string name="onboarding_setup_auth_help_link"><u>Generate a token on your Profile page</u></string>
-    <string name="onboarding_setup_auth_help">You can generate a long-lived access token on your Profile page in Home Assistant.</string>
-    <string name="result_contentDescription_success">Success</string>
-    <string name="result_contentDescription_error">Error</string>
-    <string name="result_contentDescription_loading">Loading</string>
-    <string name="version_name">Version %1$s</string>
+    <string name="onboarding_setup_shortcut_subtitle">Enable quick access</string>
+    <string name="onboarding_setup_shortcut_title">Step 3</string>
+    <string name="onboarding_success_continue">Let\'s begin</string>
+    <string name="onboarding_success_subtitle">Enjoy :)</string>
+    <string name="onboarding_success_title">We\'re done!</string>
+    <string name="onboarding_welcome_continue">Begin</string>
+    <string name="onboarding_welcome_details">Before you can start controlling your home, we have a few things to set up.</string>
+    <string name="onboarding_welcome_title">Welcome</string>
+
     <string name="pref_about_title">About</string>
-    <string name="pref_legal_title">Awesome Software We Use</string>
-    <string name="pref_show_when_locked_title">Allow on Lock Screen</string>
-    <string name="pref_show_when_locked_summary">Control your home without having to unlock your device.</string>
-    <string name="pref_refresh_inverval_title">Refresh Interval</string>
-    <string name="pref_refresh_interval_summary">How often to refresh the state of your devices, in seconds.</string>
+    <string name="pref_alt_base_url_summary">Optional. Internet-accessible URL of your Home Assistant instance.</string>
+    <string name="pref_alt_base_url_title">Home Assistant Outside URL</string>
+    <string name="pref_auth_token_summary">You can get one on your Profile page in Home Assistant.</string>
+    <string name="pref_auth_token_title">Long-Lived Access Token</string>
     <string name="pref_author_summary">All rights reserved.</string>
     <string name="pref_author_title">Created by Baptiste Candellier</string>
-
-    <string name="pref_oss_mit_title">MIT License</string>
-    <string-array name="pref_oss_mit_summary">
-        <item>auth0/JWTDecode.Android</item>
-    </string-array>
-
-    <string name="pref_oss_isc_title">ISC License</string>
-    <string-array name="pref_oss_isc_summary">
-        <item>DanielMartinus/Konfetti</item>
-    </string-array>
-
-    <string name="pref_oss_apache2_title">Apache 2.0 License</string>
+    <string name="pref_base_url_summary">URL of your Home Assistant instance.</string>
+    <string name="pref_base_url_title">Home Assistant URL</string>
+    <string name="pref_cat_app_title">Application Settings</string>
+    <string name="pref_cat_hass_title">Home Assistant Settings</string>
+    <string name="pref_legal_title">Awesome Software We Use</string>
     <string-array name="pref_oss_apache2_summary">
         <item>square/retrofit</item>
         <item>square/moshi</item>
         <item>square/okhttp</item>
         <item>Faltenreich/SkeletonLayout</item>
     </string-array>
-
-    <string name="pref_oss_ofl_title">SIL Open Font License</string>
-    <string-array name="pref_oss_ofl_summary">
-        <item>Templarian/MaterialDesign</item>
-    </string-array>
-
-    <string name="pref_oss_ccby_title">Creative Commons BY 3.0</string>
-
+    <string name="pref_oss_apache2_title">Apache 2.0 License</string>
     <string-array name="pref_oss_ccby_summary">
         <item>\"Home Page\" by Freepik from www.flaticon.com</item>
         <item>\"Halloween Black Cat\" by Freepik from www.flaticon.com</item>
     </string-array>
-
+    <string name="pref_oss_ccby_title">Creative Commons BY 3.0</string>
+    <string-array name="pref_oss_isc_summary">
+        <item>DanielMartinus/Konfetti</item>
+    </string-array>
+    <string name="pref_oss_isc_title">ISC License</string>
+    <string-array name="pref_oss_mit_summary">
+        <item>auth0/JWTDecode.Android</item>
+    </string-array>
+    <string name="pref_oss_mit_title">MIT License</string>
+    <string-array name="pref_oss_ofl_summary">
+        <item>Templarian/MaterialDesign</item>
+    </string-array>
+    <string name="pref_oss_ofl_title">SIL Open Font License</string>
+    <string name="pref_refresh_interval_summary">How often to refresh the state of your devices, in seconds.</string>
+    <string name="pref_refresh_inverval_title">Refresh Interval</string>
+    <string name="pref_show_when_locked_summary">Control your home without having to unlock your device.</string>
+    <string name="pref_show_when_locked_title">Allow on Lock Screen</string>
     <string-array name="pref_theme_entry_names">
         <item>Default</item>
         <item>Light</item>
         <item>Dark</item>
     </string-array>
-
     <string-array name="pref_theme_entry_values">
         <item>system</item>
         <item>day</item>
         <item>night</item>
     </string-array>
+    <string name="pref_theme_title">Application Theme</string>
+    <string name="pref_version_summary">Version %1$s</string>
+
+    <string name="result_contentDescription_error">Error</string>
+    <string name="result_contentDescription_loading">Loading</string>
+    <string name="result_contentDescription_success">Success</string>
+
+    <string name="tile_label">Home</string>
+
+    <string name="title_onboarding">Home Slide Setup</string>
+    <string name="title_preferences">Settings</string>
+    <string name="title_quick_access">Quick Actions</string>
 </resources>

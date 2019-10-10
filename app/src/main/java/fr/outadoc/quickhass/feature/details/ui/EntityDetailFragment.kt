@@ -44,11 +44,7 @@ class EntityDetailFragment private constructor() : Fragment() {
             Toast.makeText(context, "lol click", Toast.LENGTH_SHORT).show()
         }, onReordered = { }, onItemLongPress = { false })
 
-        viewHolder = ViewHolder(root, entityAdapter).apply {
-            backButton.setOnClickListener {
-                activity?.onBackPressed()
-            }
-        }
+        viewHolder = ViewHolder(root, entityAdapter)
 
         vm.entity.observe(viewLifecycleOwner) { entity ->
             viewHolder?.itemAdapter?.apply {
@@ -73,7 +69,6 @@ class EntityDetailFragment private constructor() : Fragment() {
     }
 
     private class ViewHolder(view: View, val itemAdapter: EntityAdapter) {
-        val backButton: ImageButton = view.findViewById(R.id.imageButton_back)
         val itemPreview = (view.findViewById(R.id.recyclerView_itemPreview) as RecyclerView).apply {
             adapter = itemAdapter
             layoutManager = LinearLayoutManager(context)

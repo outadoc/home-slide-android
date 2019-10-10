@@ -1,68 +1,73 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <string name="menu_item_settings">Réglages</string>
-    <string name="menu_item_edit">Réorganiser</string>
+    <string name="grid_nocontent_label">Rien à voir ici.</string>
+    <string name="grid_snackbar_error_action_retry">Réessayer</string>
+    <string name="grid_snackbar_generic_error_title">Une erreur est survenue.</string>
+    <string name="grid_snackbar_loading_error_title">Impossible de charger vos appareils : %s</string>
+
     <string name="menu_item_done">Terminé</string>
-    <string name="pref_auth_token_summary">Vous pouvez en générer un dans votre Profil sur Home Assistant.</string>
-    <string name="pref_auth_token_title">Jeton d\'accès de longue durée</string>
-    <string name="pref_base_url_summary">URL de votre instance Home Assistant.</string>
-    <string name="pref_base_url_title">URL de Home Assistant</string>
-    <string name="pref_cat_app_title">Réglages de l\'application</string>
-    <string name="pref_cat_hass_title">Réglages de Home Assistant</string>
-    <string name="pref_theme_title">Thème de l\'application</string>
-    <string name="tile_label">Maison</string>
-    <string name="title_quick_access">Actions rapides</string>
-    <string name="snackbar_generic_error_title">Une erreur est survenue.</string>
-    <string name="snackbar_loading_error_title">Impossible de charger vos appareils : %s</string>
-    <string name="snackbar_error_action_retry">Réessayer</string>
+    <string name="menu_item_edit">Réorganiser</string>
+    <string name="menu_item_settings">Réglages</string>
 
-    <string-array name="pref_theme_entry_names">
-        <item>Par défaut</item>
-        <item>Mode clair</item>
-        <item>Mode sombre</item>
-    </string-array>
-
-    <string name="pref_alt_base_url_summary">Optionnelle. URL de votre instance Home Assistant accessible depuis Internet. (ex : DynDNS, Hass.io…)</string>
-    <string name="pref_alt_base_url_title">URL de Home Assistant (sur Internet)</string>
-    <string name="title_preferences">Réglages</string>
-    <string name="title_onboarding">Configuration Home Slide</string>
     <string name="onboarding_setup_auth_continue">Continuer</string>
+    <string name="onboarding_setup_auth_help">Vous pouvez générer un jeton d\'accès de longue durée sur votre page Profil dans Home Assistant.</string>
+    <string name="onboarding_setup_auth_help_link">
+        <u>Générer un jeton sur votre page Profil</u>
+    </string>
+    <string name="onboarding_setup_auth_hint">Jeton d\'accès</string>
+    <string name="onboarding_setup_auth_subtitle">Authentifiez-vous</string>
+    <string name="onboarding_setup_auth_title">Étape 2</string>
+    <string name="onboarding_setup_host_continue">Continuer</string>
+    <string name="onboarding_setup_host_hint">URL de Home Assistant</string>
+    <string name="onboarding_setup_host_subtitle">Trouvez votre installation</string>
+    <string name="onboarding_setup_host_title">Étape 1</string>
+    <string name="onboarding_setup_shortcut_continue">Terminer</string>
+    <string name="onboarding_setup_shortcut_instructions">Dans le panneau de réglages rapides, cliquez sur <b>Modifier</b>, puis faites glisser la tuile <b>Maison</b> sur vos autres raccourcis.</string>
+    <string name="onboarding_setup_shortcut_subtitle">Activez l\'accès rapide</string>
+    <string name="onboarding_setup_shortcut_title">Étape 3</string>
     <string name="onboarding_success_continue">Commençons</string>
     <string name="onboarding_success_subtitle">Amusez-vous bien :)</string>
     <string name="onboarding_success_title">C\'est bon !</string>
     <string name="onboarding_welcome_continue">Commencer</string>
     <string name="onboarding_welcome_details">Avant que vous puissiez contrôler votre logement, on a deux-trois choses à configurer.</string>
     <string name="onboarding_welcome_title">Bienvenue</string>
-    <string name="onboarding_setup_shortcut_title">Étape 3</string>
-    <string name="onboarding_setup_host_title">Étape 1</string>
-    <string name="onboarding_setup_auth_title">Étape 2</string>
-    <string name="onboarding_setup_auth_hint">Jeton d\'accès</string>
-    <string name="onboarding_setup_auth_subtitle">Authentifiez-vous</string>
-    <string name="onboarding_setup_host_continue">Continuer</string>
-    <string name="onboarding_setup_host_hint">URL de Home Assistant</string>
-    <string name="onboarding_setup_host_subtitle">Trouvez votre installation</string>
-    <string name="onboarding_setup_shortcut_continue">Terminer</string>
-    <string name="onboarding_setup_shortcut_instructions">Dans le panneau de réglages rapides, cliquez sur <b>Modifier</b>, puis faites glisser la tuile <b>Maison</b> sur vos autres raccourcis.</string>
-    <string name="onboarding_setup_shortcut_subtitle">Activez l\'accès rapide</string>
-    <string name="onboarding_setup_auth_help_link"><u>Générer un jeton sur votre page Profil</u></string>
-    <string name="onboarding_setup_auth_help">Vous pouvez générer un jeton d\'accès de longue durée sur votre page Profil dans Home Assistant.</string>
-    <string name="result_contentDescription_error">Erreur</string>
-    <string name="result_contentDescription_loading">Chargement</string>
-    <string name="result_contentDescription_success">Succès</string>
-    <string name="version_name">Version %1$s</string>
+
     <string name="pref_about_title">À propos</string>
+    <string name="pref_alt_base_url_summary">Optionnelle. URL de votre instance Home Assistant accessible depuis Internet. (ex : DynDNS, Hass.io…)</string>
+    <string name="pref_alt_base_url_title">URL de Home Assistant (sur Internet)</string>
+    <string name="pref_auth_token_summary">Vous pouvez en générer un dans votre Profil sur Home Assistant.</string>
+    <string name="pref_auth_token_title">Jeton d\'accès de longue durée</string>
+    <string name="pref_author_summary">Tous droits réservés.</string>
+    <string name="pref_author_title">Créée par Baptiste Candellier</string>
+    <string name="pref_base_url_summary">URL de votre instance Home Assistant.</string>
+    <string name="pref_base_url_title">URL de Home Assistant</string>
+    <string name="pref_cat_app_title">Réglages de l\'application</string>
+    <string name="pref_cat_hass_title">Réglages de Home Assistant</string>
     <string name="pref_legal_title">Logiciels cool qu\'on utilise</string>
     <string name="pref_oss_apache2_title">Licence Apache 2.0</string>
+    <string name="pref_oss_ccby_title">Creative Commons BY 3.0</string>
     <string name="pref_oss_isc_title">Licence ISC</string>
     <string name="pref_oss_mit_title">Licence MIT</string>
     <string name="pref_oss_ofl_title">SIL Open Font License</string>
-    <string name="pref_oss_ccby_title">Creative Commons BY 3.0</string>
-    <string name="pref_show_when_locked_summary">Contrôlez votre maison sans avoir à déverrouiller votre appareil.</string>
-    <string name="pref_show_when_locked_title">Autoriser sur l\'écran de verrouillage</string>
-    <string name="back_action">Retour</string>
     <string name="pref_refresh_interval_summary">Fréquence à laquelle rafraîchir l\'état de vos appareils, en secondes.</string>
     <string name="pref_refresh_inverval_title">Fréquence d\'actualisation</string>
-    <string name="grid_nocontent_label">Rien à voir ici.</string>
-    <string name="pref_author_title">Créée par Baptiste Candellier</string>
-    <string name="pref_author_summary">Tous droits réservés.</string>
+    <string name="pref_show_when_locked_summary">Contrôlez votre maison sans avoir à déverrouiller votre appareil.</string>
+    <string name="pref_show_when_locked_title">Autoriser sur l\'écran de verrouillage</string>
+    <string-array name="pref_theme_entry_names">
+        <item>Par défaut</item>
+        <item>Mode clair</item>
+        <item>Mode sombre</item>
+    </string-array>
+    <string name="pref_theme_title">Thème de l\'application</string>
+    <string name="pref_version_summary">Version %1$s</string>
+
+    <string name="result_contentDescription_error">Erreur</string>
+    <string name="result_contentDescription_loading">Chargement</string>
+    <string name="result_contentDescription_success">Succès</string>
+
+    <string name="tile_label">Maison</string>
+
+    <string name="title_onboarding">Configuration Home Slide</string>
+    <string name="title_preferences">Réglages</string>
+    <string name="title_quick_access">Actions rapides</string>
 </resources>

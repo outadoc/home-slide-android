@@ -26,7 +26,7 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
         findPreference<Preference>("pref_about_version")?.apply {
             summary = try {
                 val pInfo = context.packageManager.getPackageInfo(context.packageName, 0)
-                getString(R.string.version_name, pInfo.versionName)
+                getString(R.string.pref_version_summary, pInfo.versionName)
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
                 null
