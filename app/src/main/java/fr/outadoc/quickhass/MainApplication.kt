@@ -3,6 +3,8 @@ package fr.outadoc.quickhass
 import android.app.Application
 import android.os.Vibrator
 import androidx.room.Room
+import fr.outadoc.mdi.MaterialIconAssetMapperImpl
+import fr.outadoc.mdi.MaterialIconLocator
 import fr.outadoc.quickhass.feature.details.vm.EntityDetailViewModel
 import fr.outadoc.quickhass.feature.grid.vm.EntityGridViewModel
 import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepository
@@ -49,5 +51,7 @@ class MainApplication : Application() {
             androidContext(this@MainApplication)
             modules(appModule)
         }
+
+        MaterialIconLocator.instance = MaterialIconAssetMapperImpl(applicationContext)
     }
 }
