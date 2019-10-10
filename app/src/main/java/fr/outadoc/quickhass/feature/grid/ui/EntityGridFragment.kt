@@ -78,12 +78,12 @@ class EntityGridFragment : Fragment() {
                     showRecyclerViewIfContent()
 
                     val message = e.localizedMessage
-                        ?.let { getString(R.string.snackbar_loading_error_title, it) }
-                        ?: getString(R.string.snackbar_generic_error_title)
+                        ?.let { getString(R.string.grid_snackbar_loading_error_title, it) }
+                        ?: getString(R.string.grid_snackbar_generic_error_title)
 
                     viewHolder?.recyclerView?.let {
                         Snackbar.make(it, message, Snackbar.LENGTH_LONG)
-                            .setAction(R.string.snackbar_error_action_retry) {
+                            .setAction(R.string.grid_snackbar_error_action_retry) {
                                 cancelRefresh()
                                 vm.loadShortcuts()
                             }
