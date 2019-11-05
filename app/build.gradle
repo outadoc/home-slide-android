@@ -9,12 +9,12 @@ androidExtensions {
 }
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
         applicationId "fr.outadoc.quickhass"
         minSdkVersion 24
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 6
         versionName "1.0.5"
     }
@@ -46,9 +46,9 @@ android {
 }
 
 dependencies {
-    def room_version = "2.2.0"
-    def lifecycle_version = "2.2.0-beta01"
-    def nav_version_ktx = "2.2.0-beta01"
+    def room_version = "2.2.1"
+    def lifecycle_version = "2.2.0-rc01"
+    def nav_version_ktx = "2.2.0-rc01"
     def koin_version = '2.0.1'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -86,7 +86,7 @@ dependencies {
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version_ktx"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version_ktx"
-    implementation 'com.android.support:customtabs:28.0.0'
+    implementation 'androidx.browser:browser:1.2.0-alpha09'
 
     // Preferences & persistence
     implementation 'androidx.preference:preference-ktx:1.1.0'
