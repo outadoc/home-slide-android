@@ -1,7 +1,7 @@
 package fr.outadoc.quickhass.preferences
 
 import android.content.Context
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 
 class PreferenceRepositoryImpl(context: Context) : PreferenceRepository {
 
