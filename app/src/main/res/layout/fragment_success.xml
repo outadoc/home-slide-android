@@ -30,12 +30,13 @@
 
     <Button
         android:id="@+id/btn_continue"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:text="@string/onboarding_success_continue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/lbl_success_subtitle"
+        app:layout_constraintStart_toStartOf="@+id/lbl_success_subtitle"
         app:layout_constraintTop_toBottomOf="@+id/lbl_success_subtitle"
         app:layout_constraintVertical_chainStyle="packed" />
 

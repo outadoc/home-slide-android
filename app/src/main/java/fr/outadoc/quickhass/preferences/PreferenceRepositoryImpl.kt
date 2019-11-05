@@ -13,8 +13,11 @@ class PreferenceRepositoryImpl(context: Context) : PreferenceRepository {
             appPrefs.edit().putString(KEY_INSTANCE_BASE_URL, value).apply()
         }
 
-    override val altInstanceBaseUrl: String?
+    override var altInstanceBaseUrl: String?
         get() = appPrefs.getString(KEY_INSTANCE_ALT_BASE_URL, null)
+        set(value) {
+            appPrefs.edit().putString(KEY_INSTANCE_ALT_BASE_URL, value).apply()
+        }
 
     override var accessToken: String
         get() = appPrefs.getString(KEY_ACCESS_TOKEN, "")!!
