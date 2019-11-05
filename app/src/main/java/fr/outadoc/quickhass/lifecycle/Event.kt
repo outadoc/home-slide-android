@@ -6,8 +6,10 @@ data class Event<T>(private val event: T) {
 
     fun peek(): T = event
 
-    fun pop(): T {
-        isPopped = true
-        return event
+    fun pop(): T? {
+        return if (isPopped) null else {
+            isPopped = true
+            event
+        }
     }
 }
