@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
@@ -80,7 +79,7 @@ class AuthSetupFragment : Fragment() {
         val tokenEditText: EditText = view.findViewById(R.id.et_token)
         val tokenValidationResult: ResultIconView = view.findViewById(R.id.view_token_result)
         val continueButton: Button = view.findViewById(R.id.btn_continue)
-        val helpLink: TextView = view.findViewById(R.id.lbl_auth_help_link)
+        val helpLink: Button = view.findViewById(R.id.btn_auth_help_link)
 
         val navController: NavController
             get() = view.findNavController()
