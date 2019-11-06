@@ -11,9 +11,7 @@
 
     <string name="onboarding_setup_auth_continue">Continue</string>
     <string name="onboarding_setup_auth_help">You can generate a long-lived access token on your Profile page in Home Assistant.</string>
-    <string name="onboarding_setup_auth_help_link">
-        <u>Generate a token on your Profile page</u>
-    </string>
+    <string name="onboarding_setup_auth_help_link">Generate a token</string>
     <string name="onboarding_setup_auth_hint">Access Token</string>
     <string name="onboarding_setup_auth_subtitle">Authenticate</string>
     <string name="onboarding_setup_auth_title">Step 2</string>

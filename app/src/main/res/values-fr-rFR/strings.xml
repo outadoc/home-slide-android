@@ -11,9 +11,7 @@
 
     <string name="onboarding_setup_auth_continue">Continuer</string>
     <string name="onboarding_setup_auth_help">Vous pouvez générer un jeton d\'accès de longue durée sur votre page Profil dans Home Assistant.</string>
-    <string name="onboarding_setup_auth_help_link">
-        <u>Générer un jeton sur votre page Profil</u>
-    </string>
+    <string name="onboarding_setup_auth_help_link">Générer un jeton</string>
     <string name="onboarding_setup_auth_hint">Jeton d\'accès</string>
     <string name="onboarding_setup_auth_subtitle">Authentifiez-vous</string>
     <string name="onboarding_setup_auth_title">Étape 2</string>
