@@ -20,7 +20,7 @@
 
         <activity
             android:name="fr.outadoc.quickhass.feature.onboarding.OnboardingActivity"
-            android:label="@string/title_preferences"
+            android:label="@string/title_onboarding"
             android:theme="@style/AppTheme.Onboarding" />
 
         <activity
