@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.core.view.isVisible
+import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
@@ -51,13 +51,13 @@ class HostSetupFragment : Fragment() {
         }
 
         vm.autoDiscoveredInstances.observe(viewLifecycleOwner) { autoDiscovered ->
-            viewHolder?.zeroconfHelper?.isVisible = autoDiscovered.isNotEmpty()
-            viewHolder?.zeroconfRecyclerView?.isVisible = autoDiscovered.isNotEmpty()
+            viewHolder?.zeroconfHelper?.isInvisible = autoDiscovered.isEmpty()
 
             viewHolder?.zeroconfAdapter?.apply {
                 items.clear()
                 items.addAll(autoDiscovered)
                 notifyDataSetChanged()
+                viewHolder?.zeroconfRecyclerView?.scheduleLayoutAnimation()
             }
         }
 

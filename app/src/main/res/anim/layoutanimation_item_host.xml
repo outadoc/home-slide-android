@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layoutAnimation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:animationOrder="normal"
+    android:delay="15%">
+
+    <aapt:attr name="android:animation">
+        <set android:duration="@android:integer/config_longAnimTime">
+            <translate
+                android:fromXDelta="100%p"
+                android:interpolator="@android:anim/decelerate_interpolator"
+                android:toXDelta="0" />
+
+            <alpha
+                android:fromAlpha="0"
+                android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+                android:toAlpha="1" />
+        </set>
+    </aapt:attr>
+</layoutAnimation>
