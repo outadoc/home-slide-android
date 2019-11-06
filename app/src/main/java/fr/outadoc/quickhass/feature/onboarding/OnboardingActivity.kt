@@ -16,8 +16,10 @@ class OnboardingActivity : DayNightActivity() {
 
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        findNavController(this, R.id.nav_host_fragment)
-            .navigate(R.id.welcomeFragment)
+        if (savedInstanceState == null) {
+            findNavController(this, R.id.nav_host_fragment)
+                .navigate(R.id.welcomeFragment)
+        }
     }
 
     override fun onCreateView(name: String, context: Context, attrs: AttributeSet) =
