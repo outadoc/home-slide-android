@@ -20,7 +20,8 @@
 
         <activity
             android:name="fr.outadoc.quickhass.feature.onboarding.OnboardingActivity"
-            android:label="@string/title_preferences" />
+            android:label="@string/title_preferences"
+            android:theme="@style/AppTheme.Onboarding" />
 
         <activity
             android:name="fr.outadoc.quickhass.feature.slideover.SlideOverActivity"
@@ -28,7 +29,7 @@
             android:label="@string/app_name"
             android:launchMode="singleInstance"
             android:resizeableActivity="false"
-            android:theme="@style/QuickAccessTheme">
+            android:theme="@style/AppTheme.QuickAccess">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

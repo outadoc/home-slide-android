@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorSurfaceLight">#2C2C2C</color>
+    <color name="colorNavigationShim">#B3FFFFFF</color>
 
     <color name="skeleton_maskColor">#424242</color>
     <color name="skeleton_shimmerColor">#5E5E5E</color>

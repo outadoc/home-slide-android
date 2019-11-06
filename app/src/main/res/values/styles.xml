@@ -6,7 +6,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="QuickAccessTheme" parent="AppTheme">
+    <style name="AppTheme.Onboarding">
+        <item name="android:navigationBarColor">@color/colorNavigationShim</item>
+        <item name="android:statusBarColor">@color/colorNavigationShim</item>
+    </style>
+
+    <style name="AppTheme.QuickAccess" parent="AppTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
