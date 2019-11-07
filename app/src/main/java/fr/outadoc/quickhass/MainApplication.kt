@@ -19,6 +19,8 @@ import fr.outadoc.quickhass.feature.slideover.rest.EntityRepositoryImpl
 import fr.outadoc.quickhass.persistence.EntityDatabase
 import fr.outadoc.quickhass.preferences.PreferenceRepository
 import fr.outadoc.quickhass.preferences.PreferenceRepositoryImpl
+import fr.outadoc.quickhass.rest.AccessTokenProvider
+import fr.outadoc.quickhass.rest.LongLivedTokenProviderImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.android.viewmodel.dsl.viewModel
@@ -34,10 +36,11 @@ class MainApplication : Application() {
         single { getSystemService<Vibrator>() }
 
         single { DiscoveryRepositoryImpl() as DiscoveryRepository }
-        single { EntityRepositoryImpl(get(), get()) as EntityRepository }
+        single { EntityRepositoryImpl(get(), get(), get()) as EntityRepository }
         single { PreferenceRepositoryImpl(get()) as PreferenceRepository }
         single { Room.databaseBuilder(get(), EntityDatabase::class.java, EntityDatabase.DB_NAME).build() }
         single { HassZeroconfDiscoveryServiceImpl(get()) as ZeroconfDiscoveryService }
+        single { LongLivedTokenProviderImpl(get()) as AccessTokenProvider }
 
         viewModel { WelcomeViewModel() }
         viewModel { HostSetupViewModel(get(), get(), get()) }
