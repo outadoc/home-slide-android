@@ -10,8 +10,13 @@ import fr.outadoc.quickhass.feature.slideover.model.entity.EntityFactory
 import fr.outadoc.quickhass.persistence.EntityDatabase
 import fr.outadoc.quickhass.persistence.model.PersistedEntity
 import fr.outadoc.quickhass.preferences.PreferenceRepository
+import fr.outadoc.quickhass.rest.AccessTokenProvider
 
-class EntityRepositoryImpl(context: Context, prefs: PreferenceRepository) : EntityRepository {
+class EntityRepositoryImpl(
+    context: Context,
+    accessTokenProvider: AccessTokenProvider,
+    prefs: PreferenceRepository
+) : EntityRepository {
 
     private val db = Room.databaseBuilder(
         context,
@@ -25,7 +30,7 @@ class EntityRepositoryImpl(context: Context, prefs: PreferenceRepository) : Enti
         get() = persistedEntityCache.map { it.entityId to it.order }.toMap()
 
     private val client: HomeAssistantApi by lazy {
-        RestClient.create<HomeAssistantApi>(prefs)
+        RestClient.create<HomeAssistantApi>(accessTokenProvider, prefs)
     }
 
     override suspend fun getEntities(): Result<List<Entity>> =
