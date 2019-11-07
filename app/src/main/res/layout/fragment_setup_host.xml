@@ -33,8 +33,8 @@
 
         <fr.outadoc.quickhass.feature.onboarding.ui.ResultIconView
             android:id="@+id/view_discovery_result"
-            android:layout_width="24dp"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginEnd="32dp"
             android:layout_weight="1"
             app:layout_constraintBottom_toBottomOf="@+id/textInputLayout"
@@ -47,10 +47,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="32dp"
             android:hint="@string/onboarding_setup_host_hint"
             app:endIconMode="clear_text"
-            app:layout_constraintEnd_toStartOf="@+id/view_discovery_result"
+            app:layout_constraintEnd_toEndOf="@+id/view_discovery_result"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lbl_step_subtitle">
 
@@ -69,7 +69,7 @@
             android:layout_marginTop="16dp"
             android:enabled="false"
             android:text="@string/onboarding_setup_host_continue"
-            app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
+            app:layout_constraintEnd_toEndOf="@+id/view_discovery_result"
             app:layout_constraintStart_toStartOf="@+id/textInputLayout"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 

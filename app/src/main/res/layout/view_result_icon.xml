@@ -1,22 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="48dp"
+    android:layout_height="match_parent"
+    app:cardCornerRadius="4dp"
+    tools:ignore="RtlSymmetry">
 
     <ImageView
         android:id="@+id/icon_success"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorSuccess"
         android:contentDescription="@string/result_contentDescription_success"
+        android:padding="4dp"
+        android:paddingStart="20dp"
+        android:tint="@color/colorOnAccent"
         app:srcCompat="@drawable/ic_check_circle" />
 
     <ImageView
         android:id="@+id/icon_error"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?colorError"
         android:contentDescription="@string/result_contentDescription_error"
+        android:padding="4dp"
+        android:paddingStart="20dp"
+        android:tint="@color/colorOnAccent"
         app:srcCompat="@drawable/ic_error_circle" />
 
     <ImageView
@@ -24,6 +34,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@string/result_contentDescription_loading"
+        android:padding="4dp"
+        android:paddingStart="20dp"
+        android:tint="@color/colorOnAccent"
         app:srcCompat="@drawable/avd_loading" />
 
-</LinearLayout>
+
+</androidx.cardview.widget.CardView>
