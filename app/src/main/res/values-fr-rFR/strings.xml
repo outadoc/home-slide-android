@@ -21,7 +21,7 @@
     <string name="onboarding_setup_host_title">Étape 1</string>
     <string name="onboarding_setup_host_zeroconf">Psst\u00A0! J\'ai aussi trouvé ces installations de Home Assistant sur le réseau :</string>
     <string name="onboarding_setup_host_zeroconfIcon">Maison</string>
-    <string name="onboarding_setup_shortcut_continue">Terminer</string>
+    <string name="onboarding_setup_shortcut_continue">C\'est fait !</string>
     <string name="onboarding_setup_shortcut_instructions">Dans le panneau de réglages rapides, cliquez sur <b>Modifier</b>, puis faites glisser la tuile <b>Maison</b> sur vos autres raccourcis.</string>
     <string name="onboarding_setup_shortcut_subtitle">Activez l\'accès rapide</string>
     <string name="onboarding_setup_shortcut_title">Étape 3</string>
