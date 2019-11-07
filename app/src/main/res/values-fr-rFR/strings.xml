@@ -19,7 +19,7 @@
     <string name="onboarding_setup_host_hint">URL de Home Assistant</string>
     <string name="onboarding_setup_host_subtitle">Trouvez votre installation</string>
     <string name="onboarding_setup_host_title">Étape 1</string>
-    <string name="onboarding_setup_host_zeroconf">Psst\u00A0! J\'ai aussi trouvé ces installations de Home Assistant sur le réseau :</string>
+    <string name="onboarding_setup_host_zeroconf"><b>Psst\u00A0!</b> J\'ai aussi trouvé ces installations de Home Assistant sur le réseau :</string>
     <string name="onboarding_setup_host_zeroconfIcon">Maison</string>
     <string name="onboarding_setup_shortcut_continue">C\'est fait !</string>
     <string name="onboarding_setup_shortcut_instructions">Dans le panneau de réglages rapides, cliquez sur <b>Modifier</b>, puis faites glisser la tuile <b>Maison</b> sur vos autres raccourcis.</string>
