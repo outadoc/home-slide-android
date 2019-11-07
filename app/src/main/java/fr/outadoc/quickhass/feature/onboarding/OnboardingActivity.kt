@@ -12,14 +12,9 @@ class OnboardingActivity : DayNightActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_onboarding)
-
         setSupportActionBar(findViewById(R.id.toolbar))
-
-        if (savedInstanceState == null) {
-            findNavController(this, R.id.nav_host_fragment)
-                .navigate(R.id.welcomeFragment)
-        }
     }
 
     override fun onCreateView(name: String, context: Context, attrs: AttributeSet) =
