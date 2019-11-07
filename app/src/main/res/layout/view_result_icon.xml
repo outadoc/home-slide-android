@@ -16,7 +16,7 @@
         android:padding="4dp"
         android:paddingStart="20dp"
         android:tint="@color/colorOnAccent"
-        app:srcCompat="@drawable/ic_check_circle" />
+        app:srcCompat="@drawable/ic_check" />
 
     <ImageView
         android:id="@+id/icon_error"
@@ -27,7 +27,7 @@
         android:padding="4dp"
         android:paddingStart="20dp"
         android:tint="@color/colorOnAccent"
-        app:srcCompat="@drawable/ic_error_circle" />
+        app:srcCompat="@drawable/ic_error" />
 
     <ImageView
         android:id="@+id/icon_loading"
