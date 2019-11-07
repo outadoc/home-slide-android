@@ -43,7 +43,7 @@ assembleDebug:
     paths:
       - app/build/outputs/
 
-debugTests:
+.debugTests:
   stage: test
   script:
     - ./gradlew -Pci --console=plain :app:testDebug
@@ -51,7 +51,7 @@ debugTests:
 bundleRelease:
   stage: package
   only:
-    - develop
+    - release/*
     - master
   script:
     - ./gradlew bundleRelease
