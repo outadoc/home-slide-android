@@ -21,7 +21,7 @@
     <string name="onboarding_setup_host_title">Step 1</string>
     <string name="onboarding_setup_host_zeroconf">Psst! I\'ve also found these Home Assistant installations on your network:</string>
     <string name="onboarding_setup_host_zeroconfIcon">Home</string>
-    <string name="onboarding_setup_shortcut_continue">Finish</string>
+    <string name="onboarding_setup_shortcut_continue">It\'s done!</string>
     <string name="onboarding_setup_shortcut_instructions">In your quick settings panel, click <b>Edit</b>, then drag the <b>Home</b> tile to your other shortcuts.</string>
     <string name="onboarding_setup_shortcut_subtitle">Enable quick access</string>
     <string name="onboarding_setup_shortcut_title">Step 3</string>
