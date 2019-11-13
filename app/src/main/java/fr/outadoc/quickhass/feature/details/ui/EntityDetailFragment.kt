@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
@@ -42,14 +41,13 @@ class EntityDetailFragment private constructor() : Fragment() {
 
         val entityAdapter = EntityAdapter({
             Toast.makeText(context, "lol click", Toast.LENGTH_SHORT).show()
-        }, onReordered = { }, onItemLongPress = { false })
+        }, onReorderedListener = { }, onItemLongPress = { false })
 
         viewHolder = ViewHolder(root, entityAdapter)
 
         vm.entity.observe(viewLifecycleOwner) { entity ->
             viewHolder?.itemAdapter?.apply {
-                items.clear()
-                items.add(entity)
+                submitList(listOf(entity))
                 notifyDataSetChanged()
             }
         }

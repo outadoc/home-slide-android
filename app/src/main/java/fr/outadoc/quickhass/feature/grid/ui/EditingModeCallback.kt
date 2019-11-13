@@ -1,20 +1,15 @@
 package fr.outadoc.quickhass.feature.grid.ui
 
 import android.view.View
-import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.feature.grid.vm.EntityGridViewModel
 
 class EditingModeCallback(private val viewModel: EntityGridViewModel) :
-    ItemTouchHelper.SimpleCallback(
-        ItemTouchHelper.UP or
-                ItemTouchHelper.DOWN or
-                ItemTouchHelper.START or
-                ItemTouchHelper.END, 0
-    ) {
+    SimpleCallback(UP or DOWN or START or END, 0) {
 
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-        val adapter = recyclerView.adapter as ReorderableRecyclerViewAdapter
+        val adapter = recyclerView.adapter as ReorderableListAdapter<*, *>
 
         val from = viewHolder.adapterPosition
         val to = target.adapterPosition
@@ -30,7 +25,7 @@ class EditingModeCallback(private val viewModel: EntityGridViewModel) :
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         super.onSelectedChanged(viewHolder, actionState)
 
-        if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+        if (actionState == ACTION_STATE_DRAG) {
             viewHolder?.itemView?.scale(1.1f, 10.0f)
         }
     }
