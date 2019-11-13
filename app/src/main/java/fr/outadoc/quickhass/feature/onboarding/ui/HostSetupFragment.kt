@@ -55,7 +55,6 @@ class HostSetupFragment : Fragment() {
 
             viewHolder?.zeroconfAdapter?.apply {
                 submitList(autoDiscovered)
-                notifyDataSetChanged()
                 viewHolder?.zeroconfRecyclerView?.scheduleLayoutAnimation()
             }
         }

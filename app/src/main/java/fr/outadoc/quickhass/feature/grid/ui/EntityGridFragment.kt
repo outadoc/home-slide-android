@@ -95,7 +95,6 @@ class EntityGridFragment : Fragment() {
                 .onSuccess {
                     viewHolder?.itemAdapter?.apply {
                         submitList(shortcuts.getOrDefault(emptyList()))
-                        notifyDataSetChanged()
                     }
 
                     showRecyclerViewIfContent()

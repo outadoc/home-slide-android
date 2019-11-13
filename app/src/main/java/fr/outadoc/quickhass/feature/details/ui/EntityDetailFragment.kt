@@ -48,7 +48,6 @@ class EntityDetailFragment private constructor() : Fragment() {
         vm.entity.observe(viewLifecycleOwner) { entity ->
             viewHolder?.itemAdapter?.apply {
                 submitList(listOf(entity))
-                notifyDataSetChanged()
             }
         }
 
