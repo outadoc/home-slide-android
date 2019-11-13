@@ -11,19 +11,18 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.R
-import fr.outadoc.quickhass.feature.grid.ui.ReorderableRecyclerViewAdapter
+import fr.outadoc.quickhass.feature.grid.ui.ReorderableListAdapter
+import fr.outadoc.quickhass.feature.slideover.model.EntityDiffer
 import fr.outadoc.quickhass.feature.slideover.model.annotation.StringEntityId
 import fr.outadoc.quickhass.feature.slideover.model.entity.Entity
-import java.util.*
 import kotlin.properties.Delegates
 
 class EntityAdapter(
-    val onItemClick: (Entity) -> Unit,
-    val onReordered: (List<Entity>) -> Unit,
+    val onItemClickListener: (Entity) -> Unit,
+    val onReorderedListener: (List<Entity>) -> Unit,
     val onItemLongPress: (Entity) -> Boolean
-) : ReorderableRecyclerViewAdapter<EntityAdapter.ViewHolder>() {
+) : ReorderableListAdapter<Entity, EntityAdapter.ViewHolder>(EntityDiffer) {
 
-    val items: LinkedList<Entity> = LinkedList()
     var isEditingMode = false
 
     private var wiggleWiggle: Animation? = null
@@ -37,10 +36,8 @@ class EntityAdapter(
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = items.size
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = items[position]
+        val item = getItem(position)
 
         with(holder) {
             // Activate the view if the entity is "on"
@@ -65,7 +62,7 @@ class EntityAdapter(
                 view.setOnClickListener {
                     if (item.isEnabled) {
                         view.isActivated = !view.isActivated
-                        onItemClick(item)
+                        onItemClickListener(item)
                     }
                 }
 
@@ -101,16 +98,7 @@ class EntityAdapter(
         }
     }
 
-    override fun moveItem(from: Int, to: Int) {
-        if (from == to || from !in 0 until items.size || to !in 0 until items.size)
-            return
-
-        val itemToMove = items[from]
-        items.remove(itemToMove)
-        items.add(to, itemToMove)
-
-        onReordered(items)
-    }
+    override fun onReordered(list: List<Entity>) = onReorderedListener(list)
 
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val label: TextView = view.findViewById(R.id.tv_shortcut_label)

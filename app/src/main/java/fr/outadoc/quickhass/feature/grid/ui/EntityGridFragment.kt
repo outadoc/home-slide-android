@@ -57,11 +57,11 @@ class EntityGridFragment : Fragment() {
         viewHolder = ViewHolder(
             root,
             EntityAdapter(
-                onItemClick = {
+                onItemClickListener = {
                     vibrate()
                     vm.onEntityClick(it)
                 },
-                onReordered = vm::onReorderedEntities,
+                onReorderedListener = vm::onReorderedEntities,
                 onItemLongPress = ::onItemLongPress
             )
         )
@@ -94,8 +94,7 @@ class EntityGridFragment : Fragment() {
                 }
                 .onSuccess {
                     viewHolder?.itemAdapter?.apply {
-                        items.clear()
-                        items.addAll(shortcuts.getOrDefault(emptyList()))
+                        submitList(shortcuts.getOrDefault(emptyList()))
                         notifyDataSetChanged()
                     }
 
