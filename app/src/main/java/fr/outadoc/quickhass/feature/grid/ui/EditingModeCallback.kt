@@ -15,8 +15,6 @@ class EditingModeCallback(private val viewModel: EntityGridViewModel) :
         val to = target.adapterPosition
 
         adapter.moveItem(from, to)
-        adapter.notifyItemMoved(from, to)
-
         return true
     }
 
