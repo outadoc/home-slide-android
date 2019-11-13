@@ -4,23 +4,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.feature.onboarding.model.ZeroconfHost
+import fr.outadoc.quickhass.feature.onboarding.model.ZeroconfHostDiffer
 
-class ZeroconfAdapter(val onItemClick: (ZeroconfHost) -> Unit) : RecyclerView.Adapter<ZeroconfAdapter.ViewHolder>() {
-
-    val items: MutableList<ZeroconfHost> = mutableListOf()
+class ZeroconfAdapter(val onItemClick: (ZeroconfHost) -> Unit) : ListAdapter<ZeroconfHost, ZeroconfAdapter.ViewHolder>(ZeroconfHostDiffer) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_zeroconf_host, parent, false)
         return ViewHolder(view)
     }
 
-    override fun getItemCount() = items.size
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = items[position]
+        val item = getItem(position)
 
         with(holder) {
             instanceName.text = item.instanceName
