@@ -35,7 +35,7 @@ class AuthSetupFragment : Fragment() {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    s?.let { vm.onTokenChanged(s.toString()) }
+                    s?.let { vm.onTokenChanged(s.toString().trim()) }
                 }
             })
 
