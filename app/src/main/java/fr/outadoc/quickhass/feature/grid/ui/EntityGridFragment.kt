@@ -46,10 +46,6 @@ class EntityGridFragment : Fragment() {
         ItemTouchHelper(EditingModeCallback(vm))
     }
 
-    private enum class MenuState {
-        STATE_NORMAL, STATE_EDITING
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val root = inflater.inflate(R.layout.fragment_entity_grid, container, false)
         setupToolbar(R.string.title_quick_access, false)
@@ -92,9 +88,9 @@ class EntityGridFragment : Fragment() {
 
                     scheduleRefresh()
                 }
-                .onSuccess {
+                .onSuccess { items ->
                     viewHolder?.itemAdapter?.apply {
-                        submitList(shortcuts.getOrDefault(emptyList()))
+                        submitList(items)
                     }
 
                     showRecyclerViewIfContent()
@@ -114,15 +110,21 @@ class EntityGridFragment : Fragment() {
             viewHolder?.itemAdapter?.loadingEntityIds = entityIds
         }
 
-        vm.isEditingMode.observe(viewLifecycleOwner) { isEditingMode ->
-            if (isEditingMode) {
-                cancelRefresh()
-            } else {
-                scheduleRefresh()
+        vm.editionState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                EntityGridViewModel.State.Editing -> cancelRefresh()
+                else -> scheduleRefresh()
+            }
+
+            menu?.forEach { item ->
+                when (item.itemId) {
+                    R.id.menuItem_done -> item.isVisible = state == EntityGridViewModel.State.Editing
+                    R.id.menuItem_edit -> item.isVisible = state == EntityGridViewModel.State.Normal
+                }
             }
 
             viewHolder?.itemAdapter?.apply {
-                this.isEditingMode = isEditingMode
+                this.isEditingMode = state == EntityGridViewModel.State.Editing
                 notifyDataSetChanged()
             }
         }
@@ -154,7 +156,6 @@ class EntityGridFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menuItem_edit -> {
-                setMenuState(MenuState.STATE_EDITING)
                 vm.onEditClick()
                 true
             }
@@ -165,21 +166,11 @@ class EntityGridFragment : Fragment() {
             }
 
             R.id.menuItem_done -> {
-                setMenuState(MenuState.STATE_NORMAL)
                 vm.onEditClick()
                 true
             }
 
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun setMenuState(state: MenuState) {
-        menu?.forEach { item ->
-            when (item.itemId) {
-                R.id.menuItem_done -> item.isVisible = state == MenuState.STATE_EDITING
-                else -> item.isVisible = state == MenuState.STATE_NORMAL
-            }
         }
     }
 

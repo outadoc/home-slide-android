@@ -21,6 +21,12 @@ class EntityGridViewModel(
     private val db: EntityDatabase
 ) : ViewModel() {
 
+    sealed class State {
+        object Disabled : State()
+        object Normal : State()
+        object Editing : State()
+    }
+
     private val _result = MutableLiveData<Result<List<Entity>>>()
     val result: LiveData<Result<List<Entity>>> = _result
 
@@ -30,8 +36,8 @@ class EntityGridViewModel(
     private val _shouldAskForInitialValues = MutableLiveData<Boolean>()
     val shouldAskForInitialValues: LiveData<Boolean> = _shouldAskForInitialValues
 
-    private val _isEditingMode = MutableLiveData(false)
-    val isEditingMode: LiveData<Boolean> = _isEditingMode
+    private val _editionState: MutableLiveData<State> = MutableLiveData(State.Disabled)
+    val editionState: LiveData<State> = _editionState
 
     private val _loadingEntityIds = MutableLiveData<Set<@StringEntityId String>>()
     val loadingEntityIds: LiveData<Set<@StringEntityId String>> = _loadingEntityIds
@@ -49,8 +55,15 @@ class EntityGridViewModel(
             _isLoading.postValue(true)
 
             val res = repository.getEntities()
-            _result.postValue(res)
+                .onSuccess {
+                    if (it.isEmpty()) {
+                        _editionState.postValue(State.Disabled)
+                    } else {
+                        _editionState.postValue(State.Normal)
+                    }
+                }
 
+            _result.postValue(res)
             _isLoading.postValue(false)
         }
     }
@@ -108,6 +121,10 @@ class EntityGridViewModel(
     }
 
     fun onEditClick() {
-        _isEditingMode.value = _isEditingMode.value != true
+        _editionState.value = when (editionState.value!!) {
+            State.Normal -> State.Editing
+            State.Editing -> State.Normal
+            State.Disabled -> State.Disabled
+        }
     }
 }
