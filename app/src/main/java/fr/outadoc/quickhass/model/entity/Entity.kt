@@ -1,10 +1,10 @@
-package fr.outadoc.quickhass.feature.slideover.model.entity
+package fr.outadoc.quickhass.model.entity
 
 import fr.outadoc.mdi.FontIcon
-import fr.outadoc.quickhass.feature.slideover.model.Action
-import fr.outadoc.quickhass.feature.slideover.model.EntityState
-import fr.outadoc.quickhass.feature.slideover.model.annotation.StringDomain
-import fr.outadoc.quickhass.feature.slideover.model.annotation.StringEntityId
+import fr.outadoc.quickhass.model.Action
+import fr.outadoc.quickhass.model.EntityState
+import fr.outadoc.quickhass.model.annotation.StringDomain
+import fr.outadoc.quickhass.model.annotation.StringEntityId
 
 interface Entity {
 

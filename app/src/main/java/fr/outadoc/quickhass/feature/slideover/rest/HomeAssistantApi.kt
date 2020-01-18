@@ -1,7 +1,7 @@
 package fr.outadoc.quickhass.feature.slideover.rest
 
-import fr.outadoc.quickhass.feature.slideover.model.EntityState
-import fr.outadoc.quickhass.feature.slideover.model.Service
+import fr.outadoc.quickhass.model.EntityState
+import fr.outadoc.quickhass.model.Service
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

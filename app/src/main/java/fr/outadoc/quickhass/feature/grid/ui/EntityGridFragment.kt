@@ -21,9 +21,9 @@ import fr.outadoc.quickhass.extensions.setupToolbar
 import fr.outadoc.quickhass.feature.details.ui.EntityDetailFragment
 import fr.outadoc.quickhass.feature.grid.vm.EntityGridViewModel
 import fr.outadoc.quickhass.feature.onboarding.OnboardingActivity
-import fr.outadoc.quickhass.feature.slideover.model.entity.Entity
-import fr.outadoc.quickhass.feature.slideover.ui.EntityAdapter
+import fr.outadoc.quickhass.feature.slideover.ui.EntityTileAdapter
 import fr.outadoc.quickhass.feature.slideover.ui.SlideOverNavigator
+import fr.outadoc.quickhass.model.entity.Entity
 import fr.outadoc.quickhass.preferences.AppPreferencesFragment
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -52,7 +52,7 @@ class EntityGridFragment : Fragment() {
 
         viewHolder = ViewHolder(
             root,
-            EntityAdapter(
+            EntityTileAdapter(
                 onItemClickListener = {
                     vibrate()
                     vm.onEntityClick(it)
@@ -88,14 +88,15 @@ class EntityGridFragment : Fragment() {
 
                     scheduleRefresh()
                 }
-                .onSuccess { items ->
-                    viewHolder?.itemAdapter?.apply {
-                        submitList(items)
-                    }
+        }
 
-                    showRecyclerViewIfContent()
-                    scheduleRefresh()
-                }
+        vm.tiles.observe(viewLifecycleOwner) { shortcuts ->
+            viewHolder?.itemAdapter?.apply {
+                submitList(shortcuts)
+            }
+
+            showRecyclerViewIfContent()
+            scheduleRefresh()
         }
 
         vm.isLoading.observe(viewLifecycleOwner) { isLoading ->
@@ -104,10 +105,6 @@ class EntityGridFragment : Fragment() {
                     skeleton.showOriginal()
                 }
             }
-        }
-
-        vm.loadingEntityIds.observe(viewLifecycleOwner) { entityIds ->
-            viewHolder?.itemAdapter?.loadingEntityIds = entityIds
         }
 
         vm.editionState.observe(viewLifecycleOwner) { state ->
@@ -270,7 +267,7 @@ class EntityGridFragment : Fragment() {
         }
     }
 
-    private class ViewHolder(root: View, val itemAdapter: EntityAdapter) {
+    private class ViewHolder(root: View, val itemAdapter: EntityTileAdapter) {
         val noContent: View = root.findViewById(R.id.layout_noContent)
         val recyclerView: RecyclerView = root.findViewById<RecyclerView>(R.id.recyclerView_shortcuts).apply {
             val gridLayout = GridAutoSpanLayoutManager(context, resources.getDimension(R.dimen.item_height).toInt())

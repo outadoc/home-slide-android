@@ -1,8 +1,8 @@
-package fr.outadoc.quickhass.feature.slideover.model
+package fr.outadoc.quickhass.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import fr.outadoc.quickhass.feature.slideover.model.annotation.StringDomain
+import fr.outadoc.quickhass.model.annotation.StringDomain
 
 @JsonClass(generateAdapter = true)
 data class Service(

@@ -6,16 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.feature.details.vm.EntityDetailViewModel
-import fr.outadoc.quickhass.feature.slideover.model.EntityState
-import fr.outadoc.quickhass.feature.slideover.model.entity.Entity
-import fr.outadoc.quickhass.feature.slideover.model.entity.EntityFactory
-import fr.outadoc.quickhass.feature.slideover.model.entity.LightEntity
-import fr.outadoc.quickhass.feature.slideover.ui.EntityAdapter
+import fr.outadoc.quickhass.feature.slideover.ui.EntityTileAdapter
+import fr.outadoc.quickhass.model.EntityState
+import fr.outadoc.quickhass.model.entity.Entity
+import fr.outadoc.quickhass.model.entity.EntityFactory
+import fr.outadoc.quickhass.model.entity.LightEntity
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class EntityDetailFragment private constructor() : Fragment() {
@@ -39,17 +38,17 @@ class EntityDetailFragment private constructor() : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val root = inflater.inflate(R.layout.fragment_entity_detail_container, container, false)
 
-        val entityAdapter = EntityAdapter({
+        val entityAdapter = EntityTileAdapter({
             Toast.makeText(context, "lol click", Toast.LENGTH_SHORT).show()
         }, onReorderedListener = { }, onItemLongPress = { false })
 
         viewHolder = ViewHolder(root, entityAdapter)
 
-        vm.entity.observe(viewLifecycleOwner) { entity ->
+        /*vm.entity.observe(viewLifecycleOwner) { entity ->
             viewHolder?.itemAdapter?.apply {
-                submitList(listOf(entity))
+                submitList(listOf(tileFactory.create(entity)))
             }
-        }
+        }*/
 
         return root
     }
@@ -65,7 +64,7 @@ class EntityDetailFragment private constructor() : Fragment() {
         viewHolder = null
     }
 
-    private class ViewHolder(view: View, val itemAdapter: EntityAdapter) {
+    private class ViewHolder(view: View, val itemAdapter: EntityTileAdapter) {
         val itemPreview = (view.findViewById(R.id.recyclerView_itemPreview) as RecyclerView).apply {
             adapter = itemAdapter
             layoutManager = LinearLayoutManager(context)

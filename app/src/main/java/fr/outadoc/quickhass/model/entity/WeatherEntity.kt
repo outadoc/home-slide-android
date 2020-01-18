@@ -1,9 +1,9 @@
-package fr.outadoc.quickhass.feature.slideover.model.entity
+package fr.outadoc.quickhass.model.entity
 
 import fr.outadoc.mdi.FontIcon
 import fr.outadoc.mdi.toIcon
 import fr.outadoc.mdi.toIconOrNull
-import fr.outadoc.quickhass.feature.slideover.model.EntityState
+import fr.outadoc.quickhass.model.EntityState
 
 class WeatherEntity(state: EntityState) : BaseEntity(state, "weather-cloudy".toIcon()) {
 

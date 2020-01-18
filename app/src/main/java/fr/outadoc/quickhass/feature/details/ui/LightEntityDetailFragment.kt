@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import fr.outadoc.quickhass.R
-import fr.outadoc.quickhass.feature.slideover.model.EntityState
-import fr.outadoc.quickhass.feature.slideover.model.entity.EntityFactory
-import fr.outadoc.quickhass.feature.slideover.model.entity.LightEntity
+import fr.outadoc.quickhass.model.EntityState
+import fr.outadoc.quickhass.model.entity.EntityFactory
+import fr.outadoc.quickhass.model.entity.LightEntity
 
 class LightEntityDetailFragment private constructor() : Fragment() {
 

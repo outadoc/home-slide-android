@@ -1,7 +1,7 @@
-package fr.outadoc.quickhass.feature.slideover.model
+package fr.outadoc.quickhass.model
 
-import fr.outadoc.quickhass.feature.slideover.model.annotation.StringDomain
-import fr.outadoc.quickhass.feature.slideover.model.annotation.StringEntityId
+import fr.outadoc.quickhass.model.annotation.StringDomain
+import fr.outadoc.quickhass.model.annotation.StringEntityId
 
 data class Action(
     @StringDomain

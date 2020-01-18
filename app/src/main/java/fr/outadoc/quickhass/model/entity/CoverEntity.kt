@@ -1,8 +1,8 @@
-package fr.outadoc.quickhass.feature.slideover.model.entity
+package fr.outadoc.quickhass.model.entity
 
 import fr.outadoc.mdi.toIcon
-import fr.outadoc.quickhass.feature.slideover.model.Action
-import fr.outadoc.quickhass.feature.slideover.model.EntityState
+import fr.outadoc.quickhass.model.Action
+import fr.outadoc.quickhass.model.EntityState
 
 class CoverEntity(state: EntityState) : BaseEntity(state, "window-open".toIcon()) {
     companion object {

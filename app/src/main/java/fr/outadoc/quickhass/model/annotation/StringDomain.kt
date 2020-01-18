@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass.feature.slideover.model.annotation
+package fr.outadoc.quickhass.model.annotation
 
 @Target(
     AnnotationTarget.LOCAL_VARIABLE,

@@ -14,6 +14,8 @@ import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepositoryImpl
 import fr.outadoc.quickhass.feature.onboarding.rest.HassZeroconfDiscoveryServiceImpl
 import fr.outadoc.quickhass.feature.onboarding.rest.ZeroconfDiscoveryService
 import fr.outadoc.quickhass.feature.onboarding.vm.*
+import fr.outadoc.quickhass.feature.slideover.TileFactory
+import fr.outadoc.quickhass.feature.slideover.TileFactoryImpl
 import fr.outadoc.quickhass.feature.slideover.rest.EntityRepository
 import fr.outadoc.quickhass.feature.slideover.rest.EntityRepositoryImpl
 import fr.outadoc.quickhass.persistence.EntityDatabase
@@ -41,6 +43,7 @@ class MainApplication : Application() {
         single { Room.databaseBuilder(get(), EntityDatabase::class.java, EntityDatabase.DB_NAME).build() }
         single { HassZeroconfDiscoveryServiceImpl(get()) as ZeroconfDiscoveryService }
         single { LongLivedTokenProviderImpl(get()) as AccessTokenProvider }
+        single { TileFactoryImpl() as TileFactory }
 
         viewModel { WelcomeViewModel() }
         viewModel { HostSetupViewModel(get(), get(), get()) }
@@ -48,7 +51,7 @@ class MainApplication : Application() {
         viewModel { ShortcutSetupViewModel() }
         viewModel { SuccessViewModel(get()) }
 
-        viewModel { EntityGridViewModel(get(), get(), get()) }
+        viewModel { EntityGridViewModel(get(), get(), get(), get()) }
         viewModel { EntityDetailViewModel() }
     }
 

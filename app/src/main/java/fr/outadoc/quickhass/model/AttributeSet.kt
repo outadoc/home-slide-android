@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass.feature.slideover.model
+package fr.outadoc.quickhass.model
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
