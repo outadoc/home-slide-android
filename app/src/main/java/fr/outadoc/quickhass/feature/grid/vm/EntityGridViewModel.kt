@@ -4,10 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fr.outadoc.quickhass.feature.slideover.model.Action
-import fr.outadoc.quickhass.feature.slideover.model.annotation.StringEntityId
-import fr.outadoc.quickhass.feature.slideover.model.entity.Entity
+import fr.outadoc.quickhass.feature.slideover.TileFactory
+import fr.outadoc.quickhass.feature.slideover.model.Tile
 import fr.outadoc.quickhass.feature.slideover.rest.EntityRepository
+import fr.outadoc.quickhass.model.Action
+import fr.outadoc.quickhass.model.entity.Entity
 import fr.outadoc.quickhass.persistence.EntityDatabase
 import fr.outadoc.quickhass.persistence.model.PersistedEntity
 import fr.outadoc.quickhass.preferences.PreferenceRepository
@@ -18,7 +19,8 @@ import kotlinx.coroutines.launch
 class EntityGridViewModel(
     private val prefs: PreferenceRepository,
     private val repository: EntityRepository,
-    private val db: EntityDatabase
+    private val db: EntityDatabase,
+    private val tileFactory: TileFactory
 ) : ViewModel() {
 
     sealed class State {
@@ -27,8 +29,11 @@ class EntityGridViewModel(
         object Editing : State()
     }
 
-    private val _result = MutableLiveData<Result<List<Entity>>>()
-    val result: LiveData<Result<List<Entity>>> = _result
+    private val _result = MutableLiveData<Result<Any>>()
+    val result: LiveData<Result<Any>> = _result
+
+    private val _tiles = MutableLiveData<List<Tile<Entity>>>()
+    val tiles: LiveData<List<Tile<Entity>>> = _tiles
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -38,9 +43,6 @@ class EntityGridViewModel(
 
     private val _editionState: MutableLiveData<State> = MutableLiveData(State.Disabled)
     val editionState: LiveData<State> = _editionState
-
-    private val _loadingEntityIds = MutableLiveData<Set<@StringEntityId String>>()
-    val loadingEntityIds: LiveData<Set<@StringEntityId String>> = _loadingEntityIds
 
     val refreshIntervalSeconds: Long
         get() = prefs.refreshIntervalSeconds
@@ -55,12 +57,15 @@ class EntityGridViewModel(
             _isLoading.postValue(true)
 
             val res = repository.getEntities()
-                .onSuccess {
-                    if (it.isEmpty()) {
+                .map { res -> res.map { entity -> tileFactory.create(entity) } }
+                .onSuccess { tiles ->
+                    if (tiles.isEmpty()) {
                         _editionState.postValue(State.Disabled)
                     } else {
                         _editionState.postValue(State.Normal)
                     }
+
+                    _tiles.postValue(tiles)
                 }
 
             _result.postValue(res)
@@ -107,16 +112,29 @@ class EntityGridViewModel(
     }
 
     fun onEntityLoadStart(entity: Entity) {
-        val loadingIds = loadingEntityIds.value ?: emptySet()
-        _loadingEntityIds.postValue(
-            loadingIds.plus(entity.entityId)
+        _tiles.postValue(
+            tiles.value?.map { tile ->
+                when (tile.source) {
+                    entity -> {
+                        tile.copy(
+                            isLoading = true,
+                            isActivated = !tile.isActivated
+                        )
+                    }
+                    else -> tile
+                }
+            }
         )
     }
 
     fun onEntityLoadStop(entity: Entity) {
-        val loadingIds = loadingEntityIds.value ?: emptySet()
-        _loadingEntityIds.postValue(
-            loadingIds.minus(entity.entityId)
+        _tiles.postValue(
+            tiles.value?.map { tile ->
+                when (tile.source) {
+                    entity -> tile.copy(isLoading = false)
+                    else -> tile
+                }
+            }
         )
     }
 

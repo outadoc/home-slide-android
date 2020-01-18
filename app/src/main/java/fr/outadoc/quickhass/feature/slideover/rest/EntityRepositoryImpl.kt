@@ -2,11 +2,11 @@ package fr.outadoc.quickhass.feature.slideover.rest
 
 import android.content.Context
 import androidx.room.Room
-import fr.outadoc.quickhass.feature.slideover.model.Action
-import fr.outadoc.quickhass.feature.slideover.model.EntityState
-import fr.outadoc.quickhass.feature.slideover.model.Service
-import fr.outadoc.quickhass.feature.slideover.model.entity.Entity
-import fr.outadoc.quickhass.feature.slideover.model.entity.EntityFactory
+import fr.outadoc.quickhass.model.Action
+import fr.outadoc.quickhass.model.EntityState
+import fr.outadoc.quickhass.model.Service
+import fr.outadoc.quickhass.model.entity.Entity
+import fr.outadoc.quickhass.model.entity.EntityFactory
 import fr.outadoc.quickhass.persistence.EntityDatabase
 import fr.outadoc.quickhass.persistence.model.PersistedEntity
 import fr.outadoc.quickhass.preferences.PreferenceRepository

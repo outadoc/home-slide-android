@@ -1,11 +1,11 @@
-package fr.outadoc.quickhass.feature.slideover.model
+package fr.outadoc.quickhass.model
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import fr.outadoc.quickhass.feature.slideover.model.annotation.StringDomain
-import fr.outadoc.quickhass.feature.slideover.model.annotation.StringEntityId
-import fr.outadoc.quickhass.feature.slideover.model.annotation.StringState
+import fr.outadoc.quickhass.model.annotation.StringDomain
+import fr.outadoc.quickhass.model.annotation.StringEntityId
+import fr.outadoc.quickhass.model.annotation.StringState
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 

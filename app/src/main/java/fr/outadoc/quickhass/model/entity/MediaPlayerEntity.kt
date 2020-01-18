@@ -1,7 +1,7 @@
-package fr.outadoc.quickhass.feature.slideover.model.entity
+package fr.outadoc.quickhass.model.entity
 
 import fr.outadoc.mdi.toIcon
-import fr.outadoc.quickhass.feature.slideover.model.EntityState
+import fr.outadoc.quickhass.model.EntityState
 
 class MediaPlayerEntity(state: EntityState) : BinaryEntity(state, "cast".toIcon()) {
 

@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass.feature.slideover.model.annotation
+package fr.outadoc.quickhass.model.annotation
 
 @Target(
     AnnotationTarget.LOCAL_VARIABLE,
@@ -8,4 +8,4 @@ package fr.outadoc.quickhass.feature.slideover.model.annotation
     AnnotationTarget.VALUE_PARAMETER
 )
 @Retention(AnnotationRetention.SOURCE)
-annotation class StringState
+annotation class StringEntityId

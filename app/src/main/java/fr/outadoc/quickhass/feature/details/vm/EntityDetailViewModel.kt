@@ -3,7 +3,7 @@ package fr.outadoc.quickhass.feature.details.vm
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import fr.outadoc.quickhass.feature.slideover.model.entity.Entity
+import fr.outadoc.quickhass.model.entity.Entity
 
 class EntityDetailViewModel : ViewModel() {
 
