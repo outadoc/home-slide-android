@@ -1,51 +1,53 @@
 package fr.outadoc.quickhass.feature.slideover.rest
 
-import android.content.Context
-import androidx.room.Room
+import fr.outadoc.quickhass.feature.slideover.TileFactory
+import fr.outadoc.quickhass.feature.slideover.model.Tile
 import fr.outadoc.quickhass.model.Action
 import fr.outadoc.quickhass.model.EntityState
 import fr.outadoc.quickhass.model.Service
 import fr.outadoc.quickhass.model.entity.Entity
 import fr.outadoc.quickhass.model.entity.EntityFactory
 import fr.outadoc.quickhass.persistence.EntityDatabase
-import fr.outadoc.quickhass.persistence.model.PersistedEntity
 import fr.outadoc.quickhass.preferences.PreferenceRepository
 import fr.outadoc.quickhass.rest.AccessTokenProvider
 
 class EntityRepositoryImpl(
-    context: Context,
+    private val db: EntityDatabase,
+    private val tileFactory: TileFactory,
     accessTokenProvider: AccessTokenProvider,
     prefs: PreferenceRepository
 ) : EntityRepository {
-
-    private val db = Room.databaseBuilder(
-        context,
-        EntityDatabase::class.java, EntityDatabase.DB_NAME
-    ).build()
-
-    private val persistedEntityCache: List<PersistedEntity>
-        get() = db.entityDao().getPersistedEntities()
-
-    private val entityOrder: Map<String, Int>
-        get() = persistedEntityCache.map { it.entityId to it.order }.toMap()
 
     private val client: HomeAssistantApi by lazy {
         RestClient.create<HomeAssistantApi>(accessTokenProvider, prefs)
     }
 
-    override suspend fun getEntities(): Result<List<Entity>> =
-        wrapResponse { client.getStates() }.map { states ->
+    override suspend fun getEntityTiles(): Result<List<Tile<Entity>>> {
+        val persistedEntities = db.entityDao()
+            .getPersistedEntities()
+            .map { it.entityId to it }
+            .toMap()
+
+        return wrapResponse { client.getStates() }.map { states ->
             states.asSequence()
                 .map { EntityFactory.create(it) }
-                .filter { it.isVisible }
-                .filter { !INITIAL_DOMAIN_BLACKLIST.contains(it.domain) }
                 .sortedWith(
                     compareBy(
-                        { entityOrder[it.entityId] ?: Int.MAX_VALUE },
+                        { persistedEntities[it.entityId]?.order ?: Int.MAX_VALUE },
                         { it.domain })
                 )
+                .map { entity ->
+                    val persistedEntity = persistedEntities[entity.entityId]
+                    tileFactory
+                        .create(entity)
+                        .copy(
+                            isHidden = persistedEntity?.hidden
+                                    ?: !entity.isVisible || INITIAL_DOMAIN_BLACKLIST.contains(entity.domain)
+                        )
+                }
                 .toList()
         }
+    }
 
     override suspend fun getServices(): Result<List<Service>> =
         wrapResponse { client.getServices() }

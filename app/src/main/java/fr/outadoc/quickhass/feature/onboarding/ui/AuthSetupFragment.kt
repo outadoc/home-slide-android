@@ -62,7 +62,7 @@ class AuthSetupFragment : Fragment() {
                 NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
                 is NavigationFlow.Url -> {
                     val intent = CustomTabsIntent.Builder().build()
-                    intent.launchUrl(context, dest.url)
+                    intent.launchUrl(requireContext(), dest.url)
                 }
             }
         }

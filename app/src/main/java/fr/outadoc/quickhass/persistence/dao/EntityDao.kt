@@ -9,17 +9,17 @@ import fr.outadoc.quickhass.persistence.model.PersistedEntity
 @Dao
 interface EntityDao {
 
-    @Query("SELECT * from persistedentity")
-    fun getPersistedEntities(): List<PersistedEntity>
+    @Query("""SELECT * from PersistedEntity ORDER BY hidden, "order"""")
+    suspend fun getPersistedEntities(): List<PersistedEntity>
 
     @Insert
-    fun insertAll(entities: List<PersistedEntity>)
+    suspend fun insertAll(entities: List<PersistedEntity>)
 
-    @Query("DELETE FROM persistedentity")
-    fun deleteAllPersistedEntities()
+    @Query("DELETE FROM PersistedEntity")
+    suspend fun deleteAllPersistedEntities()
 
     @Transaction
-    fun replaceAll(entities: List<PersistedEntity>) {
+    suspend fun replaceAll(entities: List<PersistedEntity>) {
         deleteAllPersistedEntities()
         insertAll(entities)
     }

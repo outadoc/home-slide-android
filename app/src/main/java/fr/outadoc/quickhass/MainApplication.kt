@@ -38,9 +38,13 @@ class MainApplication : Application() {
         single { getSystemService<Vibrator>() }
 
         single { DiscoveryRepositoryImpl() as DiscoveryRepository }
-        single { EntityRepositoryImpl(get(), get(), get()) as EntityRepository }
+        single { EntityRepositoryImpl(get(), get(), get(), get()) as EntityRepository }
         single { PreferenceRepositoryImpl(get()) as PreferenceRepository }
-        single { Room.databaseBuilder(get(), EntityDatabase::class.java, EntityDatabase.DB_NAME).build() }
+        single {
+            Room.databaseBuilder(get(), EntityDatabase::class.java, EntityDatabase.DB_NAME)
+                .addMigrations(EntityDatabase.MIGRATION_1_2)
+                .build()
+        }
         single { HassZeroconfDiscoveryServiceImpl(get()) as ZeroconfDiscoveryService }
         single { LongLivedTokenProviderImpl(get()) as AccessTokenProvider }
         single { TileFactoryImpl() as TileFactory }
@@ -51,7 +55,7 @@ class MainApplication : Application() {
         viewModel { ShortcutSetupViewModel() }
         viewModel { SuccessViewModel(get()) }
 
-        viewModel { EntityGridViewModel(get(), get(), get(), get()) }
+        viewModel { EntityGridViewModel(get(), get(), get()) }
         viewModel { EntityDetailViewModel() }
     }
 
