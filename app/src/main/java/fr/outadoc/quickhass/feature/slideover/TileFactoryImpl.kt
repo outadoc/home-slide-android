@@ -16,7 +16,8 @@ class TileFactoryImpl : TileFactory {
             } else {
                 null
             },
-            isLoading = false
+            isLoading = false,
+            isHidden = false
         )
     }
 }

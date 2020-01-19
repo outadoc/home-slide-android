@@ -3,11 +3,13 @@ package fr.outadoc.quickhass.feature.grid.ui
 import android.content.Context
 import android.content.Intent
 import android.os.*
+import android.util.Log
 import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
 import androidx.core.view.forEach
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
@@ -53,12 +55,13 @@ class EntityGridFragment : Fragment() {
         viewHolder = ViewHolder(
             root,
             EntityTileAdapter(
-                onItemClickListener = {
+                onItemClick = {
                     vibrate()
                     vm.onEntityClick(it)
                 },
-                onReorderedListener = vm::onReorderedEntities,
-                onItemLongPress = ::onItemLongPress
+                onReordered = vm::onReorderedEntities,
+                onItemLongPress = ::onItemLongPress,
+                onItemVisibilityChange = vm::onItemVisibilityChange
             )
         )
 
@@ -68,11 +71,36 @@ class EntityGridFragment : Fragment() {
 
         viewHolder?.let { setWindowInsets(it) }
 
+        vm.gridState.observe(viewLifecycleOwner) { state ->
+            Log.d(this::class.java.name, "state: ${state.toString()}")
+            viewHolder?.apply {
+                when (state) {
+                    EntityGridViewModel.GridState.Content -> {
+                        noContentView.isGone = true
+                        if (skeleton.isSkeleton()) {
+                            skeleton.showOriginal()
+                        }
+                    }
+
+                    EntityGridViewModel.GridState.Skeleton -> {
+                        noContentView.isGone = true
+                        skeleton.showSkeleton()
+                    }
+
+                    EntityGridViewModel.GridState.NoContent -> {
+                        if (skeleton.isSkeleton()) {
+                            skeleton.showOriginal()
+                        }
+
+                        noContentView.isVisible = true
+                    }
+                }
+            }
+        }
+
         vm.result.observe(viewLifecycleOwner) { shortcuts ->
             shortcuts
                 .onFailure { e ->
-                    showRecyclerViewIfContent()
-
                     val message = e.localizedMessage
                         ?.let { getString(R.string.grid_snackbar_loading_error_title, it) }
                         ?: getString(R.string.grid_snackbar_generic_error_title)
@@ -85,43 +113,33 @@ class EntityGridFragment : Fragment() {
                             }
                             .show()
                     }
-
-                    scheduleRefresh()
                 }
+
+            scheduleRefresh()
+
         }
 
         vm.tiles.observe(viewLifecycleOwner) { shortcuts ->
             viewHolder?.itemAdapter?.apply {
                 submitList(shortcuts)
             }
-
-            showRecyclerViewIfContent()
-            scheduleRefresh()
-        }
-
-        vm.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            viewHolder?.apply {
-                if (!isLoading && skeleton.isSkeleton()) {
-                    skeleton.showOriginal()
-                }
-            }
         }
 
         vm.editionState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                EntityGridViewModel.State.Editing -> cancelRefresh()
+                EntityGridViewModel.EditionState.Editing -> cancelRefresh()
                 else -> scheduleRefresh()
             }
 
             menu?.forEach { item ->
                 when (item.itemId) {
-                    R.id.menuItem_done -> item.isVisible = state == EntityGridViewModel.State.Editing
-                    R.id.menuItem_edit -> item.isVisible = state == EntityGridViewModel.State.Normal
+                    R.id.menuItem_done -> item.isVisible = state == EntityGridViewModel.EditionState.Editing
+                    R.id.menuItem_edit -> item.isVisible = state == EntityGridViewModel.EditionState.Normal
                 }
             }
 
             viewHolder?.itemAdapter?.apply {
-                this.isEditingMode = state == EntityGridViewModel.State.Editing
+                this.isEditingMode = state == EntityGridViewModel.EditionState.Editing
                 notifyDataSetChanged()
             }
         }
@@ -132,16 +150,7 @@ class EntityGridFragment : Fragment() {
             }
         }
 
-        viewHolder?.skeleton?.showSkeleton()
-
         return root
-    }
-
-    private fun showRecyclerViewIfContent() {
-        viewHolder?.apply {
-            val hasContent = itemAdapter.itemCount > 0
-            viewHolder?.noContent?.isVisible = !hasContent
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -192,12 +201,14 @@ class EntityGridFragment : Fragment() {
         // Only one refresh scheduled at once
         cancelRefresh()
 
+        Log.d(this::class.java.name, "scheduling refresh")
         handler.postDelayed(TimeUnit.SECONDS.toMillis(vm.refreshIntervalSeconds)) {
             vm.loadShortcuts()
         }
     }
 
     private fun cancelRefresh() {
+        Log.d(this::class.java.name, "canceling refresh")
         handler.removeCallbacksAndMessages(null)
     }
 
@@ -268,7 +279,7 @@ class EntityGridFragment : Fragment() {
     }
 
     private class ViewHolder(root: View, val itemAdapter: EntityTileAdapter) {
-        val noContent: View = root.findViewById(R.id.layout_noContent)
+        val noContentView: View = root.findViewById(R.id.layout_noContent)
         val recyclerView: RecyclerView = root.findViewById<RecyclerView>(R.id.recyclerView_shortcuts).apply {
             val gridLayout = GridAutoSpanLayoutManager(context, resources.getDimension(R.dimen.item_height).toInt())
 

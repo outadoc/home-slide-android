@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.isInvisible
@@ -17,9 +18,10 @@ import fr.outadoc.quickhass.model.TileDiffer
 import fr.outadoc.quickhass.model.entity.Entity
 
 class EntityTileAdapter(
-    val onItemClickListener: (Entity) -> Unit,
-    val onReorderedListener: (List<Entity>) -> Unit,
-    val onItemLongPress: (Entity) -> Boolean
+    val onItemClick: (Entity) -> Unit,
+    val onItemLongPress: (Entity) -> Boolean,
+    val onItemVisibilityChange: (Entity, Boolean) -> Unit,
+    val onReordered: (List<Entity>) -> Unit
 ) : ReorderableListAdapter<Tile<Entity>, EntityTileAdapter.ViewHolder>(TileDiffer()) {
 
     var isEditingMode = false
@@ -38,9 +40,6 @@ class EntityTileAdapter(
             // Activate the view if the entity is "on"
             view.isActivated = tile.isActivated
 
-            // Disable when editing
-            view.isEnabled = !isEditingMode
-
             // Set label
             label.text = tile.label
 
@@ -50,6 +49,9 @@ class EntityTileAdapter(
 
             // Display loading indicator if relevant
             loadingIndicator.isVisible = tile.isLoading
+
+            // Display "hidden" overlay if relevant
+            overlayHidden.isVisible = tile.isHidden
 
             if (tile.isLoading) {
                 icon.isInvisible = true
@@ -65,7 +67,10 @@ class EntityTileAdapter(
 
                     view.startAnimation(wiggleWiggle)
 
-                    view.setOnClickListener { }
+                    view.setOnClickListener {
+                        // Hide / unhide an item
+                        onItemVisibilityChange(tile.source, tile.isHidden)
+                    }
                     view.setOnLongClickListener { false }
                 }
                 else -> {
@@ -74,7 +79,7 @@ class EntityTileAdapter(
 
                     view.setOnClickListener {
                         view.isActivated = !view.isActivated
-                        onItemClickListener(tile.source)
+                        onItemClick(tile.source)
                     }
 
                     view.setOnLongClickListener {
@@ -91,7 +96,7 @@ class EntityTileAdapter(
     }
 
     override fun onReordered(list: List<Tile<Entity>>) {
-        onReorderedListener(list.map { it.source })
+        onReordered(list.map { it.source })
     }
 
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -99,5 +104,6 @@ class EntityTileAdapter(
         val icon: TextView = view.findViewById(R.id.tv_shortcut_icon)
         val state: TextView = view.findViewById(R.id.tv_extra_state)
         val loadingIndicator: ProgressBar = view.findViewById(R.id.pb_shortcut_loading)
+        val overlayHidden: FrameLayout = view.findViewById(R.id.frameLayout_overlay_hidden)
     }
 }

@@ -6,5 +6,6 @@ data class Tile<T>(
     val label: String,
     val icon: String?,
     val state: String?,
-    val isLoading: Boolean
+    val isLoading: Boolean,
+    val isHidden: Boolean
 )

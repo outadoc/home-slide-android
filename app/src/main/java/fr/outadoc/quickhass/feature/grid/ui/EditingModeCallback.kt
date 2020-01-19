@@ -34,7 +34,7 @@ class EditingModeCallback(private val viewModel: EntityGridViewModel) :
     }
 
     override fun isLongPressDragEnabled(): Boolean {
-        return viewModel.editionState.value == EntityGridViewModel.State.Editing
+        return viewModel.editionState.value == EntityGridViewModel.EditionState.Editing
     }
 
     private fun View.scale(scale: Float, elevation: Float) {

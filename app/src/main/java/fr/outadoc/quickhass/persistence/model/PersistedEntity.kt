@@ -9,5 +9,7 @@ data class PersistedEntity(
     @PrimaryKey
     val entityId: String,
     @ColumnInfo(name = "order")
-    val order: Int
+    val order: Int,
+    @ColumnInfo(name = "hidden", defaultValue = "0")
+    val hidden: Boolean
 )

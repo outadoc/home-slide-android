@@ -1,10 +1,6 @@
 package fr.outadoc.quickhass.feature.grid.vm
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import fr.outadoc.quickhass.feature.slideover.TileFactory
+import androidx.lifecycle.*
 import fr.outadoc.quickhass.feature.slideover.model.Tile
 import fr.outadoc.quickhass.feature.slideover.rest.EntityRepository
 import fr.outadoc.quickhass.model.Action
@@ -19,30 +15,53 @@ import kotlinx.coroutines.launch
 class EntityGridViewModel(
     private val prefs: PreferenceRepository,
     private val repository: EntityRepository,
-    private val db: EntityDatabase,
-    private val tileFactory: TileFactory
+    private val db: EntityDatabase
 ) : ViewModel() {
 
-    sealed class State {
-        object Disabled : State()
-        object Normal : State()
-        object Editing : State()
+    sealed class EditionState {
+        object Disabled : EditionState()
+        object Normal : EditionState()
+        object Editing : EditionState()
+    }
+
+    sealed class GridState {
+        object Content : GridState()
+        object Skeleton : GridState()
+        object NoContent : GridState()
     }
 
     private val _result = MutableLiveData<Result<Any>>()
     val result: LiveData<Result<Any>> = _result
 
-    private val _tiles = MutableLiveData<List<Tile<Entity>>>()
-    val tiles: LiveData<List<Tile<Entity>>> = _tiles
+    private val _allTiles = MutableLiveData<List<Tile<Entity>>>()
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
+    private val _editionState: MutableLiveData<EditionState> = MutableLiveData(EditionState.Disabled)
+    val editionState: LiveData<EditionState> = _editionState
+
+    private val _gridState: MutableLiveData<GridState> = MutableLiveData(GridState.Skeleton)
+    val gridState: LiveData<GridState> = _gridState
+
+    private val _tiles =
+        MediatorLiveData<List<Tile<Entity>>>().apply {
+            addSource(_allTiles) { allTiles ->
+                value = when (_editionState.value) {
+                    EditionState.Editing -> allTiles
+                    else -> allTiles.filter { !it.isHidden }
+                }
+            }
+
+            addSource(_editionState) { state ->
+                value = when (state) {
+                    EditionState.Editing -> _allTiles.value
+                    else -> _allTiles.value?.filter { !it.isHidden }
+                }
+            }
+        }
+
+    val tiles: LiveData<List<Tile<Entity>>> = _tiles
 
     private val _shouldAskForInitialValues = MutableLiveData<Boolean>()
     val shouldAskForInitialValues: LiveData<Boolean> = _shouldAskForInitialValues
-
-    private val _editionState: MutableLiveData<State> = MutableLiveData(State.Disabled)
-    val editionState: LiveData<State> = _editionState
 
     val refreshIntervalSeconds: Long
         get() = prefs.refreshIntervalSeconds
@@ -53,23 +72,44 @@ class EntityGridViewModel(
             return
         }
 
+        _gridState.value = if (_tiles.value.isNullOrEmpty()) {
+            GridState.Skeleton
+        } else {
+            GridState.Content
+        }
+
         viewModelScope.launch(Dispatchers.IO) {
-            _isLoading.postValue(true)
-
-            val res = repository.getEntities()
-                .map { res -> res.map { entity -> tileFactory.create(entity) } }
+            val res = repository.getEntityTiles()
                 .onSuccess { tiles ->
-                    if (tiles.isEmpty()) {
-                        _editionState.postValue(State.Disabled)
-                    } else {
-                        _editionState.postValue(State.Normal)
-                    }
+                    _editionState.postValue(
+                        if (tiles.isEmpty()) {
+                            EditionState.Disabled
+                        } else {
+                            EditionState.Normal
+                        }
+                    )
 
-                    _tiles.postValue(tiles)
+                    _allTiles.postValue(tiles)
+
+                    _gridState.postValue(
+                        if (tiles.isNullOrEmpty()) {
+                            GridState.NoContent
+                        } else {
+                            GridState.Content
+                        }
+                    )
+                }
+                .onFailure {
+                    _gridState.postValue(
+                        if (_allTiles.value.isNullOrEmpty()) {
+                            GridState.NoContent
+                        } else {
+                            GridState.Content
+                        }
+                    )
                 }
 
             _result.postValue(res)
-            _isLoading.postValue(false)
         }
     }
 
@@ -79,7 +119,6 @@ class EntityGridViewModel(
         }
 
         viewModelScope.launch(Dispatchers.IO) {
-            _isLoading.postValue(true)
             onEntityLoadStart(item)
 
             repository.callService(item.primaryAction as Action)
@@ -90,7 +129,6 @@ class EntityGridViewModel(
                 }
 
             onEntityLoadStop(item)
-            _isLoading.postValue(false)
         }
     }
 
@@ -100,49 +138,66 @@ class EntityGridViewModel(
         }
 
         viewModelScope.launch(Dispatchers.IO) {
-            val toBePersisted = items.mapIndexed { idx, item ->
-                PersistedEntity(item.entityId, idx)
-            }
-
-            // Update database
-            with(db.entityDao()) {
-                replaceAll(toBePersisted)
-            }
+            updateEntityDatabase()
         }
-    }
-
-    fun onEntityLoadStart(entity: Entity) {
-        _tiles.postValue(
-            tiles.value?.map { tile ->
-                when (tile.source) {
-                    entity -> {
-                        tile.copy(
-                            isLoading = true,
-                            isActivated = !tile.isActivated
-                        )
-                    }
-                    else -> tile
-                }
-            }
-        )
-    }
-
-    fun onEntityLoadStop(entity: Entity) {
-        _tiles.postValue(
-            tiles.value?.map { tile ->
-                when (tile.source) {
-                    entity -> tile.copy(isLoading = false)
-                    else -> tile
-                }
-            }
-        )
     }
 
     fun onEditClick() {
         _editionState.value = when (editionState.value!!) {
-            State.Normal -> State.Editing
-            State.Editing -> State.Normal
-            State.Disabled -> State.Disabled
+            EditionState.Normal -> EditionState.Editing
+            EditionState.Editing -> EditionState.Normal
+            EditionState.Disabled -> EditionState.Disabled
+        }
+    }
+
+    fun onEntityLoadStart(entity: Entity) {
+        updateItems { tile ->
+            when (tile.source) {
+                entity -> {
+                    tile.copy(
+                        isLoading = true,
+                        isActivated = !tile.isActivated
+                    )
+                }
+                else -> tile
+            }
+        }
+    }
+
+    fun onEntityLoadStop(entity: Entity) {
+        updateItems { tile ->
+            when (tile.source) {
+                entity -> tile.copy(isLoading = false)
+                else -> tile
+            }
+        }
+    }
+
+    fun onItemVisibilityChange(entity: Entity, isVisible: Boolean) {
+        updateItems { tile ->
+            when (tile.source) {
+                entity -> tile.copy(isHidden = !isVisible)
+                else -> tile
+            }
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            updateEntityDatabase()
+        }
+    }
+
+    private fun updateItems(map: (Tile<Entity>) -> Tile<Entity>) {
+        _allTiles.postValue(
+            tiles.value?.map(map)
+        )
+    }
+
+    private suspend fun updateEntityDatabase() {
+        tiles.value?.mapIndexed { idx, item ->
+            PersistedEntity(item.source.entityId, idx, item.isHidden)
+        }?.let { toBePersisted ->
+            // Update database
+            db.entityDao().replaceAll(toBePersisted)
         }
     }
 }
