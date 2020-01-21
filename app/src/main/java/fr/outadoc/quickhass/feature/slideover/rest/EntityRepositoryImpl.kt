@@ -10,16 +10,18 @@ import fr.outadoc.quickhass.model.entity.EntityFactory
 import fr.outadoc.quickhass.persistence.EntityDatabase
 import fr.outadoc.quickhass.preferences.PreferenceRepository
 import fr.outadoc.quickhass.rest.AccessTokenProvider
+import okhttp3.logging.HttpLoggingInterceptor
 
 class EntityRepositoryImpl(
     private val db: EntityDatabase,
     private val tileFactory: TileFactory,
+    loggingInterceptor: HttpLoggingInterceptor,
     accessTokenProvider: AccessTokenProvider,
     prefs: PreferenceRepository
 ) : EntityRepository {
 
     private val client: HomeAssistantApi by lazy {
-        RestClient.create<HomeAssistantApi>(accessTokenProvider, prefs)
+        RestClient.create<HomeAssistantApi>(loggingInterceptor, accessTokenProvider, prefs)
     }
 
     override suspend fun getEntityTiles(): Result<List<Tile<Entity>>> {

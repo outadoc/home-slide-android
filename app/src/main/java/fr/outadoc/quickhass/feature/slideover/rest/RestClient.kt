@@ -12,14 +12,10 @@ import java.util.concurrent.TimeUnit
 
 class RestClient<T>(
     private val type: Class<T>,
+    loggingInterceptor: HttpLoggingInterceptor,
     accessTokenProvider: AccessTokenProvider,
     prefs: PreferenceRepository
 ) {
-
-    private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
-
     private val client = OkHttpClient.Builder()
         .connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
         .addInterceptor(loggingInterceptor)
@@ -41,7 +37,11 @@ class RestClient<T>(
         const val PLACEHOLDER_BASE_URL = "https://example.com/"
         const val CONNECT_TIMEOUT_SECONDS = 3L
 
-        inline fun <reified T> create(accessTokenProvider: AccessTokenProvider, prefs: PreferenceRepository): T =
-            RestClient(T::class.java, accessTokenProvider, prefs).api
+        inline fun <reified T> create(
+            loggingInterceptor: HttpLoggingInterceptor,
+            accessTokenProvider: AccessTokenProvider,
+            prefs: PreferenceRepository
+        ): T =
+            RestClient(T::class.java, loggingInterceptor, accessTokenProvider, prefs).api
     }
 }
