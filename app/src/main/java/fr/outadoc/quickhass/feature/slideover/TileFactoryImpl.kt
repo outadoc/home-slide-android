@@ -11,6 +11,7 @@ class TileFactoryImpl(private val context: Context) : TileFactory {
         return Tile(
             source = entity,
             isActivated = entity.isOn,
+            isToggleable = entity.isToggleable,
             label = entity.friendlyName ?: entity.entityId,
             state = state,
             icon = if (state == null) entity.icon.unicodePoint else null,

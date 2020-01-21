@@ -78,8 +78,10 @@ class EntityTileAdapter(
                     view.clearAnimation()
 
                     view.setOnClickListener {
-                        view.isActivated = !view.isActivated
-                        onItemClick(tile.source)
+                        if (tile.isToggleable) {
+                            view.isActivated = !view.isActivated
+                            onItemClick(tile.source)
+                        }
                     }
 
                     view.setOnLongClickListener {
