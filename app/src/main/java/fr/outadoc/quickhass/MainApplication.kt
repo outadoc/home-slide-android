@@ -5,6 +5,8 @@ import android.net.nsd.NsdManager
 import android.os.Vibrator
 import androidx.core.content.getSystemService
 import androidx.room.Room
+import com.github.ajalt.timberkt.Timber.tag
+import com.github.ajalt.timberkt.d
 import fr.outadoc.mdi.MaterialIconAssetMapperImpl
 import fr.outadoc.mdi.MaterialIconLocator
 import fr.outadoc.quickhass.feature.details.vm.EntityDetailViewModel
@@ -23,11 +25,12 @@ import fr.outadoc.quickhass.preferences.PreferenceRepository
 import fr.outadoc.quickhass.preferences.PreferenceRepositoryImpl
 import fr.outadoc.quickhass.rest.AccessTokenProvider
 import fr.outadoc.quickhass.rest.LongLivedTokenProviderImpl
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
+import timber.log.Timber
 
 
 @Suppress("unused")
@@ -37,8 +40,8 @@ class MainApplication : Application() {
         single { getSystemService<NsdManager>() }
         single { getSystemService<Vibrator>() }
 
-        single { DiscoveryRepositoryImpl() as DiscoveryRepository }
-        single { EntityRepositoryImpl(get(), get(), get(), get()) as EntityRepository }
+        single { DiscoveryRepositoryImpl(get()) as DiscoveryRepository }
+        single { EntityRepositoryImpl(get(), get(), get(), get(), get()) as EntityRepository }
         single { PreferenceRepositoryImpl(get()) as PreferenceRepository }
         single {
             Room.databaseBuilder(get(), EntityDatabase::class.java, EntityDatabase.DB_NAME)
@@ -48,6 +51,14 @@ class MainApplication : Application() {
         single { HassZeroconfDiscoveryServiceImpl(get()) as ZeroconfDiscoveryService }
         single { LongLivedTokenProviderImpl(get()) as AccessTokenProvider }
         single { TileFactoryImpl(get()) as TileFactory }
+
+        single {
+            HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
+                tag("OkHttp").d { it }
+            }).apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
+        }
 
         viewModel { WelcomeViewModel() }
         viewModel { HostSetupViewModel(get(), get(), get()) }
@@ -62,8 +73,12 @@ class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
+
         startKoin {
-            androidLogger()
+            KoinTimberLogger()
             androidContext(this@MainApplication)
             modules(appModule)
         }

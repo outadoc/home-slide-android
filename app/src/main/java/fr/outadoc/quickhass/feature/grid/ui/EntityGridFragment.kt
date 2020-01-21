@@ -3,7 +3,6 @@ package fr.outadoc.quickhass.feature.grid.ui
 import android.content.Context
 import android.content.Intent
 import android.os.*
-import android.util.Log
 import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.core.os.postDelayed
@@ -16,6 +15,7 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.faltenreich.skeletonlayout.applySkeleton
+import com.github.ajalt.timberkt.Timber
 import com.google.android.material.snackbar.Snackbar
 import fr.outadoc.quickhass.BuildConfig
 import fr.outadoc.quickhass.R
@@ -72,7 +72,6 @@ class EntityGridFragment : Fragment() {
         viewHolder?.let { setWindowInsets(it) }
 
         vm.gridState.observe(viewLifecycleOwner) { state ->
-            Log.d(this::class.java.name, "state: ${state.toString()}")
             viewHolder?.apply {
                 when (state) {
                     EntityGridViewModel.GridState.Content -> {
@@ -201,14 +200,14 @@ class EntityGridFragment : Fragment() {
         // Only one refresh scheduled at once
         cancelRefresh()
 
-        Log.d(this::class.java.name, "scheduling refresh")
+        Timber.d { "scheduling refresh" }
         handler.postDelayed(TimeUnit.SECONDS.toMillis(vm.refreshIntervalSeconds)) {
             vm.loadShortcuts()
         }
     }
 
     private fun cancelRefresh() {
-        Log.d(this::class.java.name, "canceling refresh")
+        Timber.d { "canceling refresh" }
         handler.removeCallbacksAndMessages(null)
     }
 

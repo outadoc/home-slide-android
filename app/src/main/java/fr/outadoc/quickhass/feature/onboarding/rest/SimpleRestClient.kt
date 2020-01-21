@@ -6,11 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 
-class SimpleRestClient<T>(private val type: Class<T>) {
-
-    private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
+class SimpleRestClient<T>(private val type: Class<T>, loggingInterceptor: HttpLoggingInterceptor) {
 
     private val client = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
@@ -27,7 +23,7 @@ class SimpleRestClient<T>(private val type: Class<T>) {
         get() = retrofit.create(type)
 
     companion object {
-        inline fun <reified T> create(): T =
-            SimpleRestClient(T::class.java).api
+        inline fun <reified T> create(loggingInterceptor: HttpLoggingInterceptor): T =
+            SimpleRestClient(T::class.java, loggingInterceptor).api
     }
 }
