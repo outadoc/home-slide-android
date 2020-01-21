@@ -1,5 +1,6 @@
 package fr.outadoc.quickhass.rest
 
+import com.github.ajalt.timberkt.Timber
 import fr.outadoc.quickhass.feature.slideover.rest.RestClient
 import fr.outadoc.quickhass.feature.slideover.rest.toUrl
 import fr.outadoc.quickhass.feature.slideover.rest.toUrlOrNull
@@ -38,14 +39,14 @@ class AltBaseUrlInterceptor(private val prefs: PreferenceRepository) : Intercept
                     }
 
                 } catch (e: Exception) {
-                    e.printStackTrace()
+                    Timber.e(e)
                 }
             }
 
         return chain.proceed(req)
     }
 
-    private fun getUrlsToTry(requestUrl: HttpUrl): List<Pair<PreferredBaseUrl, HttpUrl>> {
+    fun getUrlsToTry(requestUrl: HttpUrl): List<Pair<PreferredBaseUrl, HttpUrl>> {
         fun replaceBaseUrl(newBase: HttpUrl?): HttpUrl? {
             if (newBase == null) return null
             return requestUrl.toString().replace(RestClient.PLACEHOLDER_BASE_URL, newBase.toString()).toUrl()

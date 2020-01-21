@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.github.ajalt.timberkt.Timber
 import fr.outadoc.quickhass.DayNightActivity
 import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.extensions.setupToolbar
@@ -28,7 +29,7 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
                 val pInfo = context.packageManager.getPackageInfo(context.packageName, 0)
                 getString(R.string.pref_version_summary, pInfo.versionName)
             } catch (e: PackageManager.NameNotFoundException) {
-                e.printStackTrace()
+                Timber.e(e)
                 null
             }
         }

@@ -34,7 +34,7 @@ class RestClient<T>(
         get() = retrofit.create(type)
 
     companion object {
-        const val PLACEHOLDER_BASE_URL = "https://example.com/"
+        const val PLACEHOLDER_BASE_URL = "http://localhost/"
         const val CONNECT_TIMEOUT_SECONDS = 3L
 
         inline fun <reified T> create(
