@@ -1,5 +1,6 @@
 package fr.outadoc.quickhass.model.entity
 
+import android.content.Context
 import fr.outadoc.mdi.FontIcon
 import fr.outadoc.mdi.toIconOrNull
 import fr.outadoc.quickhass.model.Action
@@ -33,7 +34,9 @@ abstract class BaseEntity(
 
     override val primaryAction: Action? = null
 
-    override val formattedState: String? = null
+    override fun getFormattedState(context: Context): String? {
+        return null
+    }
 
     /**
      * Can be overridden by children to provide a contextual icon.
