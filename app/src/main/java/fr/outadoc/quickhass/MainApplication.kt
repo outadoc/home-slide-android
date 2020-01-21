@@ -47,7 +47,7 @@ class MainApplication : Application() {
         }
         single { HassZeroconfDiscoveryServiceImpl(get()) as ZeroconfDiscoveryService }
         single { LongLivedTokenProviderImpl(get()) as AccessTokenProvider }
-        single { TileFactoryImpl() as TileFactory }
+        single { TileFactoryImpl(get()) as TileFactory }
 
         viewModel { WelcomeViewModel() }
         viewModel { HostSetupViewModel(get(), get(), get()) }

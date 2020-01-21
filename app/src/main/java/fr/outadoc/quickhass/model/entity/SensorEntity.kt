@@ -1,5 +1,6 @@
 package fr.outadoc.quickhass.model.entity
 
+import android.content.Context
 import fr.outadoc.mdi.toIcon
 import fr.outadoc.quickhass.model.EntityState
 import java.text.DecimalFormat
@@ -12,8 +13,9 @@ class SensorEntity(state: EntityState) : BaseEntity(state, "eye".toIcon()) {
 
     private val decFormatter = DecimalFormat("#.#")
 
-    override val formattedState: String?
-        get() = stateStr.toFloatOrNull()?.let { dec ->
+    override fun getFormattedState(context: Context): String? {
+        return stateStr.toFloatOrNull()?.let { dec ->
             "${decFormatter.format(dec)} ${additionalAttributes.unit ?: ""}".trim()
         }
+    }
 }
