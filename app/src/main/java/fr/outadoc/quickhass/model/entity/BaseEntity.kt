@@ -27,7 +27,7 @@ abstract class BaseEntity(
 
     override val isVisible: Boolean = !state.attributes.isHidden
 
-    override val isEnabled: Boolean
+    override val isToggleable: Boolean
         get() = primaryAction != null
 
     override val isOn: Boolean = false

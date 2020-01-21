@@ -21,7 +21,7 @@ interface Entity {
     val icon: FontIcon
 
     val isVisible: Boolean
-    val isEnabled: Boolean
+    val isToggleable: Boolean
     val isOn: Boolean
 
     val primaryAction: Action?
