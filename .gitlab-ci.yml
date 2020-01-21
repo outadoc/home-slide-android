@@ -30,7 +30,7 @@ stages:
   - test
   - package
 
-lintDebug:
+.lintDebug:
   stage: build
   script:
     - ./gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
@@ -43,7 +43,7 @@ assembleDebug:
     paths:
       - app/build/outputs/
 
-.debugTests:
+debugTests:
   stage: test
   script:
     - ./gradlew -Pci --console=plain :app:testDebug

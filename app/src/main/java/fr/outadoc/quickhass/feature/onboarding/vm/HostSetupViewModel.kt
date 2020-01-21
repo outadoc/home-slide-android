@@ -3,6 +3,7 @@ package fr.outadoc.quickhass.feature.onboarding.vm
 import android.os.Handler
 import androidx.core.net.toUri
 import androidx.lifecycle.*
+import com.github.ajalt.timberkt.Timber
 import fr.outadoc.quickhass.feature.onboarding.model.CallStatus
 import fr.outadoc.quickhass.feature.onboarding.model.DiscoveryInfo
 import fr.outadoc.quickhass.feature.onboarding.model.NavigationFlow
@@ -61,7 +62,7 @@ class HostSetupViewModel(
                 }
 
             } catch (e: Exception) {
-                e.printStackTrace()
+                Timber.e(e)
             }
         }
     }
