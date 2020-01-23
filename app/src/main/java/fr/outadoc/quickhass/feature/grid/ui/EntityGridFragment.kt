@@ -55,13 +55,13 @@ class EntityGridFragment : Fragment() {
         viewHolder = ViewHolder(
             root,
             EntityTileAdapter(
-                onItemClick = {
+                onItemClickListener = {
                     vibrate()
                     vm.onEntityClick(it)
                 },
-                onReordered = vm::onReorderedEntities,
-                onItemLongPress = ::onItemLongPress,
-                onItemVisibilityChange = vm::onItemVisibilityChange
+                onReorderedListener = vm::onReorderedEntities,
+                onItemLongPressListener = ::onItemLongPress,
+                onItemVisibilityChangeListener = vm::onItemVisibilityChange
             )
         )
 

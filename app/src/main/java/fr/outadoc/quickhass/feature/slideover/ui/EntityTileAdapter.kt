@@ -18,10 +18,10 @@ import fr.outadoc.quickhass.model.TileDiffer
 import fr.outadoc.quickhass.model.entity.Entity
 
 class EntityTileAdapter(
-    val onItemClick: (Entity) -> Unit,
-    val onItemLongPress: (Entity) -> Boolean,
-    val onItemVisibilityChange: (Entity, Boolean) -> Unit,
-    val onReordered: (List<Entity>) -> Unit
+    val onItemClickListener: (Entity) -> Unit,
+    val onItemLongPressListener: (Entity) -> Boolean,
+    val onItemVisibilityChangeListener: (Entity, Boolean) -> Unit,
+    val onReorderedListener: (List<Tile<Entity>>) -> Unit
 ) : ReorderableListAdapter<Tile<Entity>, EntityTileAdapter.ViewHolder>(TileDiffer()) {
 
     var isEditingMode = false
@@ -69,7 +69,7 @@ class EntityTileAdapter(
 
                     view.setOnClickListener {
                         // Hide / unhide an item
-                        onItemVisibilityChange(tile.source, tile.isHidden)
+                        onItemVisibilityChangeListener(tile.source, tile.isHidden)
                     }
                     view.setOnLongClickListener { false }
                 }
@@ -80,12 +80,12 @@ class EntityTileAdapter(
                     view.setOnClickListener {
                         if (tile.isToggleable) {
                             view.isActivated = !view.isActivated
-                            onItemClick(tile.source)
+                            onItemClickListener(tile.source)
                         }
                     }
 
                     view.setOnLongClickListener {
-                        onItemLongPress(tile.source)
+                        onItemLongPressListener(tile.source)
                     }
                 }
             }
@@ -98,7 +98,7 @@ class EntityTileAdapter(
     }
 
     override fun onReordered(list: List<Tile<Entity>>) {
-        onReordered(list.map { it.source })
+        onReorderedListener(list)
     }
 
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
