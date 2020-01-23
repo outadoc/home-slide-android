@@ -20,7 +20,6 @@ abstract class ReorderableListAdapter<T, VH : RecyclerView.ViewHolder>(diffCallb
         items.remove(itemToMove)
         items.add(to, itemToMove)
 
-        submitList(items)
         onReordered(items)
     }
 }

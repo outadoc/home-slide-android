@@ -39,12 +39,12 @@ class EntityDetailFragment private constructor() : Fragment() {
         val root = inflater.inflate(R.layout.fragment_entity_detail_container, container, false)
 
         val entityAdapter = EntityTileAdapter(
-            onItemClick = {
+            onItemClickListener = {
                 Toast.makeText(context, "lol click", Toast.LENGTH_SHORT).show()
             },
-            onReordered = { },
-            onItemLongPress = { false },
-            onItemVisibilityChange = { _, _ -> }
+            onReorderedListener = { },
+            onItemLongPressListener = { false },
+            onItemVisibilityChangeListener = { _, _ -> }
         )
 
         viewHolder = ViewHolder(root, entityAdapter)

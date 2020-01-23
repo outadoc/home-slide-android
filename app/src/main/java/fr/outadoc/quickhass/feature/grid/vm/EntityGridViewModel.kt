@@ -10,6 +10,7 @@ import fr.outadoc.quickhass.persistence.model.PersistedEntity
 import fr.outadoc.quickhass.preferences.PreferenceRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class EntityGridViewModel(
@@ -123,7 +124,9 @@ class EntityGridViewModel(
 
             repository.callService(item.primaryAction as Action)
                 .onSuccess {
-                    loadShortcuts()
+                    withContext(Dispatchers.Main) {
+                        loadShortcuts()
+                    }
                 }.onFailure {
                     _result.postValue(Result.failure(it))
                 }
@@ -132,20 +135,26 @@ class EntityGridViewModel(
         }
     }
 
-    fun onReorderedEntities(items: List<Entity>) {
+    fun onReorderedEntities(items: List<Tile<Entity>>) {
         if (items.isEmpty()) {
             return
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
-            updateEntityDatabase()
-        }
+        _allTiles.postValue(items)
     }
 
     fun onEditClick() {
         _editionState.value = when (editionState.value!!) {
             EditionState.Normal -> EditionState.Editing
-            EditionState.Editing -> EditionState.Normal
+
+            EditionState.Editing -> {
+                viewModelScope.launch(Dispatchers.IO) {
+                    updateEntityDatabase()
+                }
+
+                EditionState.Normal
+            }
+
             EditionState.Disabled -> EditionState.Disabled
         }
     }
@@ -180,15 +189,11 @@ class EntityGridViewModel(
                 else -> tile
             }
         }
-
-        viewModelScope.launch(Dispatchers.IO) {
-            updateEntityDatabase()
-        }
     }
 
     private fun updateItems(map: (Tile<Entity>) -> Tile<Entity>) {
         _allTiles.postValue(
-            tiles.value?.map(map)
+            _allTiles.value?.map(map)
         )
     }
 
