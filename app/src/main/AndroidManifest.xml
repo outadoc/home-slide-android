@@ -29,7 +29,8 @@
             android:label="@string/app_name"
             android:launchMode="singleInstance"
             android:resizeableActivity="false"
-            android:theme="@style/AppTheme.QuickAccess">
+            android:theme="@style/AppTheme.QuickAccess"
+            tools:targetApi="n">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

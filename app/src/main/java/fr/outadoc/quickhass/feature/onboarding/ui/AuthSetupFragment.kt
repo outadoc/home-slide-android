@@ -1,5 +1,6 @@
 package fr.outadoc.quickhass.feature.onboarding.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -24,14 +25,23 @@ class AuthSetupFragment : Fragment() {
     private var viewHolder: ViewHolder? = null
     private val vm: AuthSetupViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_setup_auth, container, false)
 
         viewHolder = ViewHolder(view).apply {
             tokenEditText.addTextChangedListener(object : TextWatcher {
 
                 override fun afterTextChanged(s: Editable?) {}
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -58,7 +68,16 @@ class AuthSetupFragment : Fragment() {
 
         vm.navigateTo.observe(viewLifecycleOwner) {
             when (val dest = it.pop()) {
-                NavigationFlow.Next -> viewHolder?.navController?.navigate(R.id.action_setupAuthFragment_to_setupShortcutFragment)
+                NavigationFlow.Next -> {
+                    val nextFragment = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                        // If the OS doesn't support quick settings, skip the quick settings step
+                        R.id.action_setupAuthFragment_to_successFragment
+                    } else {
+                        R.id.action_setupAuthFragment_to_setupShortcutFragment
+                    }
+
+                    viewHolder?.navController?.navigate(nextFragment)
+                }
                 NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
                 is NavigationFlow.Url -> {
                     val intent = CustomTabsIntent.Builder().build()
