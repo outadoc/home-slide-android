@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.content.ContextCompat
 import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
@@ -53,7 +54,7 @@ class SuccessFragment : Fragment() {
     private fun confetti() {
         viewHolder?.confettiView?.apply {
             build()
-                .addColors(confettiColors.map { context.getColor(it) })
+                .addColors(confettiColors.map { ContextCompat.getColor(context, it) })
                 .setDirection(0.0, 359.0)
                 .setSpeed(4f, 7f)
                 .setFadeOutEnabled(true)
