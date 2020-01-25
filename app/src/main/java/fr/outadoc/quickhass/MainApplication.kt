@@ -5,6 +5,7 @@ import android.net.nsd.NsdManager
 import android.os.Vibrator
 import androidx.core.content.getSystemService
 import androidx.room.Room
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.github.ajalt.timberkt.Timber.tag
 import com.github.ajalt.timberkt.d
 import fr.outadoc.mdi.MaterialIconAssetMapperImpl
@@ -40,8 +41,8 @@ class MainApplication : Application() {
         single { getSystemService<NsdManager>() }
         single { getSystemService<Vibrator>() }
 
-        single { DiscoveryRepositoryImpl(get()) as DiscoveryRepository }
-        single { EntityRepositoryImpl(get(), get(), get(), get(), get()) as EntityRepository }
+        single { DiscoveryRepositoryImpl(get(), get()) as DiscoveryRepository }
+        single { EntityRepositoryImpl(get(), get(), get(), get(), get(), get()) as EntityRepository }
         single { PreferenceRepositoryImpl(get()) as PreferenceRepository }
         single {
             Room.databaseBuilder(get(), EntityDatabase::class.java, EntityDatabase.DB_NAME)
@@ -59,6 +60,7 @@ class MainApplication : Application() {
                 level = HttpLoggingInterceptor.Level.BODY
             }
         }
+        single { ChuckerInterceptor(get()) }
 
         viewModel { WelcomeViewModel() }
         viewModel { HostSetupViewModel(get(), get(), get()) }

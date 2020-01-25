@@ -1,5 +1,6 @@
 package fr.outadoc.quickhass.feature.slideover.rest
 
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import fr.outadoc.quickhass.preferences.PreferenceRepository
 import fr.outadoc.quickhass.rest.AccessTokenInterceptor
 import fr.outadoc.quickhass.rest.AccessTokenProvider
@@ -13,11 +14,13 @@ import java.util.concurrent.TimeUnit
 class RestClient<T>(
     private val type: Class<T>,
     loggingInterceptor: HttpLoggingInterceptor,
+    chuckerInterceptor: ChuckerInterceptor,
     accessTokenProvider: AccessTokenProvider,
     prefs: PreferenceRepository
 ) {
     private val client = OkHttpClient.Builder()
         .connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        .addInterceptor(chuckerInterceptor)
         .addInterceptor(loggingInterceptor)
         .addInterceptor(AccessTokenInterceptor(accessTokenProvider))
         .addInterceptor(AltBaseUrlInterceptor(prefs))
@@ -39,9 +42,10 @@ class RestClient<T>(
 
         inline fun <reified T> create(
             loggingInterceptor: HttpLoggingInterceptor,
+            chuckerInterceptor: ChuckerInterceptor,
             accessTokenProvider: AccessTokenProvider,
             prefs: PreferenceRepository
         ): T =
-            RestClient(T::class.java, loggingInterceptor, accessTokenProvider, prefs).api
+            RestClient(T::class.java, loggingInterceptor, chuckerInterceptor, accessTokenProvider, prefs).api
     }
 }

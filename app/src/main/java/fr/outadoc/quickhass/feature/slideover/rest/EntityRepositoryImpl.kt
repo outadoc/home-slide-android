@@ -1,5 +1,6 @@
 package fr.outadoc.quickhass.feature.slideover.rest
 
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import fr.outadoc.quickhass.feature.slideover.TileFactory
 import fr.outadoc.quickhass.feature.slideover.model.Tile
 import fr.outadoc.quickhass.model.Action
@@ -16,12 +17,13 @@ class EntityRepositoryImpl(
     private val db: EntityDatabase,
     private val tileFactory: TileFactory,
     loggingInterceptor: HttpLoggingInterceptor,
+    chuckerInterceptor: ChuckerInterceptor,
     accessTokenProvider: AccessTokenProvider,
     prefs: PreferenceRepository
 ) : EntityRepository {
 
     private val client: HomeAssistantApi by lazy {
-        RestClient.create<HomeAssistantApi>(loggingInterceptor, accessTokenProvider, prefs)
+        RestClient.create<HomeAssistantApi>(loggingInterceptor, chuckerInterceptor, accessTokenProvider, prefs)
     }
 
     override suspend fun getEntityTiles(): Result<List<Tile<Entity>>> {
