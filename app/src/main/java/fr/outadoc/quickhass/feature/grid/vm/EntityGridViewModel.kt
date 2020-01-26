@@ -1,6 +1,10 @@
 package fr.outadoc.quickhass.feature.grid.vm
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import fr.outadoc.quickhass.feature.slideover.model.Tile
 import fr.outadoc.quickhass.feature.slideover.rest.EntityRepository
 import fr.outadoc.quickhass.model.Action
@@ -11,7 +15,6 @@ import fr.outadoc.quickhass.preferences.PreferenceRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
 
 class EntityGridViewModel(
     private val prefs: PreferenceRepository,
@@ -36,7 +39,8 @@ class EntityGridViewModel(
 
     private val _allTiles = MutableLiveData<List<Tile<Entity>>>()
 
-    private val _editionState: MutableLiveData<EditionState> = MutableLiveData(EditionState.Disabled)
+    private val _editionState: MutableLiveData<EditionState> =
+        MutableLiveData(EditionState.Disabled)
     val editionState: LiveData<EditionState> = _editionState
 
     private val _gridState: MutableLiveData<GridState> = MutableLiveData(GridState.Skeleton)
@@ -188,6 +192,12 @@ class EntityGridViewModel(
                 entity -> tile.copy(isHidden = !isVisible)
                 else -> tile
             }
+        }
+    }
+
+    fun onBackPressed() {
+        if (_editionState.value == EditionState.Editing) {
+            onEditClick()
         }
     }
 
