@@ -2,8 +2,20 @@ package fr.outadoc.quickhass.feature.grid.ui
 
 import android.content.Context
 import android.content.Intent
-import android.os.*
-import android.view.*
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
@@ -41,6 +53,8 @@ class EntityGridFragment : Fragment() {
     private val handler: Handler = Handler()
     private var menu: Menu? = null
 
+    private lateinit var onBackPressedCallback: OnBackPressedCallback
+
     private val navigator: SlideOverNavigator?
         get() = parentFragment as? SlideOverNavigator
 
@@ -48,7 +62,21 @@ class EntityGridFragment : Fragment() {
         ItemTouchHelper(EditingModeCallback(vm))
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        onBackPressedCallback = requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(this) {
+                vm.onBackPressed()
+            }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         val root = inflater.inflate(R.layout.fragment_entity_grid, container, false)
         setupToolbar(R.string.title_quick_access, false)
 
@@ -126,14 +154,22 @@ class EntityGridFragment : Fragment() {
 
         vm.editionState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                EntityGridViewModel.EditionState.Editing -> cancelRefresh()
-                else -> scheduleRefresh()
+                EntityGridViewModel.EditionState.Editing -> {
+                    onBackPressedCallback.isEnabled = true
+                    cancelRefresh()
+                }
+                else -> {
+                    onBackPressedCallback.isEnabled = false
+                    scheduleRefresh()
+                }
             }
 
             menu?.forEach { item ->
                 when (item.itemId) {
-                    R.id.menuItem_done -> item.isVisible = state == EntityGridViewModel.EditionState.Editing
-                    R.id.menuItem_edit -> item.isVisible = state == EntityGridViewModel.EditionState.Normal
+                    R.id.menuItem_done -> item.isVisible =
+                        state == EntityGridViewModel.EditionState.Editing
+                    R.id.menuItem_edit -> item.isVisible =
+                        state == EntityGridViewModel.EditionState.Normal
                 }
             }
 
@@ -270,7 +306,12 @@ class EntityGridFragment : Fragment() {
 
     private fun vibrate() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator.vibrate(VibrationEffect.createOneShot(CLICK_VIBRATION_LENGTH_MS, VibrationEffect.DEFAULT_AMPLITUDE))
+            vibrator.vibrate(
+                VibrationEffect.createOneShot(
+                    CLICK_VIBRATION_LENGTH_MS,
+                    VibrationEffect.DEFAULT_AMPLITUDE
+                )
+            )
         } else {
             @Suppress("DEPRECATION")
             vibrator.vibrate(CLICK_VIBRATION_LENGTH_MS)
@@ -279,21 +320,30 @@ class EntityGridFragment : Fragment() {
 
     private class ViewHolder(root: View, val itemAdapter: EntityTileAdapter) {
         val noContentView: View = root.findViewById(R.id.layout_noContent)
-        val recyclerView: RecyclerView = root.findViewById<RecyclerView>(R.id.recyclerView_shortcuts).apply {
-            val gridLayout = GridAutoSpanLayoutManager(context, resources.getDimension(R.dimen.item_height).toInt())
+        val recyclerView: RecyclerView =
+            root.findViewById<RecyclerView>(R.id.recyclerView_shortcuts).apply {
+                val gridLayout = GridAutoSpanLayoutManager(
+                    context,
+                    resources.getDimension(R.dimen.item_height).toInt()
+                )
 
-            adapter = itemAdapter
-            layoutManager = gridLayout
+                adapter = itemAdapter
+                layoutManager = gridLayout
 
-            addItemDecoration(
-                GridSpacingItemDecoration(gridLayout, resources.getDimensionPixelSize(R.dimen.grid_spacing))
-            )
-        }
+                addItemDecoration(
+                    GridSpacingItemDecoration(
+                        gridLayout,
+                        resources.getDimensionPixelSize(R.dimen.grid_spacing)
+                    )
+                )
+            }
 
-        val skeleton = recyclerView.applySkeleton(R.layout.item_shortcut, SKELETON_ITEM_COUNT).apply {
-            maskColor = ContextCompat.getColor(recyclerView.context, R.color.skeleton_maskColor)
-            shimmerColor = ContextCompat.getColor(recyclerView.context, R.color.skeleton_shimmerColor)
-        }
+        val skeleton =
+            recyclerView.applySkeleton(R.layout.item_shortcut, SKELETON_ITEM_COUNT).apply {
+                maskColor = ContextCompat.getColor(recyclerView.context, R.color.skeleton_maskColor)
+                shimmerColor =
+                    ContextCompat.getColor(recyclerView.context, R.color.skeleton_shimmerColor)
+            }
     }
 
     companion object {
@@ -302,5 +352,4 @@ class EntityGridFragment : Fragment() {
         private const val SKELETON_ITEM_COUNT = 30
         private const val CLICK_VIBRATION_LENGTH_MS = 50L
     }
-
 }

@@ -116,7 +116,7 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
     }
 
     private class ViewHolder(val root: View) {
-        val contentContainer: LinearLayout = root.findViewById(R.id.frameLayout_content)
+        val contentContainer: LinearLayout = root.findViewById(R.id.linearLayout_content)
         val bottomSheetBehavior: BottomSheetBehavior<*>
             get() {
                 val p = contentContainer.layoutParams as CoordinatorLayout.LayoutParams

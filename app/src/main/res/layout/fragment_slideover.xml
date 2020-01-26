@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/frameLayout_content"
+            android:id="@+id/linearLayout_content"
             android:layout_width="@dimen/slideover_content_width"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
@@ -34,7 +34,7 @@
                 android:paddingTop="8dp"
                 tools:title="@string/title_quick_access" />
 
-            <FrameLayout
+            <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
