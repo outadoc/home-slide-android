@@ -20,10 +20,10 @@ class RestClient<T>(
 ) {
     private val client = OkHttpClient.Builder()
         .connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-        .addInterceptor(chuckerInterceptor)
-        .addInterceptor(loggingInterceptor)
         .addInterceptor(AccessTokenInterceptor(accessTokenProvider))
         .addInterceptor(AltBaseUrlInterceptor(prefs))
+        .addInterceptor(loggingInterceptor)
+        .addInterceptor(chuckerInterceptor)
         .build()
 
     private val retrofit: Retrofit
