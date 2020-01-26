@@ -1,5 +1,6 @@
 package fr.outadoc.quickhass
 
+import android.app.ActivityManager
 import android.app.Application
 import android.net.nsd.NsdManager
 import android.os.Vibrator
@@ -16,7 +17,11 @@ import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepository
 import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepositoryImpl
 import fr.outadoc.quickhass.feature.onboarding.rest.HassZeroconfDiscoveryServiceImpl
 import fr.outadoc.quickhass.feature.onboarding.rest.ZeroconfDiscoveryService
-import fr.outadoc.quickhass.feature.onboarding.vm.*
+import fr.outadoc.quickhass.feature.onboarding.vm.AuthSetupViewModel
+import fr.outadoc.quickhass.feature.onboarding.vm.HostSetupViewModel
+import fr.outadoc.quickhass.feature.onboarding.vm.ShortcutSetupViewModel
+import fr.outadoc.quickhass.feature.onboarding.vm.SuccessViewModel
+import fr.outadoc.quickhass.feature.onboarding.vm.WelcomeViewModel
 import fr.outadoc.quickhass.feature.slideover.TileFactory
 import fr.outadoc.quickhass.feature.slideover.TileFactoryImpl
 import fr.outadoc.quickhass.feature.slideover.rest.EntityRepository
@@ -33,13 +38,13 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import timber.log.Timber
 
-
 @Suppress("unused")
 class MainApplication : Application() {
 
     private val appModule = module {
         single { getSystemService<NsdManager>() }
         single { getSystemService<Vibrator>() }
+        single { getSystemService<ActivityManager>() }
 
         single { DiscoveryRepositoryImpl(get(), get()) as DiscoveryRepository }
         single { EntityRepositoryImpl(get(), get(), get(), get(), get(), get()) as EntityRepository }
@@ -66,7 +71,7 @@ class MainApplication : Application() {
         viewModel { HostSetupViewModel(get(), get(), get()) }
         viewModel { AuthSetupViewModel(get(), get()) }
         viewModel { ShortcutSetupViewModel() }
-        viewModel { SuccessViewModel(get()) }
+        viewModel { SuccessViewModel(get(), get()) }
 
         viewModel { EntityGridViewModel(get(), get(), get()) }
         viewModel { EntityDetailViewModel() }

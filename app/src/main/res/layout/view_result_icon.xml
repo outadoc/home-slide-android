@@ -36,7 +36,7 @@
         android:contentDescription="@string/result_contentDescription_loading"
         android:padding="4dp"
         android:paddingStart="20dp"
-        android:tint="@color/colorOnAccent"
+        android:tint="@color/colorPrimary"
         app:srcCompat="@drawable/avd_loading" />
 
 
