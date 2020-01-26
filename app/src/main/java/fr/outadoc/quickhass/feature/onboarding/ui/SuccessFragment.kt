@@ -24,9 +24,14 @@ class SuccessFragment : Fragment() {
     private var viewHolder: ViewHolder? = null
     private val vm: SuccessViewModel by viewModel()
 
-    private val confettiColors = intArrayOf(R.color.lt_yellow, R.color.lt_orange, R.color.lt_purple, R.color.lt_pink)
+    private val confettiColors =
+        intArrayOf(R.color.lt_yellow, R.color.lt_orange, R.color.lt_purple, R.color.lt_pink)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_success, container, false)
 
         viewHolder = ViewHolder(view).apply {
@@ -52,6 +57,10 @@ class SuccessFragment : Fragment() {
     }
 
     private fun confetti() {
+        if (!vm.showShowConfetti) {
+            return
+        }
+
         viewHolder?.confettiView?.apply {
             build()
                 .addColors(confettiColors.map { ContextCompat.getColor(context, it) })
