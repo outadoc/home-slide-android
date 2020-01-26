@@ -12,8 +12,8 @@ class SimpleRestClient<T>(
     chuckerInterceptor: ChuckerInterceptor
 ) {
     private val client = OkHttpClient.Builder()
-        .addInterceptor(chuckerInterceptor)
         .addInterceptor(loggingInterceptor)
+        .addInterceptor(chuckerInterceptor)
         .build()
 
     private val retrofit: Retrofit
