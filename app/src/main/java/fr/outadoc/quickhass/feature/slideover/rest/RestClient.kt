@@ -1,6 +1,7 @@
 package fr.outadoc.quickhass.feature.slideover.rest
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.squareup.moshi.Moshi
 import fr.outadoc.quickhass.preferences.PreferenceRepository
 import fr.outadoc.quickhass.rest.AccessTokenInterceptor
 import fr.outadoc.quickhass.rest.AccessTokenProvider
@@ -13,6 +14,7 @@ import java.util.concurrent.TimeUnit
 
 class RestClient<T>(
     private val type: Class<T>,
+    private val moshi: Moshi,
     loggingInterceptor: HttpLoggingInterceptor,
     chuckerInterceptor: ChuckerInterceptor,
     accessTokenProvider: AccessTokenProvider,
@@ -30,7 +32,7 @@ class RestClient<T>(
         get() = Retrofit.Builder()
             .baseUrl(PLACEHOLDER_BASE_URL)
             .client(client)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
 
     val api: T
@@ -41,11 +43,19 @@ class RestClient<T>(
         const val CONNECT_TIMEOUT_SECONDS = 3L
 
         inline fun <reified T> create(
+            moshi: Moshi,
             loggingInterceptor: HttpLoggingInterceptor,
             chuckerInterceptor: ChuckerInterceptor,
             accessTokenProvider: AccessTokenProvider,
             prefs: PreferenceRepository
         ): T =
-            RestClient(T::class.java, loggingInterceptor, chuckerInterceptor, accessTokenProvider, prefs).api
+            RestClient(
+                T::class.java,
+                moshi,
+                loggingInterceptor,
+                chuckerInterceptor,
+                accessTokenProvider,
+                prefs
+            ).api
     }
 }
