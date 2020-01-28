@@ -9,13 +9,16 @@ import androidx.room.Room
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.github.ajalt.timberkt.Timber.tag
 import com.github.ajalt.timberkt.d
+import com.squareup.moshi.Moshi
 import fr.outadoc.mdi.MaterialIconAssetMapperImpl
 import fr.outadoc.mdi.MaterialIconLocator
 import fr.outadoc.quickhass.feature.details.vm.EntityDetailViewModel
 import fr.outadoc.quickhass.feature.grid.vm.EntityGridViewModel
+import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryApi
 import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepository
 import fr.outadoc.quickhass.feature.onboarding.rest.DiscoveryRepositoryImpl
 import fr.outadoc.quickhass.feature.onboarding.rest.HassZeroconfDiscoveryServiceImpl
+import fr.outadoc.quickhass.feature.onboarding.rest.SimpleRestClient
 import fr.outadoc.quickhass.feature.onboarding.rest.ZeroconfDiscoveryService
 import fr.outadoc.quickhass.feature.onboarding.vm.AuthSetupViewModel
 import fr.outadoc.quickhass.feature.onboarding.vm.HostSetupViewModel
@@ -24,8 +27,11 @@ import fr.outadoc.quickhass.feature.onboarding.vm.SuccessViewModel
 import fr.outadoc.quickhass.feature.onboarding.vm.WelcomeViewModel
 import fr.outadoc.quickhass.feature.slideover.TileFactory
 import fr.outadoc.quickhass.feature.slideover.TileFactoryImpl
+import fr.outadoc.quickhass.feature.slideover.json.SkipBadElementsListAdapter
 import fr.outadoc.quickhass.feature.slideover.rest.EntityRepository
 import fr.outadoc.quickhass.feature.slideover.rest.EntityRepositoryImpl
+import fr.outadoc.quickhass.feature.slideover.rest.HomeAssistantApi
+import fr.outadoc.quickhass.feature.slideover.rest.RestClient
 import fr.outadoc.quickhass.persistence.EntityDatabase
 import fr.outadoc.quickhass.preferences.PreferenceRepository
 import fr.outadoc.quickhass.preferences.PreferenceRepositoryImpl
@@ -46,8 +52,11 @@ class MainApplication : Application() {
         single { getSystemService<Vibrator>() }
         single { getSystemService<ActivityManager>() }
 
-        single { DiscoveryRepositoryImpl(get(), get()) as DiscoveryRepository }
-        single { EntityRepositoryImpl(get(), get(), get(), get(), get(), get()) as EntityRepository }
+        single { RestClient.create<HomeAssistantApi>(get(), get(), get(), get(), get()) }
+        single { SimpleRestClient.create<DiscoveryApi>(get(), get()) }
+
+        single { DiscoveryRepositoryImpl(get()) as DiscoveryRepository }
+        single { EntityRepositoryImpl(get(), get(), get()) as EntityRepository }
         single { PreferenceRepositoryImpl(get()) as PreferenceRepository }
         single {
             Room.databaseBuilder(get(), EntityDatabase::class.java, EntityDatabase.DB_NAME)
@@ -57,6 +66,12 @@ class MainApplication : Application() {
         single { HassZeroconfDiscoveryServiceImpl(get()) as ZeroconfDiscoveryService }
         single { LongLivedTokenProviderImpl(get()) as AccessTokenProvider }
         single { TileFactoryImpl(get()) as TileFactory }
+
+        single {
+            Moshi.Builder()
+                .add(SkipBadElementsListAdapter.newFactory())
+                .build()
+        }
 
         single {
             HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
