@@ -52,7 +52,7 @@ debugTests:
 bundleRelease:
   stage: package
   only:
-    - release/*
+    - /^release\/.*$/
     - master
   script:
     - ./gradlew bundleRelease
