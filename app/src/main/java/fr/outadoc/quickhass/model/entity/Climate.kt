@@ -4,7 +4,7 @@ import fr.outadoc.mdi.toIcon
 import fr.outadoc.quickhass.model.Action
 import fr.outadoc.quickhass.model.EntityState
 
-class ClimateEntity(state: EntityState) : BaseEntity(state, "thermostat".toIcon()) {
+class Climate(state: EntityState) : ABaseEntity(state, "thermostat".toIcon()) {
 
     companion object {
         const val DOMAIN = "climate"

@@ -14,7 +14,7 @@ import fr.outadoc.quickhass.feature.slideover.ui.EntityTileAdapter
 import fr.outadoc.quickhass.model.EntityState
 import fr.outadoc.quickhass.model.entity.Entity
 import fr.outadoc.quickhass.model.entity.EntityFactory
-import fr.outadoc.quickhass.model.entity.LightEntity
+import fr.outadoc.quickhass.model.entity.Light
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class EntityDetailFragment private constructor() : Fragment() {
@@ -60,7 +60,7 @@ class EntityDetailFragment private constructor() : Fragment() {
 
     private fun getChildFragment(state: EntityState): Fragment =
         when (state.domain) {
-            LightEntity.DOMAIN -> LightEntityDetailFragment.newInstance(state)
+            Light.DOMAIN -> LightEntityDetailFragment.newInstance(state)
             else -> throw IllegalArgumentException("No detail fragment for ${state.domain}")
         }
 
@@ -80,7 +80,7 @@ class EntityDetailFragment private constructor() : Fragment() {
     companion object {
 
         private fun hasDetailsScreen(entity: Entity) =
-            entity.domain in listOf(LightEntity.DOMAIN)
+            entity.domain in listOf(Light.DOMAIN)
 
         fun newInstance(entity: Entity) =
             if (hasDetailsScreen(entity)) {

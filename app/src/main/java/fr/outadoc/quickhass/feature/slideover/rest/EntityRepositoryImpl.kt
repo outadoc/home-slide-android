@@ -5,11 +5,11 @@ import fr.outadoc.quickhass.feature.slideover.model.Tile
 import fr.outadoc.quickhass.model.Action
 import fr.outadoc.quickhass.model.EntityState
 import fr.outadoc.quickhass.model.Service
-import fr.outadoc.quickhass.model.entity.CoverEntity
+import fr.outadoc.quickhass.model.entity.Cover
 import fr.outadoc.quickhass.model.entity.Entity
 import fr.outadoc.quickhass.model.entity.EntityFactory
-import fr.outadoc.quickhass.model.entity.LightEntity
-import fr.outadoc.quickhass.model.entity.WeatherEntity
+import fr.outadoc.quickhass.model.entity.Light
+import fr.outadoc.quickhass.model.entity.Weather
 import fr.outadoc.quickhass.persistence.EntityDatabase
 
 class EntityRepositoryImpl(
@@ -63,9 +63,9 @@ class EntityRepositoryImpl(
 
     private fun getPriorityForDomain(domain: String): Int? {
         return when (domain) {
-            LightEntity.DOMAIN -> 0
-            CoverEntity.DOMAIN -> 1
-            WeatherEntity.DOMAIN -> 2
+            Light.DOMAIN -> 0
+            Cover.DOMAIN -> 1
+            Weather.DOMAIN -> 2
             else -> null
         }
     }
