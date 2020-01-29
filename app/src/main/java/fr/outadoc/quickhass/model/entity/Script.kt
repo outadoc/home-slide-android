@@ -4,7 +4,7 @@ import fr.outadoc.mdi.toIcon
 import fr.outadoc.quickhass.model.Action
 import fr.outadoc.quickhass.model.EntityState
 
-class ScriptEntity(state: EntityState) : BaseEntity(state, "file-document".toIcon()) {
+class Script(state: EntityState) : ABaseEntity(state, "file-document".toIcon()) {
 
     companion object {
         const val DOMAIN = "script"

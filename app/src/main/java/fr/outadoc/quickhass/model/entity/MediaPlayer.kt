@@ -3,9 +3,9 @@ package fr.outadoc.quickhass.model.entity
 import fr.outadoc.mdi.toIcon
 import fr.outadoc.quickhass.model.EntityState
 
-class GroupEntity(state: EntityState) : BaseEntity(state, "google-circles-communities".toIcon()) {
+class MediaPlayer(state: EntityState) : ABinaryEntity(state, "cast".toIcon()) {
 
     companion object {
-        const val DOMAIN = "group"
+        const val DOMAIN = "media_player"
     }
 }

@@ -9,12 +9,12 @@ import androidx.fragment.app.Fragment
 import fr.outadoc.quickhass.R
 import fr.outadoc.quickhass.model.EntityState
 import fr.outadoc.quickhass.model.entity.EntityFactory
-import fr.outadoc.quickhass.model.entity.LightEntity
+import fr.outadoc.quickhass.model.entity.Light
 
 class LightEntityDetailFragment private constructor() : Fragment() {
 
     private var viewHolder: ViewHolder? = null
-    private var entity: LightEntity? = null
+    private var entity: Light? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val root = inflater.inflate(R.layout.fragment_entity_detail_light, container, false)
@@ -35,7 +35,7 @@ class LightEntityDetailFragment private constructor() : Fragment() {
         super.onCreate(savedInstanceState)
 
         arguments?.getParcelable<EntityState>(ARGS_STATE)?.let { state ->
-            entity = EntityFactory.create(state) as? LightEntity
+            entity = EntityFactory.create(state) as? Light
         }
     }
 

@@ -9,7 +9,7 @@ import fr.outadoc.quickhass.model.annotation.StringDomain
 import fr.outadoc.quickhass.model.annotation.StringEntityId
 import fr.outadoc.quickhass.model.annotation.StringState
 
-abstract class BaseEntity(
+abstract class ABaseEntity(
     final override val state: EntityState,
     private val defaultIcon: FontIcon
 ) : Entity {
@@ -53,7 +53,7 @@ abstract class BaseEntity(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as BaseEntity
+        other as ABaseEntity
 
         if (entityId != other.entityId) return false
 

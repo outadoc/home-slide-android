@@ -5,7 +5,7 @@ import fr.outadoc.mdi.toIcon
 import fr.outadoc.quickhass.model.EntityState
 import java.text.DecimalFormat
 
-class SensorEntity(state: EntityState) : BaseEntity(state, "eye".toIcon()) {
+class Sensor(state: EntityState) : ABaseEntity(state, "eye".toIcon()) {
 
     companion object {
         const val DOMAIN = "sensor"

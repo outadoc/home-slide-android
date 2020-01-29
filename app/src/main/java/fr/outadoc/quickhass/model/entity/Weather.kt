@@ -5,7 +5,7 @@ import fr.outadoc.mdi.toIcon
 import fr.outadoc.mdi.toIconOrNull
 import fr.outadoc.quickhass.model.EntityState
 
-class WeatherEntity(state: EntityState) : BaseEntity(state, "weather-cloudy".toIcon()) {
+class Weather(state: EntityState) : ABaseEntity(state, "weather-cloudy".toIcon()) {
 
     companion object {
         const val DOMAIN = "weather"
