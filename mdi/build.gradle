@@ -11,7 +11,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
-        versionName "3.7.95"
+        versionName "4.8.95"
     }
 
     buildTypes {
