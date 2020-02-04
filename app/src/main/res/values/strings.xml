@@ -19,7 +19,8 @@
     <string name="onboarding_setup_host_hint">Home Assistant URL</string>
     <string name="onboarding_setup_host_subtitle">Find your installation</string>
     <string name="onboarding_setup_host_title">Step 1</string>
-    <string name="onboarding_setup_host_zeroconf"><b>Psst!</b> I\'ve also found these Home Assistant installations on your network:</string>
+    <string name="onboarding_setup_host_zeroconf">
+        <b>Psst!</b> I\'ve also found these Home Assistant installations on your network:</string>
     <string name="onboarding_setup_host_zeroconfIcon">Home</string>
     <string name="onboarding_setup_shortcut_continue">It\'s done!</string>
     <string name="onboarding_setup_shortcut_instructions">In your quick settings panel, click <b>Edit</b>, then drag the <b>Home</b> tile to your other shortcuts.</string>
@@ -35,6 +36,8 @@
     <string name="pref_about_title">About</string>
     <string name="pref_alt_base_url_summary">Optional. Internet-accessible URL of your Home Assistant instance.</string>
     <string name="pref_alt_base_url_title">Home Assistant Outside URL</string>
+    <string name="pref_authDialog_subtitle">Allowing Home Slide to be used while your device is unlocked can be dangerous. Please use with care.</string>
+    <string name="pref_authDialog_title">Authorization required</string>
     <string name="pref_auth_token_summary">You can get one on your Profile page in Home Assistant.</string>
     <string name="pref_auth_token_title">Long-Lived Access Token</string>
     <string name="pref_author_summary">All rights reserved.</string>

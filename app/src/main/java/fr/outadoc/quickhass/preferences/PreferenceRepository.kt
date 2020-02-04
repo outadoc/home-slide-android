@@ -6,7 +6,7 @@ interface PreferenceRepository {
     var altInstanceBaseUrl: String?
     var accessToken: String
     val refreshIntervalSeconds: Long
-    val showWhenLocked: Boolean
+    var showWhenLocked: Boolean
     val theme: String
 
     var isOnboardingDone: Boolean

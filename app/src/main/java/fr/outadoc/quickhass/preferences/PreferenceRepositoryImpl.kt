@@ -43,8 +43,11 @@ class PreferenceRepositoryImpl(context: Context) : PreferenceRepository {
             appPrefs.edit().putBoolean(KEY_IS_ONBOARDING_DONE, value).apply()
         }
 
-    override val showWhenLocked: Boolean
+    override var showWhenLocked: Boolean
         get() = appPrefs.getBoolean(KEY_SHOW_WHEN_LOCKED, false)
+        set(value) {
+            appPrefs.edit().putBoolean(KEY_SHOW_WHEN_LOCKED, value).apply()
+        }
 
     override val refreshIntervalSeconds: Long
         get() = appPrefs.getInt(KEY_REFRESH_INTERVAL, 10).toLong()
