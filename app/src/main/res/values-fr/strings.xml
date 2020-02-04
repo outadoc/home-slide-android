@@ -19,7 +19,8 @@
     <string name="onboarding_setup_host_hint">URL de Home Assistant</string>
     <string name="onboarding_setup_host_subtitle">Trouvez votre installation</string>
     <string name="onboarding_setup_host_title">Étape 1</string>
-    <string name="onboarding_setup_host_zeroconf"><b>Psst\u00A0!</b> J\'ai aussi trouvé ces installations de Home Assistant sur le réseau :</string>
+    <string name="onboarding_setup_host_zeroconf">
+        <b>Psst\u00A0!</b> J\'ai aussi trouvé ces installations de Home Assistant sur le réseau :</string>
     <string name="onboarding_setup_host_zeroconfIcon">Maison</string>
     <string name="onboarding_setup_shortcut_continue">C\'est fait !</string>
     <string name="onboarding_setup_shortcut_instructions">Dans le panneau de réglages rapides, cliquez sur <b>Modifier</b>, puis faites glisser la tuile <b>Maison</b> sur vos autres raccourcis.</string>
@@ -35,6 +36,8 @@
     <string name="pref_about_title">À propos</string>
     <string name="pref_alt_base_url_summary">Optionnelle. URL de votre instance Home Assistant accessible depuis Internet. (ex : DynDNS, Hass.io…)</string>
     <string name="pref_alt_base_url_title">URL de Home Assistant (sur Internet)</string>
+    <string name="pref_authDialog_subtitle">Autoriser l\'utilisation de Home Slide lorsque votre appareil est déverrouillé peut être dangereux. Soyez prudent·e.</string>
+    <string name="pref_authDialog_title">Autorisation requise</string>
     <string name="pref_auth_token_summary">Vous pouvez en générer un dans votre Profil sur Home Assistant.</string>
     <string name="pref_auth_token_title">Jeton d\'accès de longue durée</string>
     <string name="pref_author_summary">Tous droits réservés.</string>
