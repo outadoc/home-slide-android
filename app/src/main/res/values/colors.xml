@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#0098F9</color>
-    <color name="colorPrimaryDark">#1E88E5</color>
-    <color name="colorAccent">#4FC3F7</color>
-    <color name="colorSurfaceLight">#FAFAFA</color>
-    <color name="colorOnAccent">#FFF</color>
-    <color name="colorLink">#3949AB</color>
-    <color name="colorSuccess">#7CB342</color>
-    <color name="colorNavigationShim">#32000000</color>
-    <color name="colorTileOverlay">#80000000</color>
 
-    <color name="lt_yellow">#fce18a</color>
-    <color name="lt_orange">#ff726d</color>
-    <color name="lt_purple">#b48def</color>
-    <color name="lt_pink">#f4306d</color>
+<color name="colorNavigationShim">#32000000</color>
+    <color name="colorTileOverlay">#80000000</color>
 
     <color name="skeleton_maskColor">#E0E0E0</color>
     <color name="skeleton_shimmerColor">#d5d5d5</color>
+
 </resources>
