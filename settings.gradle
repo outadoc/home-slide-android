@@ -1,1 +1,6 @@
-include ':app', ':mdi'
+include ':lib-zeroconf'
+include ':shared'
+include ':feature-onboarding'
+include ':common'
+include ':lib-mdi'
+include ':app'
