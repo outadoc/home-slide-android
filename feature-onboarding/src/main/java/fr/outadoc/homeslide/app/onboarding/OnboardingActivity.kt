@@ -5,9 +5,20 @@ import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
 import androidx.navigation.Navigation.findNavController
-import fr.outadoc.homeslide.shared.DayNightActivity
+import fr.outadoc.homeslide.common.DayNightActivity
+import fr.outadoc.homeslide.common.ThemeProvider
+import fr.outadoc.homeslide.common.preferences.PreferenceRepository
+import org.koin.android.ext.android.inject
 
 class OnboardingActivity : DayNightActivity() {
+
+    val prefs: PreferenceRepository by inject()
+
+    override val themeProvider: ThemeProvider = object :
+        ThemeProvider {
+        override val preferredTheme: String?
+            get() = prefs.theme
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

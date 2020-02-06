@@ -4,8 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import fr.outadoc.homeslide.app.persistence.dao.EntityDao
-import fr.outadoc.homeslide.app.persistence.model.PersistedEntity
+import fr.outadoc.homeslide.hassapi.model.PersistedEntity
 
 @Database(entities = [PersistedEntity::class], version = 2)
 abstract class EntityDatabase : RoomDatabase() {

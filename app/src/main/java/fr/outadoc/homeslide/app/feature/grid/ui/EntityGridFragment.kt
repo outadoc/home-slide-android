@@ -35,13 +35,13 @@ import com.google.android.material.snackbar.Snackbar
 import fr.outadoc.homeslide.app.BuildConfig
 import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.app.feature.details.ui.EntityDetailFragment
-import fr.outadoc.homeslide.app.feature.grid.vm.EntityGridViewModel
 import fr.outadoc.homeslide.app.feature.slideover.ui.EntityTileAdapter
 import fr.outadoc.homeslide.app.feature.slideover.ui.SlideOverNavigator
 import fr.outadoc.homeslide.app.onboarding.OnboardingActivity
 import fr.outadoc.homeslide.app.preferences.AppPreferencesFragment
 import fr.outadoc.homeslide.common.extensions.setupToolbar
-import fr.outadoc.homeslide.common.feature.hass.model.entity.Entity
+import fr.outadoc.homeslide.common.feature.grid.vm.EntityGridViewModel
+import fr.outadoc.homeslide.hassapi.api.model.entity.Entity
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit

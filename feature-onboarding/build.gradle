@@ -36,8 +36,10 @@ android {
 }
 
 dependencies {
-    implementation project(':shared')
+    implementation project(':lib-common-util')
+    implementation project(':common')
     implementation project(':lib-zeroconf')
+    implementation project(':lib-restclient')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
@@ -50,7 +52,6 @@ dependencies {
 
     // Network libs
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
     implementation "com.auth0.android:jwtdecode:$jwtdecode_version"
     implementation "com.squareup.moshi:moshi:$moshi_version"

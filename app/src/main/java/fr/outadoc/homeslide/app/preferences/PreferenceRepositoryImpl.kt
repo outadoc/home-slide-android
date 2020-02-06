@@ -2,8 +2,8 @@ package fr.outadoc.homeslide.app.preferences
 
 import android.content.Context
 import androidx.preference.PreferenceManager
-import fr.outadoc.homeslide.shared.preferences.PreferenceRepository
-import fr.outadoc.homeslide.shared.preferences.PreferredBaseUrl
+import fr.outadoc.homeslide.common.preferences.PreferenceRepository
+import fr.outadoc.homeslide.rest.PreferredBaseUrl
 
 class PreferenceRepositoryImpl(context: Context) :
     PreferenceRepository {

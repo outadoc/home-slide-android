@@ -58,7 +58,10 @@ android {
 dependencies {
     implementation project(':lib-mdi')
     implementation project(':lib-zeroconf')
-    implementation project(':shared')
+    implementation project(':lib-restclient')
+    implementation project(':lib-homeassistant-api')
+    implementation project(':lib-common-util')
+
     implementation project(':common')
     implementation project(':feature-onboarding')
 

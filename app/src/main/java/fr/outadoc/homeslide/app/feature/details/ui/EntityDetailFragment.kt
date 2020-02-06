@@ -9,12 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.homeslide.app.R
-import fr.outadoc.homeslide.app.feature.details.vm.EntityDetailViewModel
 import fr.outadoc.homeslide.app.feature.slideover.ui.EntityTileAdapter
-import fr.outadoc.homeslide.common.feature.hass.model.EntityState
-import fr.outadoc.homeslide.common.feature.hass.model.entity.Entity
-import fr.outadoc.homeslide.common.feature.hass.model.entity.EntityFactory
-import fr.outadoc.homeslide.common.feature.hass.model.entity.Light
+import fr.outadoc.homeslide.common.feature.details.vm.EntityDetailViewModel
+import fr.outadoc.homeslide.hassapi.api.EntityFactory
+import fr.outadoc.homeslide.hassapi.api.model.EntityState
+import fr.outadoc.homeslide.hassapi.api.model.entity.Entity
+import fr.outadoc.homeslide.hassapi.api.model.entity.Light
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class EntityDetailFragment private constructor() : Fragment() {

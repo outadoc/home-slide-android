@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ItemTouchHelper.START
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.ItemTouchHelper.UP
 import androidx.recyclerview.widget.RecyclerView
-import fr.outadoc.homeslide.app.feature.grid.vm.EntityGridViewModel
+import fr.outadoc.homeslide.common.feature.grid.vm.EntityGridViewModel
 
 class EditingModeCallback(private val viewModel: EntityGridViewModel) :
     SimpleCallback(UP or DOWN or START or END, 0) {
