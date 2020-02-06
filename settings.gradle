@@ -1,5 +1,7 @@
+include ':lib-homeassistant-api'
+include ':lib-restclient'
 include ':lib-zeroconf'
-include ':shared'
+include ':lib-common-util'
 include ':feature-onboarding'
 include ':common'
 include ':lib-mdi'

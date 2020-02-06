@@ -7,15 +7,22 @@ import android.view.Gravity
 import android.view.View
 import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.app.feature.slideover.ui.SlideOverFragment
+import fr.outadoc.homeslide.common.DayNightActivity
+import fr.outadoc.homeslide.common.ThemeProvider
 import fr.outadoc.homeslide.common.extensions.isInteractive
 import fr.outadoc.homeslide.common.extensions.setShowWhenLockedCompat
-import fr.outadoc.homeslide.shared.DayNightActivity
-import fr.outadoc.homeslide.shared.preferences.PreferenceRepository
+import fr.outadoc.homeslide.common.preferences.PreferenceRepository
 import org.koin.android.ext.android.inject
 
 class SlideOverActivity : DayNightActivity() {
 
-    private val prefs: PreferenceRepository by inject()
+    val prefs: PreferenceRepository by inject()
+
+    override val themeProvider: ThemeProvider = object :
+        ThemeProvider {
+        override val preferredTheme: String?
+            get() = prefs.theme
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

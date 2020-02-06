@@ -13,8 +13,8 @@ import fr.outadoc.homeslide.app.onboarding.model.DiscoveryInfo
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
 import fr.outadoc.homeslide.app.onboarding.model.ZeroconfHost
 import fr.outadoc.homeslide.app.onboarding.rest.DiscoveryRepository
-import fr.outadoc.homeslide.shared.lifecycle.Event
-import fr.outadoc.homeslide.shared.preferences.PreferenceRepository
+import fr.outadoc.homeslide.common.preferences.PreferenceRepository
+import fr.outadoc.homeslide.util.lifecycle.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch

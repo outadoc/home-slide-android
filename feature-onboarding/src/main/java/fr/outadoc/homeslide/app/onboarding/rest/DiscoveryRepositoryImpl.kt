@@ -2,7 +2,7 @@ package fr.outadoc.homeslide.app.onboarding.rest
 
 import fr.outadoc.homeslide.app.onboarding.model.ApiStatus
 import fr.outadoc.homeslide.app.onboarding.model.DiscoveryInfo
-import fr.outadoc.homeslide.shared.rest.wrapResponse
+import fr.outadoc.homeslide.rest.wrapResponse
 
 class DiscoveryRepositoryImpl(private val client: DiscoveryApi) : DiscoveryRepository {
 

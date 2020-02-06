@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
-import fr.outadoc.homeslide.shared.lifecycle.Event
-import fr.outadoc.homeslide.shared.preferences.PreferenceRepository
+import fr.outadoc.homeslide.common.preferences.PreferenceRepository
+import fr.outadoc.homeslide.util.lifecycle.Event
 
 class SuccessViewModel(
     private val prefs: PreferenceRepository,

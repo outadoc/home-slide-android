@@ -13,9 +13,8 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.app.feature.grid.ui.ReorderableListAdapter
-import fr.outadoc.homeslide.app.feature.slideover.model.TileDiffer
-import fr.outadoc.homeslide.common.feature.hass.model.Tile
-import fr.outadoc.homeslide.common.feature.hass.model.entity.Entity
+import fr.outadoc.homeslide.hassapi.api.model.entity.Entity
+import fr.outadoc.homeslide.hassapi.model.Tile
 
 class EntityTileAdapter(
     val onItemClickListener: (Entity) -> Unit,

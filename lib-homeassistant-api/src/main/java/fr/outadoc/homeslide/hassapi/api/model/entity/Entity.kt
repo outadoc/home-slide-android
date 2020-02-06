@@ -1,0 +1,30 @@
+package fr.outadoc.homeslide.hassapi.api.model.entity
+
+import android.content.Context
+import fr.outadoc.homeslide.hassapi.api.model.Action
+import fr.outadoc.homeslide.hassapi.api.model.EntityState
+import fr.outadoc.homeslide.hassapi.api.model.annotation.StringDomain
+import fr.outadoc.homeslide.hassapi.api.model.annotation.StringEntityId
+import fr.outadoc.mdi.FontIcon
+
+interface Entity {
+
+    val state: EntityState
+
+    @StringDomain
+    val domain: String
+
+    @StringEntityId
+    val entityId: String
+
+    val friendlyName: String?
+    val icon: FontIcon
+
+    val isVisible: Boolean
+    val isToggleable: Boolean
+    val isOn: Boolean
+
+    val primaryAction: Action?
+
+    fun getFormattedState(context: Context): String?
+}

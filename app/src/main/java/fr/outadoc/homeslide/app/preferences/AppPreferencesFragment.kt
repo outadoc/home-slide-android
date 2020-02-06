@@ -11,8 +11,9 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import com.github.ajalt.timberkt.Timber
 import fr.outadoc.homeslide.app.R
+import fr.outadoc.homeslide.common.DayNightActivity
 import fr.outadoc.homeslide.common.extensions.setupToolbar
-import fr.outadoc.homeslide.shared.preferences.PreferenceRepository
+import fr.outadoc.homeslide.common.preferences.PreferenceRepository
 import org.koin.android.ext.android.inject
 
 class AppPreferencesFragment : PreferenceFragmentCompat() {
@@ -80,7 +81,7 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
             }
 
             themePref.setOnPreferenceChangeListener { _, newValue ->
-                (activity as? fr.outadoc.homeslide.shared.DayNightActivity)?.refreshTheme(newValue as String)
+                (activity as? DayNightActivity)?.refreshTheme(newValue as String)
                 true
             }
 

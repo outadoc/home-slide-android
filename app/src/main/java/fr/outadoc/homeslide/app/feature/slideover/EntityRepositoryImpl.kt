@@ -1,28 +1,29 @@
 package fr.outadoc.homeslide.app.feature.slideover
 
-import fr.outadoc.homeslide.app.persistence.EntityDatabase
-import fr.outadoc.homeslide.common.feature.hass.api.HomeAssistantApi
-import fr.outadoc.homeslide.common.feature.hass.model.Action
-import fr.outadoc.homeslide.common.feature.hass.model.EntityState
-import fr.outadoc.homeslide.common.feature.hass.model.Service
-import fr.outadoc.homeslide.common.feature.hass.model.Tile
-import fr.outadoc.homeslide.common.feature.hass.model.entity.Cover
-import fr.outadoc.homeslide.common.feature.hass.model.entity.Entity
-import fr.outadoc.homeslide.common.feature.hass.model.entity.EntityFactory
-import fr.outadoc.homeslide.common.feature.hass.model.entity.Light
-import fr.outadoc.homeslide.common.feature.hass.model.entity.Weather
-import fr.outadoc.homeslide.common.feature.hass.repository.EntityRepository
-import fr.outadoc.homeslide.shared.rest.wrapResponse
+import fr.outadoc.homeslide.app.persistence.EntityDao
+import fr.outadoc.homeslide.hassapi.api.EntityFactory
+import fr.outadoc.homeslide.hassapi.api.HomeAssistantApi
+import fr.outadoc.homeslide.hassapi.api.model.Action
+import fr.outadoc.homeslide.hassapi.api.model.EntityState
+import fr.outadoc.homeslide.hassapi.api.model.Service
+import fr.outadoc.homeslide.hassapi.api.model.entity.Cover
+import fr.outadoc.homeslide.hassapi.api.model.entity.Entity
+import fr.outadoc.homeslide.hassapi.api.model.entity.Light
+import fr.outadoc.homeslide.hassapi.api.model.entity.Weather
+import fr.outadoc.homeslide.hassapi.factory.TileFactory
+import fr.outadoc.homeslide.hassapi.model.PersistedEntity
+import fr.outadoc.homeslide.hassapi.model.Tile
+import fr.outadoc.homeslide.hassapi.repository.EntityRepository
+import fr.outadoc.homeslide.rest.wrapResponse
 
 class EntityRepositoryImpl(
-    private val db: EntityDatabase,
+    private val dao: EntityDao,
     private val tileFactory: TileFactory,
     private val client: HomeAssistantApi
 ) : EntityRepository {
 
     override suspend fun getEntityTiles(): Result<List<Tile<Entity>>> {
-        val persistedEntities = db.entityDao()
-            .getPersistedEntities()
+        val persistedEntities = dao.getPersistedEntities()
             .map { it.entityId to it }
             .toMap()
 
@@ -60,8 +61,12 @@ class EntityRepositoryImpl(
                         { tile -> tile.source.friendlyName }
                     )
                 )
-                .toList()
-        }
+                    .toList()
+            }
+    }
+
+    override suspend fun saveEntityListState(entities: List<PersistedEntity>) {
+        dao.replaceAll(entities)
     }
 
     private fun getPriorityForDomain(domain: String): Int? {
