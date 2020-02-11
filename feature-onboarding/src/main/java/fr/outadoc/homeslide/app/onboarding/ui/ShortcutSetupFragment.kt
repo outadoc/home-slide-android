@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.homeslide.app.onboarding.R
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
+import fr.outadoc.homeslide.app.onboarding.ui.ShortcutSetupFragmentDirections.Companion.actionSetupShortcutFragmentToSuccessFragment
 import fr.outadoc.homeslide.app.onboarding.vm.ShortcutSetupViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -30,7 +31,9 @@ class ShortcutSetupFragment : Fragment() {
 
         vm.navigateTo.observe(viewLifecycleOwner) {
             when (it.pop()) {
-                NavigationFlow.Next -> viewHolder?.navController?.navigate(R.id.action_setupShortcutFragment_to_successFragment)
+                NavigationFlow.Next -> viewHolder?.navController?.navigate(
+                    actionSetupShortcutFragmentToSuccessFragment()
+                )
                 NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
                 else -> Unit
             }

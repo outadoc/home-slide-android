@@ -1,6 +1,6 @@
 package fr.outadoc.homeslide.app.onboarding.rest
 
-import fr.outadoc.homeslide.rest.PLACEHOLDER_BASE_URL
+import fr.outadoc.homeslide.rest.util.PLACEHOLDER_BASE_URL
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Converter

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="onboarding_setup_auth_action">Sign into your instance</string>
     <string name="onboarding_setup_auth_continue">Continue</string>
     <string name="onboarding_setup_auth_help">You can generate a long-lived access token on your Profile page in Home Assistant.</string>
     <string name="onboarding_setup_auth_help_link">Generate a token</string>

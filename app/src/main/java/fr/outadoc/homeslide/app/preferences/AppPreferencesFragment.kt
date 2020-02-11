@@ -6,11 +6,13 @@ import android.view.MenuItem
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavDeepLinkBuilder
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import com.github.ajalt.timberkt.Timber
 import fr.outadoc.homeslide.app.R
+import fr.outadoc.homeslide.app.onboarding.OnboardingActivity
 import fr.outadoc.homeslide.common.DayNightActivity
 import fr.outadoc.homeslide.common.extensions.setupToolbar
 import fr.outadoc.homeslide.common.preferences.PreferenceRepository
@@ -95,6 +97,17 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
                     true
                 }
             }
+
+            renewAuthPref.setOnPreferenceClickListener {
+                val pendingIntent = NavDeepLinkBuilder(requireActivity())
+                    .setComponentName(OnboardingActivity::class.java)
+                    .setGraph(R.navigation.nav_graph_onboarding)
+                    .setDestination(R.id.setupAuthFragment)
+                    .createPendingIntent()
+
+                pendingIntent.send()
+                false
+            }
         }
 
         licenses.forEach { (license, content) ->
@@ -139,6 +152,7 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
             fragment.findPreference("chk_pref_show_when_locked")!!
         val themePref: Preference = fragment.findPreference("list_pref_theme")!!
         val versionPref: Preference = fragment.findPreference("pref_about_version")!!
+        val renewAuthPref: Preference = fragment.findPreference("pref_renew_auth")!!
     }
 
     companion object {

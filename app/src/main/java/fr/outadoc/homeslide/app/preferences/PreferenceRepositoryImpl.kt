@@ -3,7 +3,7 @@ package fr.outadoc.homeslide.app.preferences
 import android.content.Context
 import androidx.preference.PreferenceManager
 import fr.outadoc.homeslide.common.preferences.PreferenceRepository
-import fr.outadoc.homeslide.rest.PreferredBaseUrl
+import fr.outadoc.homeslide.rest.baseurl.PreferredBaseUrl
 
 class PreferenceRepositoryImpl(context: Context) :
     PreferenceRepository {
@@ -22,10 +22,16 @@ class PreferenceRepositoryImpl(context: Context) :
             appPrefs.edit().putString(KEY_INSTANCE_ALT_BASE_URL, value).apply()
         }
 
-    override var accessToken: String
-        get() = appPrefs.getString(KEY_ACCESS_TOKEN, "")!!
+    override var accessToken: String?
+        get() = appPrefs.getString(KEY_ACCESS_TOKEN, null)
         set(value) {
             appPrefs.edit().putString(KEY_ACCESS_TOKEN, value).apply()
+        }
+
+    override var refreshToken: String?
+        get() = appPrefs.getString(KEY_REFRESH_TOKEN, "")!!
+        set(value) {
+            appPrefs.edit().putString(KEY_REFRESH_TOKEN, value).apply()
         }
 
     override var preferredBaseUrl: PreferredBaseUrl
@@ -60,6 +66,7 @@ class PreferenceRepositoryImpl(context: Context) :
         const val KEY_INSTANCE_ALT_BASE_URL = "et_pref_instance_alt_base_url"
         const val KEY_PREFERRED_BASE_URL = "enum_pref_preferred_base_url"
         const val KEY_ACCESS_TOKEN = "et_pref_auth_token"
+        const val KEY_REFRESH_TOKEN = "et_pref_refresh_token"
         const val KEY_THEME = "list_pref_theme"
         const val KEY_IS_ONBOARDING_DONE = "chk_pref_onboarding_ok"
         const val KEY_SHOW_WHEN_LOCKED = "chk_pref_show_when_locked"

@@ -6,10 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.outadoc.homeslide.common.preferences.PreferenceRepository
-import fr.outadoc.homeslide.hassapi.api.model.Action
-import fr.outadoc.homeslide.hassapi.api.model.entity.Entity
+import fr.outadoc.homeslide.hassapi.model.Action
 import fr.outadoc.homeslide.hassapi.model.PersistedEntity
 import fr.outadoc.homeslide.hassapi.model.Tile
+import fr.outadoc.homeslide.hassapi.model.entity.Entity
 import fr.outadoc.homeslide.hassapi.repository.EntityRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

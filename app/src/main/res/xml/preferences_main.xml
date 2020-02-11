@@ -18,12 +18,10 @@
             app:summary="@string/pref_alt_base_url_summary"
             app:title="@string/pref_alt_base_url_title" />
 
-        <EditTextPreference
-            app:icon="@drawable/ic_key"
-            app:key="et_pref_auth_token"
-            app:singleLine="false"
-            app:summary="@string/pref_auth_token_summary"
-            app:title="@string/pref_auth_token_title" />
+        <Preference
+            app:key="pref_renew_auth"
+            app:title="@string/pref_renew_auth_title" />
+
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/pref_cat_app_title">

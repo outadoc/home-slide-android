@@ -1,8 +1,8 @@
 package fr.outadoc.homeslide.hassapi.factory
 
 import android.content.Context
-import fr.outadoc.homeslide.hassapi.api.model.entity.Entity
 import fr.outadoc.homeslide.hassapi.model.Tile
+import fr.outadoc.homeslide.hassapi.model.entity.Entity
 
 class TileFactoryImpl(private val context: Context) :
     TileFactory {

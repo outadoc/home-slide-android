@@ -8,12 +8,15 @@ import androidx.recyclerview.widget.ItemTouchHelper.START
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.ItemTouchHelper.UP
 import androidx.recyclerview.widget.RecyclerView
-import fr.outadoc.homeslide.common.feature.grid.vm.EntityGridViewModel
 
-class EditingModeCallback(private val viewModel: EntityGridViewModel) :
+class EditingModeCallback(val isEnabled: () -> Boolean) :
     SimpleCallback(UP or DOWN or START or END, 0) {
 
-    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+    override fun onMove(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder,
+        target: RecyclerView.ViewHolder
+    ): Boolean {
         val adapter = recyclerView.adapter as ReorderableListAdapter<*, *>
 
         val from = viewHolder.adapterPosition
@@ -38,9 +41,7 @@ class EditingModeCallback(private val viewModel: EntityGridViewModel) :
         viewHolder.itemView.scale(1.0f, 0.0f)
     }
 
-    override fun isLongPressDragEnabled(): Boolean {
-        return viewModel.editionState.value == EntityGridViewModel.EditionState.Editing
-    }
+    override fun isLongPressDragEnabled() = isEnabled()
 
     private fun View.scale(scale: Float, elevation: Float) {
         this.animate()

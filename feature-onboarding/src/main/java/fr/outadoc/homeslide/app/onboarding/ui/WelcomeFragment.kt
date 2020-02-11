@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.homeslide.app.onboarding.R
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
+import fr.outadoc.homeslide.app.onboarding.ui.WelcomeFragmentDirections.Companion.actionWelcomeFragmentToSetupHostFragment
 import fr.outadoc.homeslide.app.onboarding.vm.WelcomeViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -30,7 +31,9 @@ class WelcomeFragment : Fragment() {
 
         vm.navigateTo.observe(viewLifecycleOwner) {
             when (it.pop()) {
-                NavigationFlow.Next -> viewHolder?.navController?.navigate(R.id.action_welcomeFragment_to_setupHostFragment)
+                NavigationFlow.Next -> viewHolder?.navController?.navigate(
+                    actionWelcomeFragmentToSetupHostFragment()
+                )
                 NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
                 else -> Unit
             }

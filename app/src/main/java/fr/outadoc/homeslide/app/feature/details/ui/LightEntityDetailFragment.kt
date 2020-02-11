@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import fr.outadoc.homeslide.app.R
-import fr.outadoc.homeslide.hassapi.api.EntityFactory
-import fr.outadoc.homeslide.hassapi.api.model.EntityState
-import fr.outadoc.homeslide.hassapi.api.model.entity.Light
+import fr.outadoc.homeslide.hassapi.factory.EntityFactory
+import fr.outadoc.homeslide.hassapi.model.EntityState
+import fr.outadoc.homeslide.hassapi.model.entity.Light
 
 class LightEntityDetailFragment private constructor() : Fragment() {
 

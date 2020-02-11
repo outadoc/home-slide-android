@@ -1,7 +1,7 @@
 package fr.outadoc.homeslide.hassapi.api
 
-import fr.outadoc.homeslide.hassapi.api.model.EntityState
-import fr.outadoc.homeslide.hassapi.api.model.Service
+import fr.outadoc.homeslide.hassapi.model.EntityState
+import fr.outadoc.homeslide.hassapi.model.Service
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

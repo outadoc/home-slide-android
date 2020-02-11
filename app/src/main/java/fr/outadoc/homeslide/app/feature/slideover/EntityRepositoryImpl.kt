@@ -1,20 +1,20 @@
 package fr.outadoc.homeslide.app.feature.slideover
 
 import fr.outadoc.homeslide.app.persistence.EntityDao
-import fr.outadoc.homeslide.hassapi.api.EntityFactory
 import fr.outadoc.homeslide.hassapi.api.HomeAssistantApi
-import fr.outadoc.homeslide.hassapi.api.model.Action
-import fr.outadoc.homeslide.hassapi.api.model.EntityState
-import fr.outadoc.homeslide.hassapi.api.model.Service
-import fr.outadoc.homeslide.hassapi.api.model.entity.Cover
-import fr.outadoc.homeslide.hassapi.api.model.entity.Entity
-import fr.outadoc.homeslide.hassapi.api.model.entity.Light
-import fr.outadoc.homeslide.hassapi.api.model.entity.Weather
+import fr.outadoc.homeslide.hassapi.factory.EntityFactory
 import fr.outadoc.homeslide.hassapi.factory.TileFactory
+import fr.outadoc.homeslide.hassapi.model.Action
+import fr.outadoc.homeslide.hassapi.model.EntityState
 import fr.outadoc.homeslide.hassapi.model.PersistedEntity
+import fr.outadoc.homeslide.hassapi.model.Service
 import fr.outadoc.homeslide.hassapi.model.Tile
+import fr.outadoc.homeslide.hassapi.model.entity.Cover
+import fr.outadoc.homeslide.hassapi.model.entity.Entity
+import fr.outadoc.homeslide.hassapi.model.entity.Light
+import fr.outadoc.homeslide.hassapi.model.entity.Weather
 import fr.outadoc.homeslide.hassapi.repository.EntityRepository
-import fr.outadoc.homeslide.rest.wrapResponse
+import fr.outadoc.homeslide.rest.util.wrapResponse
 
 class EntityRepositoryImpl(
     private val dao: EntityDao,

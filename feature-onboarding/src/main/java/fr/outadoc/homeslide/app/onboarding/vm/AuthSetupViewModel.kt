@@ -1,93 +1,59 @@
 package fr.outadoc.homeslide.app.onboarding.vm
 
 import android.net.Uri
-import android.os.Handler
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import com.auth0.android.jwt.DecodeException
-import com.auth0.android.jwt.JWT
-import fr.outadoc.homeslide.app.onboarding.model.ApiStatus
-import fr.outadoc.homeslide.app.onboarding.model.CallStatus
+import com.github.ajalt.timberkt.Timber
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
-import fr.outadoc.homeslide.app.onboarding.rest.DiscoveryRepository
 import fr.outadoc.homeslide.common.preferences.PreferenceRepository
+import fr.outadoc.homeslide.hassapi.repository.AuthRepository
+import fr.outadoc.homeslide.rest.auth.OAuthConfiguration
 import fr.outadoc.homeslide.util.lifecycle.Event
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AuthSetupViewModel(
-    private val repository: DiscoveryRepository,
-    private val prefs: PreferenceRepository
+    private val prefs: PreferenceRepository,
+    private val repository: AuthRepository,
+    private val oAuthConfiguration: OAuthConfiguration
 ) : ViewModel() {
-
-    private val _apiStatus = MutableLiveData<CallStatus<ApiStatus>>()
-    val apiStatus: LiveData<CallStatus<ApiStatus>> = _apiStatus
 
     private val _navigateTo = MutableLiveData<Event<NavigationFlow>>()
     val navigateTo: LiveData<Event<NavigationFlow>> = _navigateTo
 
-    val canContinue = apiStatus.map { it is CallStatus.Done && it.value.isSuccess }
-
-    private var inputJwt: String? = null
-    private var apiStatusJob: Job? = null
-
-    private val handler = Handler()
-
-    fun onTokenChanged(token: String) {
-        inputJwt = token
-
-        if (!token.isValidJwt()) {
-            _apiStatus.value = CallStatus.Done(Result.failure(InvalidTokenException()))
-        }
-
-        handler.removeCallbacksAndMessages(null)
-        handler.postDelayed({ doOnTokenChanged(token) }, UPDATE_TIME_INTERVAL)
-    }
-
-    private fun doOnTokenChanged(token: String) {
-        apiStatusJob?.cancel()
-        _apiStatus.value = CallStatus.Loading
-
-        apiStatusJob = viewModelScope.launch(Dispatchers.IO) {
-            _apiStatus.postValue(
-                CallStatus.Done(repository.getApiStatus(prefs.instanceBaseUrl, token))
-            )
-        }
-    }
-
-    fun onContinueClicked() {
-        inputJwt?.let { jwt ->
-            if (canContinue.value!!) {
-                prefs.accessToken = jwt
-                _navigateTo.value = Event(NavigationFlow.Next)
-            }
-        }
-    }
-
-    private fun String.isValidJwt(): Boolean {
-        return try {
-            !JWT(this).isExpired(0)
-        } catch (e: DecodeException) {
-            false
-        }
-    }
-
-    fun onClickHelpLink() {
-        val profilePage = Uri.parse(prefs.instanceBaseUrl)
-            .buildUpon()
-            .appendPath("profile")
+    private val authenticationPageUrl: Uri
+        get() = prefs.instanceBaseUrl.toUri().buildUpon()
+            .appendPath("auth")
+            .appendPath("authorize")
+            .appendQueryParameter("client_id", oAuthConfiguration.clientId)
+            .appendQueryParameter("redirect_uri", oAuthConfiguration.redirectUri)
             .build()
 
-        _navigateTo.postValue(Event(NavigationFlow.Url(profilePage)))
+    fun onSignInClick() {
+        _navigateTo.value = Event(NavigationFlow.Url(authenticationPageUrl))
     }
 
-    companion object {
-        private const val UPDATE_TIME_INTERVAL = 500L
-    }
+    fun onAuthCallback(code: String) {
+        Timber.d { "received authentication code, fetching token" }
 
-    class InvalidTokenException(message: String? = null) : Exception(message)
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.getToken(code)
+                .onSuccess { token ->
+                    withContext(Dispatchers.Main) {
+                        // Save the auth code
+                        prefs.accessToken = token.accessToken
+                        prefs.refreshToken = token.refreshToken
+
+                        _navigateTo.value = Event(NavigationFlow.Next)
+                    }
+                }
+                .onFailure { e ->
+                    Timber.e(e) { "couldn't retrieve token using code $code" }
+                }
+        }
+    }
 }

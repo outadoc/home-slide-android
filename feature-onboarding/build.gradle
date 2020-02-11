@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
     id 'com.diffplug.gradle.spotless' version '3.27.1'
 }
 
@@ -40,6 +41,7 @@ dependencies {
     implementation project(':common')
     implementation project(':lib-zeroconf')
     implementation project(':lib-restclient')
+    implementation project(':lib-homeassistant-api')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
