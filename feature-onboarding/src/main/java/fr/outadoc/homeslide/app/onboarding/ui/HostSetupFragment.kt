@@ -27,14 +27,24 @@ class HostSetupFragment : Fragment() {
     private var viewHolder: ViewHolder? = null
     private val vm: HostSetupViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_setup_host, container, false)
 
         viewHolder = ViewHolder(view, ZeroconfAdapter { vm.onZeroconfHostSelected(it) }).apply {
             baseUrlEditText.addTextChangedListener(object : TextWatcher {
 
                 override fun afterTextChanged(s: Editable?) {}
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     s?.let { vm.onInstanceUrlChanged(s.toString()) }
@@ -65,7 +75,9 @@ class HostSetupFragment : Fragment() {
 
         vm.navigateTo.observe(viewLifecycleOwner) {
             when (it.pop()) {
-                NavigationFlow.Next -> viewHolder?.navController?.navigate(R.id.action_setupHostFragment_to_setupAuthFragment)
+                NavigationFlow.Next -> viewHolder?.navController?.navigate(
+                    HostSetupFragmentDirections.actionSetupHostFragmentToSetupAuthFragment()
+                )
                 NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
                 else -> Unit
             }
@@ -105,10 +117,11 @@ class HostSetupFragment : Fragment() {
         val continueButton: Button = view.findViewById(R.id.btn_continue)
         val zeroconfHelper: TextView = view.findViewById(R.id.lbl_zeroconf_helper)
 
-        val zeroconfRecyclerView: RecyclerView = view.findViewById<RecyclerView>(R.id.recyclerView_zeroconf).apply {
-            adapter = zeroconfAdapter
-            layoutManager = LinearLayoutManager(view.context)
-        }
+        val zeroconfRecyclerView: RecyclerView =
+            view.findViewById<RecyclerView>(R.id.recyclerView_zeroconf).apply {
+                adapter = zeroconfAdapter
+                layoutManager = LinearLayoutManager(view.context)
+            }
 
         val navController: NavController
             get() = view.findNavController()

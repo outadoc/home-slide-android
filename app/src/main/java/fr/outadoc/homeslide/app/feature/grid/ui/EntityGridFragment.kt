@@ -41,7 +41,7 @@ import fr.outadoc.homeslide.app.onboarding.OnboardingActivity
 import fr.outadoc.homeslide.app.preferences.AppPreferencesFragment
 import fr.outadoc.homeslide.common.extensions.setupToolbar
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityGridViewModel
-import fr.outadoc.homeslide.hassapi.api.model.entity.Entity
+import fr.outadoc.homeslide.hassapi.model.entity.Entity
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
@@ -60,10 +60,6 @@ class EntityGridFragment : Fragment() {
 
     private val navigator: SlideOverNavigator?
         get() = parentFragment as? SlideOverNavigator
-
-    private val itemTouchHelper by lazy {
-        ItemTouchHelper(EditingModeCallback(vm))
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,12 +90,13 @@ class EntityGridFragment : Fragment() {
                 onReorderedListener = vm::onReorderedEntities,
                 onItemLongPressListener = ::onItemLongPress,
                 onItemVisibilityChangeListener = vm::onItemVisibilityChange
+            ),
+            EditingModeCallback(
+                isEnabled = {
+                    vm.editionState.value == EntityGridViewModel.EditionState.Editing
+                }
             )
         )
-
-        viewHolder?.recyclerView?.let {
-            itemTouchHelper.attachToRecyclerView(it)
-        }
 
         viewHolder?.let { setWindowInsets(it) }
 
@@ -326,7 +323,13 @@ class EntityGridFragment : Fragment() {
         }
     }
 
-    private class ViewHolder(root: View, val itemAdapter: EntityTileAdapter) {
+    private class ViewHolder(
+        root: View,
+        val itemAdapter: EntityTileAdapter,
+        callback: EditingModeCallback
+    ) {
+        val itemTouchHelper = ItemTouchHelper(callback)
+
         val noContentView: View = root.findViewById(R.id.layout_noContent)
         val recyclerView: RecyclerView =
             root.findViewById<RecyclerView>(R.id.recyclerView_shortcuts).apply {
@@ -344,6 +347,8 @@ class EntityGridFragment : Fragment() {
                         resources.getDimensionPixelSize(R.dimen.grid_spacing)
                     )
                 )
+            }.also {
+                itemTouchHelper.attachToRecyclerView(it)
             }
 
         val skeleton =

@@ -6,7 +6,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical">
 
         <TextView
             android:id="@+id/lbl_step_title"
@@ -23,82 +24,23 @@
             android:id="@+id/lbl_step_subtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="16dp"
             android:text="@string/onboarding_setup_auth_subtitle"
             android:textAppearance="?textAppearanceHeadline4"
-            app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textInputLayout"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_step_title" />
+            app:layout_constraintEnd_toEndOf="@+id/btn_sign_in"
+            app:layout_constraintStart_toStartOf="@+id/btn_sign_in"
+            app:layout_constraintTop_toBottomOf="@id/lbl_step_title" />
 
-        <fr.outadoc.homeslide.app.onboarding.ui.ResultIconView
-            android:id="@+id/view_token_result"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginEnd="32dp"
-            android:layout_weight="1"
-            app:layout_constraintBottom_toBottomOf="@+id/textInputLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textInputLayout" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
+        <Button
+            android:id="@+id/btn_sign_in"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
-            android:hint="@string/onboarding_setup_auth_hint"
-            app:endIconMode="clear_text"
-            app:layout_constraintEnd_toEndOf="@+id/view_token_result"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lbl_step_subtitle">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_token"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="textMultiLine" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/btn_continue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:enabled="false"
-            android:text="@string/onboarding_setup_auth_continue"
-            app:layout_constraintEnd_toEndOf="@+id/view_token_result"
-            app:layout_constraintStart_toStartOf="@+id/textInputLayout"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
-
-        <TextView
-            android:id="@+id/lbl_auth_help"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
-            android:text="@string/onboarding_setup_auth_help"
-            android:textAppearance="?textAppearanceBody2"
+            android:text="@string/onboarding_setup_auth_action"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_continue" />
-
-        <Button
-            android:id="@+id/btn_auth_help_link"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            android:text="@string/onboarding_setup_auth_help_link"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/lbl_auth_help"
-            app:layout_constraintStart_toStartOf="@+id/lbl_auth_help"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_auth_help" />
+            app:layout_constraintTop_toBottomOf="@id/lbl_step_subtitle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

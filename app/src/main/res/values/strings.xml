@@ -14,8 +14,6 @@
     <string name="pref_alt_base_url_title">Home Assistant Outside URL</string>
     <string name="pref_authDialog_subtitle">Allowing Home Slide to be used while your device is unlocked can be dangerous. Please use with care.</string>
     <string name="pref_authDialog_title">Authorization required</string>
-    <string name="pref_auth_token_summary">You can get one on your Profile page in Home Assistant.</string>
-    <string name="pref_auth_token_title">Long-Lived Access Token</string>
     <string name="pref_author_summary">All rights reserved.</string>
     <string name="pref_author_title">Created by Baptiste Candellier</string>
     <string name="pref_base_url_summary">URL of your Home Assistant instance.</string>
@@ -49,6 +47,7 @@
     <string name="pref_oss_ofl_title">SIL Open Font License</string>
     <string name="pref_refresh_interval_summary">How often to refresh the state of your devices, in seconds.</string>
     <string name="pref_refresh_inverval_title">Refresh Interval</string>
+    <string name="pref_renew_auth_title">Re-authenticate…</string>
     <string name="pref_show_when_locked_summary">Control your home without having to unlock your device.</string>
     <string name="pref_show_when_locked_title">Allow on Lock Screen</string>
     <string-array name="pref_theme_entry_names">

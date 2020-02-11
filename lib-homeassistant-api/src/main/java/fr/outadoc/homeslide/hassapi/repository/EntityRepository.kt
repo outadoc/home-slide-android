@@ -1,11 +1,11 @@
 package fr.outadoc.homeslide.hassapi.repository
 
-import fr.outadoc.homeslide.hassapi.api.model.Action
-import fr.outadoc.homeslide.hassapi.api.model.EntityState
-import fr.outadoc.homeslide.hassapi.api.model.Service
-import fr.outadoc.homeslide.hassapi.api.model.entity.Entity
+import fr.outadoc.homeslide.hassapi.model.Action
+import fr.outadoc.homeslide.hassapi.model.EntityState
 import fr.outadoc.homeslide.hassapi.model.PersistedEntity
+import fr.outadoc.homeslide.hassapi.model.Service
 import fr.outadoc.homeslide.hassapi.model.Tile
+import fr.outadoc.homeslide.hassapi.model.entity.Entity
 
 interface EntityRepository {
 

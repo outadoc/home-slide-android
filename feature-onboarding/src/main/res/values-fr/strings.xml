@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="onboarding_setup_auth_action">Connectez-vous à votre instance</string>
     <string name="onboarding_setup_auth_continue">Continuer</string>
     <string name="onboarding_setup_auth_help">Vous pouvez générer un jeton d\'accès de longue durée sur votre page Profil dans Home Assistant.</string>
     <string name="onboarding_setup_auth_help_link">Générer un jeton</string>

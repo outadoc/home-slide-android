@@ -1,8 +1,12 @@
 package fr.outadoc.homeslide.rest
 
-import fr.outadoc.homeslide.common.preferences.PreferenceRepository
-import fr.outadoc.homeslide.rest.PreferredBaseUrl.ALTERNATIVE
-import fr.outadoc.homeslide.rest.PreferredBaseUrl.PRIMARY
+import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
+import fr.outadoc.homeslide.rest.baseurl.BaseUrlConfigProvider
+import fr.outadoc.homeslide.rest.baseurl.PreferredBaseUrl
+import fr.outadoc.homeslide.rest.baseurl.PreferredBaseUrl.ALTERNATIVE
+import fr.outadoc.homeslide.rest.baseurl.PreferredBaseUrl.PRIMARY
+import fr.outadoc.homeslide.rest.util.PLACEHOLDER_BASE_URL
+import fr.outadoc.homeslide.rest.util.toUrl
 import okhttp3.HttpUrl
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -86,7 +90,7 @@ class AltBaseUrlInterceptorTest {
         altBaseUrl: String?,
         preferred: PreferredBaseUrl
     ): AltBaseUrlInterceptor {
-        val repo = Mockito.mock(PreferenceRepository::class.java).apply {
+        val repo = Mockito.mock(BaseUrlConfigProvider::class.java).apply {
             `when`(instanceBaseUrl).thenReturn(baseUrl)
             `when`(altInstanceBaseUrl).thenReturn(altBaseUrl)
             `when`(preferredBaseUrl).thenReturn(preferred)
