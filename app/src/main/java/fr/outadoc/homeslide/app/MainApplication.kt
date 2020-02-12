@@ -3,7 +3,6 @@ package fr.outadoc.homeslide.app
 import android.app.ActivityManager
 import android.app.Application
 import android.net.nsd.NsdManager
-import android.os.Vibrator
 import androidx.core.content.getSystemService
 import androidx.room.Room
 import com.chuckerteam.chucker.api.ChuckerInterceptor
@@ -59,7 +58,6 @@ class MainApplication : Application() {
 
     private val systemModule = module {
         single { getSystemService<NsdManager>() }
-        single { getSystemService<Vibrator>() }
         single { getSystemService<ActivityManager>() }
     }
 

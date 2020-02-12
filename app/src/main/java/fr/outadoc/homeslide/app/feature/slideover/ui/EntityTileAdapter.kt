@@ -1,5 +1,6 @@
 package fr.outadoc.homeslide.app.feature.slideover.ui
 
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +29,8 @@ class EntityTileAdapter(
     private var wiggleWiggle: Animation? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_shortcut, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_shortcut, parent, false)
         return ViewHolder(view)
     }
 
@@ -77,6 +79,8 @@ class EntityTileAdapter(
                     view.clearAnimation()
 
                     view.setOnClickListener {
+                        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+
                         if (tile.isToggleable) {
                             view.isActivated = !view.isActivated
                             onItemClickListener(tile.source)
