@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="onboarding_setup_auth_action">Connectez-vous à votre instance</string>
-    <string name="onboarding_setup_auth_continue">Continuer</string>
-    <string name="onboarding_setup_auth_help">Vous pouvez générer un jeton d\'accès de longue durée sur votre page Profil dans Home Assistant.</string>
-    <string name="onboarding_setup_auth_help_link">Générer un jeton</string>
-    <string name="onboarding_setup_auth_hint">Jeton d\'accès</string>
-    <string name="onboarding_setup_auth_subtitle">Authentifiez-vous</string>
-    <string name="onboarding_setup_auth_title">Étape 2</string>
-    <string name="onboarding_setup_host_continue">Continuer</string>
+    <string name="onboarding_setup_auth_action">Connexion avec Home\u00A0Assistant</string>
     <string name="onboarding_setup_host_hint">URL de Home Assistant</string>
     <string name="onboarding_setup_host_subtitle">Trouvez votre installation</string>
-    <string name="onboarding_setup_host_title">Étape 1</string>
     <string name="onboarding_setup_host_zeroconf">
         <b>Psst\u00A0!</b> J\'ai aussi trouvé ces installations de Home Assistant sur le réseau :</string>
     <string name="onboarding_setup_host_zeroconfIcon">Maison</string>
     <string name="onboarding_setup_shortcut_continue">C\'est fait !</string>
     <string name="onboarding_setup_shortcut_instructions">Dans le panneau de réglages rapides, cliquez sur <b>Modifier</b>, puis faites glisser la tuile <b>Maison</b> sur vos autres raccourcis.</string>
     <string name="onboarding_setup_shortcut_subtitle">Activez l\'accès rapide</string>
-    <string name="onboarding_setup_shortcut_title">Étape 3</string>
     <string name="onboarding_success_continue">Commençons</string>
     <string name="onboarding_success_subtitle">Amusez-vous bien :)</string>
     <string name="onboarding_success_title">C\'est bon\u00A0!</string>

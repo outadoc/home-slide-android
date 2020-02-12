@@ -1,25 +1,32 @@
 package fr.outadoc.homeslide.app.onboarding.ui
 
+import android.graphics.drawable.AnimatedVectorDrawable
+import android.os.Build
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.homeslide.app.onboarding.R
 import fr.outadoc.homeslide.app.onboarding.extensions.toViewStatus
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
+import fr.outadoc.homeslide.app.onboarding.ui.HostSetupFragmentDirections.Companion.actionSetupHostFragmentToAuthenticationCustomTabs
+import fr.outadoc.homeslide.app.onboarding.ui.HostSetupFragmentDirections.Companion.actionSetupHostFragmentToSetupShortcutFragment
+import fr.outadoc.homeslide.app.onboarding.ui.HostSetupFragmentDirections.Companion.actionSetupHostFragmentToSuccessFragment
 import fr.outadoc.homeslide.app.onboarding.vm.HostSetupViewModel
+import fr.outadoc.homeslide.util.view.addTextChangedListener
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class HostSetupFragment : Fragment() {
@@ -34,25 +41,27 @@ class HostSetupFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_setup_host, container, false)
 
-        viewHolder = ViewHolder(view, ZeroconfAdapter { vm.onZeroconfHostSelected(it) }).apply {
-            baseUrlEditText.addTextChangedListener(object : TextWatcher {
+        val adapter = ZeroconfAdapter(
+            onItemClick = {
+                vm.onZeroconfHostSelected(it)
+            }
+        )
 
-                override fun afterTextChanged(s: Editable?) {}
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                }
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    s?.let { vm.onInstanceUrlChanged(s.toString()) }
-                }
-            })
+        viewHolder = ViewHolder(view, adapter).apply {
+            baseUrlEditText.addTextChangedListener { s ->
+                vm.onInstanceUrlChanged(s)
+            }
 
             continueButton.setOnClickListener {
-                vm.onContinueClicked()
+                vm.onLoginClicked()
+            }
+        }
+
+        vm.inputInstanceUrl.observe(viewLifecycleOwner) { instanceUrl ->
+            viewHolder?.apply {
+                if (baseUrlEditText.text.toString() != instanceUrl) {
+                    baseUrlEditText.setText(instanceUrl)
+                }
             }
         }
 
@@ -74,26 +83,44 @@ class HostSetupFragment : Fragment() {
         }
 
         vm.navigateTo.observe(viewLifecycleOwner) {
-            when (it.pop()) {
-                NavigationFlow.Next -> viewHolder?.navController?.navigate(
-                    HostSetupFragmentDirections.actionSetupHostFragmentToSetupAuthFragment()
-                )
+            when (val dest = it.pop()) {
+                NavigationFlow.Next -> {
+                    val direction =
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                            // If the OS doesn't support quick settings, skip the quick settings step
+                            actionSetupHostFragmentToSuccessFragment()
+                        } else {
+                            actionSetupHostFragmentToSetupShortcutFragment()
+                        }
+
+                    navigate(direction)
+                }
+
                 NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
-                else -> Unit
+
+                is NavigationFlow.Url -> {
+                    navigate(actionSetupHostFragmentToAuthenticationCustomTabs(dest.url))
+                }
             }
+        }
+
+        vm.state.observe(viewLifecycleOwner) { state ->
+            viewHolder?.loadingView?.isVisible = when (state) {
+                HostSetupViewModel.State.Loading -> true
+                else -> false
+            }
+        }
+
+        arguments?.getString("code")?.let { code ->
+            // We're coming from a deeplink and we got an authentication code
+            vm.onAuthCallback(code)
         }
 
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewHolder?.baseUrlEditText?.apply {
-            if (text.isEmpty()) {
-                setText(vm.defaultInstanceUrl)
-            }
-        }
+    private fun navigate(directions: NavDirections) {
+        viewHolder?.navController?.navigate(directions)
     }
 
     override fun onPause() {
@@ -116,6 +143,12 @@ class HostSetupFragment : Fragment() {
         val discoveryResult: ResultIconView = view.findViewById(R.id.view_discovery_result)
         val continueButton: Button = view.findViewById(R.id.btn_continue)
         val zeroconfHelper: TextView = view.findViewById(R.id.lbl_zeroconf_helper)
+
+        val loadingView: View = view.findViewById<View>(R.id.frameLayout_auth_loading).apply {
+            findViewById<ImageView>(R.id.icon_loading).apply {
+                (drawable as? AnimatedVectorDrawable)?.start()
+            }
+        }
 
         val zeroconfRecyclerView: RecyclerView =
             view.findViewById<RecyclerView>(R.id.recyclerView_zeroconf).apply {

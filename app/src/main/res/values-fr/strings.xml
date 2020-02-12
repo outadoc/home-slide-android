@@ -23,12 +23,13 @@
     <string name="pref_legal_title">Logiciels cool qu\'on utilise</string>
     <string name="pref_oss_apache2_title">Licence Apache 2.0</string>
     <string name="pref_oss_ccby_title">Creative Commons BY 3.0</string>
+    <string name="pref_oss_ccbyncsa4_title">Creative Commons BY-NC-SA 4.0</string>
     <string name="pref_oss_isc_title">Licence ISC</string>
     <string name="pref_oss_mit_title">Licence MIT</string>
     <string name="pref_oss_ofl_title">SIL Open Font License</string>
     <string name="pref_refresh_interval_summary">Fréquence à laquelle rafraîchir l\'état de vos appareils, en secondes.</string>
     <string name="pref_refresh_inverval_title">Fréquence d\'actualisation</string>
-    <string name="pref_renew_auth_title">Se reconnecter à l\'instance…</string>
+    <string name="pref_renew_auth_title">Se déconnecter de l\'instance…</string>
     <string name="pref_show_when_locked_summary">Contrôlez votre maison sans avoir à déverrouiller votre appareil.</string>
     <string name="pref_show_when_locked_title">Autoriser sur l\'écran de verrouillage</string>
     <string-array name="pref_theme_entry_names">

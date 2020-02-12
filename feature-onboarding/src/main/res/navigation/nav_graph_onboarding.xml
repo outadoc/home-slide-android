@@ -2,7 +2,6 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph_onboarding"
     app:startDestination="@+id/welcomeFragment">
 
     <fragment
@@ -25,30 +24,7 @@
         tools:layout="@layout/fragment_setup_host">
 
         <action
-            android:id="@+id/action_setupHostFragment_to_setupLegacyAuthFragment"
-            app:destination="@id/setupLegacyAuthFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-        <action
-            android:id="@+id/action_setupHostFragment_to_setupAuthFragment"
-            app:destination="@id/setupAuthFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/setupAuthFragment"
-        android:name="fr.outadoc.homeslide.app.onboarding.ui.AuthSetupFragment"
-        tools:layout="@layout/fragment_setup_auth">
-
-        <action
-            android:id="@+id/action_setupAuthFragment_to_setupShortcutFragment"
+            android:id="@+id/action_setupHostFragment_to_setupShortcutFragment"
             app:destination="@id/setupShortcutFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -56,7 +32,7 @@
             app:popExitAnim="@anim/slide_out_right" />
 
         <action
-            android:id="@+id/action_setupAuthFragment_to_successFragment"
+            android:id="@+id/action_setupHostFragment_to_successFragment"
             app:destination="@id/successFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -71,49 +47,22 @@
             tools:targetApi="m" />
 
         <action
-            android:id="@+id/action_setupAuthFragment_to_authenticationCustomTabs"
-            app:destination="@id/authenticationCustomTabs">
+            android:id="@+id/action_setupHostFragment_to_authenticationCustomTabs"
+            app:destination="@id/authenticationCustomTabs"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
 
             <argument
                 android:name="uri"
                 app:argType="android.net.Uri"
                 app:nullable="false" />
         </action>
+
     </fragment>
 
     <custom-tabs android:id="@+id/authenticationCustomTabs" />
-
-    <fragment
-        android:id="@+id/setupLegacyAuthFragment"
-        android:name="fr.outadoc.homeslide.app.onboarding.ui.LegacyAuthSetupFragment"
-        tools:layout="@layout/fragment_setup_legacyauth">
-
-        <action
-            android:id="@+id/action_setupLegacyAuthFragment_to_setupShortcutFragment"
-            app:destination="@id/setupShortcutFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-        <action
-            android:id="@+id/action_setupLegacyAuthFragment_to_successFragment"
-            app:destination="@id/successFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-        <action
-            android:id="@+id/action_setupLegacyAuthFragment_to_authenticationCustomTabs"
-            app:destination="@id/authenticationCustomTabs">
-
-            <argument
-                android:name="uri"
-                app:argType="android.net.Uri"
-                app:nullable="false" />
-        </action>
-    </fragment>
 
     <fragment
         android:id="@+id/setupShortcutFragment"

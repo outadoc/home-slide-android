@@ -1,33 +1,53 @@
 package fr.outadoc.homeslide.app.onboarding.vm
 
-import android.os.Handler
+import android.net.Uri
 import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.github.ajalt.timberkt.Timber
 import fr.outadoc.homeslide.app.onboarding.model.CallStatus
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
 import fr.outadoc.homeslide.app.onboarding.model.ZeroconfHost
 import fr.outadoc.homeslide.common.preferences.PreferenceRepository
-import fr.outadoc.homeslide.hassapi.model.discovery.DiscoveryInfo
+import fr.outadoc.homeslide.hassapi.repository.AuthRepository
 import fr.outadoc.homeslide.hassapi.repository.DiscoveryRepository
+import fr.outadoc.homeslide.rest.auth.OAuthConfiguration
 import fr.outadoc.homeslide.util.lifecycle.Event
+import fr.outadoc.homeslide.util.sanitizeUrl
+import fr.outadoc.homeslide.zeroconf.ZeroconfDiscoveryService
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-@UseExperimental(ExperimentalStdlibApi::class)
+@UseExperimental(FlowPreview::class, ExperimentalStdlibApi::class, ExperimentalCoroutinesApi::class)
 class HostSetupViewModel(
     private val prefs: PreferenceRepository,
     private val repository: DiscoveryRepository,
-    private val zeroconfDiscoveryService: fr.outadoc.homeslide.zeroconf.ZeroconfDiscoveryService
+    private val authRepository: AuthRepository,
+    private val oAuthConfiguration: OAuthConfiguration,
+    private val zeroconfDiscoveryService: ZeroconfDiscoveryService
 ) : ViewModel() {
 
-    private val _instanceDiscoveryInfo = MutableLiveData<CallStatus<DiscoveryInfo>>()
-    val instanceDiscoveryInfo: LiveData<CallStatus<DiscoveryInfo>> = _instanceDiscoveryInfo
+    sealed class State {
+        object Content : State()
+        object Loading : State()
+    }
+
+    private val _state = MutableLiveData<State>(State.Content)
+    val state: LiveData<State> = _state
 
     private val _autoDiscoveredInstances = MutableLiveData<List<ZeroconfHost>>()
     val autoDiscoveredInstances: LiveData<List<ZeroconfHost>> = _autoDiscoveredInstances
@@ -35,14 +55,66 @@ class HostSetupViewModel(
     private val _navigateTo = MutableLiveData<Event<NavigationFlow>>()
     val navigateTo: LiveData<Event<NavigationFlow>> = _navigateTo
 
-    val canContinue = instanceDiscoveryInfo.map { it is CallStatus.Done && it.value.isSuccess }
+    private val _inputInstanceUrl = MutableLiveData<String>()
+    val inputInstanceUrl =
+        _inputInstanceUrl
+            .asFlow()
+            .onStart {
+                val knownUrl = prefs.instanceBaseUrl
+                if (knownUrl != null) {
+                    emit(knownUrl)
+                } else {
+                    emit(DEFAULT_INSTANCE_URL)
+                }
+            }
+            .distinctUntilChanged()
+            .asLiveData()
 
-    val defaultInstanceUrl = DEFAULT_INSTANCE_URL
+    private val targetInstanceUrl =
+        inputInstanceUrl
+            .asFlow()
+            .debounce(UPDATE_TIME_INTERVAL_MS)
+            .map { instanceUrl -> instanceUrl.sanitizeUrl() }
+            .distinctUntilChanged()
 
-    private var inputInstanceUrl: String? = null
-    private var discoveryJob: Job? = null
+    private val instanceDiscoveryInfoFlow =
+        targetInstanceUrl
+            .flatMapConcat { instanceUrl ->
+                flow {
+                    emit(CallStatus.Loading to null)
+                    emit(
+                        CallStatus.Done(
+                            repository.getDiscoveryInfo(
+                                instanceUrl ?: ""
+                            )
+                        ) to instanceUrl
+                    )
+                }
+            }
 
-    private val handler = Handler()
+    private var validatedTargetInstanceUrl: String? = null
+    val canContinue =
+        instanceDiscoveryInfoFlow
+            .onEach { (_, url) ->
+                validatedTargetInstanceUrl = url
+            }
+            .map { (result, _) -> result is CallStatus.Done && result.value.isSuccess }
+            .onStart { emit(false) }
+            .asLiveData()
+
+    val instanceDiscoveryInfo =
+        instanceDiscoveryInfoFlow.map { it.first }.asLiveData()
+
+    private val authenticationPageUrl: Uri?
+        get() = prefs.instanceBaseUrl?.let {
+            it.toUri()
+                .buildUpon()
+                .appendPath("auth")
+                .appendPath("authorize")
+                .appendQueryParameter("client_id", oAuthConfiguration.clientId)
+                .appendQueryParameter("redirect_uri", oAuthConfiguration.redirectUri)
+                .build()
+        }
 
     init {
         zeroconfDiscoveryService.setOnServiceDiscoveredListener { serviceInfo ->
@@ -56,14 +128,14 @@ class HostSetupViewModel(
                     )
                 }
 
-                val alreadyExists = _autoDiscoveredInstances.value?.any { it.hostName == host.hostName } ?: false
+                val alreadyExists =
+                    _autoDiscoveredInstances.value?.any { it.hostName == host.hostName } ?: false
 
                 if (!alreadyExists) {
                     _autoDiscoveredInstances.postValue(
                         (_autoDiscoveredInstances.value ?: emptyList()) + host
                     )
                 }
-
             } catch (e: Exception) {
                 Timber.e(e)
             }
@@ -75,77 +147,64 @@ class HostSetupViewModel(
     }
 
     fun onInstanceUrlChanged(instanceUrl: String) {
-        instanceUrl.sanitizeBaseUrl()?.let { sanitizedUrl ->
-            inputInstanceUrl = sanitizedUrl
-
-            handler.removeCallbacksAndMessages(null)
-            handler.postDelayed({ doOnInstanceUrlChanged(sanitizedUrl) }, UPDATE_TIME_INTERVAL)
-        }
+        _inputInstanceUrl.value = instanceUrl
     }
 
-    private fun doOnInstanceUrlChanged(instanceUrl: String) {
-        discoveryJob?.cancel()
-        _instanceDiscoveryInfo.value = CallStatus.Loading
+    fun onLoginClicked() {
+        if (canContinue.value != true) return
 
-        discoveryJob = viewModelScope.launch(Dispatchers.IO) {
-            _instanceDiscoveryInfo.postValue(
-                CallStatus.Done(repository.getDiscoveryInfo(instanceUrl))
-            )
-        }
-    }
-
-    fun onContinueClicked() {
-        inputInstanceUrl?.let { instanceUrl ->
-            if (canContinue.value!!) {
-                zeroconfDiscoveryService.stopDiscovery()
-                prefs.instanceBaseUrl = instanceUrl
-                _navigateTo.value = Event(NavigationFlow.Next)
-            }
+        validatedTargetInstanceUrl?.let { instanceUrl ->
+            stopDiscovery()
+            prefs.instanceBaseUrl = instanceUrl
+            startAuthFlow()
         }
     }
 
     fun onZeroconfHostSelected(zeroconfHost: ZeroconfHost) {
-        zeroconfDiscoveryService.stopDiscovery()
+        stopDiscovery()
 
         prefs.instanceBaseUrl = "http://${zeroconfHost.hostName}"
         prefs.altInstanceBaseUrl = zeroconfHost.baseUrl
-        _navigateTo.value = Event(NavigationFlow.Next)
+
+        startAuthFlow()
     }
 
     fun stopDiscovery() {
         zeroconfDiscoveryService.stopDiscovery()
     }
 
-    private fun String?.sanitizeBaseUrl(): String? {
-        if (this == null)
-            return null
-
-        val str = this
-            .trim()
-            .ensureProtocol()
-
-        if (str.isEmpty() || str.length < 3) return null
-
-        try {
-            str.toUri()
-        } catch (ignored: Exception) {
-            return null
+    private fun startAuthFlow() {
+        authenticationPageUrl?.let { url ->
+            _navigateTo.value = Event(NavigationFlow.Url(url))
         }
-
-        if (str.last() == '/') return str.dropLast(1)
-
-        return str
     }
 
-    private fun String.ensureProtocol(): String {
-        return when {
-            this.startsWith("http://") || this.startsWith("https://") -> this
-            else -> "http://$this"
+    fun onAuthCallback(code: String) {
+        Timber.d { "received authentication code, fetching token" }
+
+        _state.value = State.Loading
+
+        viewModelScope.launch(Dispatchers.IO) {
+            authRepository.getToken(code)
+                .onSuccess { token ->
+                    withContext(Dispatchers.Main) {
+                        // Save the auth code
+                        prefs.accessToken = token.accessToken
+                        prefs.refreshToken = token.refreshToken
+
+                        _state.value = State.Content
+                        _navigateTo.value = Event(NavigationFlow.Next)
+                    }
+                }
+                .onFailure { e ->
+                    Timber.e(e) { "couldn't retrieve token using code $code" }
+                    _state.postValue(State.Content)
+                }
         }
     }
 
     companion object {
         private const val DEFAULT_INSTANCE_URL = "http://hassio.local:8123"
-        private const val UPDATE_TIME_INTERVAL = 500L
+        private const val UPDATE_TIME_INTERVAL_MS = 700L
     }
 }

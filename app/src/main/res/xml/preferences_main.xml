@@ -84,5 +84,9 @@
         <Preference
             app:key="pref_oss_ccby"
             app:title="@string/pref_oss_ccby_title" />
+
+        <Preference
+            app:key="pref_oss_ccbyncsa4"
+            app:title="@string/pref_oss_ccbyncsa4_title" />
     </PreferenceCategory>
 </PreferenceScreen>
