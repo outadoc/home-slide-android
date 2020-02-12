@@ -21,7 +21,7 @@ class QuickAccessTileService : TileService() {
     }
 
     override fun onStartListening() {
-        with(qsTile) {
+        qsTile?.apply {
             state = Tile.STATE_INACTIVE
             updateTile()
         }
