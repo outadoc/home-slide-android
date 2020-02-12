@@ -3,11 +3,8 @@ package fr.outadoc.homeslide.app.feature.grid.ui
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.os.VibrationEffect
-import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -42,7 +39,6 @@ import fr.outadoc.homeslide.app.preferences.AppPreferencesFragment
 import fr.outadoc.homeslide.common.extensions.setupToolbar
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityGridViewModel
 import fr.outadoc.homeslide.hassapi.model.entity.Entity
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
@@ -51,7 +47,6 @@ class EntityGridFragment : Fragment() {
     private var viewHolder: ViewHolder? = null
 
     private val vm: EntityGridViewModel by viewModel()
-    private val vibrator: Vibrator by inject()
 
     private val handler: Handler = Handler()
     private var menu: Menu? = null
@@ -84,7 +79,6 @@ class EntityGridFragment : Fragment() {
             root,
             EntityTileAdapter(
                 onItemClickListener = {
-                    vibrate()
                     vm.onEntityClick(it)
                 },
                 onReorderedListener = vm::onReorderedEntities,
@@ -309,20 +303,6 @@ class EntityGridFragment : Fragment() {
         viewHolder = null
     }
 
-    private fun vibrate() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator.vibrate(
-                VibrationEffect.createOneShot(
-                    CLICK_VIBRATION_LENGTH_MS,
-                    VibrationEffect.DEFAULT_AMPLITUDE
-                )
-            )
-        } else {
-            @Suppress("DEPRECATION")
-            vibrator.vibrate(CLICK_VIBRATION_LENGTH_MS)
-        }
-    }
-
     private class ViewHolder(
         root: View,
         val itemAdapter: EntityTileAdapter,
@@ -363,6 +343,5 @@ class EntityGridFragment : Fragment() {
         fun newInstance() = EntityGridFragment()
 
         private const val SKELETON_ITEM_COUNT = 30
-        private const val CLICK_VIBRATION_LENGTH_MS = 50L
     }
 }
