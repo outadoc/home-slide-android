@@ -24,6 +24,11 @@ class CustomTabsNavigator(
     ): NavDestination? {
         val builder = CustomTabsIntent.Builder()
 
+        navOptions?.apply {
+            builder.setStartAnimations(context, enterAnim, popEnterAnim)
+            builder.setExitAnimations(context, exitAnim, popExitAnim)
+        }
+
         val intent = builder.build()
         val uri = args?.getParcelable<Uri>("uri")
             ?: throw IllegalArgumentException("uri must be passed as an argument")

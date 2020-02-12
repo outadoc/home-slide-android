@@ -55,7 +55,6 @@ dependencies {
     // Network libs
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
-    implementation "com.auth0.android:jwtdecode:$jwtdecode_version"
     implementation "com.squareup.moshi:moshi:$moshi_version"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 

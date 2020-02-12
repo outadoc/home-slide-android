@@ -10,8 +10,8 @@ class PreferenceRepositoryImpl(context: Context) :
 
     private val appPrefs = PreferenceManager.getDefaultSharedPreferences(context)!!
 
-    override var instanceBaseUrl: String
-        get() = appPrefs.getString(KEY_INSTANCE_BASE_URL, "")!!
+    override var instanceBaseUrl: String?
+        get() = appPrefs.getString(KEY_INSTANCE_BASE_URL, null)
         set(value) {
             appPrefs.edit().putString(KEY_INSTANCE_BASE_URL, value).apply()
         }

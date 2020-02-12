@@ -15,9 +15,7 @@ import fr.outadoc.homeslide.app.inject.KoinTimberLogger
 import fr.outadoc.homeslide.app.onboarding.rest.DiscoveryRepositoryImpl
 import fr.outadoc.homeslide.app.onboarding.rest.HassZeroconfDiscoveryServiceImpl
 import fr.outadoc.homeslide.app.onboarding.rest.SimpleApiClientBuilder
-import fr.outadoc.homeslide.app.onboarding.vm.AuthSetupViewModel
 import fr.outadoc.homeslide.app.onboarding.vm.HostSetupViewModel
-import fr.outadoc.homeslide.app.onboarding.vm.LegacyAuthSetupViewModel
 import fr.outadoc.homeslide.app.onboarding.vm.ShortcutSetupViewModel
 import fr.outadoc.homeslide.app.onboarding.vm.SuccessViewModel
 import fr.outadoc.homeslide.app.onboarding.vm.WelcomeViewModel
@@ -132,9 +130,7 @@ class MainApplication : Application() {
 
 
         viewModel { WelcomeViewModel() }
-        viewModel { HostSetupViewModel(get(), get(), get()) }
-        viewModel { AuthSetupViewModel(get(), get(), get()) }
-        viewModel { LegacyAuthSetupViewModel(get(), get()) }
+        viewModel { HostSetupViewModel(get(), get(), get(), get(), get()) }
         viewModel { ShortcutSetupViewModel() }
         viewModel { SuccessViewModel(get(), get()) }
 

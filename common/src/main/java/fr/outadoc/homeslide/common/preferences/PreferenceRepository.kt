@@ -4,7 +4,7 @@ import fr.outadoc.homeslide.rest.baseurl.PreferredBaseUrl
 
 interface PreferenceRepository {
 
-    var instanceBaseUrl: String
+    var instanceBaseUrl: String?
     var altInstanceBaseUrl: String?
     var preferredBaseUrl: PreferredBaseUrl
 

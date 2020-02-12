@@ -22,7 +22,7 @@
             android:contentDescription="@string/onboarding_setup_host_zeroconfIcon"
             app:layout_constraintBottom_toBottomOf="@+id/textView_host_instanceName"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView_host_version"
+            app:layout_constraintTop_toTopOf="@+id/textView_host_instanceName"
             app:srcCompat="@drawable/ic_home" />
 
         <TextView
@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:textAppearance="?textAppearanceHeadline6"
+            tools:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             app:layout_constraintStart_toEndOf="@+id/imageView_host_icon"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Home" />

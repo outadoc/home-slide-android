@@ -6,4 +6,7 @@
     <color name="lt_purple">#b48def</color>
     <color name="lt_pink">#f4306d</color>
 
+    <color name="hass_logo_background">#41BDF5</color>
+    <color name="hass_logo_background_fade">#2D82A8</color>
+
 </resources>

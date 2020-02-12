@@ -6,7 +6,7 @@ import fr.outadoc.homeslide.rest.baseurl.PreferredBaseUrl
 class BaseUrlConfigProviderImpl(private val prefs: PreferenceRepository) :
     BaseUrlConfigProvider {
 
-    override val instanceBaseUrl: String
+    override val instanceBaseUrl: String?
         get() = prefs.instanceBaseUrl
 
     override val altInstanceBaseUrl: String?

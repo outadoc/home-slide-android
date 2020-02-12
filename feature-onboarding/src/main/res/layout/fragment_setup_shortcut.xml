@@ -10,26 +10,16 @@
         android:layout_gravity="center_vertical">
 
         <TextView
-            android:id="@+id/lbl_step_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/onboarding_setup_shortcut_title"
-            android:textAppearance="?textAppearanceHeadline5"
-            app:layout_constraintEnd_toEndOf="@+id/lbl_step_subtitle"
-            app:layout_constraintStart_toStartOf="@+id/lbl_step_subtitle"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/lbl_step_subtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
             android:text="@string/onboarding_setup_shortcut_subtitle"
+            app:layout_constraintTop_toTopOf="parent"
             android:textAppearance="?textAppearanceHeadline4"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/txt_quick_settings_instructions"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_step_title" />
+            app:layout_constraintStart_toStartOf="@+id/txt_quick_settings_instructions" />
 
         <Button
             android:id="@+id/btn_continue"

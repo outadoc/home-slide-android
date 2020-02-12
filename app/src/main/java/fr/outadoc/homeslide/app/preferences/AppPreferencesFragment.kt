@@ -3,9 +3,13 @@ package fr.outadoc.homeslide.app.preferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.Insets
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -32,7 +36,8 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
         "apache2" to R.array.pref_oss_apache2_summary,
         "isc" to R.array.pref_oss_isc_summary,
         "ofl" to R.array.pref_oss_ofl_summary,
-        "ccby" to R.array.pref_oss_ccby_summary
+        "ccby" to R.array.pref_oss_ccby_summary,
+        "ccbyncsa4" to R.array.pref_oss_ccbyncsa4_summary
     )
 
     private val authCallback = object : BiometricPrompt.AuthenticationCallback() {
@@ -99,22 +104,61 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
             }
 
             renewAuthPref.setOnPreferenceClickListener {
+                preferenceRepository.apply {
+                    accessToken = null
+                    refreshToken = null
+                    isOnboardingDone = false
+                }
+
                 val pendingIntent = NavDeepLinkBuilder(requireActivity())
                     .setComponentName(OnboardingActivity::class.java)
                     .setGraph(R.navigation.nav_graph_onboarding)
-                    .setDestination(R.id.setupAuthFragment)
+                    .setDestination(R.id.setupHostFragment)
                     .createPendingIntent()
 
                 pendingIntent.send()
+                activity?.finish()
                 false
             }
         }
 
         licenses.forEach { (license, content) ->
-            findPreference<Preference>("pref_oss_$license")?.summary =
-                resources
+            findPreference<Preference>("pref_oss_$license")?.apply {
+                summary = resources
                     .getStringArray(content)
                     .joinToString(separator = "\n")
+
+                if (summary.isNullOrBlank()) {
+                    isVisible = false
+                }
+            }
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        listView.setWindowInsets()
+    }
+
+    private fun View.setWindowInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(this) { v, insets ->
+            v.setPadding(
+                v.paddingLeft,
+                v.paddingTop,
+                v.paddingRight,
+                v.paddingBottom + insets.systemWindowInsetBottom
+            )
+
+            WindowInsetsCompat.Builder()
+                .setSystemWindowInsets(
+                    Insets.of(
+                        insets.systemWindowInsetLeft,
+                        insets.systemWindowInsetTop,
+                        insets.systemWindowInsetRight,
+                        0
+                    )
+                )
+                .build()
         }
     }
 

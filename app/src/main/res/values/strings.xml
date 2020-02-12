@@ -33,12 +33,15 @@
         <item>\"Halloween Black Cat\" by Freepik from www.flaticon.com</item>
     </string-array>
     <string name="pref_oss_ccby_title">Creative Commons BY 3.0</string>
+    <string-array name="pref_oss_ccbyncsa4_summary">
+        <item>home-assistant/home-assistant-assets</item>
+    </string-array>
+    <string name="pref_oss_ccbyncsa4_title">Creative Commons BY-NC-SA 4.0</string>
     <string-array name="pref_oss_isc_summary">
         <item>DanielMartinus/Konfetti</item>
     </string-array>
     <string name="pref_oss_isc_title">ISC License</string>
     <string-array name="pref_oss_mit_summary">
-        <item>auth0/JWTDecode.Android</item>
     </string-array>
     <string name="pref_oss_mit_title">MIT License</string>
     <string-array name="pref_oss_ofl_summary">
@@ -47,7 +50,7 @@
     <string name="pref_oss_ofl_title">SIL Open Font License</string>
     <string name="pref_refresh_interval_summary">How often to refresh the state of your devices, in seconds.</string>
     <string name="pref_refresh_inverval_title">Refresh Interval</string>
-    <string name="pref_renew_auth_title">Re-authenticate…</string>
+    <string name="pref_renew_auth_title">Logout from instance…</string>
     <string name="pref_show_when_locked_summary">Control your home without having to unlock your device.</string>
     <string name="pref_show_when_locked_title">Allow on Lock Screen</string>
     <string-array name="pref_theme_entry_names">
