@@ -79,7 +79,10 @@ class HostSetupFragment : Fragment() {
         }
 
         vm.canContinue.observe(viewLifecycleOwner) { canContinue ->
-            viewHolder?.continueButton?.isEnabled = canContinue
+            viewHolder?.continueButton?.apply {
+                isEnabled = canContinue
+                alpha = if (canContinue) 1f else 0.6f
+            }
         }
 
         vm.navigateTo.observe(viewLifecycleOwner) {

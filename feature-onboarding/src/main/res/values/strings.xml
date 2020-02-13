@@ -2,10 +2,10 @@
 <resources>
 
     <string name="onboarding_setup_auth_action">Sign in with Home\u00A0Assistant</string>
-    <string name="onboarding_setup_host_hint">Home Assistant URL</string>
+    <string name="onboarding_setup_host_hint">Home\u00A0Assistant URL</string>
     <string name="onboarding_setup_host_subtitle">Find your installation</string>
     <string name="onboarding_setup_host_zeroconf">
-        <b>Psst!</b> I\'ve also found these Home Assistant installations on your network:</string>
+        <b>Psst! 👀</b> I\'ve also found these Home\u00A0Assistant installations on your network\u00A0👀</string>
     <string name="onboarding_setup_host_zeroconfIcon">Home</string>
     <string name="onboarding_setup_shortcut_continue">It\'s done!</string>
     <string name="onboarding_setup_shortcut_instructions">In your quick settings panel, click <b>Edit</b>, then drag the <b>Home</b> tile to your other shortcuts.</string>
@@ -13,10 +13,9 @@
     <string name="onboarding_success_continue">Let\'s begin</string>
     <string name="onboarding_success_subtitle">Enjoy :)</string>
     <string name="onboarding_success_title">We\'re done!</string>
-    <string name="onboarding_toolbar_title">Welcome to Home Slide</string>
     <string name="onboarding_welcome_continue">Begin</string>
     <string name="onboarding_welcome_details">Before you can start controlling your home, we have a few things to set up.</string>
-    <string name="onboarding_welcome_title">Welcome</string>
+    <string name="onboarding_welcome_title">Welcome 👋</string>
 
     <string name="result_contentDescription_error">Error</string>
     <string name="result_contentDescription_loading">Loading</string>

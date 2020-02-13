@@ -10,16 +10,16 @@
     <string name="menu_item_settings">Settings</string>
 
     <string name="pref_about_title">About</string>
-    <string name="pref_alt_base_url_summary">Optional. Internet-accessible URL of your Home Assistant instance.</string>
-    <string name="pref_alt_base_url_title">Home Assistant Outside URL</string>
+    <string name="pref_alt_base_url_summary">Optional. Internet-accessible URL of your Home\u00A0Assistant instance.</string>
+    <string name="pref_alt_base_url_title">Home\u00A0Assistant Outside URL</string>
     <string name="pref_authDialog_subtitle">Allowing Home Slide to be used while your device is unlocked can be dangerous. Please use with care.</string>
     <string name="pref_authDialog_title">Authorization required</string>
     <string name="pref_author_summary">All rights reserved.</string>
     <string name="pref_author_title">Created by Baptiste Candellier</string>
-    <string name="pref_base_url_summary">URL of your Home Assistant instance.</string>
-    <string name="pref_base_url_title">Home Assistant URL</string>
+    <string name="pref_base_url_summary">URL of your Home\u00A0Assistant instance.</string>
+    <string name="pref_base_url_title">Home\u00A0Assistant URL</string>
     <string name="pref_cat_app_title">Application Settings</string>
-    <string name="pref_cat_hass_title">Home Assistant Settings</string>
+    <string name="pref_cat_hass_title">Home\u00A0Assistant Settings</string>
     <string name="pref_legal_title">Awesome Software We Use</string>
     <string-array name="pref_oss_apache2_summary">
         <item>square/retrofit</item>
