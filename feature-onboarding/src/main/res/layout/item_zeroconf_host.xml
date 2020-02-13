@@ -59,7 +59,6 @@
             android:id="@+id/textView_host_baseUrl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             tools:text="https://***REMOVED***"
             app:layout_constraintStart_toStartOf="@+id/textView_host_ip"
             app:layout_constraintTop_toBottomOf="@+id/textView_host_ip" />

@@ -22,9 +22,7 @@ class OnboardingActivity : DayNightActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_onboarding)
-        setSupportActionBar(findViewById(R.id.toolbar))
     }
 
     override fun onCreateView(name: String, context: Context, attrs: AttributeSet) =

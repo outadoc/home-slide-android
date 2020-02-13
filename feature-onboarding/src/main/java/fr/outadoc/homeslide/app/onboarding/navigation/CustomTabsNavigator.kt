@@ -25,8 +25,8 @@ class CustomTabsNavigator(
         val builder = CustomTabsIntent.Builder()
 
         navOptions?.apply {
-            builder.setStartAnimations(context, enterAnim, popEnterAnim)
-            builder.setExitAnimations(context, exitAnim, popExitAnim)
+            builder.setStartAnimations(context, enterAnim, exitAnim)
+            builder.setExitAnimations(context, popEnterAnim, popExitAnim)
         }
 
         val intent = builder.build()
