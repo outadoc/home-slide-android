@@ -7,7 +7,6 @@ import fr.outadoc.homeslide.hassapi.factory.TileFactory
 import fr.outadoc.homeslide.hassapi.model.Action
 import fr.outadoc.homeslide.hassapi.model.EntityState
 import fr.outadoc.homeslide.hassapi.model.PersistedEntity
-import fr.outadoc.homeslide.hassapi.model.Service
 import fr.outadoc.homeslide.hassapi.model.Tile
 import fr.outadoc.homeslide.hassapi.model.entity.Cover
 import fr.outadoc.homeslide.hassapi.model.entity.Entity
@@ -77,9 +76,6 @@ class EntityRepositoryImpl(
             else -> null
         }
     }
-
-    override suspend fun getServices(): Result<List<Service>> =
-        wrapResponse { client.getServices() }
 
     override suspend fun callService(action: Action): Result<List<EntityState>> =
         wrapResponse {

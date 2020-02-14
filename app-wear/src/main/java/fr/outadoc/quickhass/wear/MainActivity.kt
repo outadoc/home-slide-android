@@ -1,15 +1,23 @@
 package fr.outadoc.quickhass.wear
 
 import android.os.Bundle
-import android.support.wearable.activity.WearableActivity
+import fr.outadoc.homeslide.common.DayNightActivity
+import fr.outadoc.homeslide.common.ThemeProvider
+import fr.outadoc.quickhass.wear.feature.list.EntityGridFragment
 
-class MainActivity : WearableActivity() {
+class MainActivity : DayNightActivity() {
+
+    override val themeProvider: ThemeProvider = object : ThemeProvider {
+        override val preferredTheme: String? = null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Enables Always-on
-        setAmbientEnabled()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_wearActivity_content, EntityGridFragment.newInstance())
+            .commit()
     }
 }
