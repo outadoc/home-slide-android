@@ -71,8 +71,10 @@ class EntityTileAdapter(
 
                     view.setOnClickListener {
                         // Hide / unhide an item
+                        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
                         onItemVisibilityChangeListener(tile.source, tile.isHidden)
                     }
+
                     view.setOnLongClickListener { false }
                 }
                 else -> {
