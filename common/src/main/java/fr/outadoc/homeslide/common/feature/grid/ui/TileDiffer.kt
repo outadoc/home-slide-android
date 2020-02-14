@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.app.feature.slideover.ui
+package fr.outadoc.homeslide.common.feature.grid.ui
 
 import androidx.recyclerview.widget.DiffUtil
 import fr.outadoc.homeslide.hassapi.model.Tile

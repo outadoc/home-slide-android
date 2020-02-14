@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.app.onboarding.rest
+package fr.outadoc.homeslide.common.rest
 
 import fr.outadoc.homeslide.rest.util.PLACEHOLDER_BASE_URL
 import okhttp3.Interceptor
@@ -26,6 +26,9 @@ class SimpleApiClientBuilder<T>(
         inline fun <reified T> newBuilder(
             parserFactory: Converter.Factory
         ): SimpleApiClientBuilder<T> =
-            SimpleApiClientBuilder(T::class.java, parserFactory)
+            SimpleApiClientBuilder(
+                T::class.java,
+                parserFactory
+            )
     }
 }

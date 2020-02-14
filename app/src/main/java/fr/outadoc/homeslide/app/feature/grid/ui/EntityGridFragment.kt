@@ -138,7 +138,6 @@ class EntityGridFragment : Fragment() {
                 }
 
             scheduleRefresh()
-
         }
 
         vm.tiles.observe(viewLifecycleOwner) { shortcuts ->

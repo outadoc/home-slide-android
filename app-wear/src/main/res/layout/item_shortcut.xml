@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="52dp"
+    android:orientation="horizontal"
+    android:paddingHorizontal="10dp">
+
+    <FrameLayout
+        android:id="@+id/frameLayout_actionContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="?android:attr/selectableItemBackgroundBorderless">
+
+        <TextView
+            android:id="@+id/tv_shortcut_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.MaterialDesignIcons"
+            android:textColor="@color/color_surface_shortcut_item"
+            android:textSize="32sp"
+            tools:ignore="ContentDescription"
+            tools:text="" />
+
+        <TextView
+            android:id="@+id/tv_extra_state"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@color/color_surface_shortcut_item"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:ignore="ContentDescription"
+            tools:text="24°C" />
+
+        <ProgressBar
+            android:id="@+id/pb_shortcut_loading"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorSurfaceLight"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_shortcut_label"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="4dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        android:paddingStart="6dp"
+        android:textSize="15sp"
+        tools:ignore="RtlSymmetry"
+        tools:text="@tools:sample/first_names" />
+
+</LinearLayout>
