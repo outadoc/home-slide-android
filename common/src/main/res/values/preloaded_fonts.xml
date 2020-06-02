@@ -2,7 +2,5 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/squada_one</item>
-        <item>@font/roboto</item>
-        <item>@font/roboto_condensed_bold</item>
     </array>
 </resources>

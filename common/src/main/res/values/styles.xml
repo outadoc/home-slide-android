@@ -17,41 +17,23 @@
         <item name="fontFamily">@font/squada_one</item>
     </style>
 
-    <style name="TextAppearance.App.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
-        <item name="fontFamily">@font/roboto_condensed_bold</item>
-    </style>
+    <style name="TextAppearance.App.Headline5" parent="TextAppearance.MaterialComponents.Headline5" />
 
-    <style name="TextAppearance.App.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="fontFamily">@font/roboto_condensed_bold</item>
-    </style>
+    <style name="TextAppearance.App.Headline6" parent="TextAppearance.MaterialComponents.Headline6" />
 
-    <style name="TextAppearance.App.Body1" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="fontFamily">@font/roboto</item>
-    </style>
+    <style name="TextAppearance.App.Body1" parent="TextAppearance.MaterialComponents.Body1" />
 
-    <style name="TextAppearance.App.Body2" parent="TextAppearance.MaterialComponents.Body2">
-        <item name="fontFamily">@font/roboto</item>
-    </style>
+    <style name="TextAppearance.App.Body2" parent="TextAppearance.MaterialComponents.Body2" />
 
-    <style name="TextAppearance.App.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="fontFamily">@font/roboto_condensed_bold</item>
-    </style>
+    <style name="TextAppearance.App.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1" />
 
-    <style name="TextAppearance.App.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
-        <item name="fontFamily">@font/roboto_condensed_bold</item>
-    </style>
+    <style name="TextAppearance.App.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2" />
 
-    <style name="TextAppearance.App.Button" parent="TextAppearance.MaterialComponents.Button">
-        <item name="fontFamily">@font/roboto_condensed_bold</item>
-    </style>
+    <style name="TextAppearance.App.Button" parent="TextAppearance.MaterialComponents.Button" />
 
-    <style name="TextAppearance.App.Caption" parent="TextAppearance.MaterialComponents.Caption">
-        <item name="fontFamily">@font/roboto_condensed_bold</item>
-    </style>
+    <style name="TextAppearance.App.Caption" parent="TextAppearance.MaterialComponents.Caption" />
 
-    <style name="TextAppearance.App.Overline" parent="TextAppearance.MaterialComponents.Overline">
-        <item name="fontFamily">@font/roboto_condensed_bold</item>
-    </style>
+    <style name="TextAppearance.App.Overline" parent="TextAppearance.MaterialComponents.Overline" />
 
     <style name="Widget.App.TextView" parent="Widget.MaterialComponents.TextView">
         <item name="android:textAppearance">?android:textAppearance</item>
