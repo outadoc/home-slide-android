@@ -48,16 +48,18 @@ class WearApplication : Application() {
     }
 
     private val commonModule = module {
-        single { BaseUrlConfigProviderImpl(get()) as BaseUrlConfigProvider }
-        single { TokenProviderImpl(get(), get()) as AccessTokenProvider }
-        single { AppOAuthConfiguration() as OAuthConfiguration }
-        single { AuthRepositoryImpl(get(), get(), get()) as AuthRepository }
+        single<BaseUrlConfigProvider> { BaseUrlConfigProviderImpl(get()) }
+        single<AccessTokenProvider> { TokenProviderImpl(get(), get()) }
+        single<OAuthConfiguration> { AppOAuthConfiguration() }
+        single<AuthRepository> { AuthRepositoryImpl(get(), get(), get()) }
 
-        single { TileFactoryImpl(get()) as TileFactory }
+        single<TileFactory> { TileFactoryImpl(get()) }
 
         single {
-            HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
-                tag("OkHttp").d { it }
+            HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+                override fun log(message: String) {
+                    tag("OkHttp").d { message }
+                }
             }).apply {
                 level = HttpLoggingInterceptor.Level.BODY
             }
@@ -81,8 +83,8 @@ class WearApplication : Application() {
     }
 
     private val wearModule = module {
-        single { EntityRepositoryImpl(get(), get()) as EntityRepository }
-        single { MockPreferenceRepository() as PreferenceRepository }
+        single<EntityRepository> { EntityRepositoryImpl(get(), get()) }
+        single<PreferenceRepository> { MockPreferenceRepository() }
 
         single {
             SimpleApiClientBuilder.newBuilder<AuthApi>(get())

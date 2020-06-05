@@ -62,16 +62,18 @@ class MainApplication : Application() {
     }
 
     private val commonModule = module {
-        single { BaseUrlConfigProviderImpl(get()) as BaseUrlConfigProvider }
-        single { TokenProviderImpl(get(), get()) as AccessTokenProvider }
-        single { AppOAuthConfiguration() as OAuthConfiguration }
-        single { AuthRepositoryImpl(get(), get(), get()) as AuthRepository }
+        single<BaseUrlConfigProvider> { BaseUrlConfigProviderImpl(get()) }
+        single<AccessTokenProvider> { TokenProviderImpl(get(), get())  }
+        single<OAuthConfiguration> { AppOAuthConfiguration() }
+        single<AuthRepository> { AuthRepositoryImpl(get(), get(), get()) }
 
-        single { TileFactoryImpl(get()) as TileFactory }
+        single<TileFactory> { TileFactoryImpl(get()) }
 
         single {
-            HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
-                tag("OkHttp").d { it }
+            HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+                override fun log(message: String) {
+                    tag("OkHttp").d { message }
+                }
             }).apply {
                 level = HttpLoggingInterceptor.Level.BODY
             }
@@ -83,7 +85,7 @@ class MainApplication : Application() {
                 .build()
         }
 
-        single { MoshiConverterFactory.create(get()) as Converter.Factory }
+        single<Converter.Factory> { MoshiConverterFactory.create(get()) }
 
         viewModel { EntityGridViewModel(get(), get()) }
     }
@@ -121,11 +123,11 @@ class MainApplication : Application() {
                 .entityDao()
         }
 
-        single { HassZeroconfDiscoveryServiceImpl(get()) as ZeroconfDiscoveryService }
+        single<ZeroconfDiscoveryService> { HassZeroconfDiscoveryServiceImpl(get()) }
 
-        single { DiscoveryRepositoryImpl(get()) as DiscoveryRepository }
-        single { PreferenceRepositoryImpl(get()) as PreferenceRepository }
-        single { EntityRepositoryImpl(get(), get(), get()) as EntityRepository }
+        single<DiscoveryRepository> { DiscoveryRepositoryImpl(get()) }
+        single<PreferenceRepository> { PreferenceRepositoryImpl(get()) }
+        single<EntityRepository> { EntityRepositoryImpl(get(), get(), get()) }
 
         viewModel { WelcomeViewModel() }
         viewModel { HostSetupViewModel(get(), get(), get(), get(), get()) }

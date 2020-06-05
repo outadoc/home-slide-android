@@ -34,12 +34,12 @@ android {
 
         debug {
             applicationIdSuffix ".debug"
-            buildConfigField "Boolean", ENABLE_DETAILS, 'false'
+            buildConfigField "boolean", ENABLE_DETAILS, 'false'
         }
 
         release {
             minifyEnabled false
-            buildConfigField "Boolean", ENABLE_DETAILS, 'false'
+            buildConfigField "boolean", ENABLE_DETAILS, 'false'
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
