@@ -5,31 +5,31 @@ ext {
 
     source_compatibility = 1.8
 
-    kotlin_version = '1.3.61'
+    kotlin_version = '1.3.72'
 
-    kotlinx_coroutines_version = '1.3.0'
-    kotlinx_room_version = '2.2.3'
+    kotlinx_coroutines_version = '1.3.6'
+    kotlinx_room_version = '2.2.5'
 
     koin_version = '2.0.1'
 
-    androidx_core_version = '1.1.0'
+    androidx_core_version = '1.3.0'
     androidx_constraintlayout_version = '1.1.3'
-    androidx_appcompat_version = '1.2.0-alpha02'
+    androidx_appcompat_version = '1.3.0-alpha01'
     androidx_biometric_version = '1.0.1'
-    androidx_preference_version = '1.1.0'
+    androidx_preference_version = '1.1.1'
     androidx_lifecycle_version = '2.2.0'
-    androidx_nav_version = '2.2.0'
+    androidx_nav_version = '2.2.2'
     androidx_browser_version = '1.3.0-alpha01'
     androidx_wear_version = '1.0.0'
 
     google_wearable_version = '2.5.0'
 
-    material_version = '1.2.0-alpha04'
+    material_version = '1.3.0-alpha01'
     skeleton_version = '2.0.0'
     konfetti_version = '1.1.3'
 
-    retrofit_version = '2.6.1'
-    okhttp_version = '3.12.1'
+    retrofit_version = '2.8.1'
+    okhttp_version = '4.6.0'
     moshi_version = '1.9.2'
     timber_version = '4.7.1'
     timberkt_version = '1.5.1'
