@@ -17,6 +17,7 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/popup_background"
             android:orientation="vertical"
+            android:paddingHorizontal="12dp"
             app:behavior_fitToContents="true"
             app:behavior_hideable="true"
             app:behavior_peekHeight="@dimen/slideover_peekHeight"
