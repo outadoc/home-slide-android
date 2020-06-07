@@ -57,12 +57,19 @@ dependencies {
 
     // Network libs
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
     implementation "com.squareup.moshi:moshi:$moshi_version"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
     implementation "com.github.ajalt:timberkt:$timberkt_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+    // DI
+    implementation "org.koin:koin-core:$koin_version"
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-android-viewmodel:$koin_version"
 
     // Testing
     testImplementation "org.junit.jupiter:junit-jupiter:$junit_version"
