@@ -14,7 +14,7 @@ import fr.outadoc.homeslide.hassapi.model.entity.Weather
 import fr.outadoc.homeslide.hassapi.repository.EntityRepository
 import fr.outadoc.homeslide.rest.util.wrapResponse
 
-class EntityRepositoryImpl(
+class EntityRepositoryWearImpl(
     private val tileFactory: TileFactory,
     private val client: HomeAssistantApi
 ) : EntityRepository {
