@@ -314,7 +314,7 @@ class EntityGridFragment : Fragment() {
             root.findViewById<RecyclerView>(R.id.recyclerView_shortcuts).apply {
                 val gridLayout = GridAutoSpanLayoutManager(
                     context,
-                    resources.getDimension(R.dimen.item_height).toInt()
+                    resources.getDimension(R.dimen.item_width).toInt()
                 )
 
                 adapter = itemAdapter
