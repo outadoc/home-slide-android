@@ -7,12 +7,12 @@ import android.view.View
 import androidx.navigation.Navigation.findNavController
 import fr.outadoc.homeslide.common.DayNightActivity
 import fr.outadoc.homeslide.common.ThemeProvider
-import fr.outadoc.homeslide.common.preferences.PreferenceRepository
+import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import org.koin.android.ext.android.inject
 
 class OnboardingActivity : DayNightActivity() {
 
-    val prefs: PreferenceRepository by inject()
+    val prefs: GlobalPreferenceRepository by inject()
 
     override val themeProvider: ThemeProvider = object :
         ThemeProvider {

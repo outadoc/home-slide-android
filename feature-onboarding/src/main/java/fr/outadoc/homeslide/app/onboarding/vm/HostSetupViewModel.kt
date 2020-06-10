@@ -12,7 +12,8 @@ import com.github.ajalt.timberkt.Timber
 import fr.outadoc.homeslide.app.onboarding.model.CallStatus
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
 import fr.outadoc.homeslide.app.onboarding.model.ZeroconfHost
-import fr.outadoc.homeslide.common.preferences.PreferenceRepository
+import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
+import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
 import fr.outadoc.homeslide.hassapi.repository.AuthRepository
 import fr.outadoc.homeslide.hassapi.repository.DiscoveryRepository
 import fr.outadoc.homeslide.rest.auth.OAuthConfiguration
@@ -32,9 +33,10 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@UseExperimental(FlowPreview::class, ExperimentalStdlibApi::class, ExperimentalCoroutinesApi::class)
+@OptIn(FlowPreview::class, ExperimentalStdlibApi::class, ExperimentalCoroutinesApi::class)
 class HostSetupViewModel(
-    private val prefs: PreferenceRepository,
+    private val tokenPrefs: TokenPreferenceRepository,
+    private val urlPrefs: UrlPreferenceRepository,
     private val repository: DiscoveryRepository,
     private val authRepository: AuthRepository,
     private val oAuthConfiguration: OAuthConfiguration,
@@ -60,7 +62,7 @@ class HostSetupViewModel(
         _inputInstanceUrl
             .asFlow()
             .onStart {
-                val knownUrl = prefs.instanceBaseUrl
+                val knownUrl = urlPrefs.instanceBaseUrl
                 if (knownUrl != null) {
                     emit(knownUrl)
                 } else {
@@ -106,7 +108,7 @@ class HostSetupViewModel(
         instanceDiscoveryInfoFlow.map { it.first }.asLiveData()
 
     private val authenticationPageUrl: Uri?
-        get() = prefs.instanceBaseUrl?.let {
+        get() = urlPrefs.instanceBaseUrl?.let {
             it.toUri()
                 .buildUpon()
                 .appendPath("auth")
@@ -155,7 +157,7 @@ class HostSetupViewModel(
 
         validatedTargetInstanceUrl?.let { instanceUrl ->
             stopDiscovery()
-            prefs.instanceBaseUrl = instanceUrl
+            urlPrefs.instanceBaseUrl = instanceUrl
             startAuthFlow()
         }
     }
@@ -163,8 +165,8 @@ class HostSetupViewModel(
     fun onZeroconfHostSelected(zeroconfHost: ZeroconfHost) {
         stopDiscovery()
 
-        prefs.instanceBaseUrl = "http://${zeroconfHost.hostName}"
-        prefs.altInstanceBaseUrl = zeroconfHost.baseUrl
+        urlPrefs.instanceBaseUrl = "http://${zeroconfHost.hostName}"
+        urlPrefs.altInstanceBaseUrl = zeroconfHost.baseUrl
 
         startAuthFlow()
     }
@@ -189,8 +191,8 @@ class HostSetupViewModel(
                 .onSuccess { token ->
                     withContext(Dispatchers.Main) {
                         // Save the auth code
-                        prefs.accessToken = token.accessToken
-                        prefs.refreshToken = token.refreshToken
+                        tokenPrefs.accessToken = token.accessToken
+                        tokenPrefs.refreshToken = token.refreshToken
 
                         _state.value = State.Content
                         _navigateTo.value = Event(NavigationFlow.Next)

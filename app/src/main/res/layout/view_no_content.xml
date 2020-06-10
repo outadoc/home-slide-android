@@ -9,6 +9,7 @@
         android:id="@+id/imageView_noContent"
         android:layout_width="70dp"
         android:layout_height="70dp"
+        android:importantForAccessibility="no"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -19,8 +20,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/grid_nocontent_label"
         android:layout_marginTop="16dp"
+        android:text="@string/grid_nocontent_label"
         app:layout_constraintEnd_toEndOf="@+id/imageView_noContent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="@+id/imageView_noContent"

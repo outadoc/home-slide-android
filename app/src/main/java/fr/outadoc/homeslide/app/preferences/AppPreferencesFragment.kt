@@ -19,12 +19,14 @@ import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.app.onboarding.OnboardingActivity
 import fr.outadoc.homeslide.common.DayNightActivity
 import fr.outadoc.homeslide.common.extensions.setupToolbar
-import fr.outadoc.homeslide.common.preferences.PreferenceRepository
+import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
+import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
 import org.koin.android.ext.android.inject
 
 class AppPreferencesFragment : PreferenceFragmentCompat() {
 
-    private val preferenceRepository: PreferenceRepository by inject()
+    private val prefs: GlobalPreferenceRepository by inject()
+    private val tokenPrefs: TokenPreferenceRepository by inject()
 
     private var biometricManager: BiometricManager? = null
     private var biometricPrompt: BiometricPrompt? = null
@@ -43,24 +45,24 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
     private val authCallback = object : BiometricPrompt.AuthenticationCallback() {
 
         private fun refreshPref() {
-            preferenceHolder?.showWhenLockedPref?.isChecked = preferenceRepository.showWhenLocked
+            preferenceHolder?.showWhenLockedPref?.isChecked = prefs.showWhenLocked
         }
 
         override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
             super.onAuthenticationSucceeded(result)
-            preferenceRepository.showWhenLocked = true
+            prefs.showWhenLocked = true
             refreshPref()
         }
 
         override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
             super.onAuthenticationError(errorCode, errString)
-            preferenceRepository.showWhenLocked = false
+            prefs.showWhenLocked = false
             refreshPref()
         }
 
         override fun onAuthenticationFailed() {
             super.onAuthenticationFailed()
-            preferenceRepository.showWhenLocked = false
+            prefs.showWhenLocked = false
             refreshPref()
         }
     }
@@ -104,11 +106,9 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
             }
 
             renewAuthPref.setOnPreferenceClickListener {
-                preferenceRepository.apply {
-                    accessToken = null
-                    refreshToken = null
-                    isOnboardingDone = false
-                }
+                tokenPrefs.accessToken = null
+                tokenPrefs.refreshToken = null
+                prefs.isOnboardingDone = false
 
                 val pendingIntent = NavDeepLinkBuilder(requireActivity())
                     .setComponentName(OnboardingActivity::class.java)

@@ -1,22 +1,30 @@
 package fr.outadoc.homeslide.app.feature.slideover
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
+import androidx.preference.PreferenceManager
 import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.app.feature.slideover.ui.SlideOverFragment
+import fr.outadoc.homeslide.app.preferences.PreferencePublisher
 import fr.outadoc.homeslide.common.DayNightActivity
 import fr.outadoc.homeslide.common.ThemeProvider
 import fr.outadoc.homeslide.common.extensions.isInteractive
 import fr.outadoc.homeslide.common.extensions.setShowWhenLockedCompat
-import fr.outadoc.homeslide.common.preferences.PreferenceRepository
+import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import org.koin.android.ext.android.inject
 
 class SlideOverActivity : DayNightActivity() {
 
-    val prefs: PreferenceRepository by inject()
+    private val prefs: GlobalPreferenceRepository by inject()
+    private val prefPublisher: PreferencePublisher by inject()
+
+    private val prefChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, _ ->
+        prefPublisher.publish()
+    }
 
     override val themeProvider: ThemeProvider = object :
         ThemeProvider {
@@ -43,15 +51,24 @@ class SlideOverActivity : DayNightActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        PreferenceManager.getDefaultSharedPreferences(this)?.apply {
+            registerOnSharedPreferenceChangeListener(prefChangeListener)
+        }
+
         setShowWhenLockedCompat(prefs.showWhenLocked)
     }
 
     override fun onPause() {
-        super.onPause()
+        PreferenceManager.getDefaultSharedPreferences(this)?.apply {
+            unregisterOnSharedPreferenceChangeListener(prefChangeListener)
+        }
 
         if (!isInteractive()) {
             // Close slideover when locking the screen
             finish()
         }
+
+        super.onPause()
     }
 }
