@@ -7,8 +7,9 @@
 
     <ImageView
         android:id="@+id/imageView_noContent"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:importantForAccessibility="no"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"

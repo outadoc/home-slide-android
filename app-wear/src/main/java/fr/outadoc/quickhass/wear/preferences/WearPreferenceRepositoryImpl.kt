@@ -1,18 +1,14 @@
-package fr.outadoc.homeslide.app.preferences
+package fr.outadoc.quickhass.wear.preferences
 
 import android.content.Context
 import androidx.preference.PreferenceManager
-import fr.outadoc.homeslide.common.sync.DataSyncClient
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
-import fr.outadoc.homeslide.common.sync.SyncPayload
 import fr.outadoc.homeslide.rest.baseurl.PreferredBaseUrl
 
-class PreferenceRepositoryImpl(
-    context: Context,
-    private val dataSyncClient: DataSyncClient
-) : GlobalPreferenceRepository, UrlPreferenceRepository, TokenPreferenceRepository, PreferencePublisher {
+class WearPreferenceRepositoryImpl(context: Context) : GlobalPreferenceRepository,
+    UrlPreferenceRepository, TokenPreferenceRepository {
 
     private val appPrefs = PreferenceManager.getDefaultSharedPreferences(context)!!
 
@@ -49,34 +45,19 @@ class PreferenceRepositoryImpl(
             appPrefs.edit().putString(KEY_PREFERRED_BASE_URL, value.id).apply()
         }
 
-    override val theme: String
-        get() = appPrefs.getString(KEY_THEME, "system")!!
-
-    override var isOnboardingDone: Boolean
-        get() = appPrefs.getBoolean(KEY_IS_ONBOARDING_DONE, false)
-        set(value) {
-            appPrefs.edit().putBoolean(KEY_IS_ONBOARDING_DONE, value).apply()
-        }
+    override val refreshIntervalSeconds: Long
+        get() = 10
 
     override var showWhenLocked: Boolean
-        get() = appPrefs.getBoolean(KEY_SHOW_WHEN_LOCKED, false)
-        set(value) {
-            appPrefs.edit().putBoolean(KEY_SHOW_WHEN_LOCKED, value).apply()
-        }
+        get() = false
+        set(_) {}
 
-    override val refreshIntervalSeconds: Long
-        get() = appPrefs.getInt(KEY_REFRESH_INTERVAL, 10).toLong()
+    override val theme: String
+        get() = "day"
 
-    override fun publish() {
-        val payload = SyncPayload(
-            instanceBaseUrl = instanceBaseUrl,
-            altInstanceBaseUrl = altInstanceBaseUrl,
-            accessToken = accessToken,
-            refreshToken = refreshToken
-        )
-
-        dataSyncClient.syncData(payload)
-    }
+    override var isOnboardingDone: Boolean
+        get() = true
+        set(_) {}
 
     companion object {
         const val KEY_INSTANCE_BASE_URL = "et_pref_instance_base_url"
@@ -84,9 +65,5 @@ class PreferenceRepositoryImpl(
         const val KEY_PREFERRED_BASE_URL = "enum_pref_preferred_base_url"
         const val KEY_ACCESS_TOKEN = "et_pref_auth_token"
         const val KEY_REFRESH_TOKEN = "et_pref_refresh_token"
-        const val KEY_THEME = "list_pref_theme"
-        const val KEY_IS_ONBOARDING_DONE = "chk_pref_onboarding_ok"
-        const val KEY_SHOW_WHEN_LOCKED = "chk_pref_show_when_locked"
-        const val KEY_REFRESH_INTERVAL = "seek_pref_refresh_interval_s"
     }
 }

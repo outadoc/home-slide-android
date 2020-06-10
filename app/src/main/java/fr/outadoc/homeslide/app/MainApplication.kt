@@ -12,11 +12,14 @@ import fr.outadoc.homeslide.app.onboarding.vm.ShortcutSetupViewModel
 import fr.outadoc.homeslide.app.onboarding.vm.SuccessViewModel
 import fr.outadoc.homeslide.app.onboarding.vm.WelcomeViewModel
 import fr.outadoc.homeslide.app.persistence.EntityDatabase
+import fr.outadoc.homeslide.app.preferences.PreferencePublisher
 import fr.outadoc.homeslide.app.preferences.PreferenceRepositoryImpl
 import fr.outadoc.homeslide.common.feature.details.vm.EntityDetailViewModel
 import fr.outadoc.homeslide.common.inject.commonModule
 import fr.outadoc.homeslide.common.inject.systemModule
-import fr.outadoc.homeslide.common.preferences.PreferenceRepository
+import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
+import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
+import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
 import fr.outadoc.homeslide.common.rest.SimpleApiClientBuilder
 import fr.outadoc.homeslide.hassapi.api.AuthApi
 import fr.outadoc.homeslide.hassapi.api.DiscoveryApi
@@ -74,11 +77,16 @@ class MainApplication : Application() {
         single<ZeroconfDiscoveryService> { HassZeroconfDiscoveryServiceImpl(get()) }
 
         single<DiscoveryRepository> { DiscoveryRepositoryImpl(get()) }
-        single<PreferenceRepository> { PreferenceRepositoryImpl(get()) }
         single<EntityRepository> { EntityRepositoryImpl(get(), get(), get()) }
 
+        single { PreferenceRepositoryImpl(get(), get()) }
+        single<GlobalPreferenceRepository> { get<PreferenceRepositoryImpl>() }
+        single<UrlPreferenceRepository> { get<PreferenceRepositoryImpl>() }
+        single<TokenPreferenceRepository> { get<PreferenceRepositoryImpl>() }
+        single<PreferencePublisher> { get<PreferenceRepositoryImpl>() }
+
         viewModel { WelcomeViewModel() }
-        viewModel { HostSetupViewModel(get(), get(), get(), get(), get()) }
+        viewModel { HostSetupViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { ShortcutSetupViewModel() }
         viewModel { SuccessViewModel(get(), get()) }
 
@@ -95,7 +103,7 @@ class MainApplication : Application() {
         startKoin {
             KoinTimberLogger()
             androidContext(this@MainApplication)
-            modules(listOf(systemModule(), commonModule(), appModule))
+            modules(systemModule() + commonModule() + appModule)
         }
 
         MaterialIconLocator.instance = MaterialIconAssetMapperImpl(applicationContext)

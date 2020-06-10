@@ -18,6 +18,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -65,6 +69,12 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$androidx_lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$androidx_lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$androidx_lifecycle_version"
+
+    // Preferences
+    implementation "androidx.preference:preference-ktx:$androidx_preference_version"
+
+    // Wear OS
+    implementation "com.google.android.gms:play-services-wearable:$gms_version"
 
     // DI
     implementation "org.koin:koin-core:$koin_version"

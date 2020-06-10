@@ -1,10 +1,11 @@
 package fr.outadoc.quickhass.wear
 
 import android.app.Application
-import fr.outadoc.homeslide.common.feature.details.vm.EntityDetailViewModel
 import fr.outadoc.homeslide.common.inject.commonModule
 import fr.outadoc.homeslide.common.inject.systemModule
-import fr.outadoc.homeslide.common.preferences.PreferenceRepository
+import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
+import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
+import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
 import fr.outadoc.homeslide.common.rest.SimpleApiClientBuilder
 import fr.outadoc.homeslide.hassapi.api.AuthApi
 import fr.outadoc.homeslide.hassapi.api.HomeAssistantApi
@@ -14,6 +15,8 @@ import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
 import fr.outadoc.mdi.MaterialIconAssetMapperImpl
 import fr.outadoc.mdi.MaterialIconLocator
 import fr.outadoc.quickhass.wear.inject.KoinTimberLogger
+import fr.outadoc.quickhass.wear.preferences.WearPreferenceRepositoryImpl
+import fr.outadoc.quickhass.wear.preferences.PreferenceSyncViewModel
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
@@ -26,7 +29,11 @@ class WearApplication : Application() {
 
     private val wearModule = module {
         single<EntityRepository> { EntityRepositoryWearImpl(get(), get()) }
-        single<PreferenceRepository> { MockPreferenceRepository() }
+
+        single { WearPreferenceRepositoryImpl(get()) }
+        single<GlobalPreferenceRepository> { get<WearPreferenceRepositoryImpl>() }
+        single<UrlPreferenceRepository> { get<WearPreferenceRepositoryImpl>() }
+        single<TokenPreferenceRepository> { get<WearPreferenceRepositoryImpl>() }
 
         single {
             SimpleApiClientBuilder.newBuilder<AuthApi>(get())
@@ -40,7 +47,7 @@ class WearApplication : Application() {
                 .build()
         }
 
-        viewModel { EntityDetailViewModel() }
+        viewModel { PreferenceSyncViewModel(get(), get(), get()) }
     }
 
     override fun onCreate() {
@@ -53,7 +60,7 @@ class WearApplication : Application() {
         startKoin {
             KoinTimberLogger()
             androidContext(this@WearApplication)
-            modules(listOf(systemModule(), commonModule(), wearModule))
+            modules(systemModule() + commonModule() + wearModule)
         }
 
         MaterialIconLocator.instance = MaterialIconAssetMapperImpl(applicationContext)

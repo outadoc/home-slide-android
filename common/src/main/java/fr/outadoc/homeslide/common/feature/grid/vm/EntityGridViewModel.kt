@@ -5,7 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fr.outadoc.homeslide.common.preferences.PreferenceRepository
+import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import fr.outadoc.homeslide.hassapi.model.Action
 import fr.outadoc.homeslide.hassapi.model.PersistedEntity
 import fr.outadoc.homeslide.hassapi.model.Tile
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class EntityGridViewModel(
-    private val prefs: PreferenceRepository,
+    private val prefs: GlobalPreferenceRepository,
     private val repository: EntityRepository
 ) : ViewModel() {
 

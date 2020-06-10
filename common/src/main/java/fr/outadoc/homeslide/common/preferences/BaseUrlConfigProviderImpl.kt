@@ -3,7 +3,7 @@ package fr.outadoc.homeslide.common.preferences
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlConfigProvider
 import fr.outadoc.homeslide.rest.baseurl.PreferredBaseUrl
 
-class BaseUrlConfigProviderImpl(private val prefs: PreferenceRepository) :
+class BaseUrlConfigProviderImpl(private val prefs: UrlPreferenceRepository) :
     BaseUrlConfigProvider {
 
     override val instanceBaseUrl: String?
