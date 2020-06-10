@@ -30,23 +30,10 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="auth-callback"
+                    android:host="auth_callback"
                     android:scheme="homeslide" />
 
             </intent-filter>
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="homeslide.app"
-                    android:scheme="https" />
-
-            </intent-filter>
-
         </activity>
 
         <activity
