@@ -6,7 +6,7 @@ import fr.outadoc.homeslide.common.sync.DataSyncClient
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
-import fr.outadoc.homeslide.common.sync.SyncPayload
+import fr.outadoc.homeslide.common.sync.model.PreferencesPayload
 import fr.outadoc.homeslide.rest.baseurl.PreferredBaseUrl
 
 class PreferenceRepositoryImpl(
@@ -68,14 +68,14 @@ class PreferenceRepositoryImpl(
         get() = appPrefs.getInt(KEY_REFRESH_INTERVAL, 10).toLong()
 
     override fun publish() {
-        val payload = SyncPayload(
+        val payload = PreferencesPayload(
             instanceBaseUrl = instanceBaseUrl,
             altInstanceBaseUrl = altInstanceBaseUrl,
             accessToken = accessToken,
             refreshToken = refreshToken
         )
 
-        dataSyncClient.syncData(payload)
+        dataSyncClient.syncPreferences(payload)
     }
 
     companion object {

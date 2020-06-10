@@ -100,7 +100,6 @@ dependencies {
     implementation "androidx.preference:preference-ktx:$androidx_preference_version"
     implementation "androidx.room:room-runtime:$kotlinx_room_version"
     implementation "androidx.room:room-ktx:$kotlinx_room_version"
-    kapt "androidx.room:room-compiler:$kotlinx_room_version"
 
     // DI
     implementation "org.koin:koin-core:$koin_version"

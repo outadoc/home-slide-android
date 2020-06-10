@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.app.persistence
+package fr.outadoc.homeslide.common.persistence
 
 import androidx.room.Dao
 import androidx.room.Insert

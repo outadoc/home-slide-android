@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.app.persistence
+package fr.outadoc.homeslide.common.persistence
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

@@ -1,10 +1,10 @@
-package fr.outadoc.homeslide.common.sync
+package fr.outadoc.homeslide.common.sync.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class SyncPayload(
+data class PreferencesPayload(
     @Json(name = "instanceBaseUrl")
     val instanceBaseUrl: String?,
     @Json(name = "altInstanceBaseUrl")

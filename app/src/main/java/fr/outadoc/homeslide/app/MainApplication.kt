@@ -1,9 +1,7 @@
 package fr.outadoc.homeslide.app
 
 import android.app.Application
-import androidx.room.Room
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import fr.outadoc.homeslide.app.feature.slideover.EntityRepositoryImpl
 import fr.outadoc.homeslide.app.inject.KoinTimberLogger
 import fr.outadoc.homeslide.app.onboarding.rest.DiscoveryRepositoryImpl
 import fr.outadoc.homeslide.app.onboarding.rest.HassZeroconfDiscoveryServiceImpl
@@ -11,7 +9,6 @@ import fr.outadoc.homeslide.app.onboarding.vm.HostSetupViewModel
 import fr.outadoc.homeslide.app.onboarding.vm.ShortcutSetupViewModel
 import fr.outadoc.homeslide.app.onboarding.vm.SuccessViewModel
 import fr.outadoc.homeslide.app.onboarding.vm.WelcomeViewModel
-import fr.outadoc.homeslide.app.persistence.EntityDatabase
 import fr.outadoc.homeslide.app.preferences.PreferencePublisher
 import fr.outadoc.homeslide.app.preferences.PreferenceRepositoryImpl
 import fr.outadoc.homeslide.common.feature.details.vm.EntityDetailViewModel
@@ -25,7 +22,6 @@ import fr.outadoc.homeslide.hassapi.api.AuthApi
 import fr.outadoc.homeslide.hassapi.api.DiscoveryApi
 import fr.outadoc.homeslide.hassapi.api.HomeAssistantApi
 import fr.outadoc.homeslide.hassapi.repository.DiscoveryRepository
-import fr.outadoc.homeslide.hassapi.repository.EntityRepository
 import fr.outadoc.homeslide.rest.ApiClientBuilder
 import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
 import fr.outadoc.homeslide.zeroconf.ZeroconfDiscoveryService
@@ -67,17 +63,9 @@ class MainApplication : Application() {
                 .build()
         }
 
-        single {
-            Room.databaseBuilder(get(), EntityDatabase::class.java, EntityDatabase.DB_NAME)
-                .addMigrations(EntityDatabase.MIGRATION_1_2)
-                .build()
-                .entityDao()
-        }
-
         single<ZeroconfDiscoveryService> { HassZeroconfDiscoveryServiceImpl(get()) }
 
         single<DiscoveryRepository> { DiscoveryRepositoryImpl(get()) }
-        single<EntityRepository> { EntityRepositoryImpl(get(), get(), get()) }
 
         single { PreferenceRepositoryImpl(get(), get()) }
         single<GlobalPreferenceRepository> { get<PreferenceRepositoryImpl>() }
