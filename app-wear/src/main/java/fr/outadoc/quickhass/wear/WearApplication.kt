@@ -1,6 +1,7 @@
 package fr.outadoc.quickhass.wear
 
 import android.app.Application
+import fr.outadoc.homeslide.common.feature.slideover.EntityRepositoryImpl
 import fr.outadoc.homeslide.common.inject.commonModule
 import fr.outadoc.homeslide.common.inject.systemModule
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
@@ -16,7 +17,7 @@ import fr.outadoc.mdi.MaterialIconAssetMapperImpl
 import fr.outadoc.mdi.MaterialIconLocator
 import fr.outadoc.quickhass.wear.inject.KoinTimberLogger
 import fr.outadoc.quickhass.wear.preferences.WearPreferenceRepositoryImpl
-import fr.outadoc.quickhass.wear.preferences.PreferenceSyncViewModel
+import fr.outadoc.quickhass.wear.preferences.DataSyncViewModel
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
@@ -28,8 +29,6 @@ import timber.log.Timber
 class WearApplication : Application() {
 
     private val wearModule = module {
-        single<EntityRepository> { EntityRepositoryWearImpl(get(), get()) }
-
         single { WearPreferenceRepositoryImpl(get()) }
         single<GlobalPreferenceRepository> { get<WearPreferenceRepositoryImpl>() }
         single<UrlPreferenceRepository> { get<WearPreferenceRepositoryImpl>() }
@@ -47,7 +46,7 @@ class WearApplication : Application() {
                 .build()
         }
 
-        viewModel { PreferenceSyncViewModel(get(), get(), get()) }
+        viewModel { DataSyncViewModel(get(), get(), get(), get()) }
     }
 
     override fun onCreate() {

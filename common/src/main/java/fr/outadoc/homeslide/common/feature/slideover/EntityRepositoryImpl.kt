@@ -1,6 +1,8 @@
-package fr.outadoc.homeslide.app.feature.slideover
+package fr.outadoc.homeslide.common.feature.slideover
 
-import fr.outadoc.homeslide.app.persistence.EntityDao
+import fr.outadoc.homeslide.common.persistence.EntityDao
+import fr.outadoc.homeslide.common.sync.DataSyncClient
+import fr.outadoc.homeslide.common.sync.model.DatabasePayload
 import fr.outadoc.homeslide.hassapi.api.HomeAssistantApi
 import fr.outadoc.homeslide.hassapi.factory.EntityFactory
 import fr.outadoc.homeslide.hassapi.factory.TileFactory
@@ -18,7 +20,8 @@ import fr.outadoc.homeslide.rest.util.wrapResponse
 class EntityRepositoryImpl(
     private val dao: EntityDao,
     private val tileFactory: TileFactory,
-    private val client: HomeAssistantApi
+    private val client: HomeAssistantApi,
+    private val syncClient: DataSyncClient
 ) : EntityRepository {
 
     override suspend fun getEntityTiles(): Result<List<Tile<Entity>>> {
@@ -66,6 +69,7 @@ class EntityRepositoryImpl(
 
     override suspend fun saveEntityListState(entities: List<PersistedEntity>) {
         dao.replaceAll(entities)
+        syncClient.syncDatabase(DatabasePayload(entities))
     }
 
     private fun getPriorityForDomain(domain: String): Int? {

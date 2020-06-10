@@ -35,12 +35,20 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".service.PrefSyncListenerService">
+        <service android:name=".service.DataSyncListenerService">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
                 <data
                     android:host="*"
-                    android:path="/payload"
+                    android:path="/sync-preferences"
+                    android:scheme="wear" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
+                <data
+                    android:host="*"
+                    android:path="/sync-database"
                     android:scheme="wear" />
             </intent-filter>
         </service>

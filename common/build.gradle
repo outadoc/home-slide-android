@@ -64,6 +64,11 @@ dependencies {
     implementation "com.squareup.moshi:moshi:$moshi_version"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
+    // Persistence
+    implementation "androidx.room:room-runtime:$kotlinx_room_version"
+    implementation "androidx.room:room-ktx:$kotlinx_room_version"
+    kapt "androidx.room:room-compiler:$kotlinx_room_version"
+
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
     implementation "com.github.ajalt:timberkt:$timberkt_version"
