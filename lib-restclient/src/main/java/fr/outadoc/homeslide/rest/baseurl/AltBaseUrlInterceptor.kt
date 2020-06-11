@@ -30,12 +30,11 @@ class AltBaseUrlInterceptor(private val config: BaseUrlConfigProvider) : Interce
                     .build()
             }.forEach { (type, req) ->
                 try {
-                    val res = chain.proceed(req)
-                    if (res.isSuccessful) {
-                        config.preferredBaseUrl = type
-                        return res
+                    return chain.proceed(req).also { res ->
+                        if (res.isSuccessful) {
+                            config.preferredBaseUrl = type
+                        }
                     }
-
                 } catch (e: Exception) {
                     Timber.e(e)
                 }

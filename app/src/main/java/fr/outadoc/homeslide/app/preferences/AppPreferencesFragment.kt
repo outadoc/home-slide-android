@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -20,13 +21,15 @@ import fr.outadoc.homeslide.app.onboarding.OnboardingActivity
 import fr.outadoc.homeslide.common.DayNightActivity
 import fr.outadoc.homeslide.common.extensions.setupToolbar
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
-import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
+import fr.outadoc.homeslide.hassapi.repository.AuthRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 class AppPreferencesFragment : PreferenceFragmentCompat() {
 
     private val prefs: GlobalPreferenceRepository by inject()
-    private val tokenPrefs: TokenPreferenceRepository by inject()
+    private val authRepository: AuthRepository by inject()
 
     private var biometricManager: BiometricManager? = null
     private var biometricPrompt: BiometricPrompt? = null
@@ -106,9 +109,9 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
             }
 
             renewAuthPref.setOnPreferenceClickListener {
-                tokenPrefs.accessToken = null
-                tokenPrefs.refreshToken = null
-                prefs.isOnboardingDone = false
+                lifecycleScope.launch(Dispatchers.IO) {
+                    authRepository.logout()
+                }
 
                 val pendingIntent = NavDeepLinkBuilder(requireActivity())
                     .setComponentName(OnboardingActivity::class.java)

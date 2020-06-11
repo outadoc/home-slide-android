@@ -23,4 +23,11 @@ interface AuthApi {
         @Field("client_id") clientId: String,
         @Field("grant_type") grantType: String = "refresh_token"
     ): Response<Token>
+
+    @FormUrlEncoded
+    @POST("/auth/token")
+    suspend fun revokeToken(
+        @Field("token") refreshToken: String,
+        @Field("action") action: String = "revoke"
+    )
 }
