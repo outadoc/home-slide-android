@@ -65,7 +65,6 @@ class EntityGridFragment : Fragment() {
             }
     }
 
-    @SuppressLint("WrongConstant")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -330,7 +329,7 @@ class EntityGridFragment : Fragment() {
             }
 
         val skeleton =
-            recyclerView.applySkeleton(R.layout.item_shortcut, SKELETON_ITEM_COUNT).apply {
+            recyclerView.applySkeleton(R.layout.item_shortcut_shimmer, SKELETON_ITEM_COUNT).apply {
                 maskColor = ContextCompat.getColor(recyclerView.context, R.color.skeleton_maskColor)
                 shimmerColor =
                     ContextCompat.getColor(recyclerView.context, R.color.skeleton_shimmerColor)
