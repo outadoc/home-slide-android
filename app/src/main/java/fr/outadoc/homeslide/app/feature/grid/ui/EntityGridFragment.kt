@@ -1,6 +1,5 @@
 package fr.outadoc.homeslide.app.feature.grid.ui
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -23,6 +22,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
+import androidx.navigation.NavDeepLinkBuilder
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.faltenreich.skeletonlayout.applySkeleton
@@ -36,6 +36,7 @@ import fr.outadoc.homeslide.app.feature.slideover.ui.SlideOverNavigator
 import fr.outadoc.homeslide.app.onboarding.OnboardingActivity
 import fr.outadoc.homeslide.app.preferences.AppPreferencesFragment
 import fr.outadoc.homeslide.common.extensions.setupToolbar
+import fr.outadoc.homeslide.common.feature.auth.InvalidRefreshTokenException
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityGridViewModel
 import fr.outadoc.homeslide.hassapi.model.entity.Entity
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -120,6 +121,18 @@ class EntityGridFragment : Fragment() {
         vm.result.observe(viewLifecycleOwner) { shortcuts ->
             shortcuts
                 .onFailure { e ->
+                    if (e is InvalidRefreshTokenException) {
+                        val pendingIntent = NavDeepLinkBuilder(requireActivity())
+                            .setComponentName(OnboardingActivity::class.java)
+                            .setGraph(R.navigation.nav_graph_onboarding)
+                            .setDestination(R.id.setupHostFragment)
+                            .createPendingIntent()
+
+                        pendingIntent.send()
+                        activity?.finish()
+                        return@onFailure
+                    }
+
                     val message = e.localizedMessage
                         ?.let { getString(R.string.grid_snackbar_loading_error_title, it) }
                         ?: getString(R.string.grid_snackbar_generic_error_title)

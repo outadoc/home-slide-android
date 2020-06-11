@@ -35,7 +35,7 @@ fun commonModule() = module {
     single<BaseUrlConfigProvider> { BaseUrlConfigProviderImpl(get()) }
     single<AccessTokenProvider> { TokenProviderImpl(get(), get()) }
     single<OAuthConfiguration> { AppOAuthConfiguration() }
-    single<AuthRepository> { AuthRepositoryImpl(get(), get(), get()) }
+    single<AuthRepository> { AuthRepositoryImpl(get(), get(), get(), get(), get()) }
 
     single<EntityRepository> { EntityRepositoryImpl(get(), get(), get(), get()) }
 
