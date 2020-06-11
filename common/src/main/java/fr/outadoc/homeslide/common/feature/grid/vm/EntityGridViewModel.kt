@@ -28,7 +28,7 @@ class EntityGridViewModel(
 
     sealed class GridState {
         object Content : GridState()
-        object Skeleton : GridState()
+        object Loading : GridState()
         object NoContent : GridState()
     }
 
@@ -41,7 +41,7 @@ class EntityGridViewModel(
         MutableLiveData(EditionState.Disabled)
     val editionState: LiveData<EditionState> = _editionState
 
-    private val _gridState: MutableLiveData<GridState> = MutableLiveData(GridState.Skeleton)
+    private val _gridState: MutableLiveData<GridState> = MutableLiveData(GridState.Loading)
     val gridState: LiveData<GridState> = _gridState
 
     private val _tiles =
@@ -76,7 +76,7 @@ class EntityGridViewModel(
         }
 
         _gridState.value = if (_tiles.value.isNullOrEmpty()) {
-            GridState.Skeleton
+            GridState.Loading
         } else {
             GridState.Content
         }

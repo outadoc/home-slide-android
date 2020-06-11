@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.ViewAnimator
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
@@ -20,8 +21,6 @@ import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.forEach
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -96,26 +95,25 @@ class EntityGridFragment : Fragment() {
 
         vm.gridState.observe(viewLifecycleOwner) { state ->
             viewHolder?.apply {
-                when (state) {
+                val childToDisplay = when (state) {
                     EntityGridViewModel.GridState.Content -> {
-                        noContentView.isGone = true
-                        if (skeleton.isSkeleton()) {
-                            skeleton.showOriginal()
-                        }
+                        if (skeleton.isSkeleton()) skeleton.showOriginal()
+                        CHILD_CONTENT
                     }
 
-                    EntityGridViewModel.GridState.Skeleton -> {
-                        noContentView.isGone = true
-                        skeleton.showSkeleton()
+                    EntityGridViewModel.GridState.Loading -> {
+                        if (!skeleton.isSkeleton()) skeleton.showSkeleton()
+                        CHILD_CONTENT
                     }
 
                     EntityGridViewModel.GridState.NoContent -> {
-                        if (skeleton.isSkeleton()) {
-                            skeleton.showOriginal()
-                        }
-
-                        noContentView.isVisible = true
+                        if (skeleton.isSkeleton()) skeleton.showOriginal()
+                        CHILD_NO_CONTENT
                     }
+                }
+
+                if (viewFlipper.displayedChild != childToDisplay) {
+                    viewFlipper.displayedChild = childToDisplay
                 }
             }
         }
@@ -309,7 +307,8 @@ class EntityGridFragment : Fragment() {
     ) {
         val itemTouchHelper = ItemTouchHelper(callback)
 
-        val noContentView: View = root.findViewById(R.id.layout_noContent)
+        val viewFlipper: ViewAnimator = root.findViewById(R.id.viewFlipper_entityGrid)
+
         val recyclerView: RecyclerView =
             root.findViewById<RecyclerView>(R.id.recyclerView_shortcuts).apply {
                 val gridLayout = GridAutoSpanLayoutManager(
@@ -342,5 +341,8 @@ class EntityGridFragment : Fragment() {
         fun newInstance() = EntityGridFragment()
 
         private const val SKELETON_ITEM_COUNT = 30
+
+        private const val CHILD_CONTENT = 0
+        private const val CHILD_NO_CONTENT = 1
     }
 }
