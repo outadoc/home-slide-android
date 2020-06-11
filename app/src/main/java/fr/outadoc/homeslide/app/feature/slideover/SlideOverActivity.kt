@@ -36,6 +36,9 @@ class SlideOverActivity : DayNightActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_slideover)
 
+        // Sync with watch, just in case this hasn't been done yet
+        prefPublisher.publish()
+
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.slideover_content, SlideOverFragment.newInstance())

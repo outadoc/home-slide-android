@@ -13,8 +13,15 @@ android {
         applicationId "fr.outadoc.quickhass"
         minSdkVersion 25
         targetSdkVersion target_sdk_version
-        versionCode 1
-        versionName "1.0"
+
+
+        // --- Versioning scheme ---
+        // first two digits: targetSdkVersion
+        // next three digits: versionName
+        // last two digits: multi-APK variant
+
+        versionCode 2913001
+        versionName app_version_name
     }
 
     buildTypes {

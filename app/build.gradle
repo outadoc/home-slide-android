@@ -18,8 +18,14 @@ android {
         applicationId "fr.outadoc.quickhass"
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
-        versionCode 11
-        versionName "1.2"
+
+        // --- Versioning scheme ---
+        // first two digits: targetSdkVersion
+        // next three digits: versionName
+        // last two digits: multi-APK variant
+
+        versionCode 2913000
+        versionName app_version_name
 
         kapt {
             arguments {
