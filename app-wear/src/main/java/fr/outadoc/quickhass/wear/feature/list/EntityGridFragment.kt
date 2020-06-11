@@ -5,8 +5,8 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ViewAnimator
 import androidx.core.os.postDelayed
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.wear.widget.WearableLinearLayoutManager
@@ -21,7 +21,6 @@ import java.util.concurrent.TimeUnit
 class EntityGridFragment : Fragment() {
 
     private val vm: EntityGridViewModel by viewModel()
-
     private var viewHolder: ViewHolder? = null
 
     private val handler: Handler = Handler()
@@ -44,9 +43,19 @@ class EntityGridFragment : Fragment() {
 
         vm.gridState.observe(viewLifecycleOwner) { state ->
             viewHolder?.apply {
-                recyclerView.isVisible = state == GridState.Content
-                noContentView.isVisible = state == GridState.NoContent
-                loadingView.isVisible = state == GridState.Skeleton
+                val childToDisplay = when (state) {
+                    GridState.Content -> CHILD_CONTENT
+                    GridState.NoContent -> CHILD_NO_CONTENT
+                    GridState.Loading -> CHILD_LOADING
+                }
+
+                if (viewFlipper.displayedChild != childToDisplay) {
+                    viewFlipper.displayedChild = childToDisplay
+                }
+
+                if (state == GridState.Content) {
+                    recyclerView.requestFocus()
+                }
             }
         }
 
@@ -80,8 +89,7 @@ class EntityGridFragment : Fragment() {
     }
 
     private class ViewHolder(view: View, val tileAdapter: EntityTileAdapter) {
-        val noContentView: View = view.findViewById(R.id.layout_noContent)
-        val loadingView: View = view.findViewById(R.id.view_loading)
+        val viewFlipper: ViewAnimator = view.findViewById(R.id.viewFlipper_entityGrid)
         val recyclerView: WearableRecyclerView =
             view.findViewById<WearableRecyclerView>(R.id.wearableRecyclerView_shortcuts).apply {
                 isEdgeItemsCenteringEnabled = true
@@ -91,7 +99,10 @@ class EntityGridFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() =
-            EntityGridFragment()
+        fun newInstance() = EntityGridFragment()
+
+        private const val CHILD_CONTENT = 0
+        private const val CHILD_NO_CONTENT = 1
+        private const val CHILD_LOADING = 2
     }
 }
