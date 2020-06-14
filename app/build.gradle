@@ -70,6 +70,7 @@ dependencies {
 
     implementation project(':common')
     implementation project(':feature-onboarding')
+    implementation project(':feature-controlprovider')
 
     // Kotlin runtime
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
