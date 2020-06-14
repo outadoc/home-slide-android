@@ -2,6 +2,9 @@ package fr.outadoc.homeslide.app
 
 import android.app.Application
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import fr.outadoc.homeslide.app.controlprovider.inject.IntentProvider
+import fr.outadoc.homeslide.app.controlprovider.inject.controlProviderModule
+import fr.outadoc.homeslide.app.inject.AppIntentProvider
 import fr.outadoc.homeslide.app.inject.KoinTimberLogger
 import fr.outadoc.homeslide.app.onboarding.rest.DiscoveryRepositoryImpl
 import fr.outadoc.homeslide.app.onboarding.rest.HassZeroconfDiscoveryServiceImpl
@@ -64,8 +67,8 @@ class MainApplication : Application() {
         }
 
         single<ZeroconfDiscoveryService> { HassZeroconfDiscoveryServiceImpl(get()) }
-
         single<DiscoveryRepository> { DiscoveryRepositoryImpl(get()) }
+        single<IntentProvider> { AppIntentProvider(get()) }
 
         single { PreferenceRepositoryImpl(get(), get()) }
         single<GlobalPreferenceRepository> { get<PreferenceRepositoryImpl>() }
@@ -91,7 +94,7 @@ class MainApplication : Application() {
         startKoin {
             KoinTimberLogger()
             androidContext(this@MainApplication)
-            modules(systemModule() + commonModule() + appModule)
+            modules(systemModule() + commonModule() + controlProviderModule() + appModule)
         }
 
         MaterialIconLocator.instance = MaterialIconAssetMapperImpl(applicationContext)

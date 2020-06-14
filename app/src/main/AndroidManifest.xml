@@ -8,6 +8,7 @@
     <application
         android:name=".MainApplication"
         android:allowBackup="true"
+        android:autoRevokePermissions="allowed"
         android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -42,8 +43,7 @@
             android:label="@string/app_name"
             android:launchMode="singleInstance"
             android:resizeableActivity="false"
-            android:theme="@style/AppTheme.QuickAccess"
-            tools:targetApi="n">
+            android:theme="@style/AppTheme.QuickAccess">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,6 +51,13 @@
             </intent-filter>
 
         </activity>
+
+        <activity
+            android:name=".feature.slideover.BarebonesMainActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/app_name"
+            android:launchMode="singleInstance"
+            android:theme="@style/AppTheme.QuickAccess" />
 
         <service
             android:name=".service.QuickAccessTileService"
@@ -60,6 +67,17 @@
 
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+
+        </service>
+
+        <service
+            android:name="fr.outadoc.homeslide.app.controlprovider.service.AppControlsProviderService"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_CONTROLS">
+
+            <intent-filter>
+                <action android:name="android.service.controls.ControlsProviderService" />
             </intent-filter>
 
         </service>
