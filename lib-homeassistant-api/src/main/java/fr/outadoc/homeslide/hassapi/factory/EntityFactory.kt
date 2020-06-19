@@ -15,6 +15,7 @@ import fr.outadoc.homeslide.hassapi.model.entity.Script
 import fr.outadoc.homeslide.hassapi.model.entity.Sensor
 import fr.outadoc.homeslide.hassapi.model.entity.Sun
 import fr.outadoc.homeslide.hassapi.model.entity.Switch
+import fr.outadoc.homeslide.hassapi.model.entity.Vacuum
 import fr.outadoc.homeslide.hassapi.model.entity.Weather
 
 object EntityFactory {
@@ -60,6 +61,9 @@ object EntityFactory {
             state
         )
         BinarySensor.DOMAIN -> BinarySensor(
+            state
+        )
+        Vacuum.DOMAIN -> Vacuum(
             state
         )
         else -> GenericEntity(state)

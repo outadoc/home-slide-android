@@ -2,6 +2,7 @@ package fr.outadoc.quickhass.wear.feature.list
 
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +24,7 @@ class EntityGridFragment : Fragment() {
     private val vm: EntityGridViewModel by viewModel()
     private var viewHolder: ViewHolder? = null
 
-    private val handler: Handler = Handler()
+    private val handler: Handler = Handler(Looper.getMainLooper())
 
     override fun onCreateView(
         inflater: LayoutInflater,
