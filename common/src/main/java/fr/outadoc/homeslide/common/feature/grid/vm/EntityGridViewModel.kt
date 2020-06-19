@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.ajalt.timberkt.Timber
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import fr.outadoc.homeslide.hassapi.model.Action
 import fr.outadoc.homeslide.hassapi.model.PersistedEntity
@@ -102,7 +103,8 @@ class EntityGridViewModel(
                         }
                     )
                 }
-                .onFailure {
+                .onFailure { e ->
+                    Timber.e(e) { "Error while loading entity list" }
                     _gridState.postValue(
                         if (_allTiles.value.isNullOrEmpty()) {
                             GridState.NoContent
@@ -129,8 +131,9 @@ class EntityGridViewModel(
                     withContext(Dispatchers.Main) {
                         loadShortcuts()
                     }
-                }.onFailure {
-                    _result.postValue(Result.failure(it))
+                }.onFailure { e ->
+                    Timber.e(e) { "Error while executing action" }
+                    _result.postValue(Result.failure(e))
                 }
 
             onEntityLoadStop(item)
@@ -161,7 +164,7 @@ class EntityGridViewModel(
         }
     }
 
-    fun onEntityLoadStart(entity: Entity) {
+    private fun onEntityLoadStart(entity: Entity) {
         updateItems { tile ->
             when (tile.source) {
                 entity -> {
@@ -175,7 +178,7 @@ class EntityGridViewModel(
         }
     }
 
-    fun onEntityLoadStop(entity: Entity) {
+    private fun onEntityLoadStop(entity: Entity) {
         updateItems { tile ->
             when (tile.source) {
                 entity -> tile.copy(isLoading = false)

@@ -3,7 +3,7 @@ package fr.outadoc.quickhass.wear
 import android.os.Bundle
 import fr.outadoc.homeslide.common.DayNightActivity
 import fr.outadoc.homeslide.common.ThemeProvider
-import fr.outadoc.quickhass.wear.feature.list.EntityGridFragment
+import fr.outadoc.quickhass.wear.feature.list.EntityListFragment
 
 class MainActivity : DayNightActivity() {
 
@@ -17,7 +17,7 @@ class MainActivity : DayNightActivity() {
 
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragment_wearActivity_content, EntityGridFragment.newInstance())
+            .replace(R.id.fragment_wearActivity_content, EntityListFragment.newInstance())
             .commit()
     }
 }
