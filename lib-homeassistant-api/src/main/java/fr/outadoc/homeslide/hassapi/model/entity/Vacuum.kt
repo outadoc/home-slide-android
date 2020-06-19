@@ -4,18 +4,19 @@ import fr.outadoc.homeslide.hassapi.model.Action
 import fr.outadoc.homeslide.hassapi.model.EntityState
 import fr.outadoc.mdi.toIcon
 
-class Cover(state: EntityState) : ABaseEntity(state, "window-open".toIcon()) {
+class Vacuum(state: EntityState) : ABaseEntity(state, "robot-vacuum".toIcon()) {
 
     companion object {
-        const val DOMAIN = "cover"
+        const val DOMAIN = "vacuum"
     }
 
-    override val isOn: Boolean = stateStr == "open"
+    override val isOn: Boolean
+        get() = state.state == "cleaning"
 
     override val primaryAction: Action?
         get() = when (stateStr) {
-            "open" -> Action(DOMAIN, "close_cover", entityId)
-            "closed" -> Action(DOMAIN, "open_cover", entityId)
+            "cleaning" -> Action(DOMAIN, "pause", entityId)
+            "docked" -> Action(DOMAIN, "start", entityId)
             else -> null
         }
 }

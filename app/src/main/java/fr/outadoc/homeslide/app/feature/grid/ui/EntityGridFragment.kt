@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -48,7 +49,7 @@ class EntityGridFragment : Fragment() {
 
     private val vm: EntityGridViewModel by viewModel()
 
-    private val handler: Handler = Handler()
+    private val handler: Handler = Handler(Looper.getMainLooper())
     private var menu: Menu? = null
 
     private lateinit var onBackPressedCallback: OnBackPressedCallback
