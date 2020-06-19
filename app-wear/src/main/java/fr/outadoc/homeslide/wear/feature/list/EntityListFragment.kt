@@ -62,8 +62,8 @@ class EntityListFragment : Fragment() {
             }
         }
 
-        vm.result.observe(viewLifecycleOwner) { result ->
-            result.onFailure {
+        vm.error.observe(viewLifecycleOwner) { e ->
+            if (e != null) {
                 Intent(requireContext(), ConfirmationActivity::class.java).apply {
                     putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE, ConfirmationActivity.FAILURE_ANIMATION)
                     putExtra(ConfirmationActivity.EXTRA_MESSAGE, getString(R.string.list_loading_error))

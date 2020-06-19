@@ -33,8 +33,8 @@ class EntityGridViewModel(
         object NoContent : GridState()
     }
 
-    private val _result = MutableLiveData<Result<Any>>()
-    val result: LiveData<Result<Any>> = _result
+    private val _error = MutableLiveData<Throwable?>()
+    val error: LiveData<Throwable?> = _error
 
     private val _allTiles = MutableLiveData<List<Tile<Entity>>>()
 
@@ -83,7 +83,7 @@ class EntityGridViewModel(
         }
 
         viewModelScope.launch(Dispatchers.IO) {
-            val res = repository.getEntityTiles()
+            repository.getEntityTiles()
                 .onSuccess { tiles ->
                     _editionState.postValue(
                         if (tiles.isEmpty()) {
@@ -94,6 +94,7 @@ class EntityGridViewModel(
                     )
 
                     _allTiles.postValue(tiles)
+                    _error.postValue(null)
 
                     _gridState.postValue(
                         if (tiles.isNullOrEmpty()) {
@@ -105,6 +106,7 @@ class EntityGridViewModel(
                 }
                 .onFailure { e ->
                     Timber.e(e) { "Error while loading entity list" }
+                    _error.postValue(e)
                     _gridState.postValue(
                         if (_allTiles.value.isNullOrEmpty()) {
                             GridState.NoContent
@@ -113,8 +115,6 @@ class EntityGridViewModel(
                         }
                     )
                 }
-
-            _result.postValue(res)
         }
     }
 
@@ -133,7 +133,7 @@ class EntityGridViewModel(
                     }
                 }.onFailure { e ->
                     Timber.e(e) { "Error while executing action" }
-                    _result.postValue(Result.failure(e))
+                    _error.postValue(e)
                 }
 
             onEntityLoadStop(item)
