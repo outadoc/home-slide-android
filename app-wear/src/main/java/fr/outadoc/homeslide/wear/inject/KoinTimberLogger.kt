@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass.wear.inject
+package fr.outadoc.homeslide.wear.inject
 
 import com.github.ajalt.timberkt.Timber.d
 import com.github.ajalt.timberkt.Timber.e

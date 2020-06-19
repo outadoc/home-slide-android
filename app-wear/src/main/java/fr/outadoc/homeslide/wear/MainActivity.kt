@@ -1,9 +1,9 @@
-package fr.outadoc.quickhass.wear
+package fr.outadoc.homeslide.wear
 
 import android.os.Bundle
 import fr.outadoc.homeslide.common.DayNightActivity
 import fr.outadoc.homeslide.common.ThemeProvider
-import fr.outadoc.quickhass.wear.feature.list.EntityListFragment
+import fr.outadoc.homeslide.wear.feature.list.EntityListFragment
 
 class MainActivity : DayNightActivity() {
 

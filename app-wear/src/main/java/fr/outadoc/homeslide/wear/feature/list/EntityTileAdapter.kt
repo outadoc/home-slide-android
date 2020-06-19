@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass.wear.feature.list
+package fr.outadoc.homeslide.wear.feature.list
 
 import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.homeslide.common.feature.grid.ui.TileDiffer
 import fr.outadoc.homeslide.hassapi.model.Tile
 import fr.outadoc.homeslide.hassapi.model.entity.Entity
-import fr.outadoc.quickhass.wear.R
+import fr.outadoc.homeslide.wear.R
 
 class EntityTileAdapter(
     val onItemClickListener: (Entity) -> Unit

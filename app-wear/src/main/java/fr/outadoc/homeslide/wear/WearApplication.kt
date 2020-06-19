@@ -1,7 +1,6 @@
-package fr.outadoc.quickhass.wear
+package fr.outadoc.homeslide.wear
 
 import android.app.Application
-import fr.outadoc.homeslide.common.feature.slideover.EntityRepositoryImpl
 import fr.outadoc.homeslide.common.inject.commonModule
 import fr.outadoc.homeslide.common.inject.systemModule
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
@@ -10,14 +9,13 @@ import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
 import fr.outadoc.homeslide.common.rest.SimpleApiClientBuilder
 import fr.outadoc.homeslide.hassapi.api.AuthApi
 import fr.outadoc.homeslide.hassapi.api.HomeAssistantApi
-import fr.outadoc.homeslide.hassapi.repository.EntityRepository
 import fr.outadoc.homeslide.rest.ApiClientBuilder
 import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
 import fr.outadoc.mdi.MaterialIconAssetMapperImpl
 import fr.outadoc.mdi.MaterialIconLocator
-import fr.outadoc.quickhass.wear.inject.KoinTimberLogger
-import fr.outadoc.quickhass.wear.preferences.WearPreferenceRepositoryImpl
-import fr.outadoc.quickhass.wear.preferences.DataSyncViewModel
+import fr.outadoc.homeslide.wear.inject.KoinTimberLogger
+import fr.outadoc.homeslide.wear.preferences.WearPreferenceRepositoryImpl
+import fr.outadoc.homeslide.wear.preferences.DataSyncViewModel
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel

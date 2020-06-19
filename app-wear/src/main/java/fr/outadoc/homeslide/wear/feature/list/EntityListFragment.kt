@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass.wear.feature.list
+package fr.outadoc.homeslide.wear.feature.list
 
 import android.content.Intent
 import android.os.Bundle
@@ -17,7 +17,7 @@ import androidx.wear.widget.WearableRecyclerView
 import com.github.ajalt.timberkt.Timber
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityGridViewModel
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityGridViewModel.GridState
-import fr.outadoc.quickhass.wear.R
+import fr.outadoc.homeslide.wear.R
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
