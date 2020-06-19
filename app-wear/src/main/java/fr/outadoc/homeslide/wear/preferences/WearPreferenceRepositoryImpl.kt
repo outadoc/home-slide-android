@@ -1,4 +1,4 @@
-package fr.outadoc.quickhass.wear.preferences
+package fr.outadoc.homeslide.wear.preferences
 
 import android.content.Context
 import androidx.preference.PreferenceManager
