@@ -1,5 +1,6 @@
 package fr.outadoc.quickhass.wear.feature.list
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,6 +11,7 @@ import android.widget.ViewAnimator
 import androidx.core.os.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
+import androidx.wear.activity.ConfirmationActivity
 import androidx.wear.widget.WearableLinearLayoutManager
 import androidx.wear.widget.WearableRecyclerView
 import com.github.ajalt.timberkt.Timber
@@ -19,7 +21,7 @@ import fr.outadoc.quickhass.wear.R
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
-class EntityGridFragment : Fragment() {
+class EntityListFragment : Fragment() {
 
     private val vm: EntityGridViewModel by viewModel()
     private var viewHolder: ViewHolder? = null
@@ -56,6 +58,17 @@ class EntityGridFragment : Fragment() {
 
                 if (state == GridState.Content) {
                     recyclerView.requestFocus()
+                }
+            }
+        }
+
+        vm.result.observe(viewLifecycleOwner) { result ->
+            result.onFailure {
+                Intent(requireContext(), ConfirmationActivity::class.java).apply {
+                    putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE, ConfirmationActivity.FAILURE_ANIMATION)
+                    putExtra(ConfirmationActivity.EXTRA_MESSAGE, getString(R.string.list_loading_error))
+                }.also { intent ->
+                    startActivity(intent)
                 }
             }
         }
@@ -100,7 +113,7 @@ class EntityGridFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = EntityGridFragment()
+        fun newInstance() = EntityListFragment()
 
         private const val CHILD_CONTENT = 0
         private const val CHILD_NO_CONTENT = 1

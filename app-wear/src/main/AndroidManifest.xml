@@ -36,6 +36,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="androidx.wear.activity.ConfirmationActivity" />
+
         <service android:name=".service.DataSyncListenerService">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
