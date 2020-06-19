@@ -119,21 +119,20 @@ class EntityGridFragment : Fragment() {
             }
         }
 
-        vm.result.observe(viewLifecycleOwner) { shortcuts ->
-            shortcuts
-                .onFailure { e ->
-                    if (e is InvalidRefreshTokenException) {
-                        val pendingIntent = NavDeepLinkBuilder(requireActivity())
-                            .setComponentName(OnboardingActivity::class.java)
-                            .setGraph(R.navigation.nav_graph_onboarding)
-                            .setDestination(R.id.setupHostFragment)
-                            .createPendingIntent()
+        vm.error.observe(viewLifecycleOwner) { e ->
+            when (e) {
+                null -> Unit
+                is InvalidRefreshTokenException -> {
+                    val pendingIntent = NavDeepLinkBuilder(requireActivity())
+                        .setComponentName(OnboardingActivity::class.java)
+                        .setGraph(R.navigation.nav_graph_onboarding)
+                        .setDestination(R.id.setupHostFragment)
+                        .createPendingIntent()
 
-                        pendingIntent.send()
-                        activity?.finish()
-                        return@onFailure
-                    }
-
+                    pendingIntent.send()
+                    activity?.finish()
+                }
+                else -> {
                     val message = e.localizedMessage
                         ?.let { getString(R.string.grid_snackbar_loading_error_title, it) }
                         ?: getString(R.string.grid_snackbar_generic_error_title)
@@ -146,9 +145,10 @@ class EntityGridFragment : Fragment() {
                             }
                             .show()
                     }
-                }
 
-            scheduleRefresh()
+                    scheduleRefresh()
+                }
+            }
         }
 
         vm.tiles.observe(viewLifecycleOwner) { shortcuts ->
