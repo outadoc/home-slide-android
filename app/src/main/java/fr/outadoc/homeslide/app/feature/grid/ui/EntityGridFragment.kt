@@ -14,6 +14,7 @@ import android.view.WindowManager
 import android.widget.ViewAnimator
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
+import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.Insets
 import androidx.core.os.postDelayed
@@ -96,7 +97,7 @@ class EntityGridFragment : Fragment() {
             )
         )
 
-        viewHolder?.let { setWindowInsets(it) }
+        viewHolder?.setWindowInsets()
 
         onStates(vm) { state ->
             if (state is State) {
@@ -108,7 +109,8 @@ class EntityGridFragment : Fragment() {
 
         onEvents(vm) { event ->
             when (val data = event.take()) {
-                is Event.StartOnboarding -> startOnboarding()
+                is Event.StartOnboarding -> startOnboarding(R.id.welcomeFragment)
+                is Event.LoggedOut -> startOnboarding(R.id.setupHostFragment)
                 is Event.Error -> displayError(data.e)
             }
         }
@@ -133,11 +135,11 @@ class EntityGridFragment : Fragment() {
         scheduleRefresh()
     }
 
-    private fun startOnboarding() {
+    private fun startOnboarding(@IdRes destination: Int) {
         NavDeepLinkBuilder(requireActivity())
             .setComponentName(OnboardingActivity::class.java)
             .setGraph(R.navigation.nav_graph_onboarding)
-            .setDestination(R.id.setupHostFragment)
+            .setDestination(destination)
             .createPendingIntent()
             .send()
 
@@ -268,27 +270,25 @@ class EntityGridFragment : Fragment() {
         navigator?.navigateTo(AppPreferencesFragment.newInstance())
     }
 
-    private fun setWindowInsets(viewHolder: ViewHolder) {
-        with(viewHolder) {
-            ViewCompat.setOnApplyWindowInsetsListener(recyclerView) { v, insets ->
-                v.setPadding(
-                    v.paddingLeft,
-                    v.paddingTop,
-                    v.paddingRight,
-                    v.paddingBottom + insets.systemWindowInsetBottom
-                )
+    private fun ViewHolder.setWindowInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(recyclerView) { v, insets ->
+            v.setPadding(
+                v.paddingLeft,
+                v.paddingTop,
+                v.paddingRight,
+                v.paddingBottom + insets.systemWindowInsetBottom
+            )
 
-                WindowInsetsCompat.Builder()
-                    .setSystemWindowInsets(
-                        Insets.of(
-                            insets.systemWindowInsetLeft,
-                            insets.systemWindowInsetTop,
-                            insets.systemWindowInsetRight,
-                            0
-                        )
+            WindowInsetsCompat.Builder()
+                .setSystemWindowInsets(
+                    Insets.of(
+                        insets.systemWindowInsetLeft,
+                        insets.systemWindowInsetTop,
+                        insets.systemWindowInsetRight,
+                        0
                     )
-                    .build()
-            }
+                )
+                .build()
         }
     }
 

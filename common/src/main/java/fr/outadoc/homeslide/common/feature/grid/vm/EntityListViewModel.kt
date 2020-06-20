@@ -32,6 +32,7 @@ class EntityListViewModel(
     sealed class Event : UIEvent() {
         data class Error(val e: Throwable) : Event()
         object StartOnboarding : Event()
+        object LoggedOut : Event()
     }
 
     val refreshIntervalSeconds: Long
@@ -67,7 +68,7 @@ class EntityListViewModel(
 
                     sendEvent {
                         when (e) {
-                            is InvalidRefreshTokenException -> Event.StartOnboarding
+                            is InvalidRefreshTokenException -> Event.LoggedOut
                             else -> Event.Error(e)
                         }
                     }
@@ -94,7 +95,7 @@ class EntityListViewModel(
                     setState { onEntityLoadStop(currentState, item, failure = true) }
                     sendEvent {
                         when (e) {
-                            is InvalidRefreshTokenException -> Event.StartOnboarding
+                            is InvalidRefreshTokenException -> Event.LoggedOut
                             else -> Event.Error(e)
                         }
                     }
