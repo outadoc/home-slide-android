@@ -1,6 +1,7 @@
 package fr.outadoc.homeslide.wear
 
 import android.app.Application
+import fr.outadoc.homeslide.common.log.KoinTimberLogger
 import fr.outadoc.homeslide.common.inject.commonModule
 import fr.outadoc.homeslide.common.inject.systemModule
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
@@ -13,7 +14,6 @@ import fr.outadoc.homeslide.rest.ApiClientBuilder
 import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
 import fr.outadoc.mdi.MaterialIconAssetMapperImpl
 import fr.outadoc.mdi.MaterialIconLocator
-import fr.outadoc.homeslide.wear.inject.KoinTimberLogger
 import fr.outadoc.homeslide.wear.preferences.WearPreferenceRepositoryImpl
 import fr.outadoc.homeslide.wear.preferences.DataSyncViewModel
 import okhttp3.logging.HttpLoggingInterceptor

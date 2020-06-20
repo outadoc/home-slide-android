@@ -1,7 +1,6 @@
 package fr.outadoc.homeslide.app.feature.grid.ui
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -22,7 +21,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -37,9 +35,13 @@ import fr.outadoc.homeslide.app.feature.slideover.ui.SlideOverNavigator
 import fr.outadoc.homeslide.app.onboarding.OnboardingActivity
 import fr.outadoc.homeslide.app.preferences.AppPreferencesFragment
 import fr.outadoc.homeslide.common.extensions.setupToolbar
-import fr.outadoc.homeslide.common.feature.auth.InvalidRefreshTokenException
-import fr.outadoc.homeslide.common.feature.grid.vm.EntityGridViewModel
+import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel
+import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel.Event
+import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel.State
 import fr.outadoc.homeslide.hassapi.model.entity.Entity
+import io.uniflow.androidx.flow.onEvents
+import io.uniflow.androidx.flow.onStates
+import io.uniflow.core.flow.getCurrentStateOrNull
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
@@ -47,7 +49,7 @@ class EntityGridFragment : Fragment() {
 
     private var viewHolder: ViewHolder? = null
 
-    private val vm: EntityGridViewModel by viewModel()
+    private val vm: EntityListViewModel by viewModel()
 
     private val handler: Handler = Handler(Looper.getMainLooper())
     private var menu: Menu? = null
@@ -63,7 +65,7 @@ class EntityGridFragment : Fragment() {
         onBackPressedCallback = requireActivity()
             .onBackPressedDispatcher
             .addCallback(this) {
-                vm.onBackPressed()
+                vm.exitEditMode()
             }
     }
 
@@ -81,116 +83,126 @@ class EntityGridFragment : Fragment() {
                 onItemClickListener = {
                     vm.onEntityClick(it)
                 },
-                onReorderedListener = vm::onReorderedEntities,
+                onReorderedListener = { vm.onReorderedEntities(it) },
                 onItemLongPressListener = ::onItemLongPress,
-                onItemVisibilityChangeListener = vm::onItemVisibilityChange
+                onItemVisibilityChangeListener = { entity, isVisible ->
+                    vm.onItemVisibilityChange(entity, isVisible)
+                }
             ),
             EditingModeCallback(
                 isEnabled = {
-                    vm.editionState.value == EntityGridViewModel.EditionState.Editing
+                    vm.getCurrentStateOrNull<State>() is State.Editing
                 }
             )
         )
 
         viewHolder?.let { setWindowInsets(it) }
 
-        vm.gridState.observe(viewLifecycleOwner) { state ->
-            viewHolder?.apply {
-                val childToDisplay = when (state) {
-                    EntityGridViewModel.GridState.Content -> {
-                        if (skeleton.isSkeleton()) skeleton.showOriginal()
-                        CHILD_CONTENT
-                    }
-
-                    EntityGridViewModel.GridState.Loading -> {
-                        if (!skeleton.isSkeleton()) skeleton.showSkeleton()
-                        CHILD_CONTENT
-                    }
-
-                    EntityGridViewModel.GridState.NoContent -> {
-                        if (skeleton.isSkeleton()) skeleton.showOriginal()
-                        CHILD_NO_CONTENT
-                    }
-                }
-
-                if (viewFlipper.displayedChild != childToDisplay) {
-                    viewFlipper.displayedChild = childToDisplay
-                }
+        onStates(vm) { state ->
+            if (state is State) {
+                updateContent(state)
+                updateViewFlipper(state)
+                updateEditingMode(state)
             }
         }
 
-        vm.error.observe(viewLifecycleOwner) { e ->
-            when (e) {
-                null -> Unit
-                is InvalidRefreshTokenException -> {
-                    val pendingIntent = NavDeepLinkBuilder(requireActivity())
-                        .setComponentName(OnboardingActivity::class.java)
-                        .setGraph(R.navigation.nav_graph_onboarding)
-                        .setDestination(R.id.setupHostFragment)
-                        .createPendingIntent()
-
-                    pendingIntent.send()
-                    activity?.finish()
-                }
-                else -> {
-                    val message = e.localizedMessage
-                        ?.let { getString(R.string.grid_snackbar_loading_error_title, it) }
-                        ?: getString(R.string.grid_snackbar_generic_error_title)
-
-                    viewHolder?.recyclerView?.let {
-                        Snackbar.make(it, message, Snackbar.LENGTH_LONG)
-                            .setAction(R.string.grid_snackbar_error_action_retry) {
-                                cancelRefresh()
-                                vm.loadShortcuts()
-                            }
-                            .show()
-                    }
-
-                    scheduleRefresh()
-                }
-            }
-        }
-
-        vm.tiles.observe(viewLifecycleOwner) { shortcuts ->
-            viewHolder?.itemAdapter?.apply {
-                submitList(shortcuts)
-            }
-        }
-
-        vm.editionState.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                EntityGridViewModel.EditionState.Editing -> {
-                    onBackPressedCallback.isEnabled = true
-                    cancelRefresh()
-                }
-                else -> {
-                    onBackPressedCallback.isEnabled = false
-                    scheduleRefresh()
-                }
-            }
-
-            menu?.forEach { item ->
-                when (item.itemId) {
-                    R.id.menuItem_done -> item.isVisible =
-                        state == EntityGridViewModel.EditionState.Editing
-                    R.id.menuItem_edit -> item.isVisible =
-                        state == EntityGridViewModel.EditionState.Normal
-                }
-            }
-
-            viewHolder?.itemAdapter?.apply {
-                this.isEditingMode = state == EntityGridViewModel.EditionState.Editing
-                notifyDataSetChanged()
-            }
-        }
-
-        vm.shouldAskForInitialValues.observe(viewLifecycleOwner) { shouldAskForInitialValues ->
-            if (shouldAskForInitialValues) {
-                startOnboarding()
+        onEvents(vm) { event ->
+            when (val data = event.take()) {
+                is Event.StartOnboarding -> startOnboarding()
+                is Event.Error -> displayError(data.e)
             }
         }
 
         return root
+    }
+
+    private fun displayError(e: Throwable) {
+        val message = e.localizedMessage
+            ?.let { getString(R.string.grid_snackbar_loading_error_title, it) }
+            ?: getString(R.string.grid_snackbar_generic_error_title)
+
+        viewHolder?.recyclerView?.let {
+            Snackbar.make(it, message, Snackbar.LENGTH_LONG)
+                .setAction(R.string.grid_snackbar_error_action_retry) {
+                    cancelRefresh()
+                    vm.loadEntities()
+                }
+                .show()
+        }
+
+        scheduleRefresh()
+    }
+
+    private fun startOnboarding() {
+        NavDeepLinkBuilder(requireActivity())
+            .setComponentName(OnboardingActivity::class.java)
+            .setGraph(R.navigation.nav_graph_onboarding)
+            .setDestination(R.id.setupHostFragment)
+            .createPendingIntent()
+            .send()
+
+        activity?.finish()
+    }
+
+    private fun updateContent(state: State) {
+        viewHolder?.itemAdapter?.apply {
+            when (state) {
+                is State.Content -> submitList(state.displayTiles)
+                is State.Editing -> submitList(state.tiles)
+                State.Empty -> submitList(emptyList())
+                else -> Unit
+            }
+        }
+    }
+
+    private fun updateViewFlipper(state: State) {
+        viewHolder?.apply {
+            val childToDisplay = when (state) {
+                is State.Editing,
+                is State.Content -> {
+                    if (skeleton.isSkeleton()) skeleton.showOriginal()
+                    CHILD_CONTENT
+                }
+
+                is State.Loading -> {
+                    if (!skeleton.isSkeleton()) skeleton.showSkeleton()
+                    CHILD_CONTENT
+                }
+
+                is State.Empty -> {
+                    if (skeleton.isSkeleton()) skeleton.showOriginal()
+                    CHILD_NO_CONTENT
+                }
+            }
+
+            if (viewFlipper.displayedChild != childToDisplay) {
+                viewFlipper.displayedChild = childToDisplay
+            }
+        }
+    }
+
+    private fun updateEditingMode(state: State) {
+        val isEditing = when (state) {
+            is State.Editing -> {
+                onBackPressedCallback.isEnabled = true
+                cancelRefresh()
+                true
+            }
+            else -> {
+                onBackPressedCallback.isEnabled = false
+                scheduleRefresh()
+                false
+            }
+        }
+
+        menu?.forEach { item ->
+            when (item.itemId) {
+                R.id.menuItem_done -> item.isVisible = isEditing
+                R.id.menuItem_edit -> item.isVisible = !isEditing
+            }
+        }
+
+        viewHolder?.itemAdapter?.isEditingMode = isEditing
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -202,7 +214,7 @@ class EntityGridFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menuItem_edit -> {
-                vm.onEditClick()
+                vm.enterEditMode()
                 true
             }
 
@@ -212,7 +224,7 @@ class EntityGridFragment : Fragment() {
             }
 
             R.id.menuItem_done -> {
-                vm.onEditClick()
+                vm.exitEditMode()
                 true
             }
 
@@ -243,20 +255,13 @@ class EntityGridFragment : Fragment() {
 
         Timber.d { "scheduling refresh" }
         handler.postDelayed(TimeUnit.SECONDS.toMillis(vm.refreshIntervalSeconds)) {
-            vm.loadShortcuts()
+            vm.loadEntities()
         }
     }
 
     private fun cancelRefresh() {
         Timber.d { "canceling refresh" }
         handler.removeCallbacksAndMessages(null)
-    }
-
-    private fun startOnboarding() {
-        Intent(activity, OnboardingActivity::class.java).let { i ->
-            startActivity(i)
-            activity?.finish()
-        }
     }
 
     private fun openSettings() {
@@ -305,7 +310,7 @@ class EntityGridFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        vm.loadShortcuts()
+        vm.loadEntities()
     }
 
     override fun onDestroyView() {

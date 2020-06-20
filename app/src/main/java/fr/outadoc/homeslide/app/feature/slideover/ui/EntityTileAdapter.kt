@@ -26,6 +26,12 @@ class EntityTileAdapter(
 ) : ReorderableListAdapter<Tile<Entity>, EntityTileAdapter.ViewHolder>(TileDiffer()) {
 
     var isEditingMode = false
+        set(value) {
+            if (field != value) {
+                field = value
+                notifyDataSetChanged()
+            }
+        }
 
     private var wiggleWiggle: Animation? = null
 

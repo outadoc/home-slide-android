@@ -10,20 +10,22 @@ import android.view.ViewGroup
 import android.widget.ViewAnimator
 import androidx.core.os.postDelayed
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import androidx.wear.activity.ConfirmationActivity
 import androidx.wear.widget.WearableLinearLayoutManager
 import androidx.wear.widget.WearableRecyclerView
 import com.github.ajalt.timberkt.Timber
-import fr.outadoc.homeslide.common.feature.grid.vm.EntityGridViewModel
-import fr.outadoc.homeslide.common.feature.grid.vm.EntityGridViewModel.GridState
+import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel
+import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel.Event
+import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel.State
 import fr.outadoc.homeslide.wear.R
+import io.uniflow.androidx.flow.onEvents
+import io.uniflow.androidx.flow.onStates
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
 class EntityListFragment : Fragment() {
 
-    private val vm: EntityGridViewModel by viewModel()
+    private val vm: EntityListViewModel by viewModel()
     private var viewHolder: ViewHolder? = null
 
     private val handler: Handler = Handler(Looper.getMainLooper())
@@ -37,38 +39,48 @@ class EntityListFragment : Fragment() {
 
         viewHolder = ViewHolder(root, EntityTileAdapter { entity -> vm.onEntityClick(entity) })
 
-        vm.tiles.observe(viewLifecycleOwner) { tiles ->
-            viewHolder?.apply {
-                recyclerView.requestFocus()
-                tileAdapter.submitList(tiles)
+        onStates(vm) { state ->
+            when (state) {
+                is State.Content -> {
+                    viewHolder?.apply {
+                        recyclerView.requestFocus()
+                        tileAdapter.submitList(state.displayTiles)
+                    }
+                }
             }
-        }
 
-        vm.gridState.observe(viewLifecycleOwner) { state ->
             viewHolder?.apply {
                 val childToDisplay = when (state) {
-                    GridState.Content -> CHILD_CONTENT
-                    GridState.NoContent -> CHILD_NO_CONTENT
-                    GridState.Loading -> CHILD_LOADING
+                    is State.Content -> CHILD_CONTENT
+                    State.Loading -> CHILD_LOADING
+                    else -> CHILD_NO_CONTENT
                 }
 
                 if (viewFlipper.displayedChild != childToDisplay) {
                     viewFlipper.displayedChild = childToDisplay
                 }
 
-                if (state == GridState.Content) {
+                if (state is State.Content) {
                     recyclerView.requestFocus()
                 }
             }
         }
 
-        vm.error.observe(viewLifecycleOwner) { e ->
-            if (e != null) {
-                Intent(requireContext(), ConfirmationActivity::class.java).apply {
-                    putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE, ConfirmationActivity.FAILURE_ANIMATION)
-                    putExtra(ConfirmationActivity.EXTRA_MESSAGE, getString(R.string.list_loading_error))
-                }.also { intent ->
-                    startActivity(intent)
+        onEvents(vm) { event ->
+            when (event.take()) {
+                is Event.Error -> {
+                    Intent(requireContext(), ConfirmationActivity::class.java).apply {
+                        putExtra(
+                            ConfirmationActivity.EXTRA_ANIMATION_TYPE,
+                            ConfirmationActivity.FAILURE_ANIMATION
+                        )
+                        putExtra(
+                            ConfirmationActivity.EXTRA_MESSAGE,
+                            getString(R.string.list_loading_error)
+                        )
+                    }.also { intent ->
+                        startActivity(intent)
+                    }
                 }
             }
         }
@@ -79,7 +91,7 @@ class EntityListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        vm.loadShortcuts()
+        vm.loadEntities()
     }
 
     private fun scheduleRefresh() {
@@ -88,7 +100,7 @@ class EntityListFragment : Fragment() {
 
         Timber.d { "scheduling refresh" }
         handler.postDelayed(TimeUnit.SECONDS.toMillis(vm.refreshIntervalSeconds)) {
-            vm.loadShortcuts()
+            vm.loadEntities()
         }
     }
 

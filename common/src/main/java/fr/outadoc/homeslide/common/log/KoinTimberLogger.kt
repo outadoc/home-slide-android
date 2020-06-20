@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.wear.inject
+package fr.outadoc.homeslide.common.log
 
 import com.github.ajalt.timberkt.Timber.d
 import com.github.ajalt.timberkt.Timber.e
