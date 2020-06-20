@@ -99,6 +99,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$androidx_lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$androidx_lifecycle_version"
 
+    // Data flow
+    implementation "io.uniflow:uniflow-androidx:$uniflow_version"
+    testImplementation "io.uniflow:uniflow-androidx-test:$uniflow_version"
+
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$androidx_nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$androidx_nav_version"

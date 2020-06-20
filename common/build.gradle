@@ -58,6 +58,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$androidx_lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$androidx_lifecycle_version"
 
+    // Data flow
+    implementation "io.uniflow:uniflow-androidx:$uniflow_version"
+    testImplementation "io.uniflow:uniflow-androidx-test:$uniflow_version"
+
     // Network libs
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"

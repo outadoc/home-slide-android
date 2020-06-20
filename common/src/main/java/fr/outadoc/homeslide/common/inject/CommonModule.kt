@@ -9,9 +9,10 @@ import com.google.android.gms.wearable.Wearable
 import com.squareup.moshi.Moshi
 import fr.outadoc.homeslide.common.feature.auth.repository.AppOAuthConfiguration
 import fr.outadoc.homeslide.common.feature.auth.repository.AuthRepositoryImpl
-import fr.outadoc.homeslide.common.feature.grid.vm.EntityGridViewModel
+import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel
 import fr.outadoc.homeslide.common.feature.slideover.EntityRepositoryImpl
 import fr.outadoc.homeslide.common.json.SkipBadElementsListAdapter
+import fr.outadoc.homeslide.common.log.UniFlowTimberLogger
 import fr.outadoc.homeslide.common.persistence.EntityDatabase
 import fr.outadoc.homeslide.common.preferences.BaseUrlConfigProviderImpl
 import fr.outadoc.homeslide.common.rest.TokenProviderImpl
@@ -25,6 +26,7 @@ import fr.outadoc.homeslide.hassapi.repository.EntityRepository
 import fr.outadoc.homeslide.rest.auth.AccessTokenProvider
 import fr.outadoc.homeslide.rest.auth.OAuthConfiguration
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlConfigProvider
+import io.uniflow.core.logger.UniFlowLogger
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -73,5 +75,7 @@ fun commonModule() = module {
 
     single<Converter.Factory> { MoshiConverterFactory.create(get()) }
 
-    viewModel { EntityGridViewModel(get(), get()) }
+    viewModel { EntityListViewModel(get(), get()) }
+
+    UniFlowLogger.init(UniFlowTimberLogger())
 }

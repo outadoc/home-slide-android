@@ -5,7 +5,7 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import fr.outadoc.homeslide.app.controlprovider.inject.IntentProvider
 import fr.outadoc.homeslide.app.controlprovider.inject.controlProviderModule
 import fr.outadoc.homeslide.app.inject.AppIntentProvider
-import fr.outadoc.homeslide.app.inject.KoinTimberLogger
+import fr.outadoc.homeslide.common.log.KoinTimberLogger
 import fr.outadoc.homeslide.app.onboarding.rest.DiscoveryRepositoryImpl
 import fr.outadoc.homeslide.app.onboarding.rest.HassZeroconfDiscoveryServiceImpl
 import fr.outadoc.homeslide.app.onboarding.vm.HostSetupViewModel
