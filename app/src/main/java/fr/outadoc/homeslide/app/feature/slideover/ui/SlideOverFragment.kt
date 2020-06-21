@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
@@ -18,11 +16,12 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPS
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN
 import fr.outadoc.homeslide.app.R
+import fr.outadoc.homeslide.app.databinding.FragmentSlideoverBinding
 import fr.outadoc.homeslide.app.feature.grid.ui.EntityGridFragment
 
 class SlideOverFragment : Fragment(), SlideOverNavigator {
 
-    private var viewHolder: ViewHolder? = null
+    private var binding: FragmentSlideoverBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +35,7 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
             if (childFragmentManager.backStackEntryCount > 0) {
                 childFragmentManager.popBackStack()
             } else {
-                viewHolder?.bottomSheetBehavior?.state = STATE_HIDDEN
+                binding?.bottomSheetBehavior?.state = STATE_HIDDEN
             }
         }
     }
@@ -46,10 +45,8 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val root = inflater.inflate(R.layout.fragment_slideover, container, false)
-
-        viewHolder = ViewHolder(root).apply {
-            contentContainer.setOnClickListener {
+        binding = FragmentSlideoverBinding.inflate(inflater, container, false).apply {
+            linearLayoutContent.setOnClickListener {
                 // Prevent from bubbling event up to parent
             }
 
@@ -57,14 +54,13 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
                 activity?.finish()
             }
 
-            setBottomSheetCallback(this)
-            setWindowInsets(this)
+            setBottomSheetCallback()
+            setWindowInsets()
+
+            (activity as? AppCompatActivity)?.setSupportActionBar(gridToolbar)
         }
 
-        val toolbar: Toolbar = root.findViewById(R.id.grid_toolbar)
-        (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
-
-        return root
+        return binding!!.root
     }
 
     override fun navigateTo(fragment: Fragment) {
@@ -80,15 +76,15 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
     }
 
     override fun collapseSheet() {
-        viewHolder?.bottomSheetBehavior?.state = STATE_COLLAPSED
+        binding?.bottomSheetBehavior?.state = STATE_COLLAPSED
     }
 
     override fun restoreSheet() {
-        viewHolder?.bottomSheetBehavior?.state = STATE_EXPANDED
+        binding?.bottomSheetBehavior?.state = STATE_EXPANDED
     }
 
-    private fun setBottomSheetCallback(viewHolder: ViewHolder) {
-        viewHolder.bottomSheetBehavior.addBottomSheetCallback(object :
+    private fun FragmentSlideoverBinding.setBottomSheetCallback() {
+        bottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -99,43 +95,38 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
         })
     }
 
-    private fun setWindowInsets(viewHolder: ViewHolder) {
-        with(viewHolder) {
-            ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
-                // Set top padding to account for status bar
-                v.setPadding(0, insets.systemWindowInsetTop, 0, 0)
+    private fun FragmentSlideoverBinding.setWindowInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
+            // Set top padding to account for status bar
+            v.setPadding(0, insets.systemWindowInsetTop, 0, 0)
 
-                val peekHeight = resources.getDimension(R.dimen.slideover_peekHeight).toInt()
-                bottomSheetBehavior.peekHeight = peekHeight + insets.systemWindowInsetBottom
+            val peekHeight = resources.getDimension(R.dimen.slideover_peekHeight).toInt()
+            bottomSheetBehavior.peekHeight = peekHeight + insets.systemWindowInsetBottom
 
-                // Tell system we've consumed our insets
-                WindowInsetsCompat.Builder()
-                    .setSystemWindowInsets(
-                        Insets.of(
-                            insets.systemWindowInsetLeft,
-                            0,
-                            insets.systemWindowInsetRight,
-                            insets.systemWindowInsetBottom
-                        )
+            // Tell system we've consumed our insets
+            WindowInsetsCompat.Builder()
+                .setSystemWindowInsets(
+                    Insets.of(
+                        insets.systemWindowInsetLeft,
+                        0,
+                        insets.systemWindowInsetRight,
+                        insets.systemWindowInsetBottom
                     )
-                    .build()
-            }
+                )
+                .build()
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewHolder = null
+        binding = null
     }
 
-    private class ViewHolder(val root: View) {
-        val contentContainer: LinearLayout = root.findViewById(R.id.linearLayout_content)
-        val bottomSheetBehavior: BottomSheetBehavior<*>
-            get() {
-                val p = contentContainer.layoutParams as CoordinatorLayout.LayoutParams
-                return p.behavior as BottomSheetBehavior
-            }
-    }
+    private val FragmentSlideoverBinding.bottomSheetBehavior: BottomSheetBehavior<*>
+        get() {
+            val p = linearLayoutContent.layoutParams as CoordinatorLayout.LayoutParams
+            return p.behavior as BottomSheetBehavior
+        }
 
     companion object {
         fun newInstance() = SlideOverFragment()

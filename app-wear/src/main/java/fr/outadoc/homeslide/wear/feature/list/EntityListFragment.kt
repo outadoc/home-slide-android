@@ -7,17 +7,16 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ViewAnimator
 import androidx.core.os.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.wear.activity.ConfirmationActivity
 import androidx.wear.widget.WearableLinearLayoutManager
-import androidx.wear.widget.WearableRecyclerView
 import com.github.ajalt.timberkt.Timber
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel.Event
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel.State
 import fr.outadoc.homeslide.wear.R
+import fr.outadoc.homeslide.wear.databinding.FragmentEntityListBinding
 import io.uniflow.androidx.flow.onEvents
 import io.uniflow.androidx.flow.onStates
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -26,42 +25,47 @@ import java.util.concurrent.TimeUnit
 class EntityListFragment : Fragment() {
 
     private val vm: EntityListViewModel by viewModel()
-    private var viewHolder: ViewHolder? = null
 
+    private var binding: FragmentEntityListBinding? = null
     private val handler: Handler = Handler(Looper.getMainLooper())
+    private val tileAdapter = EntityTileAdapter { entity -> vm.onEntityClick(entity) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_entity_grid, container, false)
+        binding = FragmentEntityListBinding.inflate(inflater, container, false)
 
-        viewHolder = ViewHolder(root, EntityTileAdapter { entity -> vm.onEntityClick(entity) })
+        binding?.wearableRecyclerViewShortcuts?.apply {
+            isEdgeItemsCenteringEnabled = true
+            layoutManager = WearableLinearLayoutManager(context)
+            adapter = tileAdapter
+        }
 
         onStates(vm) { state ->
             when (state) {
                 is State.Content -> {
-                    viewHolder?.apply {
-                        recyclerView.requestFocus()
+                    binding?.apply {
+                        wearableRecyclerViewShortcuts.requestFocus()
                         tileAdapter.submitList(state.displayTiles)
                     }
                 }
             }
 
-            viewHolder?.apply {
+            binding?.apply {
                 val childToDisplay = when (state) {
                     is State.Content -> CHILD_CONTENT
                     State.Loading -> CHILD_LOADING
                     else -> CHILD_NO_CONTENT
                 }
 
-                if (viewFlipper.displayedChild != childToDisplay) {
-                    viewFlipper.displayedChild = childToDisplay
+                if (viewFlipperEntityList.displayedChild != childToDisplay) {
+                    viewFlipperEntityList.displayedChild = childToDisplay
                 }
 
                 if (state is State.Content) {
-                    recyclerView.requestFocus()
+                    wearableRecyclerViewShortcuts.requestFocus()
                 }
             }
         }
@@ -86,7 +90,7 @@ class EntityListFragment : Fragment() {
         }
 
         scheduleRefresh()
-        return root
+        return binding!!.root
     }
 
     override fun onResume() {
@@ -111,17 +115,7 @@ class EntityListFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewHolder = null
-    }
-
-    private class ViewHolder(view: View, val tileAdapter: EntityTileAdapter) {
-        val viewFlipper: ViewAnimator = view.findViewById(R.id.viewFlipper_entityGrid)
-        val recyclerView: WearableRecyclerView =
-            view.findViewById<WearableRecyclerView>(R.id.wearableRecyclerView_shortcuts).apply {
-                isEdgeItemsCenteringEnabled = true
-                layoutManager = WearableLinearLayoutManager(context)
-                adapter = tileAdapter
-            }
+        binding = null
     }
 
     companion object {
