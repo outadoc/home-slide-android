@@ -73,7 +73,13 @@ class EntityListViewModel(
                         }
                     }
 
-                    setState { currentState }
+                    setState {
+                        if (currentState !is State.Loading) {
+                            currentState
+                        } else {
+                            State.Empty
+                        }
+                    }
                 }
         }
     }
