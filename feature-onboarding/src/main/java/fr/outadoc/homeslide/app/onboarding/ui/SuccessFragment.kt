@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
@@ -12,19 +11,19 @@ import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.homeslide.app.onboarding.R
+import fr.outadoc.homeslide.app.onboarding.databinding.FragmentSuccessBinding
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
 import fr.outadoc.homeslide.app.onboarding.ui.SuccessFragmentDirections.Companion.actionSuccessFragmentToSlideOverActivity
 import fr.outadoc.homeslide.app.onboarding.vm.SuccessViewModel
-import nl.dionsegijn.konfetti.KonfettiView
 import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SuccessFragment : Fragment() {
 
-    private var viewHolder: ViewHolder? = null
     private val vm: SuccessViewModel by viewModel()
 
+    private var binding: FragmentSuccessBinding? = null
     private val confettiColors =
         intArrayOf(R.color.lt_yellow, R.color.lt_orange, R.color.lt_purple, R.color.lt_pink)
 
@@ -33,28 +32,26 @@ class SuccessFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_success, container, false)
-
-        viewHolder = ViewHolder(view).apply {
-            continueButton.setOnClickListener {
+        binding = FragmentSuccessBinding.inflate(inflater, container, false).apply {
+            btnContinue.setOnClickListener {
                 vm.onContinueClicked()
             }
 
-            confettiView.doOnNextLayout { confetti() }
+            konfetti.doOnNextLayout { confetti() }
         }
 
         vm.navigateTo.observe(viewLifecycleOwner) {
             when (it.pop()) {
                 NavigationFlow.Next -> {
-                    viewHolder?.navController?.navigate(actionSuccessFragmentToSlideOverActivity())
+                    binding?.navController?.navigate(actionSuccessFragmentToSlideOverActivity())
                     activity?.finish()
                 }
-                NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
+                NavigationFlow.Back -> binding?.navController?.navigateUp()
                 else -> Unit
             }
         }
 
-        return view
+        return binding!!.root
     }
 
     private fun confetti() {
@@ -62,7 +59,7 @@ class SuccessFragment : Fragment() {
             return
         }
 
-        viewHolder?.confettiView?.apply {
+        binding?.konfetti?.apply {
             build()
                 .addColors(confettiColors.map { ContextCompat.getColor(context, it) })
                 .setDirection(0.0, 359.0)
@@ -78,16 +75,11 @@ class SuccessFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewHolder = null
+        binding = null
     }
 
-    private class ViewHolder(private val view: View) {
-        val continueButton: Button = view.findViewById(R.id.btn_continue)
-        val confettiView: KonfettiView = view.findViewById(R.id.konfetti)
-
-        val navController: NavController
-            get() = view.findNavController()
-    }
+    private val FragmentSuccessBinding.navController: NavController
+        get() = root.findNavController()
 
     companion object {
         fun newInstance() = SuccessFragment()

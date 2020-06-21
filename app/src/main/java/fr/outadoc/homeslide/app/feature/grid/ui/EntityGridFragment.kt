@@ -11,7 +11,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.ViewAnimator
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.annotation.IdRes
@@ -24,12 +23,13 @@ import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
+import com.faltenreich.skeletonlayout.Skeleton
 import com.faltenreich.skeletonlayout.applySkeleton
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.snackbar.Snackbar
 import fr.outadoc.homeslide.app.BuildConfig
 import fr.outadoc.homeslide.app.R
+import fr.outadoc.homeslide.app.databinding.FragmentEntityGridBinding
 import fr.outadoc.homeslide.app.feature.details.ui.EntityDetailFragment
 import fr.outadoc.homeslide.app.feature.slideover.ui.EntityTileAdapter
 import fr.outadoc.homeslide.app.feature.slideover.ui.SlideOverNavigator
@@ -48,17 +48,28 @@ import java.util.concurrent.TimeUnit
 
 class EntityGridFragment : Fragment() {
 
-    private var viewHolder: ViewHolder? = null
-
     private val vm: EntityListViewModel by viewModel()
 
+    private var binding: FragmentEntityGridBinding? = null
     private val handler: Handler = Handler(Looper.getMainLooper())
+    private var skeleton: Skeleton? = null
     private var menu: Menu? = null
 
     private lateinit var onBackPressedCallback: OnBackPressedCallback
 
     private val navigator: SlideOverNavigator?
         get() = parentFragment as? SlideOverNavigator
+
+    private val itemAdapter = EntityTileAdapter(
+        onItemClickListener = {
+            vm.onEntityClick(it)
+        },
+        onReorderedListener = { vm.onReorderedEntities(it) },
+        onItemLongPressListener = ::onItemLongPress,
+        onItemVisibilityChangeListener = { entity, isVisible ->
+            vm.onItemVisibilityChange(entity, isVisible)
+        }
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,21 +86,11 @@ class EntityGridFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val root = inflater.inflate(R.layout.fragment_entity_grid, container, false)
+        binding = FragmentEntityGridBinding.inflate(inflater, container, false)
+
         setupToolbar(R.string.title_quick_access, false)
 
-        viewHolder = ViewHolder(
-            root,
-            EntityTileAdapter(
-                onItemClickListener = {
-                    vm.onEntityClick(it)
-                },
-                onReorderedListener = { vm.onReorderedEntities(it) },
-                onItemLongPressListener = ::onItemLongPress,
-                onItemVisibilityChangeListener = { entity, isVisible ->
-                    vm.onItemVisibilityChange(entity, isVisible)
-                }
-            ),
+        val itemTouchHelper = ItemTouchHelper(
             EditingModeCallback(
                 isEnabled = {
                     vm.getCurrentStateOrNull<State>() is State.Editing
@@ -97,7 +98,43 @@ class EntityGridFragment : Fragment() {
             )
         )
 
-        viewHolder?.setWindowInsets()
+        binding?.apply {
+            recyclerViewShortcuts.apply {
+                val gridLayout = GridAutoSpanLayoutManager(
+                    context,
+                    resources.getDimension(R.dimen.item_width).toInt()
+                )
+
+                adapter = itemAdapter
+                layoutManager = gridLayout
+
+                addItemDecoration(
+                    GridSpacingItemDecoration(
+                        gridLayout,
+                        resources.getDimensionPixelSize(R.dimen.grid_spacing)
+                    )
+                )
+            }.also {
+                itemTouchHelper.attachToRecyclerView(it)
+            }
+
+            skeleton = recyclerViewShortcuts.applySkeleton(
+                listItemLayoutResId = R.layout.item_shortcut_shimmer,
+                itemCount = SKELETON_ITEM_COUNT
+            ).apply {
+                maskColor = ContextCompat.getColor(
+                    recyclerViewShortcuts.context,
+                    R.color.skeleton_maskColor
+                )
+                shimmerColor =
+                    ContextCompat.getColor(
+                        recyclerViewShortcuts.context,
+                        R.color.skeleton_shimmerColor
+                    )
+            }
+        }
+
+        binding?.setWindowInsets()
 
         onStates(vm) { state ->
             if (state is State) {
@@ -115,7 +152,7 @@ class EntityGridFragment : Fragment() {
             }
         }
 
-        return root
+        return binding!!.root
     }
 
     private fun displayError(e: Throwable) {
@@ -123,7 +160,7 @@ class EntityGridFragment : Fragment() {
             ?.let { getString(R.string.grid_snackbar_loading_error_title, it) }
             ?: getString(R.string.grid_snackbar_generic_error_title)
 
-        viewHolder?.recyclerView?.let {
+        binding?.recyclerViewShortcuts?.let {
             Snackbar.make(it, message, Snackbar.LENGTH_LONG)
                 .setAction(R.string.grid_snackbar_error_action_retry) {
                     cancelRefresh()
@@ -147,7 +184,7 @@ class EntityGridFragment : Fragment() {
     }
 
     private fun updateContent(state: State) {
-        viewHolder?.itemAdapter?.apply {
+        itemAdapter.apply {
             when (state) {
                 is State.Content -> submitList(state.displayTiles)
                 is State.Editing -> submitList(state.tiles)
@@ -158,27 +195,27 @@ class EntityGridFragment : Fragment() {
     }
 
     private fun updateViewFlipper(state: State) {
-        viewHolder?.apply {
-            val childToDisplay = when (state) {
-                is State.Editing,
-                is State.Content -> {
-                    if (skeleton.isSkeleton()) skeleton.showOriginal()
-                    CHILD_CONTENT
-                }
-
-                is State.Loading -> {
-                    if (!skeleton.isSkeleton()) skeleton.showSkeleton()
-                    CHILD_CONTENT
-                }
-
-                is State.Empty -> {
-                    if (skeleton.isSkeleton()) skeleton.showOriginal()
-                    CHILD_NO_CONTENT
-                }
+        val childToDisplay = when (state) {
+            is State.Editing,
+            is State.Content -> {
+                skeleton?.let { if (it.isSkeleton()) it.showOriginal() }
+                CHILD_CONTENT
             }
 
-            if (viewFlipper.displayedChild != childToDisplay) {
-                viewFlipper.displayedChild = childToDisplay
+            is State.Loading -> {
+                skeleton?.let { if (!it.isSkeleton()) it.showSkeleton() }
+                CHILD_CONTENT
+            }
+
+            is State.Empty -> {
+                skeleton?.let { if (it.isSkeleton()) it.showOriginal() }
+                CHILD_NO_CONTENT
+            }
+        }
+
+        binding?.apply {
+            if (viewFlipperEntityGrid.displayedChild != childToDisplay) {
+                viewFlipperEntityGrid.displayedChild = childToDisplay
             }
         }
     }
@@ -204,7 +241,7 @@ class EntityGridFragment : Fragment() {
             }
         }
 
-        viewHolder?.itemAdapter?.isEditingMode = isEditing
+        itemAdapter.isEditingMode = isEditing
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -270,8 +307,8 @@ class EntityGridFragment : Fragment() {
         navigator?.navigateTo(AppPreferencesFragment.newInstance())
     }
 
-    private fun ViewHolder.setWindowInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(recyclerView) { v, insets ->
+    private fun FragmentEntityGridBinding.setWindowInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(recyclerViewShortcuts) { v, insets ->
             v.setPadding(
                 v.paddingLeft,
                 v.paddingTop,
@@ -315,44 +352,8 @@ class EntityGridFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewHolder = null
-    }
-
-    private class ViewHolder(
-        root: View,
-        val itemAdapter: EntityTileAdapter,
-        callback: EditingModeCallback
-    ) {
-        val itemTouchHelper = ItemTouchHelper(callback)
-
-        val viewFlipper: ViewAnimator = root.findViewById(R.id.viewFlipper_entityGrid)
-
-        val recyclerView: RecyclerView =
-            root.findViewById<RecyclerView>(R.id.recyclerView_shortcuts).apply {
-                val gridLayout = GridAutoSpanLayoutManager(
-                    context,
-                    resources.getDimension(R.dimen.item_width).toInt()
-                )
-
-                adapter = itemAdapter
-                layoutManager = gridLayout
-
-                addItemDecoration(
-                    GridSpacingItemDecoration(
-                        gridLayout,
-                        resources.getDimensionPixelSize(R.dimen.grid_spacing)
-                    )
-                )
-            }.also {
-                itemTouchHelper.attachToRecyclerView(it)
-            }
-
-        val skeleton =
-            recyclerView.applySkeleton(R.layout.item_shortcut_shimmer, SKELETON_ITEM_COUNT).apply {
-                maskColor = ContextCompat.getColor(recyclerView.context, R.color.skeleton_maskColor)
-                shimmerColor =
-                    ContextCompat.getColor(recyclerView.context, R.color.skeleton_shimmerColor)
-            }
+        binding = null
+        skeleton = null
     }
 
     companion object {

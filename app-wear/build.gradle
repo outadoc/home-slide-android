@@ -35,6 +35,10 @@ android {
         }
     }
 
+    buildFeatures {
+        viewBinding true
+    }
+
     compileOptions {
         sourceCompatibility source_compatibility
         targetCompatibility source_compatibility

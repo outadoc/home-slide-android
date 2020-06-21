@@ -6,10 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -18,8 +14,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import fr.outadoc.homeslide.app.onboarding.R
+import fr.outadoc.homeslide.app.onboarding.databinding.FragmentSetupHostBinding
 import fr.outadoc.homeslide.app.onboarding.extensions.toViewStatus
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
 import fr.outadoc.homeslide.app.onboarding.ui.HostSetupFragmentDirections.Companion.actionSetupHostFragmentToAuthenticationCustomTabs
@@ -31,55 +26,60 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class HostSetupFragment : Fragment() {
 
-    private var viewHolder: ViewHolder? = null
     private val vm: HostSetupViewModel by viewModel()
+
+    private var binding: FragmentSetupHostBinding? = null
+    private val zeroconfAdapter = ZeroconfAdapter(
+        onItemClick = {
+            vm.onZeroconfHostSelected(it)
+        }
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_setup_host, container, false)
-
-        val adapter = ZeroconfAdapter(
-            onItemClick = {
-                vm.onZeroconfHostSelected(it)
-            }
-        )
-
-        viewHolder = ViewHolder(view, adapter).apply {
-            baseUrlEditText.addTextChangedListener { s ->
+        binding = FragmentSetupHostBinding.inflate(inflater, container, false).apply {
+            etInstanceBaseUrl.addTextChangedListener { s ->
                 vm.onInstanceUrlChanged(s)
             }
 
-            continueButton.setOnClickListener {
+            btnContinue.setOnClickListener {
                 vm.onLoginClicked()
             }
+
+            recyclerViewZeroconf.apply {
+                adapter = zeroconfAdapter
+                layoutManager = LinearLayoutManager(root.context)
+            }
+
+            (iconLoading.drawable as? AnimatedVectorDrawable)?.start()
         }
 
         vm.inputInstanceUrl.observe(viewLifecycleOwner) { instanceUrl ->
-            viewHolder?.apply {
-                if (baseUrlEditText.text.toString() != instanceUrl) {
-                    baseUrlEditText.setText(instanceUrl)
+            binding?.apply {
+                if (etInstanceBaseUrl.text.toString() != instanceUrl) {
+                    etInstanceBaseUrl.setText(instanceUrl)
                 }
             }
         }
 
         vm.instanceDiscoveryInfo.observe(viewLifecycleOwner) { discovery ->
-            viewHolder?.discoveryResult?.state = discovery.toViewStatus()
+            binding?.viewDiscoveryResult?.state = discovery.toViewStatus()
         }
 
         vm.autoDiscoveredInstances.observe(viewLifecycleOwner) { autoDiscovered ->
-            viewHolder?.zeroconfHelper?.isInvisible = autoDiscovered.isEmpty()
+            binding?.lblZeroconfHelper?.isInvisible = autoDiscovered.isEmpty()
 
-            viewHolder?.zeroconfAdapter?.apply {
+            zeroconfAdapter.apply {
                 submitList(autoDiscovered)
-                viewHolder?.zeroconfRecyclerView?.scheduleLayoutAnimation()
+                binding?.recyclerViewZeroconf?.scheduleLayoutAnimation()
             }
         }
 
         vm.canContinue.observe(viewLifecycleOwner) { canContinue ->
-            viewHolder?.continueButton?.apply {
+            binding?.btnContinue?.apply {
                 isEnabled = canContinue
                 alpha = if (canContinue) 1f else 0.6f
             }
@@ -99,7 +99,7 @@ class HostSetupFragment : Fragment() {
                     navigate(direction)
                 }
 
-                NavigationFlow.Back -> viewHolder?.navController?.navigateUp()
+                NavigationFlow.Back -> binding?.navController?.navigateUp()
 
                 is NavigationFlow.Url -> {
                     navigate(actionSetupHostFragmentToAuthenticationCustomTabs(dest.url))
@@ -108,7 +108,7 @@ class HostSetupFragment : Fragment() {
         }
 
         vm.state.observe(viewLifecycleOwner) { state ->
-            viewHolder?.loadingView?.isVisible = when (state) {
+            binding?.iconLoading?.isVisible = when (state) {
                 HostSetupViewModel.State.Loading -> true
                 else -> false
             }
@@ -119,11 +119,11 @@ class HostSetupFragment : Fragment() {
             vm.onAuthCallback(code)
         }
 
-        return view
+        return binding!!.root
     }
 
     private fun navigate(directions: NavDirections) {
-        viewHolder?.navController?.navigate(directions)
+        binding?.navController?.navigate(directions)
     }
 
     override fun onPause() {
@@ -138,30 +138,11 @@ class HostSetupFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewHolder = null
+        binding = null
     }
 
-    private class ViewHolder(private val view: View, val zeroconfAdapter: ZeroconfAdapter) {
-        val baseUrlEditText: EditText = view.findViewById(R.id.et_instance_base_url)
-        val discoveryResult: ResultIconView = view.findViewById(R.id.view_discovery_result)
-        val continueButton: Button = view.findViewById(R.id.btn_continue)
-        val zeroconfHelper: TextView = view.findViewById(R.id.lbl_zeroconf_helper)
-
-        val loadingView: View = view.findViewById<View>(R.id.frameLayout_auth_loading).apply {
-            findViewById<ImageView>(R.id.icon_loading).apply {
-                (drawable as? AnimatedVectorDrawable)?.start()
-            }
-        }
-
-        val zeroconfRecyclerView: RecyclerView =
-            view.findViewById<RecyclerView>(R.id.recyclerView_zeroconf).apply {
-                adapter = zeroconfAdapter
-                layoutManager = LinearLayoutManager(view.context)
-            }
-
-        val navController: NavController
-            get() = view.findNavController()
-    }
+    private val FragmentSetupHostBinding.navController: NavController
+        get() = root.findNavController()
 
     companion object {
         fun newInstance() = HostSetupFragment()
