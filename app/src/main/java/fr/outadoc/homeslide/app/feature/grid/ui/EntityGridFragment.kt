@@ -68,6 +68,10 @@ class EntityGridFragment : Fragment() {
         onItemLongPressListener = ::onItemLongPress,
         onItemVisibilityChangeListener = { entity, isVisible ->
             vm.onItemVisibilityChange(entity, isVisible)
+        },
+        onItemHeightChangeListener = { itemHeight ->
+            val chromeHeight = resources.getDimension(R.dimen.slideover_contentPeekHeight).toInt()
+            navigator?.setPeekHeight((itemHeight * VISIBLE_ITEM_COUNT_VERTICAL) + chromeHeight)
         }
     )
 
@@ -360,6 +364,7 @@ class EntityGridFragment : Fragment() {
         fun newInstance() = EntityGridFragment()
 
         private const val SKELETON_ITEM_COUNT = 30
+        private const val VISIBLE_ITEM_COUNT_VERTICAL = 3
 
         private const val CHILD_CONTENT = 0
         private const val CHILD_NO_CONTENT = 1

@@ -4,6 +4,7 @@ import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
@@ -22,7 +23,8 @@ class EntityTileAdapter(
     val onItemClickListener: (Entity) -> Unit,
     val onItemLongPressListener: (Entity) -> Boolean,
     val onItemVisibilityChangeListener: (Entity, Boolean) -> Unit,
-    val onReorderedListener: (List<Tile<Entity>>) -> Unit
+    val onReorderedListener: (List<Tile<Entity>>) -> Unit,
+    val onItemHeightChangeListener: (Int) -> Unit
 ) : ReorderableListAdapter<Tile<Entity>, EntityTileAdapter.ViewHolder>(TileDiffer()) {
 
     var isEditingMode = false
@@ -35,6 +37,14 @@ class EntityTileAdapter(
 
     private var wiggleWiggle: Animation? = null
 
+    private var lastMeasuredHeight: Int = 0
+        set(value) {
+            if (field != value) {
+                field = value
+                onItemHeightChangeListener(value)
+            }
+        }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.item_shortcut, parent, false)
@@ -45,6 +55,15 @@ class EntityTileAdapter(
         val tile = getItem(position)
 
         with(holder) {
+            if (position == 0) {
+                view.viewTreeObserver.addOnGlobalLayoutListener(object: OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+                        view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        lastMeasuredHeight = view.height
+                    }
+                })
+            }
+
             // Activate the view if the entity is "on"
             view.isActivated = tile.isActivated
 

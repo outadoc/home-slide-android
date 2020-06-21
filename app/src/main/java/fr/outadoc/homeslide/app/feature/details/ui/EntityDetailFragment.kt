@@ -44,7 +44,8 @@ class EntityDetailFragment private constructor() : Fragment() {
             },
             onReorderedListener = { },
             onItemLongPressListener = { false },
-            onItemVisibilityChangeListener = { _, _ -> }
+            onItemVisibilityChangeListener = { _, _ -> },
+            onItemHeightChangeListener = {}
         )
 
         viewHolder = ViewHolder(root, entityAdapter)
