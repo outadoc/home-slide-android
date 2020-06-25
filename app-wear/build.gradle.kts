@@ -68,6 +68,7 @@ dependencies {
     implementation(Dependencies.AndroidX.appcompat)
 
     // Network libs
+    implementation(Dependencies.Retrofit.core)
     implementation(Dependencies.OkHttp.logging)
 
     // AndroidX lifecycle

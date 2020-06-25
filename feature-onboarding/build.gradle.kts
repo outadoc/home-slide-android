@@ -78,7 +78,4 @@ dependencies {
     implementation(Dependencies.AndroidX.Lifecycle.extensions)
     implementation(Dependencies.AndroidX.Lifecycle.liveData)
     implementation(Dependencies.AndroidX.Lifecycle.viewModel)
-
-    debugImplementation(Dependencies.Chucker.core)
-    releaseImplementation(Dependencies.Chucker.noop)
 }

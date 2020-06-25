@@ -21,6 +21,8 @@ allprojects {
     repositories {
         google()
         jcenter()
+
+        // Required for Chucker
         maven(url = "https://jitpack.io")
     }
 }
