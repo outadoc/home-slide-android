@@ -68,4 +68,3 @@ abstract class ABaseEntity(
         return entityId
     }
 }
-

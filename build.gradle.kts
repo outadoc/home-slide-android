@@ -26,8 +26,20 @@ allprojects {
 }
 
 spotless {
+    format("misc") {
+        target("**/*.md", "**/.gitignore", "**/.xml")
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
+    }
+
     kotlin {
         target("**/*.kt")
+        ktlint()
+    }
+
+    kotlinGradle {
+        target("*.gradle.kts")
         ktlint()
     }
 }

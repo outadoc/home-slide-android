@@ -19,8 +19,8 @@ import fr.outadoc.homeslide.wear.R
 import fr.outadoc.homeslide.wear.databinding.FragmentEntityListBinding
 import io.uniflow.androidx.flow.onEvents
 import io.uniflow.androidx.flow.onStates
-import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class EntityListFragment : Fragment() {
 

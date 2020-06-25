@@ -1,12 +1,6 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("android.extensions")
-    kotlin("kapt")
-}
-
-androidExtensions {
-    isExperimental = true
 }
 
 android {
@@ -79,11 +73,7 @@ dependencies {
     implementation(Dependencies.Skeleton.core)
 
     // Network libs
-    implementation(Dependencies.Retrofit.core)
-    implementation(Dependencies.Retrofit.moshiConverter)
     implementation(Dependencies.OkHttp.logging)
-    implementation(Dependencies.Moshi.core)
-    kapt(Dependencies.Moshi.codegen)
 
     // AndroidX libs
     implementation(Dependencies.AndroidX.core)

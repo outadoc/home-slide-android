@@ -59,7 +59,6 @@ class ControlsProviderViewModel(
         }
     }
 
-
     fun performAction(controlId: String, action: ControlAction) {
         viewModelScope.launch(Dispatchers.IO) {
             when (action) {

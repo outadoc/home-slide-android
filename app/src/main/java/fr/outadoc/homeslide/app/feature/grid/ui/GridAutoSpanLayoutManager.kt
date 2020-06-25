@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.max
 
-
 class GridAutoSpanLayoutManager(context: Context, private val columnWidth: Int) : GridLayoutManager(context, 1) {
 
     private var lastWidth: Int = 0

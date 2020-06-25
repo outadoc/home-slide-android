@@ -27,5 +27,4 @@ abstract class DayNightActivity : AppCompatActivity() {
         applyPreferredTheme(updatedValue)
         delegate.applyDayNight()
     }
-
 }

@@ -9,10 +9,9 @@ object ZeroconfHostDiffer : DiffUtil.ItemCallback<ZeroconfHost>() {
     }
 
     override fun areContentsTheSame(oldItem: ZeroconfHost, newItem: ZeroconfHost): Boolean {
-        return oldItem.baseUrl == newItem.baseUrl
-                && oldItem.hostName == newItem.hostName
-                && oldItem.instanceName == newItem.instanceName
-                && oldItem.version == newItem.version
+        return oldItem.baseUrl == newItem.baseUrl &&
+                oldItem.hostName == newItem.hostName &&
+                oldItem.instanceName == newItem.instanceName &&
+                oldItem.version == newItem.version
     }
-
 }

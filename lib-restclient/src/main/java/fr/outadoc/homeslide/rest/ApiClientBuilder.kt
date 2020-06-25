@@ -6,11 +6,11 @@ import fr.outadoc.homeslide.rest.auth.AccessTokenProvider
 import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlConfigProvider
 import fr.outadoc.homeslide.rest.util.PLACEHOLDER_BASE_URL
+import java.util.concurrent.TimeUnit
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Converter
 import retrofit2.Retrofit
-import java.util.concurrent.TimeUnit
 
 class ApiClientBuilder<T>(
     private val type: Class<T>,

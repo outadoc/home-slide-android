@@ -5,7 +5,6 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-
 class GridSpacingItemDecoration(
     private val layoutManager: GridLayoutManager,
     private val spacing: Int

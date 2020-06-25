@@ -43,8 +43,8 @@ import fr.outadoc.homeslide.logging.KLog
 import io.uniflow.androidx.flow.onEvents
 import io.uniflow.androidx.flow.onStates
 import io.uniflow.core.flow.getCurrentStateOrNull
-import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class EntityGridFragment : Fragment() {
 

@@ -1,9 +1,9 @@
 package fr.outadoc.homeslide.rest.util
 
+import java.net.MalformedURLException
 import okhttp3.HttpUrl
 import retrofit2.HttpException
 import retrofit2.Response
-import java.net.MalformedURLException
 
 suspend fun <T> wrapResponse(apiCall: suspend () -> Response<T>): Result<T> {
     return try {
@@ -14,7 +14,6 @@ suspend fun <T> wrapResponse(apiCall: suspend () -> Response<T>): Result<T> {
         } else {
             Result.failure(HttpException(res))
         }
-
     } catch (e: Exception) {
         Result.failure(e)
     }

@@ -1,9 +1,9 @@
 package fr.outadoc.homeslide.wear
 
 import android.app.Application
-import fr.outadoc.homeslide.common.log.KoinCustomLogger
 import fr.outadoc.homeslide.common.inject.commonModule
 import fr.outadoc.homeslide.common.inject.systemModule
+import fr.outadoc.homeslide.common.log.KoinCustomLogger
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
@@ -13,10 +13,10 @@ import fr.outadoc.homeslide.hassapi.api.HomeAssistantApi
 import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.ApiClientBuilder
 import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
+import fr.outadoc.homeslide.wear.preferences.DataSyncViewModel
+import fr.outadoc.homeslide.wear.preferences.WearPreferenceRepositoryImpl
 import fr.outadoc.mdi.MaterialIconAssetMapperImpl
 import fr.outadoc.mdi.MaterialIconLocator
-import fr.outadoc.homeslide.wear.preferences.WearPreferenceRepositoryImpl
-import fr.outadoc.homeslide.wear.preferences.DataSyncViewModel
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel

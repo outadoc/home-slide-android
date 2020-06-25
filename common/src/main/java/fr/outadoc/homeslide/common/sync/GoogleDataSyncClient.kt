@@ -56,8 +56,8 @@ class GoogleDataSyncClient(moshi: Moshi, private val dataClient: DataClient) : D
 
     override fun getPreferencesFromDataEvents(dataEvents: DataEventBuffer): PreferencesPayload? {
         return dataEvents.filter { event ->
-            event.type != DataEvent.TYPE_DELETED
-                && event.dataItem.uri.path == PATH_SYNC_PREFERENCES
+            event.type != DataEvent.TYPE_DELETED &&
+                event.dataItem.uri.path == PATH_SYNC_PREFERENCES
         }.map { event ->
             val dataMap = DataMapItem.fromDataItem(event.dataItem).dataMap
             val payloadStr = dataMap.getString(KEY_PREFERENCES_PAYLOAD)
@@ -67,8 +67,8 @@ class GoogleDataSyncClient(moshi: Moshi, private val dataClient: DataClient) : D
 
     override fun getDatabaseFromDataEvents(dataEvents: DataEventBuffer): DatabasePayload? {
         return dataEvents.filter { event ->
-            event.type != DataEvent.TYPE_DELETED
-                && event.dataItem.uri.path == PATH_SYNC_DATABASE
+            event.type != DataEvent.TYPE_DELETED &&
+                event.dataItem.uri.path == PATH_SYNC_DATABASE
         }.map { event ->
             val dataMap = DataMapItem.fromDataItem(event.dataItem).dataMap
             val payloadStr = dataMap.getString(KEY_DATABASE_PAYLOAD)

@@ -123,7 +123,7 @@ class HostSetupViewModel(
             try {
                 val host = with(serviceInfo) {
                     ZeroconfHost(
-                        hostName = "${host.hostAddress}:${port}",
+                        hostName = "${host.hostAddress}:$port",
                         baseUrl = attributes["base_url"]?.decodeToString(),
                         version = attributes["version"]?.decodeToString(),
                         instanceName = serviceName

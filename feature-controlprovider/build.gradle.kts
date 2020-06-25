@@ -52,9 +52,6 @@ dependencies {
     // AndroidX libs
     implementation(Dependencies.AndroidX.core)
 
-    // Network libs
-    implementation(Dependencies.Retrofit.core)
-
     // DI
     implementation(Dependencies.Koin.android)
     implementation(Dependencies.Koin.viewModel)
