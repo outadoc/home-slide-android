@@ -41,6 +41,7 @@ android {
 dependencies {
     implementation(project(":lib-restclient"))
     implementation(project(":lib-homeassistant-api"))
+    implementation(project(":lib-logging"))
 
     // Kotlin runtime
     implementation(Dependencies.Kotlin.stdlib)
@@ -57,10 +58,6 @@ dependencies {
     // DI
     implementation(Dependencies.Koin.android)
     implementation(Dependencies.Koin.viewModel)
-
-    // Logging
-    implementation(Dependencies.Timber.core)
-    implementation(Dependencies.Timber.ktx)
 
     // AndroidX lifecycle
     implementation(Dependencies.AndroidX.Lifecycle.extensions)

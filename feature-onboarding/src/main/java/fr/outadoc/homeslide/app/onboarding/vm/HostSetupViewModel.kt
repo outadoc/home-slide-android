@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.github.ajalt.timberkt.Timber
 import fr.outadoc.homeslide.app.onboarding.model.CallStatus
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
 import fr.outadoc.homeslide.app.onboarding.model.ZeroconfHost
@@ -16,6 +15,7 @@ import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
 import fr.outadoc.homeslide.hassapi.repository.AuthRepository
 import fr.outadoc.homeslide.hassapi.repository.DiscoveryRepository
+import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.auth.OAuthConfiguration
 import fr.outadoc.homeslide.util.lifecycle.Event
 import fr.outadoc.homeslide.util.sanitizeUrl
@@ -139,7 +139,7 @@ class HostSetupViewModel(
                     )
                 }
             } catch (e: Exception) {
-                Timber.e(e)
+                KLog.e(e)
             }
         }
     }
@@ -182,7 +182,7 @@ class HostSetupViewModel(
     }
 
     fun onAuthCallback(code: String) {
-        Timber.d { "received authentication code, fetching token" }
+        KLog.d { "received authentication code, fetching token" }
 
         _state.value = State.Loading
 
@@ -199,7 +199,7 @@ class HostSetupViewModel(
                     }
                 }
                 .onFailure { e ->
-                    Timber.e(e) { "couldn't retrieve token using code $code" }
+                    KLog.e(e) { "couldn't retrieve token using code $code" }
                     _state.postValue(State.Content)
                 }
         }

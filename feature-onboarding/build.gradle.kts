@@ -51,6 +51,7 @@ dependencies {
     implementation(project(":lib-zeroconf"))
     implementation(project(":lib-restclient"))
     implementation(project(":lib-homeassistant-api"))
+    implementation(project(":lib-logging"))
 
     implementation(Dependencies.Konfetti.core)
 
@@ -76,10 +77,6 @@ dependencies {
     // DI
     implementation(Dependencies.Koin.android)
     implementation(Dependencies.Koin.viewModel)
-
-    // Logging
-    implementation(Dependencies.Timber.core)
-    implementation(Dependencies.Timber.ktx)
 
     // AndroidX lifecycle
     implementation(Dependencies.AndroidX.Lifecycle.extensions)

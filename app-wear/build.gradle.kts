@@ -55,6 +55,7 @@ dependencies {
     implementation(project(":lib-restclient"))
     implementation(project(":lib-homeassistant-api"))
     implementation(project(":lib-common-util"))
+    implementation(project(":lib-logging"))
 
     implementation(project(":common"))
 
@@ -93,9 +94,6 @@ dependencies {
     implementation(Dependencies.Koin.android)
     implementation(Dependencies.Koin.viewModel)
 
-    // Logging
-    implementation(Dependencies.Timber.core)
-    implementation(Dependencies.Timber.ktx)
 
     implementation(Dependencies.AndroidX.wear)
     implementation(Dependencies.Google.Wearable.support)

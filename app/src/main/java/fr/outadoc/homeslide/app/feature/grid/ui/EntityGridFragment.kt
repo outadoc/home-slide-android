@@ -25,7 +25,6 @@ import androidx.navigation.NavDeepLinkBuilder
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.faltenreich.skeletonlayout.Skeleton
 import com.faltenreich.skeletonlayout.applySkeleton
-import com.github.ajalt.timberkt.Timber
 import com.google.android.material.snackbar.Snackbar
 import fr.outadoc.homeslide.app.BuildConfig
 import fr.outadoc.homeslide.app.R
@@ -40,6 +39,7 @@ import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel.Event
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel.State
 import fr.outadoc.homeslide.hassapi.model.entity.Entity
+import fr.outadoc.homeslide.logging.KLog
 import io.uniflow.androidx.flow.onEvents
 import io.uniflow.androidx.flow.onStates
 import io.uniflow.core.flow.getCurrentStateOrNull
@@ -296,14 +296,14 @@ class EntityGridFragment : Fragment() {
         // Only one refresh scheduled at once
         cancelRefresh()
 
-        Timber.d { "scheduling refresh" }
+        KLog.d { "scheduling refresh" }
         handler.postDelayed(TimeUnit.SECONDS.toMillis(vm.refreshIntervalSeconds)) {
             vm.loadEntities()
         }
     }
 
     private fun cancelRefresh() {
-        Timber.d { "canceling refresh" }
+        KLog.d { "canceling refresh" }
         handler.removeCallbacksAndMessages(null)
     }
 

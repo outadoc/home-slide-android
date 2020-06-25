@@ -1,6 +1,6 @@
 package fr.outadoc.homeslide.rest.baseurl
 
-import com.github.ajalt.timberkt.Timber
+import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.util.PLACEHOLDER_BASE_URL
 import fr.outadoc.homeslide.rest.util.toUrl
 import fr.outadoc.homeslide.rest.util.toUrlOrNull
@@ -36,7 +36,7 @@ class AltBaseUrlInterceptor(private val config: BaseUrlConfigProvider) : Interce
                         }
                     }
                 } catch (e: Exception) {
-                    Timber.e(e)
+                    KLog.e(e)
                 }
             }
 

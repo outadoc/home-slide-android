@@ -1,7 +1,7 @@
 package fr.outadoc.homeslide.wear
 
 import android.app.Application
-import fr.outadoc.homeslide.common.log.KoinTimberLogger
+import fr.outadoc.homeslide.common.log.KoinCustomLogger
 import fr.outadoc.homeslide.common.inject.commonModule
 import fr.outadoc.homeslide.common.inject.systemModule
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
@@ -10,6 +10,7 @@ import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
 import fr.outadoc.homeslide.common.rest.SimpleApiClientBuilder
 import fr.outadoc.homeslide.hassapi.api.AuthApi
 import fr.outadoc.homeslide.hassapi.api.HomeAssistantApi
+import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.ApiClientBuilder
 import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
 import fr.outadoc.mdi.MaterialIconAssetMapperImpl
@@ -21,7 +22,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
-import timber.log.Timber
 
 @Suppress("unused")
 class WearApplication : Application() {
@@ -51,11 +51,11 @@ class WearApplication : Application() {
         super.onCreate()
 
         if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
+            KLog.enableDebugLogging()
         }
 
         startKoin {
-            KoinTimberLogger()
+            KoinCustomLogger()
             androidContext(this@WearApplication)
             modules(systemModule() + commonModule() + wearModule)
         }
