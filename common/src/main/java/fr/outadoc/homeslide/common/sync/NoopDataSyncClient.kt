@@ -1,27 +1,27 @@
 package fr.outadoc.homeslide.common.sync
 
-import com.github.ajalt.timberkt.Timber
 import com.google.android.gms.wearable.DataEventBuffer
 import fr.outadoc.homeslide.common.sync.model.DatabasePayload
 import fr.outadoc.homeslide.common.sync.model.PreferencesPayload
+import fr.outadoc.homeslide.logging.KLog
 
 class NoopDataSyncClient : DataSyncClient {
 
     override fun syncDatabase(payload: DatabasePayload) {
-        Timber.d { "syncDatabase($payload)" }
+        KLog.d { "syncDatabase($payload)" }
     }
 
     override fun syncPreferences(payload: PreferencesPayload) {
-        Timber.d { "syncPreferences($payload)" }
+        KLog.d { "syncPreferences($payload)" }
     }
 
     override fun getPreferencesFromDataEvents(dataEvents: DataEventBuffer): PreferencesPayload? {
-        Timber.d { "getPreferencesFromDataEvents" }
+        KLog.d { "getPreferencesFromDataEvents" }
         return null
     }
 
     override fun getDatabaseFromDataEvents(dataEvents: DataEventBuffer): DatabasePayload? {
-        Timber.d { "getDatabaseFromDataEvents" }
+        KLog.d { "getDatabaseFromDataEvents" }
         return null
     }
 }

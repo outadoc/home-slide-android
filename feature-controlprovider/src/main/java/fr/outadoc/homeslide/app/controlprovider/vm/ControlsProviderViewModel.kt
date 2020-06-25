@@ -7,8 +7,8 @@ import android.service.controls.actions.ControlAction
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.ajalt.timberkt.Timber
 import fr.outadoc.homeslide.app.controlprovider.repository.ControlRepository
+import fr.outadoc.homeslide.logging.KLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -30,12 +30,12 @@ class ControlsProviderViewModel(
         return flow {
             controlRepository.getEntities()
                 .onFailure { e ->
-                    Timber.e(e) { "Error while fetching devices for ControlsProviderService" }
+                    KLog.e(e) { "Error while fetching devices for ControlsProviderService" }
                 }
                 .onSuccess { controls ->
                     controls
                         .forEach { control ->
-                            Timber.d { "Found control ${control.controlId}" }
+                            KLog.d { "Found control ${control.controlId}" }
                             emit(control)
                         }
                 }
@@ -46,13 +46,13 @@ class ControlsProviderViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             controlRepository.getEntitiesWithState()
                 .onFailure { e ->
-                    Timber.e(e) { "Error while fetching devices for ControlsProviderService" }
+                    KLog.e(e) { "Error while fetching devices for ControlsProviderService" }
                 }
                 .onSuccess { controls ->
                     controls
                         .filter { control -> includeIds == null || control.controlId in includeIds }
                         .forEach { control ->
-                            Timber.d { "Found control ${control.controlId}" }
+                            KLog.d { "Found control ${control.controlId}" }
                             channel.send(control)
                         }
                 }

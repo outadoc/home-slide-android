@@ -63,6 +63,7 @@ dependencies {
     implementation(project(":lib-restclient"))
     implementation(project(":lib-homeassistant-api"))
     implementation(project(":lib-common-util"))
+    implementation(project(":lib-logging"))
 
     implementation(project(":common"))
     implementation(project(":feature-onboarding"))
@@ -109,10 +110,6 @@ dependencies {
     // DI
     implementation(Dependencies.Koin.android)
     implementation(Dependencies.Koin.viewModel)
-
-    // Logging
-    implementation(Dependencies.Timber.core)
-    implementation(Dependencies.Timber.ktx)
 
     // Tools
     debugImplementation(Dependencies.LeakCanary.core)

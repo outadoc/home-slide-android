@@ -5,7 +5,7 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import fr.outadoc.homeslide.app.controlprovider.inject.IntentProvider
 import fr.outadoc.homeslide.app.controlprovider.inject.controlProviderModule
 import fr.outadoc.homeslide.app.inject.AppIntentProvider
-import fr.outadoc.homeslide.common.log.KoinTimberLogger
+import fr.outadoc.homeslide.common.log.KoinCustomLogger
 import fr.outadoc.homeslide.app.onboarding.rest.DiscoveryRepositoryImpl
 import fr.outadoc.homeslide.app.onboarding.rest.HassZeroconfDiscoveryServiceImpl
 import fr.outadoc.homeslide.app.onboarding.vm.HostSetupViewModel
@@ -25,6 +25,7 @@ import fr.outadoc.homeslide.hassapi.api.AuthApi
 import fr.outadoc.homeslide.hassapi.api.DiscoveryApi
 import fr.outadoc.homeslide.hassapi.api.HomeAssistantApi
 import fr.outadoc.homeslide.hassapi.repository.DiscoveryRepository
+import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.ApiClientBuilder
 import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
 import fr.outadoc.homeslide.zeroconf.ZeroconfDiscoveryService
@@ -35,7 +36,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
-import timber.log.Timber
 
 @Suppress("unused")
 class MainApplication : Application() {
@@ -88,11 +88,11 @@ class MainApplication : Application() {
         super.onCreate()
 
         if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
+            KLog.enableDebugLogging()
         }
 
         startKoin {
-            KoinTimberLogger()
+            KoinCustomLogger()
             androidContext(this@MainApplication)
             modules(systemModule() + commonModule() + controlProviderModule() + appModule)
         }

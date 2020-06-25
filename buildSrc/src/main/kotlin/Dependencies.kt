@@ -113,7 +113,6 @@ object Dependencies {
 
     object Timber {
         const val core = "com.jakewharton.timber:timber:4.7.1"
-        const val ktx = "com.github.ajalt:timberkt:1.5.1"
     }
 
     object Uniflow {

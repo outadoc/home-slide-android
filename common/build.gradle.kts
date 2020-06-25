@@ -56,6 +56,7 @@ dependencies {
     implementation(project(":lib-restclient"))
     implementation(project(":lib-homeassistant-api"))
     implementation(project(":lib-common-util"))
+    implementation(project(":lib-logging"))
 
     // Kotlin runtime
     implementation(Dependencies.Kotlin.stdlib)
@@ -89,8 +90,6 @@ dependencies {
     kapt(Dependencies.AndroidX.Room.compiler)
 
     // Logging
-    implementation(Dependencies.Timber.core)
-    implementation(Dependencies.Timber.ktx)
     implementation(Dependencies.OkHttp.logging)
 
     // DI

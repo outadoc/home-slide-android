@@ -2,8 +2,6 @@ package fr.outadoc.homeslide.common.inject
 
 import android.content.Context
 import androidx.room.Room
-import com.github.ajalt.timberkt.Timber
-import com.github.ajalt.timberkt.d
 import com.google.android.gms.wearable.DataClient
 import com.google.android.gms.wearable.Wearable
 import com.squareup.moshi.Moshi
@@ -12,7 +10,8 @@ import fr.outadoc.homeslide.common.feature.auth.repository.AuthRepositoryImpl
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel
 import fr.outadoc.homeslide.common.feature.slideover.EntityRepositoryImpl
 import fr.outadoc.homeslide.common.json.SkipBadElementsListAdapter
-import fr.outadoc.homeslide.common.log.UniFlowTimberLogger
+import fr.outadoc.homeslide.common.log.OkHttpCustomLogger
+import fr.outadoc.homeslide.common.log.UniFlowCustomLogger
 import fr.outadoc.homeslide.common.persistence.EntityDatabase
 import fr.outadoc.homeslide.common.preferences.BaseUrlConfigProviderImpl
 import fr.outadoc.homeslide.common.rest.TokenProviderImpl
@@ -58,11 +57,7 @@ fun commonModule() = module {
     }
 
     single {
-        HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-            override fun log(message: String) {
-                Timber.tag("OkHttp").d { message }
-            }
-        }).apply {
+        HttpLoggingInterceptor(OkHttpCustomLogger()).apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
     }
@@ -77,5 +72,5 @@ fun commonModule() = module {
 
     viewModel { EntityListViewModel(get(), get()) }
 
-    UniFlowLogger.init(UniFlowTimberLogger())
+    UniFlowLogger.init(UniFlowCustomLogger())
 }

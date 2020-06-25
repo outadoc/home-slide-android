@@ -1,6 +1,5 @@
 package fr.outadoc.homeslide.common.feature.grid.vm
 
-import com.github.ajalt.timberkt.Timber
 import fr.outadoc.homeslide.common.feature.auth.InvalidRefreshTokenException
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import fr.outadoc.homeslide.hassapi.model.Action
@@ -8,6 +7,7 @@ import fr.outadoc.homeslide.hassapi.model.PersistedEntity
 import fr.outadoc.homeslide.hassapi.model.Tile
 import fr.outadoc.homeslide.hassapi.model.entity.Entity
 import fr.outadoc.homeslide.hassapi.repository.EntityRepository
+import fr.outadoc.homeslide.logging.KLog
 import io.uniflow.androidx.flow.AndroidDataFlow
 import io.uniflow.core.flow.actionOn
 import io.uniflow.core.flow.data.UIEvent
@@ -64,7 +64,7 @@ class EntityListViewModel(
                     }
                 }
                 .onFailure { e ->
-                    Timber.e(e) { "Error while loading entity list" }
+                    KLog.e(e) { "Error while loading entity list" }
 
                     sendEvent {
                         when (e) {
@@ -97,7 +97,7 @@ class EntityListViewModel(
                     setState { onEntityLoadStop(currentState, item, failure = false) }
                     onMain { loadEntities() }
                 }.onFailure { e ->
-                    Timber.e(e) { "Error while executing action" }
+                    KLog.e(e) { "Error while executing action" }
                     setState { onEntityLoadStop(currentState, item, failure = true) }
                     sendEvent {
                         when (e) {

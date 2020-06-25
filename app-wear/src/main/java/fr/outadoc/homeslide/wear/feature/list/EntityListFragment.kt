@@ -11,10 +11,10 @@ import androidx.core.os.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.wear.activity.ConfirmationActivity
 import androidx.wear.widget.WearableLinearLayoutManager
-import com.github.ajalt.timberkt.Timber
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel.Event
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel.State
+import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.wear.R
 import fr.outadoc.homeslide.wear.databinding.FragmentEntityListBinding
 import io.uniflow.androidx.flow.onEvents
@@ -102,14 +102,14 @@ class EntityListFragment : Fragment() {
         // Only one refresh scheduled at once
         cancelRefresh()
 
-        Timber.d { "scheduling refresh" }
+        KLog.d { "scheduling refresh" }
         handler.postDelayed(TimeUnit.SECONDS.toMillis(vm.refreshIntervalSeconds)) {
             vm.loadEntities()
         }
     }
 
     private fun cancelRefresh() {
-        Timber.d { "canceling refresh" }
+        KLog.d { "canceling refresh" }
         handler.removeCallbacksAndMessages(null)
     }
 

@@ -41,6 +41,7 @@ android {
 
 dependencies {
     implementation(project(":lib-common-util"))
+    implementation(project(":lib-logging"))
 
     // Kotlin runtime
     implementation(Dependencies.Kotlin.stdlib)
@@ -50,10 +51,6 @@ dependencies {
 
     // Network libs
     implementation(Dependencies.Retrofit.core)
-
-    // Logging
-    implementation(Dependencies.Timber.core)
-    implementation(Dependencies.Timber.ktx)
 
     // Testing
     testImplementation(Dependencies.Test.junit)

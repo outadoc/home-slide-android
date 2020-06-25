@@ -15,13 +15,13 @@ import androidx.navigation.NavDeepLinkBuilder
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
-import com.github.ajalt.timberkt.Timber
 import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.app.onboarding.OnboardingActivity
 import fr.outadoc.homeslide.common.DayNightActivity
 import fr.outadoc.homeslide.common.extensions.setupToolbar
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import fr.outadoc.homeslide.hassapi.repository.AuthRepository
+import fr.outadoc.homeslide.logging.KLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -88,7 +88,7 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
                     requireContext().packageManager.getPackageInfo(requireContext().packageName, 0)
                 getString(R.string.pref_version_summary, pInfo.versionName)
             } catch (e: PackageManager.NameNotFoundException) {
-                Timber.e(e)
+                KLog.e(e)
                 null
             }
 

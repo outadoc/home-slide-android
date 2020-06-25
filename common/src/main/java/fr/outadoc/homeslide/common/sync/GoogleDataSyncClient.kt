@@ -1,6 +1,5 @@
 package fr.outadoc.homeslide.common.sync
 
-import com.github.ajalt.timberkt.Timber
 import com.google.android.gms.wearable.DataClient
 import com.google.android.gms.wearable.DataEvent
 import com.google.android.gms.wearable.DataEventBuffer
@@ -9,6 +8,7 @@ import com.google.android.gms.wearable.PutDataMapRequest
 import com.squareup.moshi.Moshi
 import fr.outadoc.homeslide.common.sync.model.DatabasePayload
 import fr.outadoc.homeslide.common.sync.model.PreferencesPayload
+import fr.outadoc.homeslide.logging.KLog
 
 class GoogleDataSyncClient(moshi: Moshi, private val dataClient: DataClient) : DataSyncClient {
 
@@ -24,7 +24,7 @@ class GoogleDataSyncClient(moshi: Moshi, private val dataClient: DataClient) : D
     private val dbAdapter = moshi.adapter(DatabasePayload::class.java)
 
     override fun syncPreferences(payload: PreferencesPayload) {
-        Timber.d { "synchronizing prefs: $payload" }
+        KLog.d { "synchronizing prefs: $payload" }
 
         try {
             val putDataReq = PutDataMapRequest.create(PATH_SYNC_PREFERENCES).run {
@@ -35,12 +35,12 @@ class GoogleDataSyncClient(moshi: Moshi, private val dataClient: DataClient) : D
 
             dataClient.putDataItem(putDataReq)
         } catch (e: Exception) {
-            Timber.e(e)
+            KLog.e(e)
         }
     }
 
     override fun syncDatabase(payload: DatabasePayload) {
-        Timber.d { "synchronizing database: $payload" }
+        KLog.d { "synchronizing database: $payload" }
 
         try {
             val putDataReq = PutDataMapRequest.create(PATH_SYNC_DATABASE).run {
@@ -50,7 +50,7 @@ class GoogleDataSyncClient(moshi: Moshi, private val dataClient: DataClient) : D
 
             dataClient.putDataItem(putDataReq)
         } catch (e: Exception) {
-            Timber.e(e)
+            KLog.e(e)
         }
     }
 

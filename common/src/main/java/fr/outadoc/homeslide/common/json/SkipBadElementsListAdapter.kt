@@ -1,12 +1,12 @@
 package fr.outadoc.homeslide.common.json
 
-import com.github.ajalt.timberkt.Timber
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
+import fr.outadoc.homeslide.logging.KLog
 import java.lang.reflect.Type
 
 class SkipBadElementsListAdapter<T>(private val elementAdapter: JsonAdapter<T?>) :
@@ -41,7 +41,7 @@ class SkipBadElementsListAdapter<T>(private val elementAdapter: JsonAdapter<T?>)
                 val peeked = reader.peekJson()
                 result += elementAdapter.fromJson(peeked)
             } catch (e: JsonDataException) {
-                Timber.e(e) { "Couldn't parse item. Skipping." }
+                KLog.e(e) { "Couldn't parse item. Skipping." }
             }
             reader.skipValue()
         }

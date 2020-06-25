@@ -2,7 +2,6 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("android.extensions")
-    kotlin("kapt")
 }
 
 android {
@@ -11,6 +10,7 @@ android {
     defaultConfig {
         minSdkVersion(AppInfo.libraryMinSdkVersion)
         targetSdkVersion(AppInfo.targetSdkVersion)
+        consumerProguardFile("consumer-rules.pro")
         versionCode = 1
         versionName = "1.0"
     }
@@ -32,33 +32,10 @@ android {
 
     kotlinOptions {
         jvmTarget = Dependencies.Build.jvmTarget
-        freeCompilerArgs = listOf(
-            "-Xallow-result-return-type",
-            "-Xuse-experimental=kotlin.Experimental"
-        )
     }
 }
 
 dependencies {
-    implementation(project(":lib-common-util"))
-    implementation(project(":lib-mdi"))
-    implementation(project(":lib-logging"))
-
-    // Kotlin runtime
     implementation(Dependencies.Kotlin.stdlib)
-
-    implementation(Dependencies.AndroidX.core)
-    implementation(Dependencies.AndroidX.appcompat)
-
-    implementation(Dependencies.AndroidX.Room.common)
-
-    // Network libs
-    implementation(Dependencies.Retrofit.core)
-    implementation(Dependencies.Moshi.core)
-    kapt(Dependencies.Moshi.codegen)
-
-
-    // Testing
-    testImplementation(Dependencies.Test.junit)
-    testImplementation(Dependencies.Test.mockito)
+    implementation(Dependencies.Timber.core)
 }
