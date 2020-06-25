@@ -56,7 +56,7 @@ class EntityTileAdapter(
 
         with(holder) {
             if (position == 0) {
-                view.viewTreeObserver.addOnGlobalLayoutListener(object: OnGlobalLayoutListener {
+                view.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
                         view.viewTreeObserver.removeOnGlobalLayoutListener(this)
                         lastMeasuredHeight = view.height

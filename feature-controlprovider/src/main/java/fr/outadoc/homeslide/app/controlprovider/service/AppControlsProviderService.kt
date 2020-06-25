@@ -6,10 +6,10 @@ import android.service.controls.ControlsProviderService
 import android.service.controls.actions.ControlAction
 import androidx.annotation.RequiresApi
 import fr.outadoc.homeslide.app.controlprovider.vm.ControlsProviderViewModel
-import kotlinx.coroutines.jdk9.asPublisher
-import org.koin.android.ext.android.inject
 import java.util.concurrent.Flow
 import java.util.function.Consumer
+import kotlinx.coroutines.jdk9.asPublisher
+import org.koin.android.ext.android.inject
 
 @RequiresApi(Build.VERSION_CODES.R)
 class AppControlsProviderService : ControlsProviderService() {

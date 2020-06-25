@@ -2,10 +2,10 @@ package fr.outadoc.homeslide.app.preferences
 
 import android.content.Context
 import androidx.preference.PreferenceManager
-import fr.outadoc.homeslide.common.sync.DataSyncClient
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
+import fr.outadoc.homeslide.common.sync.DataSyncClient
 import fr.outadoc.homeslide.common.sync.model.PreferencesPayload
 import fr.outadoc.homeslide.rest.baseurl.PreferredBaseUrl
 

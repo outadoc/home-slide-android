@@ -1,8 +1,6 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("android.extensions")
-    kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
 }
 
@@ -66,8 +64,6 @@ dependencies {
     // Network libs
     implementation(Dependencies.Retrofit.core)
     implementation(Dependencies.OkHttp.logging)
-    implementation(Dependencies.Moshi.core)
-    kapt(Dependencies.Moshi.codegen)
 
     // Navigation
     implementation(Dependencies.AndroidX.Navigation.fragment)

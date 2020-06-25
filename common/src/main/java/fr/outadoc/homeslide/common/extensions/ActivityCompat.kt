@@ -18,7 +18,6 @@ fun Activity.setShowWhenLockedCompat(showWhenLocked: Boolean) {
         } else {
             window.clearFlags(flags)
         }
-
     } else {
         setShowWhenLocked(showWhenLocked)
     }

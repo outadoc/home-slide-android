@@ -75,7 +75,6 @@ class EntityDetailFragment private constructor() : Fragment() {
             adapter = itemAdapter
             layoutManager = LinearLayoutManager(context)
         }
-
     }
 
     companion object {

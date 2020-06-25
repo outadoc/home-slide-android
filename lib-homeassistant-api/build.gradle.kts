@@ -57,7 +57,6 @@ dependencies {
     implementation(Dependencies.Moshi.core)
     kapt(Dependencies.Moshi.codegen)
 
-
     // Testing
     testImplementation(Dependencies.Test.junit)
     testImplementation(Dependencies.Test.mockito)

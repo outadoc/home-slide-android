@@ -5,7 +5,6 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import fr.outadoc.homeslide.app.controlprovider.inject.IntentProvider
 import fr.outadoc.homeslide.app.controlprovider.inject.controlProviderModule
 import fr.outadoc.homeslide.app.inject.AppIntentProvider
-import fr.outadoc.homeslide.common.log.KoinCustomLogger
 import fr.outadoc.homeslide.app.onboarding.rest.DiscoveryRepositoryImpl
 import fr.outadoc.homeslide.app.onboarding.rest.HassZeroconfDiscoveryServiceImpl
 import fr.outadoc.homeslide.app.onboarding.vm.HostSetupViewModel
@@ -17,6 +16,7 @@ import fr.outadoc.homeslide.app.preferences.PreferenceRepositoryImpl
 import fr.outadoc.homeslide.common.feature.details.vm.EntityDetailViewModel
 import fr.outadoc.homeslide.common.inject.commonModule
 import fr.outadoc.homeslide.common.inject.systemModule
+import fr.outadoc.homeslide.common.log.KoinCustomLogger
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
