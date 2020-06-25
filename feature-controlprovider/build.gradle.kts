@@ -49,6 +49,9 @@ dependencies {
     implementation(Dependencies.Kotlin.Coroutines.jdk9)
     implementation(Dependencies.Kotlin.Coroutines.android)
 
+    // Network libs
+    implementation(Dependencies.Retrofit.core)
+
     // AndroidX libs
     implementation(Dependencies.AndroidX.core)
 

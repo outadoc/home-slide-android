@@ -73,6 +73,7 @@ dependencies {
     implementation(Dependencies.Skeleton.core)
 
     // Network libs
+    implementation(Dependencies.Retrofit.core)
     implementation(Dependencies.OkHttp.logging)
 
     // AndroidX libs
