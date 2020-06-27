@@ -1,12 +1,17 @@
-object Dependencies {
+import org.gradle.api.JavaVersion
 
-    const val spotlessPluginVersion = "3.27.1"
+object Dependencies {
 
     object Build {
         const val buildToolsVersion = "29.0.2"
-        const val gradle = "com.android.tools.build:gradle:4.1.0-beta01"
         const val jvmTarget = "1.8"
-        const val sourceCompatibility = "1.8"
+        val sourceCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    object Android {
+        const val classpath = "com.android.tools.build:gradle:4.1.0-beta02"
+        const val application = "com.android.application"
+        const val library = "com.android.library"
     }
 
     object AndroidX {
@@ -28,8 +33,12 @@ object Dependencies {
         object Navigation {
             private const val version = "2.2.2"
             const val fragment = "androidx.navigation:navigation-fragment-ktx:$version"
-            const val safeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:$version"
             const val ui = "androidx.navigation:navigation-ui-ktx:$version"
+
+            object SafeArgs {
+                const val plugin = "androidx.navigation.safeargs.kotlin"
+                const val classpath = "androidx.navigation:navigation-safe-args-gradle-plugin:$version"
+            }
         }
 
         object Room {
@@ -72,13 +81,19 @@ object Dependencies {
     object Kotlin {
         private const val version = "1.3.72"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
-        const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
+        const val classpath = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
 
         object Coroutines {
             private const val version = "1.3.6"
             const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
             const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
             const val jdk9 = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk9:$version"
+        }
+
+        object Plugin {
+            const val android = "android"
+            const val androidExtensions = "android.extensions"
+            const val kapt = "kapt"
         }
     }
 
@@ -104,6 +119,11 @@ object Dependencies {
 
     object Skeleton {
         const val core = "com.faltenreich:skeletonlayout:2.0.0"
+    }
+
+    object Spotless {
+        const val version = "3.27.1"
+        const val plugin = "com.diffplug.gradle.spotless"
     }
 
     object Test {

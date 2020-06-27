@@ -1,27 +1,24 @@
 plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
+    id(Dependencies.Android.library)
+    kotlin(Dependencies.Kotlin.Plugin.android)
+    kotlin(Dependencies.Kotlin.Plugin.kapt)
 }
 
 android {
-    compileSdkVersion(AppInfo.targetSdkVersion)
+    compileSdk = AppInfo.targetSdkVersion
+    buildToolsVersion(Dependencies.Build.buildToolsVersion)
 
     defaultConfig {
-        minSdkVersion(AppInfo.libraryMinSdkVersion)
-        targetSdkVersion(AppInfo.targetSdkVersion)
-        consumerProguardFiles("consumer-rules.pro")
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = LibraryInfo.minSdkVersion
+        targetSdk = AppInfo.targetSdkVersion
+
+        versionCode = LibraryInfo.defaultVersionCode
+        versionName = LibraryInfo.defaultVersionName
     }
 
     buildTypes {
-        named("release") {
+        named(BuildTypes.release) {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
         }
     }
 
@@ -37,8 +34,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility(Dependencies.Build.sourceCompatibility)
-        targetCompatibility(Dependencies.Build.sourceCompatibility)
+        sourceCompatibility = Dependencies.Build.sourceCompatibility
+        targetCompatibility = Dependencies.Build.sourceCompatibility
     }
 
     kotlinOptions {

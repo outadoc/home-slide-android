@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 plugins {
-    id("com.diffplug.gradle.spotless") version Dependencies.spotlessPluginVersion
+    id(Dependencies.Spotless.plugin) version Dependencies.Spotless.version
 }
 
 buildscript {
@@ -11,9 +11,9 @@ buildscript {
     }
 
     dependencies {
-        classpath(Dependencies.Build.gradle)
-        classpath(Dependencies.Kotlin.plugin)
-        classpath(Dependencies.AndroidX.Navigation.safeArgs)
+        classpath(Dependencies.Kotlin.classpath)
+        classpath(Dependencies.Android.classpath)
+        classpath(Dependencies.AndroidX.Navigation.SafeArgs.classpath)
     }
 }
 
