@@ -1,16 +1,18 @@
 plugins {
-    id("com.android.application")
-    kotlin("android")
+    id(Dependencies.Android.application)
+    kotlin(Dependencies.Kotlin.Plugin.android)
 }
 
 android {
-    compileSdkVersion(AppInfo.targetSdkVersion)
+    compileSdk = AppInfo.targetSdkVersion
     buildToolsVersion(Dependencies.Build.buildToolsVersion)
 
     defaultConfig {
         applicationId = AppInfo.applicationId
-        targetSdkVersion(AppInfo.targetSdkVersion)
-        minSdkVersion(AppInfo.Mobile.minSdkVersion)
+
+        targetSdk = AppInfo.targetSdkVersion
+        minSdk = AppInfo.Mobile.minSdkVersion
+
         versionCode = AppInfo.Mobile.versionCode
         versionName = AppInfo.versionName
     }
@@ -23,13 +25,9 @@ android {
             buildConfigField("boolean", fieldEnableDetails, "false")
         }
 
-        named("release") {
+        named(BuildTypes.release) {
             isMinifyEnabled = false
             buildConfigField("boolean", fieldEnableDetails, "false")
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
         }
     }
 
@@ -38,8 +36,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility(Dependencies.Build.sourceCompatibility)
-        targetCompatibility(Dependencies.Build.sourceCompatibility)
+        sourceCompatibility = Dependencies.Build.sourceCompatibility
+        targetCompatibility = Dependencies.Build.sourceCompatibility
     }
 
     kotlinOptions {

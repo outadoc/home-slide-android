@@ -17,8 +17,6 @@ object AppInfo {
         const val minSdkVersion = 25
     }
 
-    val libraryMinSdkVersion = minOf(Wear.minSdkVersion, Mobile.minSdkVersion)
-
     /**
      *  --- Versioning scheme ---
      *  first two digits: targetSdkVersion
