@@ -5,7 +5,7 @@ import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import fr.outadoc.homeslide.hassapi.model.Action
 import fr.outadoc.homeslide.hassapi.model.PersistedEntity
 import fr.outadoc.homeslide.hassapi.model.Tile
-import fr.outadoc.homeslide.hassapi.model.entity.Entity
+import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 import fr.outadoc.homeslide.hassapi.repository.EntityRepository
 import fr.outadoc.homeslide.logging.KLog
 import io.uniflow.androidx.flow.AndroidDataFlow

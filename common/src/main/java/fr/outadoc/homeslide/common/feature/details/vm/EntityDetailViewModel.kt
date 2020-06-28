@@ -3,7 +3,7 @@ package fr.outadoc.homeslide.common.feature.details.vm
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import fr.outadoc.homeslide.hassapi.model.entity.Entity
+import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 
 class EntityDetailViewModel : ViewModel() {
 

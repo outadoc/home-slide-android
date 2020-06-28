@@ -8,10 +8,10 @@ import android.service.controls.templates.ControlTemplate
 import android.service.controls.templates.ToggleTemplate
 import androidx.annotation.RequiresApi
 import fr.outadoc.homeslide.app.controlprovider.inject.IntentProvider
-import fr.outadoc.homeslide.hassapi.model.entity.ABinaryEntity
 import fr.outadoc.homeslide.hassapi.model.entity.Cover
-import fr.outadoc.homeslide.hassapi.model.entity.Entity
 import fr.outadoc.homeslide.hassapi.model.entity.Light
+import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
+import fr.outadoc.homeslide.hassapi.model.entity.base.ToggleableEntity
 
 @RequiresApi(Build.VERSION_CODES.R)
 class ControlFactoryImpl(intentProvider: IntentProvider) : ControlFactory {
@@ -48,7 +48,7 @@ class ControlFactoryImpl(intentProvider: IntentProvider) : ControlFactory {
 
     private fun Entity.getControlTemplate(): ControlTemplate {
         return when (this) {
-            is ABinaryEntity -> ToggleTemplate("ABinaryEntity", ControlButton(this.isOn, "toggle"))
+            is ToggleableEntity -> ToggleTemplate("ABinaryEntity", ControlButton(this.isOn, "toggle"))
             is Cover -> ToggleTemplate("CoverEntity", ControlButton(this.isOn, "open/close"))
             else -> ControlTemplate.getNoTemplateObject()
         }

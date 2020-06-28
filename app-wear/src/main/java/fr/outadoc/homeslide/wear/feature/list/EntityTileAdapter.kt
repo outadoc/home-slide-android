@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.homeslide.common.feature.grid.ui.TileDiffer
 import fr.outadoc.homeslide.hassapi.model.Tile
-import fr.outadoc.homeslide.hassapi.model.entity.Entity
+import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 import fr.outadoc.homeslide.wear.R
 
 class EntityTileAdapter(

@@ -1,11 +1,12 @@
 package fr.outadoc.homeslide.hassapi.model.entity
 
 import fr.outadoc.homeslide.hassapi.model.EntityState
+import fr.outadoc.homeslide.hassapi.model.entity.base.BaseEntity
 import fr.outadoc.mdi.FontIcon
 import fr.outadoc.mdi.toIcon
 import fr.outadoc.mdi.toIconOrNull
 
-class Weather(state: EntityState) : ABaseEntity(state, "weather-cloudy".toIcon()) {
+class Weather(state: EntityState) : BaseEntity(state, "weather-cloudy".toIcon()) {
 
     companion object {
         const val DOMAIN = "weather"

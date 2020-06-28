@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.hassapi.model.entity
+package fr.outadoc.homeslide.hassapi.model.entity.base
 
 import android.content.Context
 import fr.outadoc.homeslide.hassapi.model.Action

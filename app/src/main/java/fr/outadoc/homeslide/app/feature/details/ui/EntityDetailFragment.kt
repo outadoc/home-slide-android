@@ -13,8 +13,8 @@ import fr.outadoc.homeslide.app.feature.slideover.ui.EntityTileAdapter
 import fr.outadoc.homeslide.common.feature.details.vm.EntityDetailViewModel
 import fr.outadoc.homeslide.hassapi.factory.EntityFactory
 import fr.outadoc.homeslide.hassapi.model.EntityState
-import fr.outadoc.homeslide.hassapi.model.entity.Entity
 import fr.outadoc.homeslide.hassapi.model.entity.Light
+import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class EntityDetailFragment private constructor() : Fragment() {

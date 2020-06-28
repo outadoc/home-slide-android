@@ -2,10 +2,11 @@ package fr.outadoc.homeslide.hassapi.model.entity
 
 import android.content.Context
 import fr.outadoc.homeslide.hassapi.model.EntityState
+import fr.outadoc.homeslide.hassapi.model.entity.base.ToggleableEntity
 import fr.outadoc.mdi.toIcon
 import java.text.DecimalFormat
 
-class InputNumber(state: EntityState) : ABinaryEntity(state, "import".toIcon()) {
+class InputNumber(state: EntityState) : ToggleableEntity(state, "import".toIcon()) {
 
     companion object {
         const val DOMAIN = "input_number"
