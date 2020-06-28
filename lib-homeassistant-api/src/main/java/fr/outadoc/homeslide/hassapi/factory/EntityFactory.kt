@@ -8,6 +8,7 @@ import fr.outadoc.homeslide.hassapi.model.entity.Cover
 import fr.outadoc.homeslide.hassapi.model.entity.GenericEntity
 import fr.outadoc.homeslide.hassapi.model.entity.Group
 import fr.outadoc.homeslide.hassapi.model.entity.InputBoolean
+import fr.outadoc.homeslide.hassapi.model.entity.InputNumber
 import fr.outadoc.homeslide.hassapi.model.entity.Light
 import fr.outadoc.homeslide.hassapi.model.entity.MediaPlayer
 import fr.outadoc.homeslide.hassapi.model.entity.Person
@@ -58,6 +59,9 @@ object EntityFactory {
             state
         )
         InputBoolean.DOMAIN -> InputBoolean(
+            state
+        )
+        InputNumber.DOMAIN -> InputNumber(
             state
         )
         BinarySensor.DOMAIN -> BinarySensor(
