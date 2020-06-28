@@ -23,5 +23,9 @@ data class AttributeSet(
     @Json(name = "unit_of_measurement")
     val unit: String? = null,
     @Json(name = "brightness")
-    val brightness: Float? = null
+    val brightness: Float? = null,
+    @Json(name = "min")
+    val min: Float? = null,
+    @Json(name = "max")
+    val max: Float? = null
 ) : Parcelable
