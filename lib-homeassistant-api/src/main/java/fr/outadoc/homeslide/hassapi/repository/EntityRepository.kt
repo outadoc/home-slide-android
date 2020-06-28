@@ -4,7 +4,7 @@ import fr.outadoc.homeslide.hassapi.model.Action
 import fr.outadoc.homeslide.hassapi.model.EntityState
 import fr.outadoc.homeslide.hassapi.model.PersistedEntity
 import fr.outadoc.homeslide.hassapi.model.Tile
-import fr.outadoc.homeslide.hassapi.model.entity.Entity
+import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 
 interface EntityRepository {
 

@@ -11,9 +11,9 @@ import fr.outadoc.homeslide.hassapi.model.EntityState
 import fr.outadoc.homeslide.hassapi.model.PersistedEntity
 import fr.outadoc.homeslide.hassapi.model.Tile
 import fr.outadoc.homeslide.hassapi.model.entity.Cover
-import fr.outadoc.homeslide.hassapi.model.entity.Entity
 import fr.outadoc.homeslide.hassapi.model.entity.Light
 import fr.outadoc.homeslide.hassapi.model.entity.Weather
+import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 import fr.outadoc.homeslide.hassapi.repository.EntityRepository
 import fr.outadoc.homeslide.rest.util.wrapResponse
 

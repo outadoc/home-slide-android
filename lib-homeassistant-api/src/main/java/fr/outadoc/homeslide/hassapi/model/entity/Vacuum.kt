@@ -2,9 +2,10 @@ package fr.outadoc.homeslide.hassapi.model.entity
 
 import fr.outadoc.homeslide.hassapi.model.Action
 import fr.outadoc.homeslide.hassapi.model.EntityState
+import fr.outadoc.homeslide.hassapi.model.entity.base.BaseEntity
 import fr.outadoc.mdi.toIcon
 
-class Vacuum(state: EntityState) : ABaseEntity(state, "robot-vacuum".toIcon()) {
+class Vacuum(state: EntityState) : BaseEntity(state, "robot-vacuum".toIcon()) {
 
     companion object {
         const val DOMAIN = "vacuum"

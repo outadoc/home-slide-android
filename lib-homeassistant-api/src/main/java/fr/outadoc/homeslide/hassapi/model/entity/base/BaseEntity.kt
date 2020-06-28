@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.hassapi.model.entity
+package fr.outadoc.homeslide.hassapi.model.entity.base
 
 import android.content.Context
 import fr.outadoc.homeslide.hassapi.model.Action
@@ -9,7 +9,7 @@ import fr.outadoc.homeslide.hassapi.model.annotation.StringState
 import fr.outadoc.mdi.FontIcon
 import fr.outadoc.mdi.toIconOrNull
 
-abstract class ABaseEntity(
+abstract class BaseEntity(
     final override val state: EntityState,
     private val defaultIcon: FontIcon
 ) : Entity {
@@ -53,7 +53,7 @@ abstract class ABaseEntity(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as ABaseEntity
+        other as BaseEntity
 
         if (entityId != other.entityId) return false
 

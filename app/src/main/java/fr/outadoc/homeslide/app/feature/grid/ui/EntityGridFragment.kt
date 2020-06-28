@@ -38,7 +38,7 @@ import fr.outadoc.homeslide.common.extensions.setupToolbar
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel.Event
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel.State
-import fr.outadoc.homeslide.hassapi.model.entity.Entity
+import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 import fr.outadoc.homeslide.logging.KLog
 import io.uniflow.androidx.flow.onEvents
 import io.uniflow.androidx.flow.onStates

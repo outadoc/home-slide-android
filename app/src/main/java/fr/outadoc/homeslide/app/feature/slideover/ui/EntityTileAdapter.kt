@@ -17,7 +17,7 @@ import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.app.feature.grid.ui.ReorderableListAdapter
 import fr.outadoc.homeslide.common.feature.grid.ui.TileDiffer
 import fr.outadoc.homeslide.hassapi.model.Tile
-import fr.outadoc.homeslide.hassapi.model.entity.Entity
+import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 
 class EntityTileAdapter(
     val onItemClickListener: (Entity) -> Unit,

@@ -6,7 +6,7 @@ import androidx.annotation.RequiresApi
 import fr.outadoc.homeslide.app.controlprovider.factory.ControlFactory
 import fr.outadoc.homeslide.hassapi.api.HomeAssistantApi
 import fr.outadoc.homeslide.hassapi.factory.EntityFactory
-import fr.outadoc.homeslide.hassapi.model.entity.Entity
+import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 import fr.outadoc.homeslide.hassapi.repository.EntityRepository
 import fr.outadoc.homeslide.rest.util.wrapResponse
 
