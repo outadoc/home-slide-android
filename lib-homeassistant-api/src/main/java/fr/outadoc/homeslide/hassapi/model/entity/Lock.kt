@@ -28,6 +28,6 @@ class Lock(state: EntityState) : BaseEntity(state, "lock-question".toIcon()) {
         get() = when (stateStr) {
             STATE_LOCKED -> "lock-outline".toIcon()
             STATE_UNLOCKED -> "lock-open-variant-outline".toIcon()
-            else -> "lock-question".toIcon()
+            else -> null
         }
 }
