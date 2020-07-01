@@ -38,6 +38,7 @@ android {
     compileOptions {
         sourceCompatibility = Dependencies.Build.sourceCompatibility
         targetCompatibility = Dependencies.Build.sourceCompatibility
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
@@ -108,4 +109,6 @@ dependencies {
     // Testing
     testImplementation(Dependencies.Test.junit)
     testImplementation(Dependencies.Test.mockito)
+
+    coreLibraryDesugaring(Dependencies.Tools.desugaring)
 }

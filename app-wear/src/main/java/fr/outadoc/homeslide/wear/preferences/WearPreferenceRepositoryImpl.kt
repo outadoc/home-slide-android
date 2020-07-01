@@ -1,11 +1,14 @@
 package fr.outadoc.homeslide.wear.preferences
 
 import android.content.Context
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
 import fr.outadoc.homeslide.rest.baseurl.PreferredBaseUrl
+import java.time.Instant
+import java.time.format.DateTimeParseException
 
 class WearPreferenceRepositoryImpl(context: Context) : GlobalPreferenceRepository,
     UrlPreferenceRepository, TokenPreferenceRepository {
@@ -15,25 +18,49 @@ class WearPreferenceRepositoryImpl(context: Context) : GlobalPreferenceRepositor
     override var instanceBaseUrl: String?
         get() = appPrefs.getString(KEY_INSTANCE_BASE_URL, null)
         set(value) {
-            appPrefs.edit().putString(KEY_INSTANCE_BASE_URL, value).apply()
+            appPrefs.edit {
+                putString(KEY_INSTANCE_BASE_URL, value)
+            }
         }
 
     override var altInstanceBaseUrl: String?
         get() = appPrefs.getString(KEY_INSTANCE_ALT_BASE_URL, null)
         set(value) {
-            appPrefs.edit().putString(KEY_INSTANCE_ALT_BASE_URL, value).apply()
+            appPrefs.edit {
+                putString(KEY_INSTANCE_ALT_BASE_URL, value)
+            }
         }
 
     override var accessToken: String?
         get() = appPrefs.getString(KEY_ACCESS_TOKEN, null)
         set(value) {
-            appPrefs.edit().putString(KEY_ACCESS_TOKEN, value).apply()
+            appPrefs.edit {
+                putString(KEY_ACCESS_TOKEN, value)
+            }
         }
 
     override var refreshToken: String?
         get() = appPrefs.getString(KEY_REFRESH_TOKEN, "")!!
         set(value) {
-            appPrefs.edit().putString(KEY_REFRESH_TOKEN, value).apply()
+            appPrefs.edit {
+                putString(KEY_REFRESH_TOKEN, value)
+            }
+        }
+
+    override var tokenExpirationTime: Instant?
+        get() {
+            return appPrefs.getString(KEY_TOKEN_EXPIRATION_TIME, "")?.let { instantStr ->
+                try {
+                    Instant.parse(instantStr)
+                } catch (e: DateTimeParseException) {
+                    null
+                }
+            }
+        }
+        set(value) {
+            appPrefs.edit {
+                putString(KEY_TOKEN_EXPIRATION_TIME, value?.toString())
+            }
         }
 
     override var preferredBaseUrl: PreferredBaseUrl
@@ -42,7 +69,9 @@ class WearPreferenceRepositoryImpl(context: Context) : GlobalPreferenceRepositor
             return PreferredBaseUrl.values().first { it.id == value }
         }
         set(value) {
-            appPrefs.edit().putString(KEY_PREFERRED_BASE_URL, value.id).apply()
+            appPrefs.edit {
+                putString(KEY_PREFERRED_BASE_URL, value.id)
+            }
         }
 
     override val refreshIntervalSeconds: Long
@@ -65,5 +94,6 @@ class WearPreferenceRepositoryImpl(context: Context) : GlobalPreferenceRepositor
         const val KEY_PREFERRED_BASE_URL = "enum_pref_preferred_base_url"
         const val KEY_ACCESS_TOKEN = "et_pref_auth_token"
         const val KEY_REFRESH_TOKEN = "et_pref_refresh_token"
+        const val KEY_TOKEN_EXPIRATION_TIME = "et_pref_token_expiration_time"
     }
 }

@@ -60,6 +60,7 @@ class AuthRepositoryImpl(
     private fun clearTokens() {
         tokenPrefs.accessToken = null
         tokenPrefs.refreshToken = null
+        tokenPrefs.tokenExpirationTime = null
         prefs.isOnboardingDone = false
     }
 }

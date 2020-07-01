@@ -131,6 +131,10 @@ object Dependencies {
         const val mockito = "org.mockito:mockito-core:3.2.4"
     }
 
+    object Tools {
+        const val desugaring = "com.android.tools:desugar_jdk_libs:1.0.9"
+    }
+
     object Timber {
         const val core = "com.jakewharton.timber:timber:4.7.1"
     }
