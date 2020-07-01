@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.Instant
 
 @OptIn(FlowPreview::class, ExperimentalStdlibApi::class, ExperimentalCoroutinesApi::class)
 class HostSetupViewModel(
@@ -193,6 +194,7 @@ class HostSetupViewModel(
                         // Save the auth code
                         tokenPrefs.accessToken = token.accessToken
                         tokenPrefs.refreshToken = token.refreshToken
+                        tokenPrefs.tokenExpirationTime = Instant.now().plusSeconds(token.expiresIn)
 
                         _state.value = State.Content
                         _navigateTo.value = Event(NavigationFlow.Next)

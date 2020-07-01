@@ -18,10 +18,10 @@ class AccessTokenAuthenticator(
 
     override fun authenticate(route: Route?, response: Response): Request? {
         // We need to have a token in order to refresh it.
-        val token = tokenProvider.getToken() ?: return null
+        val token = tokenProvider.getOrRefreshToken() ?: return null
 
         synchronized(this) {
-            val newToken = tokenProvider.getToken()
+            val newToken = tokenProvider.getOrRefreshToken()
 
             // Check if the request made was previously made as an authenticated request.
             if (response.request().header("Authorization") != null) {
@@ -35,7 +35,7 @@ class AccessTokenAuthenticator(
                         .build()
                 }
 
-                val updatedToken = tokenProvider.refreshToken() ?: return null
+                val updatedToken = tokenProvider.doRefreshToken() ?: return null
 
                 // Retry the request with the new token.
                 return response.request()

@@ -6,7 +6,7 @@ import okhttp3.Response
 class AccessTokenInterceptor(private val tokenProvider: AccessTokenProvider) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val token = tokenProvider.getToken()
+        val token = tokenProvider.getOrRefreshToken()
 
         return if (token == null) {
             chain.proceed(chain.request())

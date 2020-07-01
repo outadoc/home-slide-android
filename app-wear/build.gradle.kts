@@ -34,6 +34,7 @@ android {
     compileOptions {
         sourceCompatibility = Dependencies.Build.sourceCompatibility
         targetCompatibility = Dependencies.Build.sourceCompatibility
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
@@ -91,4 +92,6 @@ dependencies {
     implementation(Dependencies.AndroidX.wear)
     implementation(Dependencies.Google.Wearable.support)
     compileOnly(Dependencies.Google.Wearable.core)
+
+    coreLibraryDesugaring(Dependencies.Tools.desugaring)
 }
