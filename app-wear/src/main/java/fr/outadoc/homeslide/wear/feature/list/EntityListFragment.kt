@@ -56,7 +56,7 @@ class EntityListFragment : Fragment() {
             binding?.apply {
                 val childToDisplay = when (state) {
                     is State.Content -> CHILD_CONTENT
-                    State.Loading -> CHILD_LOADING
+                    State.InitialLoading -> CHILD_LOADING
                     else -> CHILD_NO_CONTENT
                 }
 

@@ -13,7 +13,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN
 import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.app.databinding.FragmentSlideoverBinding
@@ -69,6 +68,8 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
     }
 
     override fun navigateTo(fragment: Fragment) {
+        setIsExpandable(true)
+
         childFragmentManager
             .beginTransaction()
             .setCustomAnimations(
@@ -80,14 +81,6 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
             .commit()
     }
 
-    override fun collapseSheet() {
-        binding?.bottomSheetBehavior?.state = STATE_COLLAPSED
-    }
-
-    override fun restoreSheet() {
-        binding?.bottomSheetBehavior?.state = STATE_EXPANDED
-    }
-
     private fun updatePeekHeightAndInsets(peekHeight: Int? = null, bottomInsets: Int? = null, animate: Boolean = true) {
         if (peekHeight != null) _peekHeight = peekHeight
         if (bottomInsets != null) _additionalBottomInsets = bottomInsets
@@ -96,6 +89,13 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
 
     override fun updatePeekHeight(peekHeight: Int) {
         updatePeekHeightAndInsets(peekHeight = peekHeight)
+    }
+
+    override fun setIsExpandable(isExpandable: Boolean) {
+        binding?.bottomSheetBehavior?.apply {
+            isDraggable = isExpandable
+            if (!isExpandable) state = STATE_COLLAPSED
+        }
     }
 
     private fun FragmentSlideoverBinding.setBottomSheetCallback() {

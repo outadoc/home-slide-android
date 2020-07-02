@@ -20,8 +20,6 @@
 
     <include
         android:id="@+id/layout_noContent"
-        layout="@layout/view_no_content"
-        android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        layout="@layout/view_no_content" />
 
 </ViewFlipper>
