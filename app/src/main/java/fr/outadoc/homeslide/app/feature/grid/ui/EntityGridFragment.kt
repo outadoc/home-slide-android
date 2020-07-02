@@ -20,6 +20,7 @@ import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.forEach
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -122,6 +123,11 @@ class EntityGridFragment : Fragment() {
                 itemTouchHelper.attachToRecyclerView(it)
             }
 
+            layoutNoContent.buttonNoContentRetry.setOnClickListener {
+                cancelRefresh()
+                vm.loadEntities()
+            }
+
             skeleton = recyclerViewShortcuts.applySkeleton(
                 listItemLayoutResId = R.layout.item_shortcut_shimmer,
                 itemCount = SKELETON_ITEM_COUNT
@@ -152,7 +158,7 @@ class EntityGridFragment : Fragment() {
             when (val data = event.take()) {
                 is Event.StartOnboarding -> startOnboarding(R.id.welcomeFragment)
                 is Event.LoggedOut -> startOnboarding(R.id.setupHostFragment)
-                is Event.Error -> displayError(data.e)
+                is Event.Error -> if (!data.isInitialLoad) displayError(data.e)
             }
         }
 
@@ -189,7 +195,12 @@ class EntityGridFragment : Fragment() {
             when (state) {
                 is State.Content -> submitList(state.displayTiles)
                 is State.Editing -> submitList(state.tiles)
-                State.Empty -> submitList(emptyList())
+                is State.InitialError -> {
+                    binding?.layoutNoContent?.textViewNoContentErrorMessage?.apply {
+                        text = state.errorMessage
+                        isGone = state.errorMessage.isNullOrBlank()
+                    }
+                }
                 else -> Unit
             }
         }
@@ -199,16 +210,19 @@ class EntityGridFragment : Fragment() {
         val childToDisplay = when (state) {
             is State.Editing,
             is State.Content -> {
+                navigator?.setIsExpandable(true)
                 skeleton?.let { if (it.isSkeleton()) it.showOriginal() }
                 CHILD_CONTENT
             }
 
-            is State.Loading -> {
+            is State.InitialLoading -> {
+                navigator?.setIsExpandable(false)
                 skeleton?.let { if (!it.isSkeleton()) it.showSkeleton() }
                 CHILD_CONTENT
             }
 
-            is State.Empty -> {
+            is State.InitialError -> {
+                navigator?.setIsExpandable(false)
                 skeleton?.let { if (it.isSkeleton()) it.showOriginal() }
                 CHILD_NO_CONTENT
             }
@@ -280,7 +294,7 @@ class EntityGridFragment : Fragment() {
         EntityDetailFragment.newInstance(entity)?.let {
             navigator?.apply {
                 navigateTo(it)
-                collapseSheet()
+                // collapseSheet()
             }
 
             return true

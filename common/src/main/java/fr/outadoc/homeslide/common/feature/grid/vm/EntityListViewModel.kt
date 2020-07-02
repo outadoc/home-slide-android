@@ -18,11 +18,11 @@ import io.uniflow.core.threading.onMain
 class EntityListViewModel(
     private val prefs: GlobalPreferenceRepository,
     private val repository: EntityRepository
-) : AndroidDataFlow(defaultState = State.Loading) {
+) : AndroidDataFlow(defaultState = State.InitialLoading) {
 
     sealed class State : UIState() {
-        object Empty : State()
-        object Loading : State()
+        data class InitialError(val errorMessage: String?) : State()
+        object InitialLoading : State()
         data class Editing(val tiles: List<Tile<Entity>>) : State()
         data class Content(val allTiles: List<Tile<Entity>>) : State() {
             val displayTiles = allTiles.filter { !it.isHidden }
@@ -30,7 +30,7 @@ class EntityListViewModel(
     }
 
     sealed class Event : UIEvent() {
-        data class Error(val e: Throwable) : Event()
+        data class Error(val e: Throwable, val isInitialLoad: Boolean) : Event()
         object StartOnboarding : Event()
         object LoggedOut : Event()
     }
@@ -48,8 +48,8 @@ class EntityListViewModel(
             return@action
         }
 
-        if (currentState == State.Empty) {
-            setState { State.Loading }
+        if (currentState is State.InitialError) {
+            setState { State.InitialLoading }
         }
 
         onIO {
@@ -57,7 +57,7 @@ class EntityListViewModel(
                 .onSuccess { tiles ->
                     setState {
                         if (tiles.isNullOrEmpty()) {
-                            State.Empty
+                            State.InitialError(null)
                         } else {
                             State.Content(tiles)
                         }
@@ -69,15 +69,15 @@ class EntityListViewModel(
                     sendEvent {
                         when (e) {
                             is InvalidRefreshTokenException -> Event.LoggedOut
-                            else -> Event.Error(e)
+                            else -> Event.Error(e, isInitialLoad = currentState !is State.Content)
                         }
                     }
 
                     setState {
-                        if (currentState !is State.Loading) {
+                        if (currentState !is State.InitialLoading) {
                             currentState
                         } else {
-                            State.Empty
+                            State.InitialError(e.localizedMessage)
                         }
                     }
                 }
@@ -102,7 +102,7 @@ class EntityListViewModel(
                     sendEvent {
                         when (e) {
                             is InvalidRefreshTokenException -> Event.LoggedOut
-                            else -> Event.Error(e)
+                            else -> Event.Error(e, isInitialLoad = false)
                         }
                     }
                 }

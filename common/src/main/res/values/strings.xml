@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="grid_nocontent_label">Nothing here.</string>
+    <string name="grid_nocontent_label">Something happened.</string>
+    <string name="grid_nocontent_retry">Retry</string>
 </resources>
