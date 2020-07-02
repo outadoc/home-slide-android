@@ -6,5 +6,5 @@ interface SlideOverNavigator {
     fun navigateTo(fragment: Fragment)
     fun collapseSheet()
     fun restoreSheet()
-    fun setPeekHeight(peekHeight: Int)
+    fun updatePeekHeight(peekHeight: Int)
 }

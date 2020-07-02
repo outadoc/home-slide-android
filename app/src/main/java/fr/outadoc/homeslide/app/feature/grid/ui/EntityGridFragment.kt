@@ -25,7 +25,6 @@ import androidx.navigation.NavDeepLinkBuilder
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.faltenreich.skeletonlayout.Skeleton
 import com.faltenreich.skeletonlayout.applySkeleton
-import com.google.android.material.snackbar.Snackbar
 import fr.outadoc.homeslide.app.BuildConfig
 import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.app.databinding.FragmentEntityGridBinding
@@ -40,6 +39,7 @@ import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel.Event
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel.State
 import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 import fr.outadoc.homeslide.logging.KLog
+import fr.outadoc.homeslide.util.view.showSnackbar
 import io.uniflow.androidx.flow.onEvents
 import io.uniflow.androidx.flow.onStates
 import io.uniflow.core.flow.getCurrentStateOrNull
@@ -71,7 +71,7 @@ class EntityGridFragment : Fragment() {
         },
         onItemHeightChangeListener = { itemHeight ->
             val chromeHeight = resources.getDimension(R.dimen.slideover_contentPeekHeight).toInt()
-            navigator?.setPeekHeight((itemHeight * VISIBLE_ITEM_COUNT_VERTICAL) + chromeHeight)
+            navigator?.updatePeekHeight((itemHeight * VISIBLE_ITEM_COUNT_VERTICAL) + chromeHeight)
         }
     )
 
@@ -164,14 +164,11 @@ class EntityGridFragment : Fragment() {
             ?.let { getString(R.string.grid_snackbar_loading_error_title, it) }
             ?: getString(R.string.grid_snackbar_generic_error_title)
 
-        binding?.recyclerViewShortcuts?.let {
-            Snackbar.make(it, message, Snackbar.LENGTH_LONG)
-                .setAction(R.string.grid_snackbar_error_action_retry) {
-                    cancelRefresh()
-                    vm.loadEntities()
-                }
-                .show()
-        }
+        binding?.recyclerViewShortcuts
+            ?.showSnackbar(message, actionResId = R.string.grid_snackbar_error_action_retry) {
+                cancelRefresh()
+                vm.loadEntities()
+            }
 
         scheduleRefresh()
     }
