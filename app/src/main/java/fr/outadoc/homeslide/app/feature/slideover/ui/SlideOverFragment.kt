@@ -22,10 +22,14 @@ import fr.outadoc.homeslide.app.feature.grid.ui.EntityGridFragment
 class SlideOverFragment : Fragment(), SlideOverNavigator {
 
     private var binding: FragmentSlideoverBinding? = null
-    private var additionalBottomInsets: Int = 0
+
+    private var _additionalBottomInsets: Int = 0
+    private var _peekHeight: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        _peekHeight = resources.getDimension(R.dimen.slideover_peekHeight).toInt()
 
         childFragmentManager
             .beginTransaction()
@@ -84,8 +88,14 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
         binding?.bottomSheetBehavior?.state = STATE_EXPANDED
     }
 
-    override fun setPeekHeight(peekHeight: Int) {
-        binding?.bottomSheetBehavior?.setPeekHeight(peekHeight + additionalBottomInsets, true)
+    private fun updatePeekHeightAndInsets(peekHeight: Int? = null, bottomInsets: Int? = null, animate: Boolean = true) {
+        if (peekHeight != null) _peekHeight = peekHeight
+        if (bottomInsets != null) _additionalBottomInsets = bottomInsets
+        binding?.bottomSheetBehavior?.setPeekHeight(_peekHeight + _additionalBottomInsets, animate)
+    }
+
+    override fun updatePeekHeight(peekHeight: Int) {
+        updatePeekHeightAndInsets(peekHeight = peekHeight)
     }
 
     private fun FragmentSlideoverBinding.setBottomSheetCallback() {
@@ -105,9 +115,7 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
             // Set top padding to account for status bar
             v.setPadding(0, insets.systemWindowInsetTop, 0, 0)
 
-            val peekHeight = resources.getDimension(R.dimen.slideover_peekHeight).toInt()
-            bottomSheetBehavior.peekHeight = peekHeight + insets.systemWindowInsetBottom
-            additionalBottomInsets = insets.systemWindowInsetBottom
+            updatePeekHeightAndInsets(bottomInsets = insets.systemWindowInsetBottom, animate = false)
 
             // Tell system we've consumed our insets
             WindowInsetsCompat.Builder()

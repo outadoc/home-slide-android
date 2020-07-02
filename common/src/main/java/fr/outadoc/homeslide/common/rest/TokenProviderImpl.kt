@@ -4,8 +4,8 @@ import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
 import fr.outadoc.homeslide.hassapi.repository.AuthRepository
 import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.auth.AccessTokenProvider
-import kotlinx.coroutines.runBlocking
 import java.time.Instant
+import kotlinx.coroutines.runBlocking
 
 class TokenProviderImpl(
     private val prefs: TokenPreferenceRepository,
