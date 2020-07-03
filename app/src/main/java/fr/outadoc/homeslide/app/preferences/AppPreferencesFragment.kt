@@ -15,6 +15,7 @@ import androidx.navigation.NavDeepLinkBuilder
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.app.onboarding.OnboardingActivity
 import fr.outadoc.homeslide.common.DayNightActivity
@@ -109,18 +110,38 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
             }
 
             renewAuthPref.setOnPreferenceClickListener {
-                lifecycleScope.launch(Dispatchers.IO) {
-                    authRepository.logout()
-                }
-
                 val pendingIntent = NavDeepLinkBuilder(requireActivity())
                     .setComponentName(OnboardingActivity::class.java)
                     .setGraph(R.navigation.nav_graph_onboarding)
                     .setDestination(R.id.setupHostFragment)
                     .createPendingIntent()
 
+                MaterialAlertDialogBuilder(requireContext())
+                    .setMessage(R.string.pref_logoutDialog_message)
+                    .setPositiveButton(R.string.pref_logoutDialog_positive) { _, _ ->
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            authRepository.logout()
+                        }
+
+                        pendingIntent.send()
+                        activity?.finish()
+                    }
+                    .setNegativeButton(R.string.pref_logoutDialog_negative) { _, _ -> }
+                    .show()
+
+                false
+            }
+
+            shortcutHelpPref.setOnPreferenceClickListener {
+                val pendingIntent = NavDeepLinkBuilder(requireActivity())
+                    .setComponentName(OnboardingActivity::class.java)
+                    .setGraph(R.navigation.nav_graph_onboarding)
+                    .setDestination(R.id.setupShortcutFragment)
+                    .createPendingIntent()
+
                 pendingIntent.send()
                 activity?.finish()
+
                 false
             }
         }
@@ -200,6 +221,7 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
         val themePref: Preference = fragment.findPreference("list_pref_theme")!!
         val versionPref: Preference = fragment.findPreference("pref_about_version")!!
         val renewAuthPref: Preference = fragment.findPreference("pref_renew_auth")!!
+        val shortcutHelpPref: Preference = fragment.findPreference("pref_help_shortcuts")!!
     }
 
     companion object {

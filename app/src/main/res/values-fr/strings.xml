@@ -19,6 +19,9 @@
     <string name="pref_base_url_title">URL de Home\u00A0Assistant</string>
     <string name="pref_cat_app_title">Réglages de l\'application</string>
     <string name="pref_cat_hass_title">Réglages de Home\u00A0Assistant</string>
+    <string name="pref_cat_help_title">Aide</string>
+    <string name="pref_help_shortcuts_title">Configurer l\'accès rapide</string>
+    <string name="pref_help_shortcuts_summary">Découvrez comment accéder à Home Slide encore plus facilement, depuis n\'importe où sur votre appareil.</string>
     <string name="pref_legal_title">Logiciels cool qu\'on utilise</string>
     <string name="pref_oss_apache2_title">Licence Apache 2.0</string>
     <string name="pref_oss_ccby_title">Creative Commons BY 3.0</string>
@@ -29,6 +32,9 @@
     <string name="pref_refresh_interval_summary">Fréquence à laquelle rafraîchir l\'état de vos appareils, en secondes.</string>
     <string name="pref_refresh_inverval_title">Fréquence d\'actualisation</string>
     <string name="pref_renew_auth_title">Se déconnecter de l\'instance…</string>
+    <string name="pref_logoutDialog_message">Voulez-vous vraiment vous déconnecter de l\'instance ? Il est possible que certaines préférences soient perdues.</string>
+    <string name="pref_logoutDialog_positive">Oui</string>
+    <string name="pref_logoutDialog_negative">Laisse tomber</string>
     <string name="pref_show_when_locked_summary">Contrôlez votre maison sans avoir à déverrouiller votre appareil.</string>
     <string name="pref_show_when_locked_title">Autoriser sur l\'écran de verrouillage</string>
     <string-array name="pref_theme_entry_names">
