@@ -1,5 +1,6 @@
 package fr.outadoc.homeslide.app.feature.grid.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -149,7 +150,7 @@ class EntityGridFragment : Fragment() {
         onStates(vm) { state ->
             if (state is State) {
                 updateContent(state)
-                updateViewFlipper(state)
+                displayContent(state)
                 updateEditingMode(state)
             }
         }
@@ -206,7 +207,8 @@ class EntityGridFragment : Fragment() {
         }
     }
 
-    private fun updateViewFlipper(state: State) {
+    @SuppressLint("ClickableViewAccessibility")
+    private fun displayContent(state: State) {
         val childToDisplay = when (state) {
             is State.Editing,
             is State.Content -> {
@@ -228,9 +230,13 @@ class EntityGridFragment : Fragment() {
             }
         }
 
-        binding?.apply {
-            if (viewFlipperEntityGrid.displayedChild != childToDisplay) {
-                viewFlipperEntityGrid.displayedChild = childToDisplay
+        binding?.recyclerViewShortcuts?.setOnTouchListener { _, _ ->
+            state is State.InitialLoading
+        }
+
+        binding?.viewFlipperEntityGrid?.apply {
+            if (displayedChild != childToDisplay) {
+                displayedChild = childToDisplay
             }
         }
     }
