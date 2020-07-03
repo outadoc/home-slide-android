@@ -24,6 +24,15 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="@string/pref_cat_help_title">
+        <Preference
+            app:icon="@drawable/ic_infinity"
+            app:key="pref_help_shortcuts"
+            app:summary="@string/pref_help_shortcuts_summary"
+            app:title="@string/pref_help_shortcuts_title" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory app:title="@string/pref_cat_app_title">
         <SwitchPreference
             app:defaultValue="false"

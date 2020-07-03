@@ -19,6 +19,9 @@
     <string name="pref_base_url_title">Home\u00A0Assistant URL</string>
     <string name="pref_cat_app_title">Application Settings</string>
     <string name="pref_cat_hass_title">Home\u00A0Assistant Settings</string>
+    <string name="pref_cat_help_title">Help</string>
+    <string name="pref_help_shortcuts_title">Setup quick access</string>
+    <string name="pref_help_shortcuts_summary">Find out how to access Home Slide even more quickly, from anywhere on your device.</string>
     <string name="pref_legal_title">Awesome Software We Use</string>
     <string-array name="pref_oss_apache2_summary">
         <item>square/retrofit</item>
@@ -49,7 +52,10 @@
     <string name="pref_oss_ofl_title">SIL Open Font License</string>
     <string name="pref_refresh_interval_summary">How often to refresh the state of your devices, in seconds.</string>
     <string name="pref_refresh_inverval_title">Refresh Interval</string>
-    <string name="pref_renew_auth_title">Logout from instance…</string>
+    <string name="pref_renew_auth_title">Log out from instance…</string>
+    <string name="pref_logoutDialog_message">Do you really want to log out from your instance? You might lose some settings.</string>
+    <string name="pref_logoutDialog_positive">Yes</string>
+    <string name="pref_logoutDialog_negative">Nevermind</string>
     <string name="pref_show_when_locked_summary">Control your home without having to unlock your device.</string>
     <string name="pref_show_when_locked_title">Allow on Lock Screen</string>
     <string-array name="pref_theme_entry_names">
