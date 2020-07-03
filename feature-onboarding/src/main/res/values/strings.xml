@@ -8,7 +8,14 @@
         <b>Psst! 👀</b> I\'ve also found these Home\u00A0Assistant installations on your network\u00A0👀</string>
     <string name="onboarding_setup_host_zeroconfIcon">Home</string>
     <string name="onboarding_setup_shortcut_continue">It\'s done!</string>
-    <string name="onboarding_setup_shortcut_instructions">In your quick settings panel, click <b>Edit</b>, then drag the <b>Home</b> tile to your other shortcuts.</string>
+    <string name="onboarding_setup_shortcut_quickSettings_instructions">Starting in Android 7, you can access your Home Slide devices by adding a shortcut in your Quick Settings panel.</string>
+    <string name="onboarding_setup_shortcut_quickSettings_title">➡️ Quick Settings</string>
+    <string name="onboarding_setup_shortcut_deviceControls_instructions">Starting in Android 11, you can access your Home Slide devices directly from your power menu, if your phone or tablet supports this feature.</string>
+    <string name="onboarding_setup_shortcut_deviceControls_title">➡️ Device Controls</string>
+    <string name="onboarding_setup_shortcut_assistant_instructions">Not a fan of your phone\'s assistant? You can set Home Slide as your default assistant app, and access it from anywhere, just like you can with your current assistant. Visit the "Default Apps" section in your device\'s settings.</string>
+    <string name="onboarding_setup_shortcut_assistant_title">➡️ Setting as Assistant</string>
+    <string name="onboarding_setup_shortcut_wear_instructions">You can access your Home Slide devices from your Wear OS smart watch. You just need to download the companion app.</string>
+    <string name="onboarding_setup_shortcut_wear_title">➡️ Install the Wear OS app</string>
     <string name="onboarding_setup_shortcut_subtitle">Enable quick access</string>
     <string name="onboarding_success_continue">Let\'s begin</string>
     <string name="onboarding_success_subtitle">Enjoy :)</string>

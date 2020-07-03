@@ -21,6 +21,7 @@ object Dependencies {
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
         const val core = "androidx.core:core-ktx:1.3.0"
         const val preference = "androidx.preference:preference-ktx:1.1.1"
+        const val recyclerview = "androidx.recyclerview:recyclerview:1.1.0"
         const val wear = "androidx.wear:wear:1.0.0"
 
         object Lifecycle {

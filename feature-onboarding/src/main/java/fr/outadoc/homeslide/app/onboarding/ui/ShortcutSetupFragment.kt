@@ -1,9 +1,11 @@
 package fr.outadoc.homeslide.app.onboarding.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
@@ -24,6 +26,9 @@ class ShortcutSetupFragment : Fragment() {
             btnContinue.setOnClickListener {
                 vm.onContinueClicked()
             }
+
+            cardViewDeviceControls.isVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+            cardViewQuickSettings.isVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
         }
 
         vm.navigateTo.observe(viewLifecycleOwner) {
