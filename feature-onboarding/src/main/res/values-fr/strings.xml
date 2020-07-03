@@ -8,7 +8,14 @@
         <b>Psst\u00A0!</b> J\'ai aussi trouvé ces installations de Home\u00A0Assistant sur le réseau\u00A0👀</string>
     <string name="onboarding_setup_host_zeroconfIcon">Maison</string>
     <string name="onboarding_setup_shortcut_continue">C\'est fait !</string>
-    <string name="onboarding_setup_shortcut_instructions">Dans le panneau de réglages rapides, cliquez sur <b>Modifier</b>, puis faites glisser la tuile <b>Maison</b> sur vos autres raccourcis.</string>
+    <string name="onboarding_setup_shortcut_quickSettings_instructions">À partir d\'Android 7, vous pouvez accéder à vos appareils Home Slide en ajoutant une tuile dans votre panneau de réglages rapides.</string>
+    <string name="onboarding_setup_shortcut_quickSettings_title">➡️ Réglages rapides</string>
+    <string name="onboarding_setup_shortcut_deviceControls_instructions">À partir d\'Android 11, vous pouvez accéder à vos appareils Home Slide directement depuis le menu accessible en appuyant sur le bouton de veille, si votre appareil supporte cette fonctionnalité.</string>
+    <string name="onboarding_setup_shortcut_deviceControls_title">➡️ Contrôles d\'appareils</string>
+    <string name="onboarding_setup_shortcut_assistant_instructions">Vous n\'utilisez pas l\'assistant fourni sur votre appareil ? Vous pouvez régler Home Slide comme application d\'assistance par défaut, et l\'utiliser depuis n\'importe où, exactement comme votre assistant actuel. Visitez la section "Applications par défaut" des réglages de votre appareil.</string>
+    <string name="onboarding_setup_shortcut_assistant_title">➡️ Utiliser comme Assistant</string>
+    <string name="onboarding_setup_shortcut_wear_instructions">Vous pouvez accéder à vos appareils Home Slide depuis votre montre Wear OS. Il vous suffit d\'y télécharger également l\'application.</string>
+    <string name="onboarding_setup_shortcut_wear_title">➡️ Application Wear OS</string>
     <string name="onboarding_setup_shortcut_subtitle">Activez l\'accès rapide</string>
     <string name="onboarding_success_continue">Commençons</string>
     <string name="onboarding_success_subtitle">Amusez-vous bien :)</string>

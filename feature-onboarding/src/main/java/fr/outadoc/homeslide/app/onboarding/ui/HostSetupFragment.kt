@@ -1,7 +1,6 @@
 package fr.outadoc.homeslide.app.onboarding.ui
 
 import android.graphics.drawable.AnimatedVectorDrawable
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +18,6 @@ import fr.outadoc.homeslide.app.onboarding.extensions.toViewStatus
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
 import fr.outadoc.homeslide.app.onboarding.ui.HostSetupFragmentDirections.Companion.actionSetupHostFragmentToAuthenticationCustomTabs
 import fr.outadoc.homeslide.app.onboarding.ui.HostSetupFragmentDirections.Companion.actionSetupHostFragmentToSetupShortcutFragment
-import fr.outadoc.homeslide.app.onboarding.ui.HostSetupFragmentDirections.Companion.actionSetupHostFragmentToSuccessFragment
 import fr.outadoc.homeslide.app.onboarding.vm.HostSetupViewModel
 import fr.outadoc.homeslide.util.view.addTextChangedListener
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -88,15 +86,7 @@ class HostSetupFragment : Fragment() {
         vm.navigateTo.observe(viewLifecycleOwner) {
             when (val dest = it.pop()) {
                 NavigationFlow.Next -> {
-                    val direction =
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                            // If the OS doesn't support quick settings, skip the quick settings step
-                            actionSetupHostFragmentToSuccessFragment()
-                        } else {
-                            actionSetupHostFragmentToSetupShortcutFragment()
-                        }
-
-                    navigate(direction)
+                    navigate(actionSetupHostFragmentToSetupShortcutFragment())
                 }
 
                 NavigationFlow.Back -> binding?.navController?.navigateUp()

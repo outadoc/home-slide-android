@@ -42,14 +42,15 @@ android {
 }
 
 dependencies {
-    implementation(project(":lib-common-util"))
     implementation(project(":common"))
+    implementation(project(":lib-common-util"))
     implementation(project(":lib-zeroconf"))
     implementation(project(":lib-restclient"))
     implementation(project(":lib-homeassistant-api"))
     implementation(project(":lib-logging"))
 
     implementation(Dependencies.Konfetti.core)
+    implementation(Dependencies.Google.material)
 
     // Kotlin runtime
     implementation(Dependencies.Kotlin.stdlib)
@@ -58,6 +59,7 @@ dependencies {
     implementation(Dependencies.AndroidX.core)
     implementation(Dependencies.AndroidX.constraintLayout)
     implementation(Dependencies.AndroidX.appcompat)
+    implementation(Dependencies.AndroidX.recyclerview)
 
     // Network libs
     implementation(Dependencies.Retrofit.core)
