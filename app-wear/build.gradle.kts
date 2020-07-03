@@ -88,7 +88,6 @@ dependencies {
     implementation(Dependencies.Koin.android)
     implementation(Dependencies.Koin.viewModel)
 
-
     implementation(Dependencies.AndroidX.wear)
     implementation(Dependencies.Google.Wearable.support)
     compileOnly(Dependencies.Google.Wearable.core)

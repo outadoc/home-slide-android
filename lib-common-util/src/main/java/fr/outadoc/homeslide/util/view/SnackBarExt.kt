@@ -4,7 +4,21 @@ import android.view.View
 import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
 
-fun View?.showSnackbar(message: CharSequence, duration: Int = Snackbar.LENGTH_LONG, block: Snackbar.() -> Unit) {
+fun View?.showSnackbar(
+    @StringRes messageResId: Int,
+    duration: Int = Snackbar.LENGTH_LONG,
+    block: Snackbar.() -> Unit = {}
+) {
+    this?.apply {
+        showSnackbar(context.getString(messageResId), duration, block)
+    }
+}
+
+fun View?.showSnackbar(
+    message: CharSequence,
+    duration: Int = Snackbar.LENGTH_LONG,
+    block: Snackbar.() -> Unit = {}
+) {
     if (this == null) return
     Snackbar.make(this, message, duration)
         .apply(block)

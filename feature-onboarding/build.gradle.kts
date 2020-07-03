@@ -61,6 +61,9 @@ dependencies {
     implementation(Dependencies.AndroidX.appcompat)
     implementation(Dependencies.AndroidX.recyclerview)
 
+    implementation(Dependencies.Google.Wearable.support)
+    compileOnly(Dependencies.Google.Wearable.core)
+
     // Network libs
     implementation(Dependencies.Retrofit.core)
     implementation(Dependencies.OkHttp.logging)
