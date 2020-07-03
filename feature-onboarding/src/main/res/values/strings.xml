@@ -13,10 +13,14 @@
     <string name="onboarding_setup_shortcut_deviceControls_instructions">Starting in Android 11, you can access your Home Slide devices directly from your power menu, if your phone or tablet supports this feature.</string>
     <string name="onboarding_setup_shortcut_deviceControls_title">➡️ Device Controls</string>
     <string name="onboarding_setup_shortcut_assistant_instructions">Not a fan of your phone\'s assistant? You can set Home Slide as your default assistant app, and access it from anywhere, just like you can with your current assistant. Visit the "Default Apps" section in your device\'s settings.</string>
+    <string name="onboarding_setup_shortcut_assistant_action">Open default app settings</string>
     <string name="onboarding_setup_shortcut_assistant_title">➡️ Setting as Assistant</string>
     <string name="onboarding_setup_shortcut_wear_instructions">You can access your Home Slide devices from your Wear OS smart watch. You just need to download the companion app.</string>
+    <string name="onboarding_setup_shortcut_wear_action">Install on my watch</string>
     <string name="onboarding_setup_shortcut_wear_title">➡️ Install the Wear OS app</string>
     <string name="onboarding_setup_shortcut_subtitle">Enable quick access</string>
+    <string name="onboarding_setup_shortcut_wear_success">Look at your watch!</string>
+    <string name="onboarding_setup_shortcut_wear_failure">Couldn\'t find a paired Wear OS device</string>
     <string name="onboarding_success_continue">Let\'s begin</string>
     <string name="onboarding_success_subtitle">Enjoy :)</string>
     <string name="onboarding_success_title">We\'re done!</string>
