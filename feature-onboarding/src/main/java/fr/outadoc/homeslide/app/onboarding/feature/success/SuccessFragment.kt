@@ -12,7 +12,6 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.homeslide.app.onboarding.R
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentSuccessBinding
-import fr.outadoc.homeslide.app.onboarding.feature.success.SuccessFragmentDirections.Companion.actionSuccessFragmentToSlideOverActivity
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
 import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
@@ -42,7 +41,7 @@ class SuccessFragment : Fragment() {
         vm.navigateTo.observe(viewLifecycleOwner) {
             when (it.pop()) {
                 NavigationFlow.Next -> {
-                    binding?.navController?.navigate(actionSuccessFragmentToSlideOverActivity())
+                    binding?.navController?.navigate(SuccessFragmentDirections.finishOnboardingAction())
                     activity?.finish()
                 }
                 NavigationFlow.Back -> binding?.navController?.navigateUp()
@@ -50,7 +49,7 @@ class SuccessFragment : Fragment() {
             }
         }
 
-        return binding!!.root
+        return binding?.root
     }
 
     private fun confetti() {
@@ -79,9 +78,4 @@ class SuccessFragment : Fragment() {
 
     private val FragmentSuccessBinding.navController: NavController
         get() = root.findNavController()
-
-    companion object {
-        fun newInstance() =
-            SuccessFragment()
-    }
 }

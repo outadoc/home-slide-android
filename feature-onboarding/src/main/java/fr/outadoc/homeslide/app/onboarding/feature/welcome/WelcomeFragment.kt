@@ -9,7 +9,6 @@ import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentWelcomeBinding
-import fr.outadoc.homeslide.app.onboarding.feature.welcome.WelcomeFragmentDirections.Companion.actionWelcomeFragmentToSetupHostFragment
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -32,14 +31,14 @@ class WelcomeFragment : Fragment() {
         vm.navigateTo.observe(viewLifecycleOwner) {
             when (it.pop()) {
                 NavigationFlow.Next -> binding?.navController?.navigate(
-                    actionWelcomeFragmentToSetupHostFragment()
+                    WelcomeFragmentDirections.setupHostAction()
                 )
                 NavigationFlow.Back -> binding?.navController?.navigateUp()
                 else -> Unit
             }
         }
 
-        return binding!!.root
+        return binding?.root
     }
 
     override fun onDestroyView() {
@@ -49,9 +48,4 @@ class WelcomeFragment : Fragment() {
 
     private val FragmentWelcomeBinding.navController: NavController
         get() = root.findNavController()
-
-    companion object {
-        fun newInstance() =
-            WelcomeFragment()
-    }
 }
