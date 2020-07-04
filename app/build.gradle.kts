@@ -20,14 +20,16 @@ android {
     buildTypes {
         val fieldEnableDetails = "ENABLE_DETAILS"
 
-        named("debug") {
+        named(BuildTypes.debug) {
             applicationIdSuffix = AppInfo.applicationIdSuffix
             buildConfigField("boolean", fieldEnableDetails, "false")
         }
 
         named(BuildTypes.release) {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             buildConfigField("boolean", fieldEnableDetails, "false")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
         }
     }
 

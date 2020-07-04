@@ -18,12 +18,14 @@ android {
     }
 
     buildTypes {
-        named("debug") {
+        named(BuildTypes.debug) {
             applicationIdSuffix = AppInfo.applicationIdSuffix
         }
 
         named(BuildTypes.release) {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
         }
     }
 
