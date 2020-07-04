@@ -10,7 +10,7 @@
         tools:layout="@layout/fragment_welcome">
 
         <action
-            android:id="@+id/action_welcomeFragment_to_setupHostFragment"
+            android:id="@+id/setupHostAction"
             app:destination="@id/setupHostFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -24,17 +24,7 @@
         tools:layout="@layout/fragment_setup_host">
 
         <action
-            android:id="@+id/action_setupHostFragment_to_setupShortcutFragment"
-            app:destination="@id/setupShortcutFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-        <deepLink app:uri="homeslide://auth_callback?code={code}" />
-
-        <action
-            android:id="@+id/action_setupHostFragment_to_authenticationCustomTabs"
+            android:id="@+id/startOAuthFlowAction"
             app:destination="@id/authenticationCustomTabs"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -52,12 +42,29 @@
     <custom-tabs android:id="@+id/authenticationCustomTabs" />
 
     <fragment
+        android:id="@+id/authCallbackFragment"
+        android:name="fr.outadoc.homeslide.app.onboarding.feature.authcallback.AuthCallbackFragment"
+        tools:layout="@layout/fragment_auth_callback">
+
+        <deepLink app:uri="homeslide://auth_callback?code={code}" />
+
+        <action
+            android:id="@+id/setupShortcutsAction"
+            app:destination="@id/setupShortcutFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
         android:id="@+id/setupShortcutFragment"
         android:name="fr.outadoc.homeslide.app.onboarding.feature.shortcuts.ShortcutSetupFragment"
         tools:layout="@layout/fragment_setup_shortcut">
 
         <action
-            android:id="@+id/action_setupShortcutFragment_to_successFragment"
+            android:id="@+id/successAction"
             app:destination="@id/successFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -71,8 +78,10 @@
         tools:layout="@layout/fragment_success">
 
         <action
-            android:id="@+id/action_successFragment_to_slideOverActivity"
-            app:destination="@id/slideOverActivity" />
+            android:id="@+id/finishOnboardingAction"
+            app:destination="@id/slideOverActivity"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/fragment_fade_exit" />
     </fragment>
 
     <activity

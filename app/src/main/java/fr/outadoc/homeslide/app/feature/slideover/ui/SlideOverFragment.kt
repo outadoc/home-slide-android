@@ -48,7 +48,7 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         binding = FragmentSlideoverBinding.inflate(inflater, container, false).apply {
             linearLayoutContent.setOnClickListener {
                 // Prevent from bubbling event up to parent
@@ -64,7 +64,7 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
             (activity as? AppCompatActivity)?.setSupportActionBar(gridToolbar)
         }
 
-        return binding!!.root
+        return binding?.root
     }
 
     override fun navigateTo(fragment: Fragment) {

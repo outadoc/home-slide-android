@@ -1,12 +1,10 @@
 package fr.outadoc.homeslide.app.onboarding.feature.host
 
-import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
@@ -14,8 +12,6 @@ import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentSetupHostBinding
-import fr.outadoc.homeslide.app.onboarding.feature.host.HostSetupFragmentDirections.Companion.actionSetupHostFragmentToAuthenticationCustomTabs
-import fr.outadoc.homeslide.app.onboarding.feature.host.HostSetupFragmentDirections.Companion.actionSetupHostFragmentToSetupShortcutFragment
 import fr.outadoc.homeslide.app.onboarding.feature.host.extensions.toViewStatus
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
 import fr.outadoc.homeslide.util.view.addTextChangedListener
@@ -51,8 +47,6 @@ class HostSetupFragment : Fragment() {
                 adapter = zeroconfAdapter
                 layoutManager = LinearLayoutManager(root.context)
             }
-
-            (iconLoading.drawable as? AnimatedVectorDrawable)?.start()
         }
 
         vm.inputInstanceUrl.observe(viewLifecycleOwner) { instanceUrl ->
@@ -85,31 +79,15 @@ class HostSetupFragment : Fragment() {
 
         vm.navigateTo.observe(viewLifecycleOwner) {
             when (val dest = it.pop()) {
-                NavigationFlow.Next -> {
-                    navigate(actionSetupHostFragmentToSetupShortcutFragment())
-                }
-
                 NavigationFlow.Back -> binding?.navController?.navigateUp()
 
                 is NavigationFlow.Url -> {
-                    navigate(actionSetupHostFragmentToAuthenticationCustomTabs(dest.url))
+                    navigate(HostSetupFragmentDirections.startOAuthFlowAction(dest.url))
                 }
             }
         }
 
-        vm.state.observe(viewLifecycleOwner) { state ->
-            binding?.iconLoading?.isVisible = when (state) {
-                HostSetupViewModel.State.Loading -> true
-                else -> false
-            }
-        }
-
-        arguments?.getString("code")?.let { code ->
-            // We're coming from a deeplink and we got an authentication code
-            vm.onAuthCallback(code)
-        }
-
-        return binding!!.root
+        return binding?.root
     }
 
     private fun navigate(directions: NavDirections) {
@@ -133,9 +111,4 @@ class HostSetupFragment : Fragment() {
 
     private val FragmentSetupHostBinding.navController: NavController
         get() = root.findNavController()
-
-    companion object {
-        fun newInstance() =
-            HostSetupFragment()
-    }
 }

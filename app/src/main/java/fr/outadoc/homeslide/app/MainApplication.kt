@@ -5,6 +5,7 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import fr.outadoc.homeslide.app.controlprovider.inject.IntentProvider
 import fr.outadoc.homeslide.app.controlprovider.inject.controlProviderModule
 import fr.outadoc.homeslide.app.inject.AppIntentProvider
+import fr.outadoc.homeslide.app.onboarding.feature.authcallback.AuthCallbackViewModel
 import fr.outadoc.homeslide.app.onboarding.feature.host.rest.DiscoveryRepositoryImpl
 import fr.outadoc.homeslide.app.onboarding.feature.host.rest.HassZeroconfDiscoveryServiceImpl
 import fr.outadoc.homeslide.app.onboarding.feature.host.HostSetupViewModel
@@ -82,11 +83,10 @@ class MainApplication : Application() {
                 get(),
                 get(),
                 get(),
-                get(),
-                get(),
                 get()
             )
         }
+        viewModel { AuthCallbackViewModel(get(), get()) }
         viewModel { ShortcutSetupViewModel() }
         viewModel {
             SuccessViewModel(

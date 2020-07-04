@@ -91,7 +91,7 @@ class EntityGridFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         binding = FragmentEntityGridBinding.inflate(inflater, container, false)
 
         setupToolbar(R.string.title_quick_access, false)
@@ -163,7 +163,7 @@ class EntityGridFragment : Fragment() {
             }
         }
 
-        return binding!!.root
+        return binding?.root
     }
 
     private fun displayError(e: Throwable) {

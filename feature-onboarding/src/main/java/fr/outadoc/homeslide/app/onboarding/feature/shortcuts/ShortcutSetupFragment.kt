@@ -18,7 +18,6 @@ import com.google.android.wearable.intent.RemoteIntent
 import fr.outadoc.homeslide.app.onboarding.R
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentSetupShortcutBinding
 import fr.outadoc.homeslide.app.onboarding.extensions.startRemoteActivity
-import fr.outadoc.homeslide.app.onboarding.feature.shortcuts.ShortcutSetupFragmentDirections.Companion.actionSetupShortcutFragmentToSuccessFragment
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
 import fr.outadoc.homeslide.util.view.showSnackbar
 import kotlinx.coroutines.launch
@@ -54,14 +53,14 @@ class ShortcutSetupFragment : Fragment() {
         vm.navigateTo.observe(viewLifecycleOwner) {
             when (it.pop()) {
                 NavigationFlow.Next -> binding?.navController?.navigate(
-                    actionSetupShortcutFragmentToSuccessFragment()
+                    ShortcutSetupFragmentDirections.successAction()
                 )
                 NavigationFlow.Back -> binding?.navController?.navigateUp()
                 else -> Unit
             }
         }
 
-        return binding!!.root
+        return binding?.root
     }
 
     private fun openDefaultAppSettings() {
@@ -100,8 +99,6 @@ class ShortcutSetupFragment : Fragment() {
         get() = root.findNavController()
 
     companion object {
-        fun newInstance() = ShortcutSetupFragment()
-
         private const val WEAR_APP_STORE_URI = "market://details?id=fr.outadoc.quickhass"
     }
 }

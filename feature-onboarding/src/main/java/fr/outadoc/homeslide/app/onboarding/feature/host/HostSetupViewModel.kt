@@ -7,21 +7,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
 import fr.outadoc.homeslide.app.onboarding.feature.host.model.CallStatus
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
 import fr.outadoc.homeslide.app.onboarding.feature.host.model.ZeroconfHost
-import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
-import fr.outadoc.homeslide.hassapi.repository.AuthRepository
 import fr.outadoc.homeslide.hassapi.repository.DiscoveryRepository
 import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.auth.OAuthConfiguration
 import fr.outadoc.homeslide.util.lifecycle.Event
 import fr.outadoc.homeslide.util.sanitizeUrl
 import fr.outadoc.homeslide.zeroconf.ZeroconfDiscoveryService
-import java.time.Instant
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
@@ -31,28 +26,14 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @OptIn(FlowPreview::class, ExperimentalStdlibApi::class, ExperimentalCoroutinesApi::class)
 class HostSetupViewModel(
-    private val tokenPrefs: TokenPreferenceRepository,
     private val urlPrefs: UrlPreferenceRepository,
     private val repository: DiscoveryRepository,
-    private val authRepository: AuthRepository,
     private val oAuthConfiguration: OAuthConfiguration,
     private val zeroconfDiscoveryService: ZeroconfDiscoveryService
 ) : ViewModel() {
-
-    sealed class State {
-        object Content : State()
-        object Loading : State()
-    }
-
-    private val _state = MutableLiveData<State>(
-        State.Content
-    )
-    val state: LiveData<State> = _state
 
     private val _autoDiscoveredInstances = MutableLiveData<List<ZeroconfHost>>()
     val autoDiscoveredInstances: LiveData<List<ZeroconfHost>> = _autoDiscoveredInstances
@@ -181,33 +162,6 @@ class HostSetupViewModel(
     private fun startAuthFlow() {
         authenticationPageUrl?.let { url ->
             _navigateTo.value = Event(NavigationFlow.Url(url))
-        }
-    }
-
-    fun onAuthCallback(code: String) {
-        KLog.d { "received authentication code, fetching token" }
-
-        _state.value =
-            State.Loading
-
-        viewModelScope.launch(Dispatchers.IO) {
-            authRepository.getToken(code)
-                .onSuccess { token ->
-                    withContext(Dispatchers.Main) {
-                        // Save the auth code
-                        tokenPrefs.accessToken = token.accessToken
-                        tokenPrefs.refreshToken = token.refreshToken
-                        tokenPrefs.tokenExpirationTime = Instant.now().plusSeconds(token.expiresIn)
-
-                        _state.value =
-                            State.Content
-                        _navigateTo.value = Event(NavigationFlow.Next)
-                    }
-                }
-                .onFailure { e ->
-                    KLog.e(e) { "couldn't retrieve token using code $code" }
-                    _state.postValue(State.Content)
-                }
         }
     }
 

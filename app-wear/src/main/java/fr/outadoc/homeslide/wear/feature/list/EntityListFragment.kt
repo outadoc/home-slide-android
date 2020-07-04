@@ -90,7 +90,7 @@ class EntityListFragment : Fragment() {
         }
 
         scheduleRefresh()
-        return binding!!.root
+        return binding?.root
     }
 
     override fun onResume() {
