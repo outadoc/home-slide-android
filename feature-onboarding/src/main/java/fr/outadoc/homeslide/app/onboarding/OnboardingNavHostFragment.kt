@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.app.onboarding.ui
+package fr.outadoc.homeslide.app.onboarding
 
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment

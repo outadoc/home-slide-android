@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.app.onboarding.ui
+package fr.outadoc.homeslide.app.onboarding.feature.host
 
 import android.content.Context
 import android.graphics.drawable.AnimatedVectorDrawable
@@ -52,7 +52,9 @@ class ResultIconView : LinearLayout {
         }
     }
 
-    var state: State by Delegates.observable(State.NONE) { _, oldValue: State, newValue: State ->
+    var state: State by Delegates.observable(
+        State.NONE
+    ) { _, oldValue: State, newValue: State ->
         if (oldValue != newValue) {
             hideAll()
             getViewForState(newValue)?.isGone = false

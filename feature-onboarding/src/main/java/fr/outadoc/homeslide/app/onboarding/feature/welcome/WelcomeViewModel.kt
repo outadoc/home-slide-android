@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.app.onboarding.vm
+package fr.outadoc.homeslide.app.onboarding.feature.welcome
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

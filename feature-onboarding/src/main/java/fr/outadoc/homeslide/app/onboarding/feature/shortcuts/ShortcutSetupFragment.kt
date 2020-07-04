@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.app.onboarding.ui
+package fr.outadoc.homeslide.app.onboarding.feature.shortcuts
 
 import android.content.Intent
 import android.net.Uri
@@ -18,9 +18,8 @@ import com.google.android.wearable.intent.RemoteIntent
 import fr.outadoc.homeslide.app.onboarding.R
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentSetupShortcutBinding
 import fr.outadoc.homeslide.app.onboarding.extensions.startRemoteActivity
+import fr.outadoc.homeslide.app.onboarding.feature.shortcuts.ShortcutSetupFragmentDirections.Companion.actionSetupShortcutFragmentToSuccessFragment
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
-import fr.outadoc.homeslide.app.onboarding.ui.ShortcutSetupFragmentDirections.Companion.actionSetupShortcutFragmentToSuccessFragment
-import fr.outadoc.homeslide.app.onboarding.vm.ShortcutSetupViewModel
 import fr.outadoc.homeslide.util.view.showSnackbar
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel

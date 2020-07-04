@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="fr.outadoc.homeslide.app.onboarding.ui.WelcomeFragment"
+        android:name="fr.outadoc.homeslide.app.onboarding.feature.welcome.WelcomeFragment"
         tools:layout="@layout/fragment_welcome">
 
         <action
@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/setupHostFragment"
-        android:name="fr.outadoc.homeslide.app.onboarding.ui.HostSetupFragment"
+        android:name="fr.outadoc.homeslide.app.onboarding.feature.host.HostSetupFragment"
         tools:layout="@layout/fragment_setup_host">
 
         <action
@@ -53,7 +53,7 @@
 
     <fragment
         android:id="@+id/setupShortcutFragment"
-        android:name="fr.outadoc.homeslide.app.onboarding.ui.ShortcutSetupFragment"
+        android:name="fr.outadoc.homeslide.app.onboarding.feature.shortcuts.ShortcutSetupFragment"
         tools:layout="@layout/fragment_setup_shortcut">
 
         <action
@@ -67,7 +67,7 @@
 
     <fragment
         android:id="@+id/successFragment"
-        android:name="fr.outadoc.homeslide.app.onboarding.ui.SuccessFragment"
+        android:name="fr.outadoc.homeslide.app.onboarding.feature.success.SuccessFragment"
         tools:layout="@layout/fragment_success">
 
         <action

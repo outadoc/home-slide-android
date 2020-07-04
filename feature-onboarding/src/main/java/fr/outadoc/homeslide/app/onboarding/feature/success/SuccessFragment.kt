@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.app.onboarding.ui
+package fr.outadoc.homeslide.app.onboarding.feature.success
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,9 +12,8 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.homeslide.app.onboarding.R
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentSuccessBinding
+import fr.outadoc.homeslide.app.onboarding.feature.success.SuccessFragmentDirections.Companion.actionSuccessFragmentToSlideOverActivity
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
-import fr.outadoc.homeslide.app.onboarding.ui.SuccessFragmentDirections.Companion.actionSuccessFragmentToSlideOverActivity
-import fr.outadoc.homeslide.app.onboarding.vm.SuccessViewModel
 import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -82,6 +81,7 @@ class SuccessFragment : Fragment() {
         get() = root.findNavController()
 
     companion object {
-        fun newInstance() = SuccessFragment()
+        fun newInstance() =
+            SuccessFragment()
     }
 }

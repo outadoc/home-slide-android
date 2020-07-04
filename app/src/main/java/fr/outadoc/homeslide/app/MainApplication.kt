@@ -5,12 +5,12 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import fr.outadoc.homeslide.app.controlprovider.inject.IntentProvider
 import fr.outadoc.homeslide.app.controlprovider.inject.controlProviderModule
 import fr.outadoc.homeslide.app.inject.AppIntentProvider
-import fr.outadoc.homeslide.app.onboarding.rest.DiscoveryRepositoryImpl
-import fr.outadoc.homeslide.app.onboarding.rest.HassZeroconfDiscoveryServiceImpl
-import fr.outadoc.homeslide.app.onboarding.vm.HostSetupViewModel
-import fr.outadoc.homeslide.app.onboarding.vm.ShortcutSetupViewModel
-import fr.outadoc.homeslide.app.onboarding.vm.SuccessViewModel
-import fr.outadoc.homeslide.app.onboarding.vm.WelcomeViewModel
+import fr.outadoc.homeslide.app.onboarding.feature.host.rest.DiscoveryRepositoryImpl
+import fr.outadoc.homeslide.app.onboarding.feature.host.rest.HassZeroconfDiscoveryServiceImpl
+import fr.outadoc.homeslide.app.onboarding.feature.host.HostSetupViewModel
+import fr.outadoc.homeslide.app.onboarding.feature.shortcuts.ShortcutSetupViewModel
+import fr.outadoc.homeslide.app.onboarding.feature.success.SuccessViewModel
+import fr.outadoc.homeslide.app.onboarding.feature.welcome.WelcomeViewModel
 import fr.outadoc.homeslide.app.preferences.PreferencePublisher
 import fr.outadoc.homeslide.app.preferences.PreferenceRepositoryImpl
 import fr.outadoc.homeslide.common.feature.details.vm.EntityDetailViewModel
@@ -77,9 +77,23 @@ class MainApplication : Application() {
         single<PreferencePublisher> { get<PreferenceRepositoryImpl>() }
 
         viewModel { WelcomeViewModel() }
-        viewModel { HostSetupViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel {
+            HostSetupViewModel(
+                get(),
+                get(),
+                get(),
+                get(),
+                get(),
+                get()
+            )
+        }
         viewModel { ShortcutSetupViewModel() }
-        viewModel { SuccessViewModel(get(), get()) }
+        viewModel {
+            SuccessViewModel(
+                get(),
+                get()
+            )
+        }
 
         viewModel { EntityDetailViewModel() }
     }

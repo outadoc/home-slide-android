@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.app.onboarding.ui
+package fr.outadoc.homeslide.app.onboarding.feature.host
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,14 +7,18 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.homeslide.app.onboarding.R
-import fr.outadoc.homeslide.app.onboarding.model.ZeroconfHost
-import fr.outadoc.homeslide.app.onboarding.model.ZeroconfHostDiffer
+import fr.outadoc.homeslide.app.onboarding.feature.host.model.ZeroconfHost
+import fr.outadoc.homeslide.app.onboarding.feature.host.model.ZeroconfHostDiffer
 
-class ZeroconfAdapter(val onItemClick: (ZeroconfHost) -> Unit) : ListAdapter<ZeroconfHost, ZeroconfAdapter.ViewHolder>(ZeroconfHostDiffer) {
+class ZeroconfAdapter(val onItemClick: (ZeroconfHost) -> Unit) : ListAdapter<ZeroconfHost, ZeroconfAdapter.ViewHolder>(
+    ZeroconfHostDiffer
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_zeroconf_host, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(
+            view
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

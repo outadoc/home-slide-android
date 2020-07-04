@@ -1,7 +1,7 @@
-package fr.outadoc.homeslide.app.onboarding.extensions
+package fr.outadoc.homeslide.app.onboarding.feature.host.extensions
 
-import fr.outadoc.homeslide.app.onboarding.model.CallStatus
-import fr.outadoc.homeslide.app.onboarding.ui.ResultIconView
+import fr.outadoc.homeslide.app.onboarding.feature.host.model.CallStatus
+import fr.outadoc.homeslide.app.onboarding.feature.host.ResultIconView
 
 fun <T> CallStatus<T>.toViewStatus(): ResultIconView.State = when (this) {
     is CallStatus.Loading -> ResultIconView.State.LOADING

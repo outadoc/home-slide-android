@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.app.onboarding.ui
+package fr.outadoc.homeslide.app.onboarding.feature.host
 
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
@@ -14,11 +14,10 @@ import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentSetupHostBinding
-import fr.outadoc.homeslide.app.onboarding.extensions.toViewStatus
+import fr.outadoc.homeslide.app.onboarding.feature.host.HostSetupFragmentDirections.Companion.actionSetupHostFragmentToAuthenticationCustomTabs
+import fr.outadoc.homeslide.app.onboarding.feature.host.HostSetupFragmentDirections.Companion.actionSetupHostFragmentToSetupShortcutFragment
+import fr.outadoc.homeslide.app.onboarding.feature.host.extensions.toViewStatus
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
-import fr.outadoc.homeslide.app.onboarding.ui.HostSetupFragmentDirections.Companion.actionSetupHostFragmentToAuthenticationCustomTabs
-import fr.outadoc.homeslide.app.onboarding.ui.HostSetupFragmentDirections.Companion.actionSetupHostFragmentToSetupShortcutFragment
-import fr.outadoc.homeslide.app.onboarding.vm.HostSetupViewModel
 import fr.outadoc.homeslide.util.view.addTextChangedListener
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -27,11 +26,12 @@ class HostSetupFragment : Fragment() {
     private val vm: HostSetupViewModel by viewModel()
 
     private var binding: FragmentSetupHostBinding? = null
-    private val zeroconfAdapter = ZeroconfAdapter(
-        onItemClick = {
-            vm.onZeroconfHostSelected(it)
-        }
-    )
+    private val zeroconfAdapter =
+        ZeroconfAdapter(
+            onItemClick = {
+                vm.onZeroconfHostSelected(it)
+            }
+        )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -135,6 +135,7 @@ class HostSetupFragment : Fragment() {
         get() = root.findNavController()
 
     companion object {
-        fun newInstance() = HostSetupFragment()
+        fun newInstance() =
+            HostSetupFragment()
     }
 }
