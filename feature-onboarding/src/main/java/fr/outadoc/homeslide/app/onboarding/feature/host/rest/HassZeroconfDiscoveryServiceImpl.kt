@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.app.onboarding.rest
+package fr.outadoc.homeslide.app.onboarding.feature.host.rest
 
 import android.net.nsd.NsdManager
 import fr.outadoc.homeslide.zeroconf.ZeroconfDiscoveryServiceImpl

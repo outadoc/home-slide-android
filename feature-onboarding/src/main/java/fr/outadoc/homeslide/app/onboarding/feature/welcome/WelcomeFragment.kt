@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.app.onboarding.ui
+package fr.outadoc.homeslide.app.onboarding.feature.welcome
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,9 +9,8 @@ import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentWelcomeBinding
+import fr.outadoc.homeslide.app.onboarding.feature.welcome.WelcomeFragmentDirections.Companion.actionWelcomeFragmentToSetupHostFragment
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
-import fr.outadoc.homeslide.app.onboarding.ui.WelcomeFragmentDirections.Companion.actionWelcomeFragmentToSetupHostFragment
-import fr.outadoc.homeslide.app.onboarding.vm.WelcomeViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class WelcomeFragment : Fragment() {
@@ -52,6 +51,7 @@ class WelcomeFragment : Fragment() {
         get() = root.findNavController()
 
     companion object {
-        fun newInstance() = WelcomeFragment()
+        fun newInstance() =
+            WelcomeFragment()
     }
 }

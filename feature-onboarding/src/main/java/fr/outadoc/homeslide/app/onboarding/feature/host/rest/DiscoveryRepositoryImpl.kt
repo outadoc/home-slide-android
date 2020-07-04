@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.app.onboarding.rest
+package fr.outadoc.homeslide.app.onboarding.feature.host.rest
 
 import fr.outadoc.homeslide.hassapi.api.DiscoveryApi
 import fr.outadoc.homeslide.hassapi.model.discovery.ApiStatus

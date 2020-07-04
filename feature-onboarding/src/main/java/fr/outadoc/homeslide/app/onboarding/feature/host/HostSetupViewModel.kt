@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.app.onboarding.vm
+package fr.outadoc.homeslide.app.onboarding.feature.host
 
 import android.net.Uri
 import androidx.core.net.toUri
@@ -8,9 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import fr.outadoc.homeslide.app.onboarding.model.CallStatus
+import fr.outadoc.homeslide.app.onboarding.feature.host.model.CallStatus
 import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
-import fr.outadoc.homeslide.app.onboarding.model.ZeroconfHost
+import fr.outadoc.homeslide.app.onboarding.feature.host.model.ZeroconfHost
 import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
 import fr.outadoc.homeslide.hassapi.repository.AuthRepository
@@ -49,7 +49,9 @@ class HostSetupViewModel(
         object Loading : State()
     }
 
-    private val _state = MutableLiveData<State>(State.Content)
+    private val _state = MutableLiveData<State>(
+        State.Content
+    )
     val state: LiveData<State> = _state
 
     private val _autoDiscoveredInstances = MutableLiveData<List<ZeroconfHost>>()
@@ -185,7 +187,8 @@ class HostSetupViewModel(
     fun onAuthCallback(code: String) {
         KLog.d { "received authentication code, fetching token" }
 
-        _state.value = State.Loading
+        _state.value =
+            State.Loading
 
         viewModelScope.launch(Dispatchers.IO) {
             authRepository.getToken(code)
@@ -196,7 +199,8 @@ class HostSetupViewModel(
                         tokenPrefs.refreshToken = token.refreshToken
                         tokenPrefs.tokenExpirationTime = Instant.now().plusSeconds(token.expiresIn)
 
-                        _state.value = State.Content
+                        _state.value =
+                            State.Content
                         _navigateTo.value = Event(NavigationFlow.Next)
                     }
                 }

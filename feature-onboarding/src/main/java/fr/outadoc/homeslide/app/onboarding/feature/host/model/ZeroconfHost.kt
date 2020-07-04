@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.app.onboarding.model
+package fr.outadoc.homeslide.app.onboarding.feature.host.model
 
 data class ZeroconfHost(
     val hostName: String,
