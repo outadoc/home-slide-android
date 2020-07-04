@@ -53,13 +53,11 @@ class PreferenceRepositoryImpl(
         }
 
     override var tokenExpirationTime: Instant?
-        get() {
-            return appPrefs.getString(KEY_TOKEN_EXPIRATION_TIME, "")?.let { instantStr ->
-                try {
-                    Instant.parse(instantStr)
-                } catch (e: DateTimeParseException) {
-                    null
-                }
+        get() = appPrefs.getString(KEY_TOKEN_EXPIRATION_TIME, null)?.let { instantStr ->
+            try {
+                Instant.parse(instantStr)
+            } catch (e: DateTimeParseException) {
+                null
             }
         }
         set(value) {
