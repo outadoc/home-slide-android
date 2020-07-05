@@ -31,7 +31,7 @@ stages:
   - test
   - package
 
-check:
+.check:
   stage: lint
   script:
     - ./gradlew -Pci --console=plain :app:check
