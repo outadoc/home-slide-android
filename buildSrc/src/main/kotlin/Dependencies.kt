@@ -50,7 +50,7 @@ object Dependencies {
     }
 
     object Chucker {
-        private const val version = "3.1.1"
+        private const val version = "3.2.0"
         const val core = "com.github.ChuckerTeam.Chucker:library:$version"
         const val noop = "com.github.ChuckerTeam.Chucker:library-no-op:$version"
     }
