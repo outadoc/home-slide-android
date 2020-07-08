@@ -6,12 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentAuthCallbackBinding
-import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
+import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
+import io.uniflow.androidx.flow.onEvents
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class AuthCallbackFragment : Fragment() {
@@ -28,9 +28,9 @@ class AuthCallbackFragment : Fragment() {
             (iconLoading.drawable as? AnimatedVectorDrawable)?.start()
         }
 
-        vm.navigateTo.observe(viewLifecycleOwner) {
-            when (it.pop()) {
-                NavigationFlow.Next -> {
+        onEvents(vm) { event ->
+            when (event.take()) {
+                NavigationEvent.Next -> {
                     navigate(AuthCallbackFragmentDirections.setupShortcutsAction())
                 }
             }

@@ -1,31 +1,22 @@
 package fr.outadoc.homeslide.app.onboarding.feature.host
 
 import android.net.Uri
+import android.net.nsd.NsdServiceInfo
 import androidx.core.net.toUri
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asFlow
-import androidx.lifecycle.asLiveData
-import fr.outadoc.homeslide.app.onboarding.feature.host.model.CallStatus
-import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
 import fr.outadoc.homeslide.app.onboarding.feature.host.model.ZeroconfHost
+import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
 import fr.outadoc.homeslide.hassapi.repository.DiscoveryRepository
 import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.auth.OAuthConfiguration
-import fr.outadoc.homeslide.util.lifecycle.Event
 import fr.outadoc.homeslide.util.sanitizeUrl
 import fr.outadoc.homeslide.zeroconf.ZeroconfDiscoveryService
+import io.uniflow.androidx.flow.AndroidDataFlow
+import io.uniflow.core.flow.actionOn
+import io.uniflow.core.flow.data.UIEvent
+import io.uniflow.core.flow.data.UIState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 
 @OptIn(FlowPreview::class, ExperimentalStdlibApi::class, ExperimentalCoroutinesApi::class)
 class HostSetupViewModel(
@@ -33,79 +24,86 @@ class HostSetupViewModel(
     private val repository: DiscoveryRepository,
     private val oAuthConfiguration: OAuthConfiguration,
     private val zeroconfDiscoveryService: ZeroconfDiscoveryService
-) : ViewModel() {
+) : AndroidDataFlow(State.Initial(urlPrefs.instanceBaseUrl ?: DEFAULT_INSTANCE_URL)) {
 
-    private val _autoDiscoveredInstances = MutableLiveData<List<ZeroconfHost>>()
-    val autoDiscoveredInstances: LiveData<List<ZeroconfHost>> = _autoDiscoveredInstances
+    sealed class State(
+        open val selectedInstanceUrl: String,
+        open val autoDiscoveredInstances: Set<ZeroconfHost> = emptySet()
+    ) : UIState() {
 
-    private val _navigateTo = MutableLiveData<Event<NavigationFlow>>()
-    val navigateTo: LiveData<Event<NavigationFlow>> = _navigateTo
+        open val canContinue: Boolean = false
 
-    private val _inputInstanceUrl = MutableLiveData<String>()
-    val inputInstanceUrl =
-        _inputInstanceUrl
-            .asFlow()
-            .onStart {
-                val knownUrl = urlPrefs.instanceBaseUrl
-                if (knownUrl != null) {
-                    emit(knownUrl)
-                } else {
-                    emit(DEFAULT_INSTANCE_URL)
-                }
-            }
-            .distinctUntilChanged()
-            .asLiveData()
+        val sanitizedInstanceUrl: String?
+            get() = selectedInstanceUrl.sanitizeUrl()
 
-    private val targetInstanceUrl =
-        inputInstanceUrl
-            .asFlow()
-            .debounce(UPDATE_TIME_INTERVAL_MS)
-            .map { instanceUrl -> instanceUrl.sanitizeUrl() }
-            .distinctUntilChanged()
+        abstract fun withAutoDiscoveredInstances(instances: Set<ZeroconfHost>): State
 
-    private val instanceDiscoveryInfoFlow =
-        targetInstanceUrl
-            .flatMapConcat { instanceUrl ->
-                flow {
-                    emit(CallStatus.Loading to null)
-                    emit(
-                        CallStatus.Done(
-                            repository.getDiscoveryInfo(
-                                instanceUrl ?: ""
-                            )
-                        ) to instanceUrl
-                    )
-                }
-            }
+        data class Initial(
+            override val selectedInstanceUrl: String,
+            override val autoDiscoveredInstances: Set<ZeroconfHost> = emptySet()
+        ) : State(selectedInstanceUrl) {
 
-    private var validatedTargetInstanceUrl: String? = null
-    val canContinue =
-        instanceDiscoveryInfoFlow
-            .onEach { (_, url) ->
-                validatedTargetInstanceUrl = url
-            }
-            .map { (result, _) -> result is CallStatus.Done && result.value.isSuccess }
-            .onStart { emit(false) }
-            .asLiveData()
-
-    val instanceDiscoveryInfo =
-        instanceDiscoveryInfoFlow.map { it.first }.asLiveData()
-
-    private val authenticationPageUrl: Uri?
-        get() = urlPrefs.instanceBaseUrl?.let {
-            it.toUri()
-                .buildUpon()
-                .appendPath("auth")
-                .appendPath("authorize")
-                .appendQueryParameter("client_id", oAuthConfiguration.clientId)
-                .appendQueryParameter("redirect_uri", oAuthConfiguration.redirectUri)
-                .build()
+            override fun withAutoDiscoveredInstances(instances: Set<ZeroconfHost>) =
+                copy(
+                    selectedInstanceUrl = selectedInstanceUrl,
+                    autoDiscoveredInstances = instances
+                )
         }
 
+        data class Loading(
+            override val selectedInstanceUrl: String,
+            override val autoDiscoveredInstances: Set<ZeroconfHost> = emptySet()
+        ) : State(selectedInstanceUrl) {
+
+            override fun withAutoDiscoveredInstances(instances: Set<ZeroconfHost>) =
+                copy(
+                    selectedInstanceUrl = selectedInstanceUrl,
+                    autoDiscoveredInstances = instances
+                )
+        }
+
+        data class Failure(
+            override val selectedInstanceUrl: String,
+            override val autoDiscoveredInstances: Set<ZeroconfHost> = emptySet()
+        ) : State(selectedInstanceUrl) {
+
+            override fun withAutoDiscoveredInstances(instances: Set<ZeroconfHost>) =
+                copy(
+                    selectedInstanceUrl = selectedInstanceUrl,
+                    autoDiscoveredInstances = instances
+                )
+        }
+
+        data class Ready(
+            override val selectedInstanceUrl: String,
+            override val autoDiscoveredInstances: Set<ZeroconfHost> = emptySet()
+        ) : State(selectedInstanceUrl) {
+
+            override val canContinue: Boolean = true
+            override fun withAutoDiscoveredInstances(instances: Set<ZeroconfHost>) =
+                copy(
+                    selectedInstanceUrl = selectedInstanceUrl,
+                    autoDiscoveredInstances = instances
+                )
+        }
+    }
+
+    sealed class Event : UIEvent() {
+        data class SetInstanceUrl(val instanceUrl: String) : Event()
+    }
+
+    private fun Uri.toAuthenticationPageUrl() =
+        buildUpon()
+            .appendPath("auth")
+            .appendPath("authorize")
+            .appendQueryParameter("client_id", oAuthConfiguration.clientId)
+            .appendQueryParameter("redirect_uri", oAuthConfiguration.redirectUri)
+            .build()
+
     init {
-        zeroconfDiscoveryService.setOnServiceDiscoveredListener { serviceInfo ->
+        zeroconfDiscoveryService.setOnServiceDiscoveredListener { serviceInfo: NsdServiceInfo ->
             try {
-                val host = with(serviceInfo) {
+                val discovered = with(serviceInfo) {
                     ZeroconfHost(
                         hostName = "${host.hostAddress}:$port",
                         baseUrl = attributes["base_url"]?.decodeToString(),
@@ -114,13 +112,12 @@ class HostSetupViewModel(
                     )
                 }
 
-                val alreadyExists =
-                    _autoDiscoveredInstances.value?.any { it.hostName == host.hostName } ?: false
-
-                if (!alreadyExists) {
-                    _autoDiscoveredInstances.postValue(
-                        (_autoDiscoveredInstances.value ?: emptyList()) + host
-                    )
+                actionOn<State> { currentState ->
+                    setState {
+                        currentState.withAutoDiscoveredInstances(
+                            currentState.autoDiscoveredInstances + discovered
+                        )
+                    }
                 }
             } catch (e: Exception) {
                 KLog.e(e)
@@ -128,41 +125,70 @@ class HostSetupViewModel(
         }
     }
 
-    fun startDiscovery() {
+    fun onOpen() = actionOn<State.Initial> { currentState ->
+        sendEvent { Event.SetInstanceUrl(currentState.selectedInstanceUrl) }
+    }
+
+    fun startDiscovery() = action {
         zeroconfDiscoveryService.startDiscovery()
     }
 
-    fun onInstanceUrlChanged(instanceUrl: String) {
-        _inputInstanceUrl.value = instanceUrl
-    }
+    fun onInstanceUrlChanged(instanceUrl: String) = actionOn<State> { currentState ->
+        val nextState = State.Loading(
+            selectedInstanceUrl = instanceUrl,
+            autoDiscoveredInstances = currentState.autoDiscoveredInstances
+        )
 
-    fun onLoginClicked() {
-        if (canContinue.value != true) return
+        setState { nextState }
 
-        validatedTargetInstanceUrl?.let { instanceUrl ->
-            stopDiscovery()
-            urlPrefs.instanceBaseUrl = instanceUrl
-            startAuthFlow()
+        val sanitized = nextState.sanitizedInstanceUrl
+        val result = if (sanitized == null) {
+            Result.failure(IllegalArgumentException("instanceUrl can't be sanitized"))
+        } else {
+            repository.getDiscoveryInfo(sanitized)
+        }
+
+        setState {
+            if (result.isSuccess) {
+                State.Ready(
+                    selectedInstanceUrl = instanceUrl,
+                    autoDiscoveredInstances = nextState.autoDiscoveredInstances
+                )
+            } else {
+                State.Failure(
+                    selectedInstanceUrl = instanceUrl,
+                    autoDiscoveredInstances = nextState.autoDiscoveredInstances
+                )
+            }
         }
     }
 
-    fun onZeroconfHostSelected(zeroconfHost: ZeroconfHost) {
+    fun onLoginClicked() = actionOn<State> { currentState ->
+        if (currentState.canContinue) {
+            stopDiscovery()
+
+            urlPrefs.instanceBaseUrl = currentState.sanitizedInstanceUrl
+            currentState.sanitizedInstanceUrl?.toUri()?.toAuthenticationPageUrl()?.let { url ->
+                sendEvent { NavigationEvent.Url(url) }
+            }
+        }
+    }
+
+    fun onZeroconfHostSelected(zeroconfHost: ZeroconfHost) = actionOn<State> { currentState ->
         stopDiscovery()
 
-        urlPrefs.instanceBaseUrl = "http://${zeroconfHost.hostName}"
-        urlPrefs.altInstanceBaseUrl = zeroconfHost.baseUrl
+        urlPrefs.apply {
+            instanceBaseUrl = "http://${zeroconfHost.hostName}"
+            altInstanceBaseUrl = zeroconfHost.baseUrl
+        }
 
-        startAuthFlow()
+        urlPrefs.instanceBaseUrl?.toUri()?.toAuthenticationPageUrl()?.let { url ->
+            sendEvent { NavigationEvent.Url(url) }
+        }
     }
 
     fun stopDiscovery() {
         zeroconfDiscoveryService.stopDiscovery()
-    }
-
-    private fun startAuthFlow() {
-        authenticationPageUrl?.let { url ->
-            _navigateTo.value = Event(NavigationFlow.Url(url))
-        }
     }
 
     companion object {

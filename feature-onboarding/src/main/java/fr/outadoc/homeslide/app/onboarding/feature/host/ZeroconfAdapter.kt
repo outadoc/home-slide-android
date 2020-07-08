@@ -10,15 +10,13 @@ import fr.outadoc.homeslide.app.onboarding.R
 import fr.outadoc.homeslide.app.onboarding.feature.host.model.ZeroconfHost
 import fr.outadoc.homeslide.app.onboarding.feature.host.model.ZeroconfHostDiffer
 
-class ZeroconfAdapter(val onItemClick: (ZeroconfHost) -> Unit) : ListAdapter<ZeroconfHost, ZeroconfAdapter.ViewHolder>(
-    ZeroconfHostDiffer
-) {
+class ZeroconfAdapter(val onItemClick: (ZeroconfHost) -> Unit, val onItemCountChanged: () -> Unit) :
+    ListAdapter<ZeroconfHost, ZeroconfAdapter.ViewHolder>(ZeroconfHostDiffer) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_zeroconf_host, parent, false)
-        return ViewHolder(
-            view
-        )
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_zeroconf_host, parent, false)
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -31,6 +29,17 @@ class ZeroconfAdapter(val onItemClick: (ZeroconfHost) -> Unit) : ListAdapter<Zer
             baseUrl.text = item.baseUrl
 
             view.setOnClickListener { onItemClick(item) }
+        }
+    }
+
+    override fun onCurrentListChanged(
+        previousList: MutableList<ZeroconfHost>,
+        currentList: MutableList<ZeroconfHost>
+    ) {
+        super.onCurrentListChanged(previousList, currentList)
+
+        if (previousList.count() != currentList.count()) {
+            onItemCountChanged()
         }
     }
 

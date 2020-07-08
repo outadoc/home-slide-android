@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentWelcomeBinding
-import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
+import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
+import io.uniflow.androidx.flow.onEvents
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class WelcomeFragment : Fragment() {
@@ -28,13 +28,15 @@ class WelcomeFragment : Fragment() {
             }
         }
 
-        vm.navigateTo.observe(viewLifecycleOwner) {
-            when (it.pop()) {
-                NavigationFlow.Next -> binding?.navController?.navigate(
-                    WelcomeFragmentDirections.setupHostAction()
-                )
-                NavigationFlow.Back -> binding?.navController?.navigateUp()
-                else -> Unit
+        onEvents(vm) { event ->
+            binding?.apply {
+                when (event.take()) {
+                    is NavigationEvent.Next -> navController.navigate(
+                        WelcomeFragmentDirections.setupHostAction()
+                    )
+                    is NavigationEvent.Back -> navController.navigateUp()
+                    else -> Unit
+                }
             }
         }
 

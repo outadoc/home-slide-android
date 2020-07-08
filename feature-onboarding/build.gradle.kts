@@ -55,6 +55,9 @@ dependencies {
     // Kotlin runtime
     implementation(Dependencies.Kotlin.stdlib)
 
+    // Data flow
+    implementation(Dependencies.Uniflow.core)
+
     // AndroidX libs
     implementation(Dependencies.AndroidX.core)
     implementation(Dependencies.AndroidX.constraintLayout)

@@ -6,15 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentSetupHostBinding
-import fr.outadoc.homeslide.app.onboarding.feature.host.extensions.toViewStatus
-import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
+import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
 import fr.outadoc.homeslide.util.view.addTextChangedListener
+import io.uniflow.androidx.flow.onEvents
+import io.uniflow.androidx.flow.onStates
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class HostSetupFragment : Fragment() {
@@ -22,12 +22,12 @@ class HostSetupFragment : Fragment() {
     private val vm: HostSetupViewModel by viewModel()
 
     private var binding: FragmentSetupHostBinding? = null
-    private val zeroconfAdapter =
-        ZeroconfAdapter(
-            onItemClick = {
-                vm.onZeroconfHostSelected(it)
-            }
-        )
+    private val zeroconfAdapter = ZeroconfAdapter(
+        onItemClick = {
+            vm.onZeroconfHostSelected(it)
+        }, onItemCountChanged = {
+            binding?.recyclerViewZeroconf?.scheduleLayoutAnimation()
+        })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,43 +49,43 @@ class HostSetupFragment : Fragment() {
             }
         }
 
-        vm.inputInstanceUrl.observe(viewLifecycleOwner) { instanceUrl ->
+        onStates(vm) { state ->
             binding?.apply {
-                if (etInstanceBaseUrl.text.toString() != instanceUrl) {
-                    etInstanceBaseUrl.setText(instanceUrl)
+                if (state is HostSetupViewModel.State) {
+                    viewDiscoveryResult.state = when (state) {
+                        is HostSetupViewModel.State.Loading -> ResultIconView.State.LOADING
+                        is HostSetupViewModel.State.Failure -> ResultIconView.State.ERROR
+                        is HostSetupViewModel.State.Ready -> ResultIconView.State.SUCCESS
+                        else -> ResultIconView.State.NONE
+                    }
+
+                    lblZeroconfHelper.isInvisible = state.autoDiscoveredInstances.isEmpty()
+                    zeroconfAdapter.submitList(state.autoDiscoveredInstances.toList())
+
+                    btnContinue.apply {
+                        isEnabled = state.canContinue
+                        alpha = if (state.canContinue) 1f else 0.6f
+                    }
                 }
             }
         }
 
-        vm.instanceDiscoveryInfo.observe(viewLifecycleOwner) { discovery ->
-            binding?.viewDiscoveryResult?.state = discovery.toViewStatus()
-        }
-
-        vm.autoDiscoveredInstances.observe(viewLifecycleOwner) { autoDiscovered ->
-            binding?.lblZeroconfHelper?.isInvisible = autoDiscovered.isEmpty()
-
-            zeroconfAdapter.apply {
-                submitList(autoDiscovered)
-                binding?.recyclerViewZeroconf?.scheduleLayoutAnimation()
-            }
-        }
-
-        vm.canContinue.observe(viewLifecycleOwner) { canContinue ->
-            binding?.btnContinue?.apply {
-                isEnabled = canContinue
-                alpha = if (canContinue) 1f else 0.6f
-            }
-        }
-
-        vm.navigateTo.observe(viewLifecycleOwner) {
-            when (val dest = it.pop()) {
-                NavigationFlow.Back -> binding?.navController?.navigateUp()
-
-                is NavigationFlow.Url -> {
-                    navigate(HostSetupFragmentDirections.startOAuthFlowAction(dest.url))
+        onEvents(vm) { event ->
+            binding?.apply {
+                when (val data = event.take()) {
+                    is HostSetupViewModel.Event.SetInstanceUrl -> {
+                        etInstanceBaseUrl.setText(data.instanceUrl)
+                    }
+                    is NavigationEvent.Url -> navigate(
+                        HostSetupFragmentDirections.startOAuthFlowAction(data.url)
+                    )
+                    is NavigationEvent.Back -> navController.navigateUp()
+                    else -> Unit
                 }
             }
         }
+
+        vm.onOpen()
 
         return binding?.root
     }

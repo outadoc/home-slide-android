@@ -1,26 +1,29 @@
 package fr.outadoc.homeslide.app.onboarding.feature.success
 
 import android.app.ActivityManager
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
+import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
-import fr.outadoc.homeslide.util.lifecycle.Event
+import io.uniflow.androidx.flow.AndroidDataFlow
+import io.uniflow.core.flow.data.UIEvent
 
 class SuccessViewModel(
     private val prefs: GlobalPreferenceRepository,
     private val activityManager: ActivityManager
-) : ViewModel() {
+) : AndroidDataFlow() {
 
-    private val _navigateTo = MutableLiveData<Event<NavigationFlow>>()
-    val navigateTo: LiveData<Event<NavigationFlow>> = _navigateTo
+    object ShowConfettiEvent : UIEvent()
 
-    val showShowConfetti: Boolean
+    private val shouldShowConfetti: Boolean
         get() = !activityManager.isLowRamDevice
 
-    fun onContinueClicked() {
+    fun onOpen() = action {
+        if (shouldShowConfetti) {
+            sendEvent { ShowConfettiEvent }
+        }
+    }
+
+    fun onContinueClicked() = action {
         prefs.isOnboardingDone = true
-        _navigateTo.value = Event(NavigationFlow.Next)
+        sendEvent { NavigationEvent.Next }
     }
 }
