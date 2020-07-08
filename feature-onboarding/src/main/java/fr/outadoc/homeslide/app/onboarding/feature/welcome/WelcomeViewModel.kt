@@ -1,17 +1,11 @@
 package fr.outadoc.homeslide.app.onboarding.feature.welcome
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
-import fr.outadoc.homeslide.util.lifecycle.Event
+import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
+import io.uniflow.androidx.flow.AndroidDataFlow
 
-class WelcomeViewModel : ViewModel() {
+class WelcomeViewModel : AndroidDataFlow() {
 
-    private val _navigateTo = MutableLiveData<Event<NavigationFlow>>()
-    val navigateTo: LiveData<Event<NavigationFlow>> = _navigateTo
-
-    fun onContinueClicked() {
-        _navigateTo.value = Event(NavigationFlow.Next)
+    fun onContinueClicked() = action {
+        sendEvent { NavigationEvent.Next }
     }
 }

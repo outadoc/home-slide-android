@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.homeslide.app.onboarding.R
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentSuccessBinding
-import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
+import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
+import io.uniflow.androidx.flow.onEvents
 import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -34,29 +34,30 @@ class SuccessFragment : Fragment() {
             btnContinue.setOnClickListener {
                 vm.onContinueClicked()
             }
-
-            konfetti.doOnNextLayout { confetti() }
         }
 
-        vm.navigateTo.observe(viewLifecycleOwner) {
-            when (it.pop()) {
-                NavigationFlow.Next -> {
-                    binding?.navController?.navigate(SuccessFragmentDirections.finishOnboardingAction())
-                    activity?.finish()
+        onEvents(vm) { event ->
+            binding?.apply {
+                when (event.take()) {
+                    SuccessViewModel.ShowConfettiEvent -> {
+                        konfetti.doOnNextLayout { showConfetti() }
+                    }
+                    NavigationEvent.Next -> {
+                        navController.navigate(SuccessFragmentDirections.finishOnboardingAction())
+                        activity?.finish()
+                    }
+                    NavigationEvent.Back -> navController.navigateUp()
+                    else -> Unit
                 }
-                NavigationFlow.Back -> binding?.navController?.navigateUp()
-                else -> Unit
             }
         }
+
+        vm.onOpen()
 
         return binding?.root
     }
 
-    private fun confetti() {
-        if (!vm.showShowConfetti) {
-            return
-        }
-
+    private fun showConfetti() {
         binding?.konfetti?.apply {
             build()
                 .addColors(confettiColors.map { ContextCompat.getColor(context, it) })

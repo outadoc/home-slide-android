@@ -11,15 +11,15 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.google.android.wearable.intent.RemoteIntent
 import fr.outadoc.homeslide.app.onboarding.R
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentSetupShortcutBinding
 import fr.outadoc.homeslide.app.onboarding.extensions.startRemoteActivity
-import fr.outadoc.homeslide.app.onboarding.model.NavigationFlow
+import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
 import fr.outadoc.homeslide.util.view.showSnackbar
+import io.uniflow.androidx.flow.onEvents
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -50,13 +50,15 @@ class ShortcutSetupFragment : Fragment() {
             }
         }
 
-        vm.navigateTo.observe(viewLifecycleOwner) {
-            when (it.pop()) {
-                NavigationFlow.Next -> binding?.navController?.navigate(
-                    ShortcutSetupFragmentDirections.successAction()
-                )
-                NavigationFlow.Back -> binding?.navController?.navigateUp()
-                else -> Unit
+        onEvents(vm) { event ->
+            binding?.apply {
+                when (event.take()) {
+                    is NavigationEvent.Next -> navController.navigate(
+                        ShortcutSetupFragmentDirections.successAction()
+                    )
+                    is NavigationEvent.Back -> navController.navigateUp()
+                    else -> Unit
+                }
             }
         }
 

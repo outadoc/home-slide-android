@@ -9,7 +9,7 @@ object Dependencies {
     }
 
     object Android {
-        const val classpath = "com.android.tools.build:gradle:4.1.0-beta02"
+        const val classpath = "com.android.tools.build:gradle:4.1.0-beta03"
         const val application = "com.android.application"
         const val library = "com.android.library"
     }
