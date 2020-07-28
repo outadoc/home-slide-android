@@ -5,7 +5,6 @@ import android.net.nsd.NsdServiceInfo
 import fr.outadoc.homeslide.app.onboarding.feature.host.model.ZeroconfHost
 import fr.outadoc.homeslide.zeroconf.ZeroconfDiscoveryServiceImpl
 
-@OptIn(ExperimentalStdlibApi::class)
 class HassZeroconfDiscoveryServiceImpl(nsdManager: NsdManager) :
     ZeroconfDiscoveryServiceImpl<ZeroconfHost>(nsdManager, SERVICE_TYPE) {
 

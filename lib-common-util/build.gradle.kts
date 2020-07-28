@@ -33,7 +33,6 @@ android {
 }
 
 dependencies {
-    implementation(Dependencies.Kotlin.stdlib)
     implementation(Dependencies.AndroidX.core)
     implementation(Dependencies.Google.material)
 

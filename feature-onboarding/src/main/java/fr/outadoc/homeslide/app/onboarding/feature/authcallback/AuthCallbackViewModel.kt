@@ -5,9 +5,9 @@ import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
 import fr.outadoc.homeslide.hassapi.repository.AuthRepository
 import fr.outadoc.homeslide.logging.KLog
 import io.uniflow.androidx.flow.AndroidDataFlow
+import java.time.Instant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.time.Instant
 
 class AuthCallbackViewModel(
     private val tokenPrefs: TokenPreferenceRepository,

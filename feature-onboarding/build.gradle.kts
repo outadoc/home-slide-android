@@ -52,9 +52,6 @@ dependencies {
     implementation(Dependencies.Konfetti.core)
     implementation(Dependencies.Google.material)
 
-    // Kotlin runtime
-    implementation(Dependencies.Kotlin.stdlib)
-
     // Data flow
     implementation(Dependencies.Uniflow.core)
 

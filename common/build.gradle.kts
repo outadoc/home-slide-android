@@ -55,8 +55,6 @@ dependencies {
     implementation(project(":lib-common-util"))
     implementation(project(":lib-logging"))
 
-    // Kotlin runtime
-    implementation(Dependencies.Kotlin.stdlib)
     implementation(Dependencies.Kotlin.Coroutines.core)
     implementation(Dependencies.Kotlin.Coroutines.android)
 

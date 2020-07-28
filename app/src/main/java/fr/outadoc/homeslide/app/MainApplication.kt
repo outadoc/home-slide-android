@@ -6,10 +6,10 @@ import fr.outadoc.homeslide.app.controlprovider.inject.IntentProvider
 import fr.outadoc.homeslide.app.controlprovider.inject.controlProviderModule
 import fr.outadoc.homeslide.app.inject.AppIntentProvider
 import fr.outadoc.homeslide.app.onboarding.feature.authcallback.AuthCallbackViewModel
-import fr.outadoc.homeslide.app.onboarding.feature.host.rest.DiscoveryRepositoryImpl
-import fr.outadoc.homeslide.app.onboarding.feature.host.rest.HassZeroconfDiscoveryServiceImpl
 import fr.outadoc.homeslide.app.onboarding.feature.host.HostSetupViewModel
 import fr.outadoc.homeslide.app.onboarding.feature.host.model.ZeroconfHost
+import fr.outadoc.homeslide.app.onboarding.feature.host.rest.DiscoveryRepositoryImpl
+import fr.outadoc.homeslide.app.onboarding.feature.host.rest.HassZeroconfDiscoveryServiceImpl
 import fr.outadoc.homeslide.app.onboarding.feature.shortcuts.ShortcutSetupViewModel
 import fr.outadoc.homeslide.app.onboarding.feature.success.SuccessViewModel
 import fr.outadoc.homeslide.app.onboarding.feature.welcome.WelcomeViewModel

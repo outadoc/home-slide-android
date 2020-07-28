@@ -33,8 +33,6 @@ android {
 }
 
 dependencies {
-    implementation(Dependencies.Kotlin.stdlib)
     implementation(Dependencies.Timber.core)
-
     coreLibraryDesugaring(Dependencies.Tools.desugaring)
 }

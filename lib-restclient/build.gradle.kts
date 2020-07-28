@@ -40,9 +40,6 @@ dependencies {
     implementation(project(":lib-common-util"))
     implementation(project(":lib-logging"))
 
-    // Kotlin runtime
-    implementation(Dependencies.Kotlin.stdlib)
-
     implementation(Dependencies.AndroidX.core)
     implementation(Dependencies.AndroidX.appcompat)
 
