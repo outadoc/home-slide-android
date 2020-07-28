@@ -41,8 +41,6 @@ dependencies {
     implementation(project(":lib-homeassistant-api"))
     implementation(project(":lib-logging"))
 
-    // Kotlin runtime
-    implementation(Dependencies.Kotlin.stdlib)
     implementation(Dependencies.Kotlin.Coroutines.core)
     implementation(Dependencies.Kotlin.Coroutines.jdk9)
     implementation(Dependencies.Kotlin.Coroutines.android)

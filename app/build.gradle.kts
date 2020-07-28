@@ -63,8 +63,6 @@ dependencies {
     implementation(project(":feature-onboarding"))
     implementation(project(":feature-controlprovider"))
 
-    // Kotlin runtime
-    implementation(Dependencies.Kotlin.stdlib)
     implementation(Dependencies.Kotlin.Coroutines.core)
     implementation(Dependencies.Kotlin.Coroutines.android)
 

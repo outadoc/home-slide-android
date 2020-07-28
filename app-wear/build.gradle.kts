@@ -58,8 +58,6 @@ dependencies {
 
     implementation(project(":common"))
 
-    // Kotlin runtime
-    implementation(Dependencies.Kotlin.stdlib)
     implementation(Dependencies.Kotlin.Coroutines.core)
     implementation(Dependencies.Kotlin.Coroutines.android)
 

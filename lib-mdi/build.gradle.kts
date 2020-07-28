@@ -33,8 +33,6 @@ android {
 }
 
 dependencies {
-    implementation(Dependencies.Kotlin.stdlib)
     implementation(Dependencies.AndroidX.appcompat)
-
     coreLibraryDesugaring(Dependencies.Tools.desugaring)
 }

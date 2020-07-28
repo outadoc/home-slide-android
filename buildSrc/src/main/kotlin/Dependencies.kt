@@ -9,7 +9,7 @@ object Dependencies {
     }
 
     object Android {
-        const val classpath = "com.android.tools.build:gradle:4.1.0-beta03"
+        const val classpath = "com.android.tools.build:gradle:4.1.0-beta05"
         const val application = "com.android.application"
         const val library = "com.android.library"
     }
@@ -80,7 +80,7 @@ object Dependencies {
     }
 
     object Kotlin {
-        private const val version = "1.3.72"
+        private const val version = "1.4.0-rc"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val classpath = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
 

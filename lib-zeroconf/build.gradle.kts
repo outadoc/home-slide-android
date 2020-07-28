@@ -33,8 +33,5 @@ android {
 }
 
 dependencies {
-    // Kotlin runtime
-    implementation(Dependencies.Kotlin.stdlib)
-
     coreLibraryDesugaring(Dependencies.Tools.desugaring)
 }
