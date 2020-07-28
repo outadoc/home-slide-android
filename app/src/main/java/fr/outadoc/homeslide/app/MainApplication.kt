@@ -9,6 +9,7 @@ import fr.outadoc.homeslide.app.onboarding.feature.authcallback.AuthCallbackView
 import fr.outadoc.homeslide.app.onboarding.feature.host.rest.DiscoveryRepositoryImpl
 import fr.outadoc.homeslide.app.onboarding.feature.host.rest.HassZeroconfDiscoveryServiceImpl
 import fr.outadoc.homeslide.app.onboarding.feature.host.HostSetupViewModel
+import fr.outadoc.homeslide.app.onboarding.feature.host.model.ZeroconfHost
 import fr.outadoc.homeslide.app.onboarding.feature.shortcuts.ShortcutSetupViewModel
 import fr.outadoc.homeslide.app.onboarding.feature.success.SuccessViewModel
 import fr.outadoc.homeslide.app.onboarding.feature.welcome.WelcomeViewModel
@@ -67,7 +68,7 @@ class MainApplication : Application() {
                 .build()
         }
 
-        single<ZeroconfDiscoveryService> { HassZeroconfDiscoveryServiceImpl(get()) }
+        single<ZeroconfDiscoveryService<ZeroconfHost>> { HassZeroconfDiscoveryServiceImpl(get()) }
         single<DiscoveryRepository> { DiscoveryRepositoryImpl(get()) }
         single<IntentProvider> { AppIntentProvider(get()) }
 

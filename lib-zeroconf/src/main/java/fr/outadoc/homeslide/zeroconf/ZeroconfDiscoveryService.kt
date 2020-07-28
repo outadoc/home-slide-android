@@ -1,10 +1,8 @@
 package fr.outadoc.homeslide.zeroconf
 
-import android.net.nsd.NsdServiceInfo
+interface ZeroconfDiscoveryService<T> {
 
-interface ZeroconfDiscoveryService {
-
-    fun setOnServiceDiscoveredListener(onServiceDiscovered: ((NsdServiceInfo) -> Unit)?)
+    fun setOnServiceDiscoveredListener(onServiceDiscovered: ((T) -> Unit)?)
 
     fun startDiscovery()
 

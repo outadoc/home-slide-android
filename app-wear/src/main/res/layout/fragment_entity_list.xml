@@ -15,7 +15,7 @@
 
     <include
         android:id="@+id/layout_noContent"
-        layout="@layout/view_no_content" />
+        layout="@layout/view_no_content_wear" />
 
     <FrameLayout
         android:id="@+id/view_loading"

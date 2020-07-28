@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.view.doOnNextLayout
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -31,7 +31,7 @@ class SuccessFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSuccessBinding.inflate(inflater, container, false).apply {
-            btnContinue.setOnClickListener {
+            buttonContinue.setOnClickListener {
                 vm.onContinueClicked()
             }
         }
@@ -40,7 +40,7 @@ class SuccessFragment : Fragment() {
             binding?.apply {
                 when (event.take()) {
                     SuccessViewModel.ShowConfettiEvent -> {
-                        konfetti.doOnNextLayout { showConfetti() }
+                        konfetti.doOnLayout { showConfetti() }
                     }
                     NavigationEvent.Next -> {
                         navController.navigate(SuccessFragmentDirections.finishOnboardingAction())
