@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -35,11 +36,21 @@ class HostSetupFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSetupHostBinding.inflate(inflater, container, false).apply {
-            etInstanceBaseUrl.addTextChangedListener { s ->
+            editTextInstanceBaseUrl.addTextChangedListener { s ->
                 vm.onInstanceUrlChanged(s)
             }
 
-            btnContinue.setOnClickListener {
+            editTextInstanceBaseUrl.setOnEditorActionListener { textView, actionId, keyEvent ->
+                when (actionId) {
+                    EditorInfo.IME_ACTION_DONE -> {
+                        vm.onLoginClicked()
+                        true
+                    }
+                    else -> false
+                }
+            }
+
+            buttonContinue.setOnClickListener {
                 vm.onLoginClicked()
             }
 
@@ -52,19 +63,27 @@ class HostSetupFragment : Fragment() {
         onStates(vm) { state ->
             binding?.apply {
                 if (state is HostSetupViewModel.State) {
-                    viewDiscoveryResult.state = when (state) {
+                    resultIconViewDiscoveryResult.state = when (state) {
                         is HostSetupViewModel.State.Loading -> ResultIconView.State.LOADING
-                        is HostSetupViewModel.State.Failure -> ResultIconView.State.ERROR
-                        is HostSetupViewModel.State.Ready -> ResultIconView.State.SUCCESS
+                        is HostSetupViewModel.State.Error -> ResultIconView.State.ERROR
+                        is HostSetupViewModel.State.Success -> ResultIconView.State.SUCCESS
                         else -> ResultIconView.State.NONE
                     }
 
-                    lblZeroconfHelper.isInvisible = state.autoDiscoveredInstances.isEmpty()
-                    zeroconfAdapter.submitList(state.autoDiscoveredInstances.toList())
+                    textViewZeroconfHelper.isInvisible = state.discoveredInstances.isEmpty()
+                    zeroconfAdapter.submitList(state.discoveredInstances.toList())
 
-                    btnContinue.apply {
-                        isEnabled = state.canContinue
-                        alpha = if (state.canContinue) 1f else 0.6f
+                    buttonContinue.apply {
+                        when (state) {
+                            is HostSetupViewModel.State.Success -> {
+                                isEnabled = true
+                                alpha = 1f
+                            }
+                            else -> {
+                                isEnabled = false
+                                alpha = 0.6f
+                            }
+                        }
                     }
                 }
             }
@@ -74,7 +93,7 @@ class HostSetupFragment : Fragment() {
             binding?.apply {
                 when (val data = event.take()) {
                     is HostSetupViewModel.Event.SetInstanceUrl -> {
-                        etInstanceBaseUrl.setText(data.instanceUrl)
+                        editTextInstanceBaseUrl.setText(data.instanceUrl)
                     }
                     is NavigationEvent.Url -> navigate(
                         HostSetupFragmentDirections.startOAuthFlowAction(data.url)

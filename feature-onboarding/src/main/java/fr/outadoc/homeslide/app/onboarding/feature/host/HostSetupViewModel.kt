@@ -1,14 +1,16 @@
 package fr.outadoc.homeslide.app.onboarding.feature.host
 
 import android.net.Uri
-import android.net.nsd.NsdServiceInfo
 import androidx.core.net.toUri
+import androidx.lifecycle.viewModelScope
 import fr.outadoc.homeslide.app.onboarding.feature.host.model.ZeroconfHost
 import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
 import fr.outadoc.homeslide.hassapi.repository.DiscoveryRepository
 import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.auth.OAuthConfiguration
+import fr.outadoc.homeslide.rest.auth.OAuthConstants.PARAM_CLIENT_ID
+import fr.outadoc.homeslide.rest.auth.OAuthConstants.PARAM_REDIRECT_URI
 import fr.outadoc.homeslide.util.sanitizeUrl
 import fr.outadoc.homeslide.zeroconf.ZeroconfDiscoveryService
 import io.uniflow.androidx.flow.AndroidDataFlow
@@ -17,75 +19,39 @@ import io.uniflow.core.flow.data.UIEvent
 import io.uniflow.core.flow.data.UIState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.launch
 
-@OptIn(FlowPreview::class, ExperimentalStdlibApi::class, ExperimentalCoroutinesApi::class)
+@OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class HostSetupViewModel(
     private val urlPrefs: UrlPreferenceRepository,
     private val repository: DiscoveryRepository,
     private val oAuthConfiguration: OAuthConfiguration,
-    private val zeroconfDiscoveryService: ZeroconfDiscoveryService
-) : AndroidDataFlow(State.Initial(urlPrefs.instanceBaseUrl ?: DEFAULT_INSTANCE_URL)) {
+    private val zeroconfDiscoveryService: ZeroconfDiscoveryService<ZeroconfHost>
+) : AndroidDataFlow(State.Initial(discoveredInstances = emptySet())) {
 
     sealed class State(
-        open val selectedInstanceUrl: String,
-        open val autoDiscoveredInstances: Set<ZeroconfHost> = emptySet()
+        open val discoveredInstances: Set<ZeroconfHost>
     ) : UIState() {
 
-        open val canContinue: Boolean = false
-
-        val sanitizedInstanceUrl: String?
-            get() = selectedInstanceUrl.sanitizeUrl()
-
-        abstract fun withAutoDiscoveredInstances(instances: Set<ZeroconfHost>): State
-
-        data class Initial(
-            override val selectedInstanceUrl: String,
-            override val autoDiscoveredInstances: Set<ZeroconfHost> = emptySet()
-        ) : State(selectedInstanceUrl) {
-
-            override fun withAutoDiscoveredInstances(instances: Set<ZeroconfHost>) =
-                copy(
-                    selectedInstanceUrl = selectedInstanceUrl,
-                    autoDiscoveredInstances = instances
-                )
-        }
+        data class Initial(override val discoveredInstances: Set<ZeroconfHost>) :
+            State(discoveredInstances)
 
         data class Loading(
-            override val selectedInstanceUrl: String,
-            override val autoDiscoveredInstances: Set<ZeroconfHost> = emptySet()
-        ) : State(selectedInstanceUrl) {
+            val selectedInstanceUrl: String,
+            override val discoveredInstances: Set<ZeroconfHost>
+        ) : State(discoveredInstances)
 
-            override fun withAutoDiscoveredInstances(instances: Set<ZeroconfHost>) =
-                copy(
-                    selectedInstanceUrl = selectedInstanceUrl,
-                    autoDiscoveredInstances = instances
-                )
-        }
+        data class Error(override val discoveredInstances: Set<ZeroconfHost>) :
+            State(discoveredInstances)
 
-        data class Failure(
-            override val selectedInstanceUrl: String,
-            override val autoDiscoveredInstances: Set<ZeroconfHost> = emptySet()
-        ) : State(selectedInstanceUrl) {
-
-            override fun withAutoDiscoveredInstances(instances: Set<ZeroconfHost>) =
-                copy(
-                    selectedInstanceUrl = selectedInstanceUrl,
-                    autoDiscoveredInstances = instances
-                )
-        }
-
-        data class Ready(
-            override val selectedInstanceUrl: String,
-            override val autoDiscoveredInstances: Set<ZeroconfHost> = emptySet()
-        ) : State(selectedInstanceUrl) {
-
-            override val canContinue: Boolean = true
-            override fun withAutoDiscoveredInstances(instances: Set<ZeroconfHost>) =
-                copy(
-                    selectedInstanceUrl = selectedInstanceUrl,
-                    autoDiscoveredInstances = instances
-                )
-        }
+        data class Success(
+            val sanitizedInstanceUrl: String,
+            override val discoveredInstances: Set<ZeroconfHost>
+        ) : State(discoveredInstances)
     }
 
     sealed class Event : UIEvent() {
@@ -96,95 +62,110 @@ class HostSetupViewModel(
         buildUpon()
             .appendPath("auth")
             .appendPath("authorize")
-            .appendQueryParameter("client_id", oAuthConfiguration.clientId)
-            .appendQueryParameter("redirect_uri", oAuthConfiguration.redirectUri)
+            .appendQueryParameter(PARAM_CLIENT_ID, oAuthConfiguration.clientId)
+            .appendQueryParameter(PARAM_REDIRECT_URI, oAuthConfiguration.redirectUri)
             .build()
 
-    init {
-        zeroconfDiscoveryService.setOnServiceDiscoveredListener { serviceInfo: NsdServiceInfo ->
-            try {
-                val discovered = with(serviceInfo) {
-                    ZeroconfHost(
-                        hostName = "${host.hostAddress}:$port",
-                        baseUrl = attributes["base_url"]?.decodeToString(),
-                        version = attributes["version"]?.decodeToString(),
-                        instanceName = serviceName
-                    )
-                }
+    private val instanceUrlChannel = Channel<String>()
 
+    init {
+        zeroconfDiscoveryService.setOnServiceDiscoveredListener { discovered: ZeroconfHost ->
+            try {
                 actionOn<State> { currentState ->
                     setState {
-                        currentState.withAutoDiscoveredInstances(
-                            currentState.autoDiscoveredInstances + discovered
-                        )
+                        with(currentState) {
+                            val newInstances = discoveredInstances + discovered
+                            when (this) {
+                                is State.Initial -> copy(discoveredInstances = newInstances)
+                                is State.Loading -> copy(discoveredInstances = newInstances)
+                                is State.Error -> copy(discoveredInstances = newInstances)
+                                is State.Success -> copy(discoveredInstances = newInstances)
+                            }
+                        }
                     }
                 }
             } catch (e: Exception) {
                 KLog.e(e)
             }
         }
+
+        viewModelScope.launch {
+            instanceUrlChannel.consumeAsFlow()
+                .debounce(UPDATE_TIME_INTERVAL_MS)
+                .collect { instanceUrl ->
+                    action {
+                        probeUrl(instanceUrl)
+                    }
+                }
+        }
     }
 
-    fun onOpen() = actionOn<State.Initial> { currentState ->
-        sendEvent { Event.SetInstanceUrl(currentState.selectedInstanceUrl) }
+    fun onOpen() = actionOn<State.Initial> {
+        sendEvent {
+            Event.SetInstanceUrl(urlPrefs.instanceBaseUrl ?: DEFAULT_INSTANCE_URL)
+        }
     }
 
     fun startDiscovery() = action {
         zeroconfDiscoveryService.startDiscovery()
     }
 
-    fun onInstanceUrlChanged(instanceUrl: String) = actionOn<State> { currentState ->
-        val nextState = State.Loading(
-            selectedInstanceUrl = instanceUrl,
-            autoDiscoveredInstances = currentState.autoDiscoveredInstances
-        )
+    fun onInstanceUrlChanged(instanceUrl: String) = actionOn<State> {
+        instanceUrlChannel.send(instanceUrl)
+    }
 
-        setState { nextState }
-
-        val sanitized = nextState.sanitizedInstanceUrl
-        val result = if (sanitized == null) {
-            Result.failure(IllegalArgumentException("instanceUrl can't be sanitized"))
-        } else {
-            repository.getDiscoveryInfo(sanitized)
-        }
-
+    private fun probeUrl(instanceUrl: String) = actionOn<State> { currentState ->
         setState {
-            if (result.isSuccess) {
-                State.Ready(
-                    selectedInstanceUrl = instanceUrl,
-                    autoDiscoveredInstances = nextState.autoDiscoveredInstances
-                )
+            State.Loading(
+                selectedInstanceUrl = instanceUrl,
+                discoveredInstances = currentState.discoveredInstances
+            )
+        }
+
+        instanceUrl.sanitizeUrl()?.let { sanitizedUrl ->
+            if (repository.getDiscoveryInfo(sanitizedUrl).isSuccess) {
+                setState {
+                    State.Success(
+                        sanitizedInstanceUrl = sanitizedUrl,
+                        discoveredInstances = currentState.discoveredInstances
+                    )
+                }
             } else {
-                State.Failure(
-                    selectedInstanceUrl = instanceUrl,
-                    autoDiscoveredInstances = nextState.autoDiscoveredInstances
-                )
+                setState {
+                    // URL can't be sanitized
+                    State.Error(discoveredInstances = currentState.discoveredInstances)
+                }
             }
+        } ?: setState {
+            State.Error(discoveredInstances = currentState.discoveredInstances)
         }
     }
 
-    fun onLoginClicked() = actionOn<State> { currentState ->
-        if (currentState.canContinue) {
-            stopDiscovery()
-
-            urlPrefs.instanceBaseUrl = currentState.sanitizedInstanceUrl
-            currentState.sanitizedInstanceUrl?.toUri()?.toAuthenticationPageUrl()?.let { url ->
-                sendEvent { NavigationEvent.Url(url) }
-            }
-        }
-    }
-
-    fun onZeroconfHostSelected(zeroconfHost: ZeroconfHost) = actionOn<State> { currentState ->
+    fun onLoginClicked() = actionOn<State.Success> { currentState ->
         stopDiscovery()
 
+        urlPrefs.instanceBaseUrl = currentState.sanitizedInstanceUrl
+        startAuthenticationFlow(currentState.sanitizedInstanceUrl)
+    }
+
+    fun onZeroconfHostSelected(zeroconfHost: ZeroconfHost) = actionOn<State> {
+        stopDiscovery()
+
+        val localUrl = "http://${zeroconfHost.hostName}"
         urlPrefs.apply {
-            instanceBaseUrl = "http://${zeroconfHost.hostName}"
+            instanceBaseUrl = localUrl
             altInstanceBaseUrl = zeroconfHost.baseUrl
         }
 
-        urlPrefs.instanceBaseUrl?.toUri()?.toAuthenticationPageUrl()?.let { url ->
-            sendEvent { NavigationEvent.Url(url) }
-        }
+        startAuthenticationFlow(localUrl)
+    }
+
+    private fun startAuthenticationFlow(instanceUrl: String) = action {
+        instanceUrl.toUri()
+            .toAuthenticationPageUrl()
+            ?.let { url ->
+                sendEvent { NavigationEvent.Url(url) }
+            }
     }
 
     fun stopDiscovery() {

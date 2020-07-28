@@ -3,19 +3,19 @@ package fr.outadoc.homeslide.zeroconf
 import android.net.nsd.NsdManager
 import android.net.nsd.NsdServiceInfo
 
-abstract class ZeroconfDiscoveryServiceImpl(
+abstract class ZeroconfDiscoveryServiceImpl<T>(
     private val nsdManager: NsdManager,
     private val serviceType: String
-) : ZeroconfDiscoveryService, NsdManager.DiscoveryListener {
+) : ZeroconfDiscoveryService<T>, NsdManager.DiscoveryListener {
 
     enum class State { IDLE, DISCOVERING }
 
-    private var onServiceDiscovered: ((NsdServiceInfo) -> Unit)? = null
+    private var onServiceDiscovered: ((T) -> Unit)? = null
 
     private var state: State =
         State.IDLE
 
-    override fun setOnServiceDiscoveredListener(onServiceDiscovered: ((NsdServiceInfo) -> Unit)?) {
+    override fun setOnServiceDiscoveredListener(onServiceDiscovered: ((T) -> Unit)?) {
         this.onServiceDiscovered = onServiceDiscovered
     }
 
@@ -46,11 +46,13 @@ abstract class ZeroconfDiscoveryServiceImpl(
             nsdManager.resolveService(service, object : NsdManager.ResolveListener {
                 override fun onResolveFailed(serviceInfo: NsdServiceInfo?, errorCode: Int) = Unit
                 override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
-                    onServiceDiscovered?.let { it(serviceInfo) }
+                    onServiceDiscovered?.let { it(parseServiceInfo(serviceInfo)) }
                 }
             })
         }
     }
+
+    abstract fun parseServiceInfo(serviceInfo: NsdServiceInfo): T
 
     override fun onStartDiscoveryFailed(serviceType: String, errorCode: Int) {
         state = State.IDLE

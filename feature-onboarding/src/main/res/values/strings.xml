@@ -22,7 +22,7 @@
     <string name="onboarding_setup_shortcut_wear_success">Look at your watch!</string>
     <string name="onboarding_setup_shortcut_wear_failure">Couldn\'t find a paired Wear OS device</string>
     <string name="onboarding_success_continue">Let\'s begin</string>
-    <string name="onboarding_success_subtitle">Enjoy :)</string>
+    <string name="onboarding_success_subtitle">Enjoy 😄</string>
     <string name="onboarding_success_title">We\'re done!</string>
     <string name="onboarding_welcome_continue">Begin</string>
     <string name="onboarding_welcome_details">Before you can start controlling your home, we have a few things to set up.</string>

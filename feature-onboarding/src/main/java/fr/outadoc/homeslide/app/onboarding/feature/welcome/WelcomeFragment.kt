@@ -23,7 +23,7 @@ class WelcomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentWelcomeBinding.inflate(inflater, container, false).apply {
-            btnContinue.setOnClickListener {
+            buttonContinue.setOnClickListener {
                 vm.onContinueClicked()
             }
         }

@@ -34,7 +34,7 @@ class ShortcutSetupFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSetupShortcutBinding.inflate(inflater, container, false).apply {
-            btnContinue.setOnClickListener {
+            buttonContinue.setOnClickListener {
                 vm.onContinueClicked()
             }
 
