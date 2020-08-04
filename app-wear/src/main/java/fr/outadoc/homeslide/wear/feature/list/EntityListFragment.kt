@@ -38,7 +38,6 @@ class EntityListFragment : Fragment() {
         binding = FragmentEntityListBinding.inflate(inflater, container, false)
 
         binding?.wearableRecyclerViewShortcuts?.apply {
-            isEdgeItemsCenteringEnabled = true
             layoutManager = WearableLinearLayoutManager(context)
             adapter = tileAdapter
         }
