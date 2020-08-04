@@ -7,7 +7,6 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="android:textAppearance">?textAppearanceBody2</item>
-
         <item name="android:textViewStyle">@style/Widget.App.TextView</item>
 
         <item name="textAppearanceHeadline1">@style/TextAppearance.App.Headline1</item>

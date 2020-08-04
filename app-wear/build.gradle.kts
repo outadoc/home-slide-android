@@ -61,6 +61,9 @@ dependencies {
     implementation(Dependencies.Kotlin.Coroutines.core)
     implementation(Dependencies.Kotlin.Coroutines.android)
 
+    // UI libs
+    implementation(Dependencies.Google.material)
+
     // AndroidX libs
     implementation(Dependencies.AndroidX.core)
     implementation(Dependencies.AndroidX.constraintLayout)
