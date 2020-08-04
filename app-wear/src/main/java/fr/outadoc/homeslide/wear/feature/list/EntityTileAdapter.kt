@@ -47,8 +47,8 @@ class EntityTileAdapter(
                 state.isInvisible = true
             }
 
-            actionContainer.setOnClickListener {
-                actionContainer.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            view.setOnClickListener {
+                view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
 
                 if (tile.isToggleable) {
                     view.isActivated = !view.isActivated
@@ -65,7 +65,6 @@ class EntityTileAdapter(
 
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val label: TextView = view.findViewById(R.id.tv_shortcut_label)
-        val actionContainer: View = view.findViewById(R.id.frameLayout_actionContainer)
         val icon: TextView = view.findViewById(R.id.tv_shortcut_icon)
         val state: TextView = view.findViewById(R.id.tv_extra_state)
         val loadingIndicator: ProgressBar = view.findViewById(R.id.pb_shortcut_loading)
