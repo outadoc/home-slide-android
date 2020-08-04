@@ -24,13 +24,21 @@
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
             tools:layout_width="match_parent">
 
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="4dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:alpha="0.5"
+                android:importantForAccessibility="no"
+                android:src="@drawable/sheet_handle" />
+
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/grid_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:paddingHorizontal="24dp"
-                android:paddingTop="8dp"
                 tools:title="@string/title_quick_access" />
 
             <androidx.fragment.app.FragmentContainerView

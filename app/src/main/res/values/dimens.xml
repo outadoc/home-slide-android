@@ -4,6 +4,6 @@
     <dimen name="popup_corner_radius">24dp</dimen>
     <dimen name="item_width">100dp</dimen>
     <dimen name="slideover_content_width">-1px</dimen>
-    <dimen name="slideover_peekHeight">416dp</dimen>
-    <dimen name="slideover_contentPeekHeight">100dp</dimen>
+    <dimen name="slideover_peekHeight">424dp</dimen>
+    <dimen name="slideover_contentPeekHeight">108dp</dimen>
 </resources>
