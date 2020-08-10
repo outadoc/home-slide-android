@@ -60,6 +60,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_margin="32dp"
-        android:text="@string/onboarding_success_continue" />
+        android:text="@string/onboarding_success_continue"
+        app:icon="@drawable/ic_check"
+        app:iconGravity="end" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
