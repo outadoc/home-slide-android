@@ -19,11 +19,11 @@
                 android:layout_width="120dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="16dp"
+                android:importantForAccessibility="no"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:importantForAccessibility="no"
                 app:srcCompat="@mipmap/ic_launcher" />
 
             <TextView
@@ -59,6 +59,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_margin="32dp"
-        android:text="@string/onboarding_welcome_continue" />
+        android:text="@string/onboarding_welcome_continue"
+        app:icon="@drawable/ic_arrow_forward"
+        app:iconGravity="end" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
