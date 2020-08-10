@@ -2,7 +2,8 @@ package fr.outadoc.homeslide.common.inject
 
 import android.content.Context
 import androidx.room.Room
-import com.google.android.gms.wearable.DataClient
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.wearable.Wearable
 import com.squareup.moshi.Moshi
 import fr.outadoc.homeslide.common.feature.auth.repository.AppOAuthConfiguration
@@ -15,13 +16,13 @@ import fr.outadoc.homeslide.common.log.UniFlowCustomLogger
 import fr.outadoc.homeslide.common.persistence.EntityDatabase
 import fr.outadoc.homeslide.common.preferences.BaseUrlConfigProviderImpl
 import fr.outadoc.homeslide.common.rest.TokenProviderImpl
-import fr.outadoc.homeslide.common.sync.DataSyncClient
 import fr.outadoc.homeslide.common.sync.GoogleDataSyncClient
 import fr.outadoc.homeslide.common.sync.NoopDataSyncClient
 import fr.outadoc.homeslide.hassapi.factory.TileFactory
 import fr.outadoc.homeslide.hassapi.factory.TileFactoryImpl
 import fr.outadoc.homeslide.hassapi.repository.AuthRepository
 import fr.outadoc.homeslide.hassapi.repository.EntityRepository
+import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.auth.AccessTokenProvider
 import fr.outadoc.homeslide.rest.auth.OAuthConfiguration
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlConfigProvider
@@ -42,11 +43,14 @@ fun commonModule() = module {
 
     single<TileFactory> { TileFactoryImpl(get()) }
 
-    try {
-        single<DataClient> { Wearable.getDataClient(get<Context>()) }
-        single<DataSyncClient> { GoogleDataSyncClient(get(), get()) }
-    } catch (e: Exception) {
-        single<DataSyncClient> { NoopDataSyncClient() }
+    single {
+        val apiAvailability = GoogleApiAvailability.getInstance()
+        if (apiAvailability.isGooglePlayServicesAvailable(get<Context>()) == ConnectionResult.SUCCESS) {
+            GoogleDataSyncClient(get(), Wearable.getDataClient(get<Context>()))
+        } else {
+            KLog.i { "Google Play Services unavailable, disabling wear sync" }
+            NoopDataSyncClient()
+        }
     }
 
     single {
