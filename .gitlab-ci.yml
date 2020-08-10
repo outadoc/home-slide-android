@@ -42,20 +42,17 @@ stages:
 .check:
   stage: lint
   script:
-    - ./gradlew -Pci --console=plain check
+    - ./gradlew --console=plain check
 
 assembleDebug:
   stage: build
   script:
-    - ./gradlew assembleDebug
-  artifacts:
-    paths:
-      - app/build/outputs/
+    - ./gradlew --console=plain assembleDebug
 
 debugTests:
   stage: test
   script:
-    - ./gradlew -Pci --console=plain testDebug
+    - ./gradlew --console=plain testDebug
 
 bundleRelease:
   stage: package
@@ -63,7 +60,7 @@ bundleRelease:
     - /^release\/.*$/
     - /^build\/.*$/
   script:
-    - ./gradlew -Pci --console=plain bundleRelease
+    - ./gradlew -PkeyStorePassword="$KEYSTORE_RELEASE_PASSWORD" --console=plain bundleRelease
   artifacts:
     paths:
       - app/build/outputs/
