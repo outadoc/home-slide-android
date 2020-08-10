@@ -11,8 +11,8 @@ android {
         minSdk = LibraryInfo.minSdkVersion
         targetSdk = AppInfo.targetSdkVersion
 
-        versionCode = LibraryInfo.defaultVersionCode
-        versionName = "4.8.95"
+        versionCode = 2
+        versionName = "5.3.45"
     }
 
     buildTypes {
