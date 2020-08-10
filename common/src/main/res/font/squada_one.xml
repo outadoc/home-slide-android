@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<font-family xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:fontProviderAuthority="com.google.android.gms.fonts"
-    app:fontProviderCerts="@array/com_google_android_gms_fonts_certs"
-    app:fontProviderPackage="com.google.android.gms"
-    app:fontProviderQuery="Squada One" />
+<font-family xmlns:app="http://schemas.android.com/apk/res-auto">
+    <font
+        app:font="@font/squada_one_regular"
+        app:fontStyle="normal"
+        app:fontWeight="400" />
+</font-family>
