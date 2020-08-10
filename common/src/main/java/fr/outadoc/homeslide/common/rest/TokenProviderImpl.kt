@@ -26,17 +26,14 @@ class TokenProviderImpl(
     }
 
     override fun doRefreshToken(): String? {
-        runBlocking { authRepository.refreshToken() }
-            .onFailure { e ->
-                KLog.e(e)
-                return null
-            }
-            .onSuccess { token ->
-                prefs.accessToken = token.accessToken
-                prefs.tokenExpirationTime = Instant.now().plusSeconds(token.expiresIn)
-                return token.accessToken
-            }
-
-        return null
+        return try {
+            val token = runBlocking { authRepository.refreshToken() }
+            prefs.accessToken = token.accessToken
+            prefs.tokenExpirationTime = Instant.now().plusSeconds(token.expiresIn)
+            token.accessToken
+        } catch (e: Exception) {
+            KLog.e(e)
+            null
+        }
     }
 }

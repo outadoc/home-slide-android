@@ -53,34 +53,33 @@ class EntityListViewModel(
         }
 
         onIO {
-            repository.getEntityTiles()
-                .onSuccess { tiles ->
-                    setState {
-                        if (tiles.isNullOrEmpty()) {
-                            State.InitialError(null)
-                        } else {
-                            State.Content(tiles)
-                        }
+            try {
+                val tiles = repository.getEntityTiles()
+                setState {
+                    if (tiles.isNullOrEmpty()) {
+                        State.InitialError(null)
+                    } else {
+                        State.Content(tiles)
                     }
                 }
-                .onFailure { e ->
-                    KLog.e(e) { "Error while loading entity list" }
+            } catch (e: Exception) {
+                KLog.e(e) { "Error while loading entity list" }
 
-                    sendEvent {
-                        when (e) {
-                            is InvalidRefreshTokenException -> Event.LoggedOut
-                            else -> Event.Error(e, isInitialLoad = currentState !is State.Content)
-                        }
-                    }
-
-                    setState {
-                        if (currentState !is State.InitialLoading) {
-                            currentState
-                        } else {
-                            State.InitialError(e.localizedMessage)
-                        }
+                sendEvent {
+                    when (e) {
+                        is InvalidRefreshTokenException -> Event.LoggedOut
+                        else -> Event.Error(e, isInitialLoad = currentState !is State.Content)
                     }
                 }
+
+                setState {
+                    if (currentState !is State.InitialLoading) {
+                        currentState
+                    } else {
+                        State.InitialError(e.localizedMessage)
+                    }
+                }
+            }
         }
     }
 
@@ -92,20 +91,20 @@ class EntityListViewModel(
         setState { onEntityLoadStart(currentState, item) }
 
         onIO {
-            repository.callService(item.primaryAction as Action)
-                .onSuccess {
-                    setState { onEntityLoadStop(currentState, item, failure = false) }
-                    onMain { loadEntities() }
-                }.onFailure { e ->
-                    KLog.e(e) { "Error while executing action" }
-                    setState { onEntityLoadStop(currentState, item, failure = true) }
-                    sendEvent {
-                        when (e) {
-                            is InvalidRefreshTokenException -> Event.LoggedOut
-                            else -> Event.Error(e, isInitialLoad = false)
-                        }
+            try {
+                repository.callService(item.primaryAction as Action)
+                setState { onEntityLoadStop(currentState, item, failure = false) }
+                onMain { loadEntities() }
+            } catch (e: Exception) {
+                KLog.e(e) { "Error while executing action" }
+                setState { onEntityLoadStop(currentState, item, failure = true) }
+                sendEvent {
+                    when (e) {
+                        is InvalidRefreshTokenException -> Event.LoggedOut
+                        else -> Event.Error(e, isInitialLoad = false)
                     }
                 }
+            }
         }
     }
 

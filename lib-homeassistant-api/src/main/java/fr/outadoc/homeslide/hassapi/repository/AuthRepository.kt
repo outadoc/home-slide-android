@@ -4,7 +4,7 @@ import fr.outadoc.homeslide.hassapi.model.auth.Token
 
 interface AuthRepository {
 
-    suspend fun getToken(code: String): Result<Token>
-    suspend fun refreshToken(): Result<Token>
+    suspend fun getToken(code: String): Token
+    suspend fun refreshToken(): Token
     suspend fun logout()
 }

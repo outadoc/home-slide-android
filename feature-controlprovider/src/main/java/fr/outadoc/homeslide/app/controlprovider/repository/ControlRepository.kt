@@ -7,7 +7,7 @@ import fr.outadoc.homeslide.hassapi.model.annotation.StringEntityId
 
 @RequiresApi(Build.VERSION_CODES.R)
 interface ControlRepository {
-    suspend fun getEntities(): Result<List<Control>>
+    suspend fun getEntities(): List<Control>
     suspend fun toggleEntity(@StringEntityId entityId: String)
-    suspend fun getEntitiesWithState(): Result<List<Control>>
+    suspend fun getEntitiesWithState(): List<Control>
 }

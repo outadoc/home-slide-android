@@ -28,34 +28,30 @@ class ControlsProviderViewModel(
 
     fun getControls(): Flow<Control> {
         return flow {
-            controlRepository.getEntities()
-                .onFailure { e ->
-                    KLog.e(e) { "Error while fetching devices for ControlsProviderService" }
-                }
-                .onSuccess { controls ->
-                    controls
-                        .forEach { control ->
-                            KLog.d { "Found control ${control.controlId}" }
-                            emit(control)
-                        }
-                }
+            try {
+                controlRepository.getEntities()
+                    .forEach { control ->
+                        KLog.d { "Found control ${control.controlId}" }
+                        emit(control)
+                    }
+            } catch (e: Exception) {
+                KLog.e(e) { "Error while fetching devices for ControlsProviderService" }
+            }
         }.flowOn(Dispatchers.IO)
     }
 
     fun getControlsWithState(includeIds: List<String>?) {
         viewModelScope.launch(Dispatchers.IO) {
-            controlRepository.getEntitiesWithState()
-                .onFailure { e ->
-                    KLog.e(e) { "Error while fetching devices for ControlsProviderService" }
-                }
-                .onSuccess { controls ->
-                    controls
-                        .filter { control -> includeIds == null || control.controlId in includeIds }
-                        .forEach { control ->
-                            KLog.d { "Found control ${control.controlId}" }
-                            channel.send(control)
-                        }
-                }
+            try {
+                controlRepository.getEntitiesWithState()
+                    .filter { control -> includeIds == null || control.controlId in includeIds }
+                    .forEach { control ->
+                        KLog.d { "Found control ${control.controlId}" }
+                        channel.send(control)
+                    }
+            } catch (e: Exception) {
+                KLog.e(e) { "Error while fetching devices for ControlsProviderService" }
+            }
         }
     }
 

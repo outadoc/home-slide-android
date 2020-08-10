@@ -10,7 +10,7 @@ import fr.outadoc.homeslide.hassapi.api.AuthApi
 import fr.outadoc.homeslide.hassapi.model.auth.Token
 import fr.outadoc.homeslide.hassapi.repository.AuthRepository
 import fr.outadoc.homeslide.rest.auth.OAuthConfiguration
-import fr.outadoc.homeslide.rest.util.wrapResponse
+import fr.outadoc.homeslide.rest.util.getResponseOrThrow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -24,29 +24,26 @@ class AuthRepositoryImpl(
 
     private val errorAdapter = moshi.adapter(AuthError::class.java)
 
-    override suspend fun getToken(code: String): Result<Token> {
-        return wrapResponse { api.getToken(code, oAuthConfiguration.clientId) }
+    override suspend fun getToken(code: String): Token {
+        return api.getToken(code, oAuthConfiguration.clientId).getResponseOrThrow()
     }
 
-    override suspend fun refreshToken(): Result<Token> {
-        val refreshToken = tokenPrefs.refreshToken
-            ?: return Result.failure(InvalidRefreshTokenException())
+    override suspend fun refreshToken(): Token {
+        val refreshToken = tokenPrefs.refreshToken ?: throw InvalidRefreshTokenException()
 
-        return wrapResponse {
-            api.refreshToken(refreshToken, oAuthConfiguration.clientId).also { res ->
-                if (res.code() == 400) {
-                    withContext(Dispatchers.IO) {
-                        res.errorBody()?.source()?.let { errorSource ->
-                            val error = errorAdapter.fromJson(errorSource)
-                            if (error?.errorCode == ErrorCodes.ERROR_INVALID_GRANT) {
-                                clearTokens()
-                                throw InvalidRefreshTokenException()
-                            }
+        return api.refreshToken(refreshToken, oAuthConfiguration.clientId).also { res ->
+            if (res.code() == 400) {
+                withContext(Dispatchers.IO) {
+                    res.errorBody()?.source()?.let { errorSource ->
+                        val error = errorAdapter.fromJson(errorSource)
+                        if (error?.errorCode == ErrorCodes.ERROR_INVALID_GRANT) {
+                            clearTokens()
+                            throw InvalidRefreshTokenException()
                         }
                     }
                 }
             }
-        }
+        }.getResponseOrThrow()
     }
 
     override suspend fun logout() {

@@ -8,9 +8,9 @@ import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 
 interface EntityRepository {
 
-    suspend fun getEntityTiles(): Result<List<Tile<Entity>>>
+    suspend fun getEntityTiles(): List<Tile<Entity>>
 
-    suspend fun callService(action: Action): Result<List<EntityState>>
+    suspend fun callService(action: Action): List<EntityState>
 
     suspend fun saveEntityListState(entities: List<PersistedEntity>)
 }

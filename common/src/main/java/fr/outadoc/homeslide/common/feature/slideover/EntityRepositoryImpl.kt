@@ -15,7 +15,7 @@ import fr.outadoc.homeslide.hassapi.model.entity.Light
 import fr.outadoc.homeslide.hassapi.model.entity.Weather
 import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 import fr.outadoc.homeslide.hassapi.repository.EntityRepository
-import fr.outadoc.homeslide.rest.util.wrapResponse
+import fr.outadoc.homeslide.rest.util.getResponseOrThrow
 
 class EntityRepositoryImpl(
     private val dao: EntityDao,
@@ -24,47 +24,46 @@ class EntityRepositoryImpl(
     private val syncClient: DataSyncClient
 ) : EntityRepository {
 
-    override suspend fun getEntityTiles(): Result<List<Tile<Entity>>> {
+    override suspend fun getEntityTiles(): List<Tile<Entity>> {
         val persistedEntities = dao.getPersistedEntities()
             .map { it.entityId to it }
             .toMap()
 
-        return wrapResponse { client.getStates() }
-            .map { states ->
-                states.asSequence()
-                    .map { EntityFactory.create(it) }
-                    .map { entity ->
-                        val persistedEntity = persistedEntities[entity.entityId]
-                        tileFactory
-                            .create(entity)
-                            .copy(
-                                isHidden = persistedEntity?.hidden
-                                    ?: !entity.isVisible || INITIAL_DOMAIN_BLACKLIST.contains(entity.domain)
-                            )
-                }
-                .sortedWith(
-                    compareBy(
-                        // If the user has already ordered the item manually, use that order
-                        // Otherwise put it at the end of the list initially
-                        { tile -> persistedEntities[tile.source.entityId]?.order ?: Int.MAX_VALUE },
-
-                        // Shove hidden tiles to the end of the list initially
-                        { tile -> tile.isHidden },
-
-                        // Order by domain priority (put lights and covers first for example)
-                        { tile ->
-                            getPriorityForDomain(tile.source.domain) ?: Int.MAX_VALUE
-                        },
-
-                        // Order by domain so that the items are somewhat sorted
-                        { tile -> tile.source.domain },
-
-                        // Order by label within a domain
-                        { tile -> tile.source.friendlyName }
+        return client.getStates()
+            .getResponseOrThrow()
+            .asSequence()
+            .map { EntityFactory.create(it) }
+            .map { entity ->
+                val persistedEntity = persistedEntities[entity.entityId]
+                tileFactory
+                    .create(entity)
+                    .copy(
+                        isHidden = persistedEntity?.hidden
+                            ?: !entity.isVisible || INITIAL_DOMAIN_BLACKLIST.contains(entity.domain)
                     )
-                )
-                    .toList()
             }
+            .sortedWith(
+                compareBy(
+                    // If the user has already ordered the item manually, use that order
+                    // Otherwise put it at the end of the list initially
+                    { tile -> persistedEntities[tile.source.entityId]?.order ?: Int.MAX_VALUE },
+
+                    // Shove hidden tiles to the end of the list initially
+                    { tile -> tile.isHidden },
+
+                    // Order by domain priority (put lights and covers first for example)
+                    { tile ->
+                        getPriorityForDomain(tile.source.domain) ?: Int.MAX_VALUE
+                    },
+
+                    // Order by domain so that the items are somewhat sorted
+                    { tile -> tile.source.domain },
+
+                    // Order by label within a domain
+                    { tile -> tile.source.friendlyName }
+                )
+            )
+            .toList()
     }
 
     override suspend fun saveEntityListState(entities: List<PersistedEntity>) {
@@ -81,14 +80,8 @@ class EntityRepositoryImpl(
         }
     }
 
-    override suspend fun callService(action: Action): Result<List<EntityState>> =
-        wrapResponse {
-            client.callService(
-                action.domain,
-                action.service,
-                action.allParams
-            )
-        }
+    override suspend fun callService(action: Action): List<EntityState> =
+        client.callService(action.domain, action.service, action.allParams).getResponseOrThrow()
 
     companion object {
         val INITIAL_DOMAIN_BLACKLIST = listOf(

@@ -123,14 +123,15 @@ class HostSetupViewModel(
         }
 
         instanceUrl.sanitizeUrl()?.let { sanitizedUrl ->
-            if (repository.getDiscoveryInfo(sanitizedUrl).isSuccess) {
+            try {
+                repository.getDiscoveryInfo(sanitizedUrl)
                 setState {
                     State.Success(
                         sanitizedInstanceUrl = sanitizedUrl,
                         discoveredInstances = currentState.discoveredInstances
                     )
                 }
-            } else {
+            } catch (e: Exception) {
                 setState {
                     // URL can't be sanitized
                     State.Error(discoveredInstances = currentState.discoveredInstances)
