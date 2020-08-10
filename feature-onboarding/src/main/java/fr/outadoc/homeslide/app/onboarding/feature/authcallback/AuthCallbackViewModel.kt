@@ -18,20 +18,19 @@ class AuthCallbackViewModel(
         KLog.d { "received authentication code, fetching token" }
 
         withContext(Dispatchers.IO) {
-            authRepository.getToken(code)
-                .onSuccess { token ->
-                    withContext(Dispatchers.Main) {
-                        // Save the auth code
-                        tokenPrefs.accessToken = token.accessToken
-                        tokenPrefs.refreshToken = token.refreshToken
-                        tokenPrefs.tokenExpirationTime = Instant.now().plusSeconds(token.expiresIn)
-                    }
+            try {
+                val token = authRepository.getToken(code)
+                withContext(Dispatchers.Main) {
+                    // Save the auth code
+                    tokenPrefs.accessToken = token.accessToken
+                    tokenPrefs.refreshToken = token.refreshToken
+                    tokenPrefs.tokenExpirationTime = Instant.now().plusSeconds(token.expiresIn)
+                }
 
-                    sendEvent { NavigationEvent.Next }
-                }
-                .onFailure { e ->
-                    KLog.e(e) { "couldn't retrieve token using code $code" }
-                }
+                sendEvent { NavigationEvent.Next }
+            } catch (e: Exception) {
+                KLog.e(e) { "couldn't retrieve token using code $code" }
+            }
         }
     }
 }

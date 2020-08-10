@@ -5,17 +5,11 @@ import okhttp3.HttpUrl
 import retrofit2.HttpException
 import retrofit2.Response
 
-suspend fun <T> wrapResponse(apiCall: suspend () -> Response<T>): Result<T> {
-    return try {
-        val res = apiCall()
-
-        if (res.isSuccessful && res.body() != null) {
-            Result.success(res.body()!!)
-        } else {
-            Result.failure(HttpException(res))
-        }
-    } catch (e: Exception) {
-        Result.failure(e)
+fun <T> Response<T>.getResponseOrThrow(): T {
+    return if (isSuccessful && body() != null) {
+        body()!!
+    } else {
+        throw HttpException(this)
     }
 }
 

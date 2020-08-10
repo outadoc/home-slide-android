@@ -35,7 +35,6 @@ android {
     kotlinOptions {
         jvmTarget = Dependencies.Build.jvmTarget
         freeCompilerArgs = listOf(
-            "-Xallow-result-return-type",
             "-Xuse-experimental=kotlin.Experimental"
         )
     }
