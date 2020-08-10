@@ -17,6 +17,20 @@ android {
         versionName = AppInfo.versionName
     }
 
+    signingConfigs {
+        create(BuildTypes.release) {
+            isV1SigningEnabled = false
+            isV2SigningEnabled = true
+
+            val keyStorePassword: String by project
+
+            storeFile(file(SigningConfig.keyStorePath))
+            storePassword(keyStorePassword)
+            keyAlias(SigningConfig.keyAlias)
+            keyPassword(keyStorePassword)
+        }
+    }
+
     buildTypes {
         val fieldEnableDetails = "ENABLE_DETAILS"
 
@@ -28,6 +42,7 @@ android {
         named(BuildTypes.release) {
             isMinifyEnabled = true
             buildConfigField("boolean", fieldEnableDetails, "false")
+            signingConfig = signingConfigs.getByName(BuildTypes.release)
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
         }
     }
