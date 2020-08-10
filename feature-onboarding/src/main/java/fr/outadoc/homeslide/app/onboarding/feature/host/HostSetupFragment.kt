@@ -40,7 +40,7 @@ class HostSetupFragment : Fragment() {
                 vm.onInstanceUrlChanged(s)
             }
 
-            editTextInstanceBaseUrl.setOnEditorActionListener { textView, actionId, keyEvent ->
+            editTextInstanceBaseUrl.setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE -> {
                         vm.onLoginClicked()
