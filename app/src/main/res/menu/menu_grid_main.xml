@@ -2,22 +2,38 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/menuItem_done"
-        android:icon="@drawable/ic_check"
-        android:title="@string/menu_item_done"
-        android:visible="false"
-        app:showAsAction="ifRoom" />
+    <group
+        android:id="@+id/menuGroup_editing"
+        android:visible="false">
 
-    <item
-        android:id="@+id/menuItem_edit"
-        android:icon="@drawable/ic_edit"
-        android:title="@string/menu_item_edit"
-        app:showAsAction="never" />
+        <item
+            android:id="@+id/menuItem_done"
+            android:icon="@drawable/ic_check"
+            android:title="@string/menu_item_done"
+            app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/menuItem_settings"
-        android:icon="@drawable/ic_settings"
-        android:title="@string/menu_item_settings"
-        app:showAsAction="never" />
+        <item
+            android:id="@+id/menuItem_showAll"
+            android:title="@string/menu_item_show_all"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/menuItem_hideAll"
+            android:title="@string/menu_item_hide_all"
+            app:showAsAction="never" />
+    </group>
+
+    <group android:id="@+id/menuGroup_idle">
+        <item
+            android:id="@+id/menuItem_edit"
+            android:icon="@drawable/ic_edit"
+            android:title="@string/menu_item_edit"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/menuItem_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/menu_item_settings"
+            app:showAsAction="never" />
+    </group>
 </menu>

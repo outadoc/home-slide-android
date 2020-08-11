@@ -6,7 +6,9 @@
 
     <string name="menu_item_done">Terminé</string>
     <string name="menu_item_edit">Réorganiser</string>
+    <string name="menu_item_hide_all">Tout cacher</string>
     <string name="menu_item_settings">Réglages</string>
+    <string name="menu_item_show_all">Tout afficher</string>
 
     <string name="pref_about_title">À propos</string>
     <string name="pref_alt_base_url_summary">Optionnelle. URL de votre instance Home\u00A0Assistant accessible depuis Internet. (ex : DynDNS, Hass.io…)</string>

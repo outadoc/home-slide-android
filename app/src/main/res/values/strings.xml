@@ -6,7 +6,9 @@
 
     <string name="menu_item_done">Done</string>
     <string name="menu_item_edit">Reorganize</string>
+    <string name="menu_item_hide_all">Hide all entities</string>
     <string name="menu_item_settings">Settings</string>
+    <string name="menu_item_show_all">Show all entities</string>
 
     <string name="pref_about_title">About</string>
     <string name="pref_alt_base_url_summary">Optional. Internet-accessible URL of your Home\u00A0Assistant instance.</string>

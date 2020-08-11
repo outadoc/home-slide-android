@@ -20,7 +20,6 @@ import androidx.core.graphics.Insets
 import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.forEach
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDeepLinkBuilder
@@ -255,12 +254,8 @@ class EntityGridFragment : Fragment() {
             }
         }
 
-        menu?.forEach { item ->
-            when (item.itemId) {
-                R.id.menuItem_done -> item.isVisible = isEditing
-                R.id.menuItem_edit -> item.isVisible = !isEditing
-            }
-        }
+        menu?.setGroupVisible(R.id.menuGroup_idle, !isEditing)
+        menu?.setGroupVisible(R.id.menuGroup_editing, isEditing)
 
         itemAdapter.isEditingMode = isEditing
     }
@@ -277,17 +272,22 @@ class EntityGridFragment : Fragment() {
                 vm.enterEditMode()
                 true
             }
-
             R.id.menuItem_settings -> {
                 openSettings()
                 true
             }
-
             R.id.menuItem_done -> {
                 vm.exitEditMode()
                 true
             }
-
+            R.id.menuItem_showAll -> {
+                vm.showAll()
+                true
+            }
+            R.id.menuItem_hideAll -> {
+                vm.hideAll()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
