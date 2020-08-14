@@ -56,7 +56,7 @@ object Dependencies {
     }
 
     object Google {
-        const val material = "com.google.android.material:material:1.3.0-alpha01"
+        const val material = "com.google.android.material:material:1.3.0-alpha02"
 
         object PlayServices {
             const val wearable = "com.google.android.gms:play-services-wearable:17.0.0"
@@ -80,12 +80,11 @@ object Dependencies {
     }
 
     object Kotlin {
-        private const val version = "1.4.0-rc"
-        const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
+        private const val version = "1.4.0"
         const val classpath = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
 
         object Coroutines {
-            private const val version = "1.3.6"
+            private const val version = "1.3.8"
             const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
             const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
             const val jdk9 = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk9:$version"
@@ -99,7 +98,7 @@ object Dependencies {
     }
 
     object LeakCanary {
-        const val core = "com.squareup.leakcanary:leakcanary-android:2.0-beta-3"
+        const val core = "com.squareup.leakcanary:leakcanary-android:2.4"
     }
 
     object Moshi {
