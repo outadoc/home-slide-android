@@ -12,7 +12,7 @@ import androidx.navigation.findNavController
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentAuthCallbackBinding
 import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
 import io.uniflow.androidx.flow.onEvents
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AuthCallbackFragment : Fragment() {
 

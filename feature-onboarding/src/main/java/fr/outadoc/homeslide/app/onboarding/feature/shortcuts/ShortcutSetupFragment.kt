@@ -13,15 +13,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import com.google.android.wearable.intent.RemoteIntent
+import com.google.androidx.wearable.intent.RemoteIntent
+import com.google.androidx.wearable.intent.startRemoteActivity
 import fr.outadoc.homeslide.app.onboarding.R
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentSetupShortcutBinding
-import fr.outadoc.homeslide.app.onboarding.extensions.startRemoteActivity
 import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
 import fr.outadoc.homeslide.util.view.showSnackbar
 import io.uniflow.androidx.flow.onEvents
 import kotlinx.coroutines.launch
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ShortcutSetupFragment : Fragment() {
 
