@@ -6,7 +6,7 @@ import fr.outadoc.homeslide.app.controlprovider.factory.ControlFactoryImpl
 import fr.outadoc.homeslide.app.controlprovider.repository.ControlRepository
 import fr.outadoc.homeslide.app.controlprovider.repository.ControlRepositoryImpl
 import fr.outadoc.homeslide.app.controlprovider.vm.ControlsProviderViewModel
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 fun controlProviderModule() = module {

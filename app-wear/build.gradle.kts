@@ -69,6 +69,7 @@ dependencies {
     implementation(project(":lib-homeassistant-api"))
     implementation(project(":lib-common-util"))
     implementation(project(":lib-logging"))
+    implementation(project(":lib-androidx-wearable"))
 
     implementation(project(":common"))
 
@@ -106,7 +107,6 @@ dependencies {
     implementation(Dependencies.Koin.viewModel)
 
     implementation(Dependencies.AndroidX.wear)
-    implementation(Dependencies.Google.Wearable.support)
     compileOnly(Dependencies.Google.Wearable.core)
 
     coreLibraryDesugaring(Dependencies.Tools.desugaring)

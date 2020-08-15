@@ -47,6 +47,7 @@ dependencies {
     implementation(project(":lib-restclient"))
     implementation(project(":lib-homeassistant-api"))
     implementation(project(":lib-logging"))
+    implementation(project(":lib-androidx-wearable"))
 
     implementation(Dependencies.Konfetti.core)
     implementation(Dependencies.Google.material)
@@ -60,7 +61,6 @@ dependencies {
     implementation(Dependencies.AndroidX.appcompat)
     implementation(Dependencies.AndroidX.recyclerview)
 
-    implementation(Dependencies.Google.Wearable.support)
     compileOnly(Dependencies.Google.Wearable.core)
 
     // Network libs

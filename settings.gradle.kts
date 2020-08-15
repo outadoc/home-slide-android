@@ -1,3 +1,4 @@
+include(":lib-androidx-wearable")
 include(":app")
 include(":app-wear")
 include(":common")

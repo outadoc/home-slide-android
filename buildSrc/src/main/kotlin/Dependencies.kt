@@ -22,7 +22,7 @@ object Dependencies {
         const val core = "androidx.core:core-ktx:1.3.0"
         const val preference = "androidx.preference:preference-ktx:1.1.1"
         const val recyclerview = "androidx.recyclerview:recyclerview:1.1.0"
-        const val wear = "androidx.wear:wear:1.0.0"
+        const val wear = "androidx.wear:wear:1.1.0-rc02"
 
         object Lifecycle {
             private const val version = "2.2.0"
@@ -65,14 +65,13 @@ object Dependencies {
         object Wearable {
             private const val version = "2.7.0"
             const val core = "com.google.android.wearable:wearable:$version"
-            const val support = "com.google.android.support:wearable:$version"
         }
     }
 
     object Koin {
-        private const val version = "2.0.1"
+        private const val version = "2.1.6"
         const val android = "org.koin:koin-core:$version"
-        const val viewModel = "org.koin:koin-android-viewmodel:$version"
+        const val viewModel = "org.koin:koin-androidx-viewmodel:$version"
     }
 
     object Konfetti {

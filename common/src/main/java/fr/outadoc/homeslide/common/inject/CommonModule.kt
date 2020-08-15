@@ -28,7 +28,7 @@ import fr.outadoc.homeslide.rest.auth.OAuthConfiguration
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlConfigProvider
 import io.uniflow.core.logger.UniFlowLogger
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Converter
 import retrofit2.converter.moshi.MoshiConverterFactory

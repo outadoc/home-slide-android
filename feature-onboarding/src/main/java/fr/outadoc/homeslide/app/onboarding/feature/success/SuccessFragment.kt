@@ -15,7 +15,7 @@ import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
 import io.uniflow.androidx.flow.onEvents
 import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SuccessFragment : Fragment() {
 

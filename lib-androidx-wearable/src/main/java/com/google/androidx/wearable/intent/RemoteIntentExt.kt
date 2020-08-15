@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.app.onboarding.extensions
+package com.google.androidx.wearable.intent
 
 import android.content.Context
 import android.content.Intent
@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.ResultReceiver
-import com.google.android.wearable.intent.RemoteIntent
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 

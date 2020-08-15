@@ -16,7 +16,7 @@ import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
 import fr.outadoc.homeslide.util.view.addTextChangedListener
 import io.uniflow.androidx.flow.onEvents
 import io.uniflow.androidx.flow.onStates
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HostSetupFragment : Fragment() {
 
