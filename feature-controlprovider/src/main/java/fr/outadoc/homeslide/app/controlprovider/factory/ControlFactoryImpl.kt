@@ -7,16 +7,16 @@ import android.service.controls.templates.ControlButton
 import android.service.controls.templates.ControlTemplate
 import android.service.controls.templates.ToggleTemplate
 import androidx.annotation.RequiresApi
-import fr.outadoc.homeslide.app.controlprovider.inject.IntentProvider
+import fr.outadoc.homeslide.app.controlprovider.inject.DetailsIntentProvider
 import fr.outadoc.homeslide.hassapi.model.entity.Cover
 import fr.outadoc.homeslide.hassapi.model.entity.Light
 import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 import fr.outadoc.homeslide.hassapi.model.entity.base.ToggleableEntity
 
 @RequiresApi(Build.VERSION_CODES.R)
-class ControlFactoryImpl(intentProvider: IntentProvider) : ControlFactory {
+class ControlFactoryImpl(detailsIntentProvider: DetailsIntentProvider) : ControlFactory {
 
-    private val pi = intentProvider.getEntityDetailsActivityIntent()
+    private val pi = detailsIntentProvider.getEntityDetailsActivityIntent()
 
     override fun createStatefulControl(entity: Entity): Control? {
         val deviceType = entity.getDeviceType() ?: return null

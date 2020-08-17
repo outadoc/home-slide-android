@@ -2,9 +2,9 @@ package fr.outadoc.homeslide.app
 
 import android.app.Application
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import fr.outadoc.homeslide.app.controlprovider.inject.IntentProvider
+import fr.outadoc.homeslide.app.controlprovider.inject.DetailsIntentProvider
 import fr.outadoc.homeslide.app.controlprovider.inject.controlProviderModule
-import fr.outadoc.homeslide.app.inject.AppIntentProvider
+import fr.outadoc.homeslide.app.inject.DefaultDetailsIntentProvider
 import fr.outadoc.homeslide.app.onboarding.feature.authcallback.AuthCallbackViewModel
 import fr.outadoc.homeslide.app.onboarding.feature.host.HostSetupViewModel
 import fr.outadoc.homeslide.app.onboarding.feature.host.model.ZeroconfHost
@@ -70,7 +70,7 @@ class MainApplication : Application() {
 
         single<ZeroconfDiscoveryService<ZeroconfHost>> { HassZeroconfDiscoveryServiceImpl(get()) }
         single<DiscoveryRepository> { DiscoveryRepositoryImpl(get()) }
-        single<IntentProvider> { AppIntentProvider(get()) }
+        single<DetailsIntentProvider> { DefaultDetailsIntentProvider(get()) }
 
         single { PreferenceRepositoryImpl(get(), get()) }
         single<GlobalPreferenceRepository> { get<PreferenceRepositoryImpl>() }
