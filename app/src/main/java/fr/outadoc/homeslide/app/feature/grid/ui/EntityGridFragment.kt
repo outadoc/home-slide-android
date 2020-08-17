@@ -297,16 +297,13 @@ class EntityGridFragment : Fragment() {
             return false
         }
 
-        EntityDetailFragment.newInstance(entity)?.let {
+        EntityDetailFragment.newInstance(entity).let {
             navigator?.apply {
                 navigateTo(it)
-                // collapseSheet()
             }
-
-            return true
         }
 
-        return false
+        return true
     }
 
     private fun scheduleRefresh() {
