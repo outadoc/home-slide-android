@@ -13,7 +13,7 @@ class OverlayFragment private constructor() : Fragment(R.layout.fragment_overlay
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments?.getParcelable<EntityState>(ARGS_STATE)?.let { state ->
+        arguments?.getParcelable<EntityState>(ARG_STATE)?.let { state ->
             childFragmentManager
                 .beginTransaction()
                 .add(R.id.frameLayout_overlayContent, OverlayFragmentFactory.create(state))
@@ -22,11 +22,11 @@ class OverlayFragment private constructor() : Fragment(R.layout.fragment_overlay
     }
 
     companion object {
-        private const val ARGS_STATE = "ARG_ENTITY"
+        private const val ARG_STATE = "ARG_ENTITY"
 
         fun newInstance(entity: Entity): OverlayFragment {
             return OverlayFragment().apply {
-                arguments = bundleOf(ARGS_STATE to entity)
+                arguments = bundleOf(ARG_STATE to entity)
             }
         }
     }

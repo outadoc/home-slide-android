@@ -26,13 +26,8 @@ class EntityDetailFragment private constructor() : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments?.getParcelable<EntityState>(ARGS_STATE)?.let { state ->
+        arguments?.getParcelable<EntityState>(ARG_STATE)?.let { state ->
             vm.setEntity(EntityFactory.create(state))
-
-            childFragmentManager
-                .beginTransaction()
-                .replace(R.id.frameLayout_detailsContent, getChildFragment(state))
-                .commit()
         }
     }
 
@@ -60,12 +55,6 @@ class EntityDetailFragment private constructor() : Fragment() {
         return root
     }
 
-    private fun getChildFragment(state: EntityState): Fragment =
-        when (state.domain) {
-            Light.DOMAIN -> LightEntityDetailFragment.newInstance(state)
-            else -> throw IllegalArgumentException("No detail fragment for ${state.domain}")
-        }
-
     override fun onDestroy() {
         super.onDestroy()
         viewHolder = null
@@ -80,18 +69,11 @@ class EntityDetailFragment private constructor() : Fragment() {
 
     companion object {
 
-        private fun hasDetailsScreen(entity: Entity) =
-            entity.domain in listOf(Light.DOMAIN)
+        fun newInstance(entity: Entity): EntityDetailFragment =
+            EntityDetailFragment().apply {
+                arguments = bundleOf(ARG_STATE to entity.state)
+            }
 
-        fun newInstance(entity: Entity) =
-            if (hasDetailsScreen(entity)) {
-                EntityDetailFragment().apply {
-                    arguments = bundleOf(
-                        ARGS_STATE to entity.state
-                    )
-                }
-            } else null
-
-        private const val ARGS_STATE = "ARGS_STATE"
+        private const val ARG_STATE = "ARG_STATE"
     }
 }
