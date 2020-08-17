@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.hassapi.factory.EntityFactory
@@ -52,9 +53,9 @@ class LightEntityDetailFragment private constructor() : Fragment() {
 
         fun newInstance(state: EntityState): LightEntityDetailFragment =
             LightEntityDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(ARGS_STATE, state)
-                }
+                arguments = bundleOf(
+                    ARGS_STATE to state
+                )
             }
 
         private const val ARGS_STATE = "ARGS_STATE"

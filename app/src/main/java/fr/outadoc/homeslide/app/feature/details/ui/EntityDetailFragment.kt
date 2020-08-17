@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -85,9 +86,9 @@ class EntityDetailFragment private constructor() : Fragment() {
         fun newInstance(entity: Entity) =
             if (hasDetailsScreen(entity)) {
                 EntityDetailFragment().apply {
-                    arguments = Bundle().apply {
-                        putParcelable(ARGS_STATE, entity.state)
-                    }
+                    arguments = bundleOf(
+                        ARGS_STATE to entity.state
+                    )
                 }
             } else null
 
