@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.app.feature.overlay.ui.domain.OverlayFragmentFactory
 import fr.outadoc.homeslide.hassapi.model.EntityState
-import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 
 class OverlayFragment private constructor() : Fragment(R.layout.fragment_overlay_container) {
 
@@ -22,9 +21,9 @@ class OverlayFragment private constructor() : Fragment(R.layout.fragment_overlay
     }
 
     companion object {
-        private const val ARG_STATE = "ARG_ENTITY"
+        private const val ARG_STATE = "ARG_STATE"
 
-        fun newInstance(entity: Entity): OverlayFragment {
+        fun newInstance(entity: EntityState): OverlayFragment {
             return OverlayFragment().apply {
                 arguments = bundleOf(ARG_STATE to entity)
             }
