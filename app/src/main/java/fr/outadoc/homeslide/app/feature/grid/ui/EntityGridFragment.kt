@@ -26,10 +26,11 @@ import androidx.navigation.NavDeepLinkBuilder
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.faltenreich.skeletonlayout.Skeleton
 import com.faltenreich.skeletonlayout.applySkeleton
-import fr.outadoc.homeslide.app.BuildConfig
 import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.app.databinding.FragmentEntityGridBinding
-import fr.outadoc.homeslide.app.feature.details.ui.EntityDetailFragment
+import fr.outadoc.homeslide.app.feature.overlay.ui.OverlayFragment
+import fr.outadoc.homeslide.app.feature.slideover.OverlayNavigator
+import fr.outadoc.homeslide.app.feature.slideover.callbacks
 import fr.outadoc.homeslide.app.feature.slideover.ui.EntityTileAdapter
 import fr.outadoc.homeslide.app.feature.slideover.ui.SlideOverNavigator
 import fr.outadoc.homeslide.app.onboarding.OnboardingActivity
@@ -58,8 +59,8 @@ class EntityGridFragment : Fragment() {
 
     private lateinit var onBackPressedCallback: OnBackPressedCallback
 
-    private val navigator: SlideOverNavigator?
-        get() = parentFragment as? SlideOverNavigator
+    private val slideOverNavigator: SlideOverNavigator by callbacks()
+    private val overlayNavigator: OverlayNavigator by callbacks()
 
     private val itemAdapter = EntityTileAdapter(
         onItemClickListener = {
@@ -72,7 +73,7 @@ class EntityGridFragment : Fragment() {
         },
         onItemHeightChangeListener = { itemHeight ->
             val chromeHeight = resources.getDimension(R.dimen.slideover_contentPeekHeight).toInt()
-            navigator?.updatePeekHeight((itemHeight * VISIBLE_ITEM_COUNT_VERTICAL) + chromeHeight)
+            slideOverNavigator.updatePeekHeight((itemHeight * VISIBLE_ITEM_COUNT_VERTICAL) + chromeHeight)
         }
     )
 
@@ -211,19 +212,19 @@ class EntityGridFragment : Fragment() {
         val childToDisplay = when (state) {
             is State.Editing,
             is State.Content -> {
-                navigator?.setIsExpandable(true)
+                slideOverNavigator.setIsExpandable(true)
                 skeleton?.let { if (it.isSkeleton()) it.showOriginal() }
                 CHILD_CONTENT
             }
 
             is State.InitialLoading -> {
-                navigator?.setIsExpandable(false)
+                slideOverNavigator.setIsExpandable(false)
                 skeleton?.let { if (!it.isSkeleton()) it.showSkeleton() }
                 CHILD_CONTENT
             }
 
             is State.InitialError -> {
-                navigator?.setIsExpandable(false)
+                slideOverNavigator.setIsExpandable(false)
                 skeleton?.let { if (it.isSkeleton()) it.showOriginal() }
                 CHILD_NO_CONTENT
             }
@@ -293,16 +294,7 @@ class EntityGridFragment : Fragment() {
     }
 
     private fun onItemLongPress(entity: Entity): Boolean {
-        if (!BuildConfig.ENABLE_DETAILS) {
-            return false
-        }
-
-        EntityDetailFragment.newInstance(entity).let {
-            navigator?.apply {
-                navigateTo(it)
-            }
-        }
-
+        overlayNavigator.showOverlay(OverlayFragment.newInstance(entity.state))
         return true
     }
 
@@ -322,7 +314,7 @@ class EntityGridFragment : Fragment() {
     }
 
     private fun openSettings() {
-        navigator?.navigateTo(AppPreferencesFragment.newInstance())
+        slideOverNavigator.navigateTo(AppPreferencesFragment.newInstance())
     }
 
     private fun FragmentEntityGridBinding.setWindowInsets() {

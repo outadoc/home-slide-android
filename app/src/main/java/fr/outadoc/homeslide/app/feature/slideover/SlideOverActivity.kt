@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.app.feature.slideover.ui.SlideOverFragment
@@ -17,7 +18,7 @@ import fr.outadoc.homeslide.common.extensions.setShowWhenLockedCompat
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import org.koin.android.ext.android.inject
 
-class SlideOverActivity : DayNightActivity() {
+class SlideOverActivity : DayNightActivity(), OverlayNavigator {
 
     private val prefs: GlobalPreferenceRepository by inject()
     private val prefPublisher: PreferencePublisher by inject()
@@ -73,5 +74,13 @@ class SlideOverActivity : DayNightActivity() {
         }
 
         super.onPause()
+    }
+
+    override fun showOverlay(fragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.slideover_content, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
