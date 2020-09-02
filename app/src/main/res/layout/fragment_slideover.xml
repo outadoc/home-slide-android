@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent">
+    android:background="@android:color/transparent"
+    android:focusable="false">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -16,6 +17,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/popup_background"
+            android:focusable="false"
             android:orientation="vertical"
             android:paddingHorizontal="12dp"
             app:behavior_fitToContents="true"
