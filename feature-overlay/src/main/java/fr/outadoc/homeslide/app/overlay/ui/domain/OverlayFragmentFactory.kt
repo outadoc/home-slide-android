@@ -1,4 +1,4 @@
-package fr.outadoc.homeslide.app.feature.overlay.ui.domain
+package fr.outadoc.homeslide.app.overlay.ui.domain
 
 import androidx.fragment.app.Fragment
 import fr.outadoc.homeslide.hassapi.model.EntityState
