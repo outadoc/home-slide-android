@@ -30,4 +30,8 @@ android {
     kotlinOptions {
         jvmTarget = Dependencies.Build.jvmTarget
     }
+
+    dependencies {
+        coreLibraryDesugaring(Dependencies.Tools.desugaring)
+    }
 }
