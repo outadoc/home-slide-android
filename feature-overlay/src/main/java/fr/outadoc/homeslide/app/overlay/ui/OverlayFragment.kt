@@ -1,10 +1,10 @@
-package fr.outadoc.homeslide.app.feature.overlay.ui
+package fr.outadoc.homeslide.app.overlay.ui
 
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import fr.outadoc.homeslide.app.R
-import fr.outadoc.homeslide.app.feature.overlay.ui.domain.OverlayFragmentFactory
+import fr.outadoc.homeslide.app.overlay.R
+import fr.outadoc.homeslide.app.overlay.ui.domain.OverlayFragmentFactory
 import fr.outadoc.homeslide.hassapi.model.EntityState
 
 class OverlayFragment private constructor() : Fragment(R.layout.fragment_overlay_container) {

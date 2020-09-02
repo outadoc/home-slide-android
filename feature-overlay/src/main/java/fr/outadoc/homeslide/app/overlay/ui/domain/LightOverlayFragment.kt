@@ -1,8 +1,8 @@
-package fr.outadoc.homeslide.app.feature.overlay.ui.domain
+package fr.outadoc.homeslide.app.overlay.ui.domain
 
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import fr.outadoc.homeslide.app.R
+import fr.outadoc.homeslide.app.overlay.R
 import fr.outadoc.homeslide.hassapi.model.EntityState
 
 class LightOverlayFragment private constructor() : Fragment(R.layout.fragment_overlay_light) {

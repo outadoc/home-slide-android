@@ -28,7 +28,7 @@ import com.faltenreich.skeletonlayout.Skeleton
 import com.faltenreich.skeletonlayout.applySkeleton
 import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.app.databinding.FragmentEntityGridBinding
-import fr.outadoc.homeslide.app.feature.overlay.ui.OverlayFragment
+import fr.outadoc.homeslide.app.overlay.ui.OverlayFragment
 import fr.outadoc.homeslide.app.feature.slideover.OverlayNavigator
 import fr.outadoc.homeslide.app.feature.slideover.callbacks
 import fr.outadoc.homeslide.app.feature.slideover.ui.EntityTileAdapter

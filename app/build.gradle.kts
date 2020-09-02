@@ -72,6 +72,7 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":feature-onboarding"))
     implementation(project(":feature-controlprovider"))
+    implementation(project(":feature-overlay"))
 
     implementation(Dependencies.Kotlin.Coroutines.core)
     implementation(Dependencies.Kotlin.Coroutines.android)
