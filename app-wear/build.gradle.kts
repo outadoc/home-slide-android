@@ -55,6 +55,7 @@ android {
     }
 
     kotlinOptions {
+        useIR = true
         jvmTarget = Dependencies.Build.jvmTarget
         freeCompilerArgs = listOf(
             "-Xuse-experimental=kotlin.Experimental"

@@ -33,14 +33,15 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = Dependencies.Build.jvmTarget
         useIR = true
+        jvmTarget = Dependencies.Build.jvmTarget
         freeCompilerArgs = listOf(
             "-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check"
         )
     }
 
     composeOptions {
+        kotlinCompilerVersion = Dependencies.Kotlin.version
         kotlinCompilerExtensionVersion = "1.0.0-alpha02"
     }
 }
@@ -79,9 +80,6 @@ dependencies {
     implementation("androidx.compose.foundation:foundation:1.0.0-alpha02")
     // Material Design
     implementation("androidx.compose.material:material:1.0.0-alpha02")
-    // Material design icons
-    implementation("androidx.compose.material:material-icons-core:1.0.0-alpha02")
-    implementation("androidx.compose.material:material-icons-extended:1.0.0-alpha02")
     // Integration with observables
     implementation("androidx.compose.runtime:runtime-livedata:1.0.0-alpha02")
 
