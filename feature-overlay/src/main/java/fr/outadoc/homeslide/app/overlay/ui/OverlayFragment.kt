@@ -4,20 +4,13 @@ import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import fr.outadoc.homeslide.app.overlay.R
-import fr.outadoc.homeslide.app.overlay.ui.domain.OverlayFragmentFactory
 import fr.outadoc.homeslide.hassapi.model.EntityState
 
 class OverlayFragment private constructor() : Fragment(R.layout.fragment_overlay_container) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        arguments?.getParcelable<EntityState>(ARG_STATE)?.let { state ->
-            childFragmentManager
-                .beginTransaction()
-                .add(R.id.frameLayout_overlayContent, OverlayFragmentFactory.create(state))
-                .commit()
-        }
+        val entityState = arguments?.getParcelable<EntityState>(ARG_STATE)
     }
 
     companion object {
