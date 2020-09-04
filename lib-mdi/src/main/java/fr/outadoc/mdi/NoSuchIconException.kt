@@ -1,3 +1,3 @@
 package fr.outadoc.mdi
 
-class NoSuchIconException(val iconName: String) : Exception()
+data class NoSuchIconException(val iconName: String) : Exception()
