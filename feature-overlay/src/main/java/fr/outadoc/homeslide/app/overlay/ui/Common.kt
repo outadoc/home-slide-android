@@ -12,10 +12,15 @@ import fr.outadoc.homeslide.hassapi.model.entity.Light
 
 @Preview
 @Composable
-fun ControlOverlay(
+fun ControlOverlayPreview(
     @PreviewParameter(EntityStateParameterProvider::class)
     entityState: EntityState
 ) {
+    ControlOverlay(entityState = entityState)
+}
+
+@Composable
+fun ControlOverlay(entityState: EntityState) {
     when (val entity = EntityFactory.create(entityState)) {
         is Light -> LightControlOverlay(light = entity)
     }

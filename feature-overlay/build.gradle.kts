@@ -50,6 +50,7 @@ dependencies {
     implementation(project(":lib-restclient"))
     implementation(project(":lib-homeassistant-api"))
     implementation(project(":lib-logging"))
+    implementation(project(":lib-mdi"))
 
     // Data flow
     implementation(Dependencies.Uniflow.core)
