@@ -28,7 +28,6 @@ android {
     }
 
     kotlinOptions {
-        useIR = true
         jvmTarget = Dependencies.Build.jvmTarget
     }
 

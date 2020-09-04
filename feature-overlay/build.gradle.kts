@@ -22,7 +22,6 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
         compose = true
     }
 
@@ -33,7 +32,6 @@ android {
     }
 
     kotlinOptions {
-        useIR = true
         jvmTarget = Dependencies.Build.jvmTarget
         freeCompilerArgs = listOf(
             "-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check"
