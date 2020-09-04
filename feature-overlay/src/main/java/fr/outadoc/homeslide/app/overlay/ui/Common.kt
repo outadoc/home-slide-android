@@ -34,7 +34,7 @@ fun LightControlOverlay(light: Light) {
         })
 
         light.brightness?.let { brightness ->
-            Slider(value = brightness.toFloat(), onValueChange = {
+            Slider(value = brightness, onValueChange = {
                 // update brightness
             })
         }

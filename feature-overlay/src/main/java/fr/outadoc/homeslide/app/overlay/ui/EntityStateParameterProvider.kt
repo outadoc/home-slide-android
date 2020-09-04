@@ -17,7 +17,8 @@ class EntityStateParameterProvider : PreviewParameterProvider<EntityState> {
                     state = "on",
                     attributes = AttributeSet(
                         friendlyName = "Sample Light",
-                        icon = "mdi:lightbulb"
+                        icon = "mdi:lightbulb",
+                        brightness = 200f
                     )
                 )
             )

@@ -6,9 +6,9 @@ import fr.outadoc.mdi.toIcon
 
 class Light(state: EntityState) : ToggleableEntity(state, "lightbulb".toIcon()) {
 
-    val brightness: Int?
+    val brightness: Float?
         get() = additionalAttributes.brightness?.let { brightness ->
-            (brightness / 256f * 100).toInt().coerceIn(0, 100)
+            (brightness / 256f).coerceIn(0f, 1f)
         }
 
     companion object {
