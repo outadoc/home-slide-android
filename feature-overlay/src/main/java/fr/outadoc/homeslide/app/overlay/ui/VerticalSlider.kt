@@ -178,7 +178,7 @@ private fun SliderImpl(
         val trackStrokeWidth: Float
         val thumbPx: Float
         with(DensityAmbient.current) {
-            trackStrokeWidth = TrackHeight.toPx()
+            trackStrokeWidth = TrackWidth.toPx()
             thumbPx = ThumbRadius.toPx()
         }
         Track(
@@ -442,15 +442,15 @@ private class CallbackBasedAnimatedFloat(
 }
 
 // Internal to be referred to in tests
-internal val ThumbRadius = 10.dp
-private val ThumbRippleRadius = 24.dp
+internal val ThumbRadius = 24.dp
+private val ThumbRippleRadius = 64.dp
 private val ThumbDefaultElevation = 1.dp
 private val ThumbPressedElevation = 6.dp
 
 // Internal to be referred to in tests
-internal val TrackHeight = 32.dp
-private val SliderWidth = 48.dp
-private val SliderMinHeight = 144.dp // TODO: clarify min width
+internal val TrackWidth = 56.dp
+private val SliderWidth = 64.dp
+private val SliderMinHeight = 96.dp
 private val DefaultSliderConstraints =
     Modifier.preferredHeightIn(minHeight = SliderMinHeight)
         .preferredWidthIn(maxWidth = SliderWidth)
