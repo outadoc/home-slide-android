@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -20,7 +21,9 @@ class OverlayFragment private constructor() : Fragment(R.layout.fragment_overlay
         val entityState = requireArguments().getParcelable<EntityState>(ARG_STATE)!!
         return ComposeView(requireContext()).apply {
             setContent {
-                ControlOverlay(entityState = entityState)
+                MaterialTheme {
+                    ControlOverlay(entityState = entityState)
+                }
             }
         }
     }
