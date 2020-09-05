@@ -44,7 +44,6 @@ import androidx.compose.ui.graphics.PointMode
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.AnimationClockAmbient
 import androidx.compose.ui.platform.DensityAmbient
-import androidx.compose.ui.platform.LayoutDirectionAmbient
 import androidx.compose.ui.semantics.AccessibilityRangeInfo
 import androidx.compose.ui.semantics.accessibilityValue
 import androidx.compose.ui.semantics.accessibilityValueRange
@@ -52,7 +51,6 @@ import androidx.compose.ui.semantics.scrollBackward
 import androidx.compose.ui.semantics.scrollForward
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.setProgress
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.annotation.IntRange
 import androidx.compose.ui.util.format
@@ -98,7 +96,6 @@ fun VerticalSlider(
     position.onValueChange = onValueChange
     position.scaledValue = value
     WithConstraints(modifier.sliderSemantics(value, position, onValueChange, valueRange, steps)) {
-        val isRtl = LayoutDirectionAmbient.current == LayoutDirection.Rtl
         val maxPx = constraints.maxWidth.toFloat()
         val minPx = 0f
         position.setBounds(minPx, maxPx)
@@ -121,7 +118,7 @@ fun VerticalSlider(
 
         val press = Modifier.pressIndicatorGestureFilter(
             onStart = { pos ->
-                position.holder.snapTo(if (isRtl) maxPx - pos.x else pos.x)
+                position.holder.snapTo(pos.x)
                 interactionState.addInteraction(Interaction.Pressed, pos)
             },
             onStop = {
@@ -135,7 +132,6 @@ fun VerticalSlider(
 
         val drag = Modifier.draggable(
             orientation = Orientation.Horizontal,
-            reverseDirection = isRtl,
             interactionState = interactionState,
             onDragStopped = gestureEndAction,
             startDragImmediately = position.holder.isRunning,
@@ -235,11 +231,10 @@ private fun Track(
     trackStrokeWidth: Float
 ) {
     Canvas(modifier) {
-        val isRtl = layoutDirection == LayoutDirection.Rtl
         val sliderLeft = Offset(thumbPx, center.y)
         val sliderRight = Offset(size.width - thumbPx, center.y)
-        val sliderStart = if (isRtl) sliderRight else sliderLeft
-        val sliderEnd = if (isRtl) sliderLeft else sliderRight
+        val sliderStart = sliderLeft
+        val sliderEnd = sliderRight
         drawLine(
             inactiveColor,
             sliderStart,
