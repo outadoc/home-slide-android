@@ -96,7 +96,7 @@ fun VerticalSlider(
     position.onValueChange = onValueChange
     position.scaledValue = value
     WithConstraints(modifier.sliderSemantics(value, position, onValueChange, valueRange, steps)) {
-        val maxPx = constraints.maxWidth.toFloat()
+        val maxPx = constraints.maxHeight.toFloat()
         val minPx = 0f
         position.setBounds(minPx, maxPx)
 
@@ -131,7 +131,7 @@ fun VerticalSlider(
         )
 
         val drag = Modifier.draggable(
-            orientation = Orientation.Horizontal,
+            orientation = Orientation.Vertical,
             interactionState = interactionState,
             onDragStopped = gestureEndAction,
             startDragImmediately = position.holder.isRunning,
@@ -147,7 +147,7 @@ fun VerticalSlider(
             inactiveTrackColor = inactiveTrackColor,
             activeTickColor = activeTickColor,
             inactiveTickColor = inactiveTickColor,
-            width = maxPx,
+            height = maxPx,
             interactionState = interactionState,
             modifier = press.then(drag)
         )
@@ -163,17 +163,17 @@ private fun SliderImpl(
     inactiveTrackColor: Color,
     activeTickColor: Color,
     inactiveTickColor: Color,
-    width: Float,
+    height: Float,
     interactionState: InteractionState,
     modifier: Modifier
 ) {
-    val widthDp = with(DensityAmbient.current) {
-        width.toDp()
+    val heightDp = with(DensityAmbient.current) {
+        height.toDp()
     }
     Stack(modifier.then(DefaultSliderConstraints)) {
         val thumbSize = ThumbRadius * 2
-        val offset = (widthDp - thumbSize) * positionFraction
-        val center = Modifier.gravity(Alignment.CenterStart)
+        val offset = (heightDp - thumbSize) * positionFraction
+        val center = Modifier.gravity(Alignment.BottomCenter)
 
         val trackStrokeWidth: Float
         val thumbPx: Float
@@ -192,7 +192,7 @@ private fun SliderImpl(
             thumbPx = thumbPx,
             trackStrokeWidth = trackStrokeWidth
         )
-        Box(center.padding(start = offset)) {
+        Box(center.padding(bottom = offset)) {
             val elevation = if (
                 Interaction.Pressed in interactionState || Interaction.Dragged in interactionState
             ) {
@@ -231,23 +231,27 @@ private fun Track(
     trackStrokeWidth: Float
 ) {
     Canvas(modifier) {
-        val sliderLeft = Offset(thumbPx, center.y)
-        val sliderRight = Offset(size.width - thumbPx, center.y)
-        val sliderStart = sliderLeft
-        val sliderEnd = sliderRight
+        val sliderStart = Offset(x = center.x, y = size.height - thumbPx)
+        val sliderEnd = Offset(x = center.x, y = thumbPx)
         drawLine(
-            inactiveColor,
-            sliderStart,
-            sliderEnd,
-            trackStrokeWidth,
-            StrokeCap.Round
+            color = inactiveColor,
+            start = sliderStart,
+            end = sliderEnd,
+            strokeWidth = trackStrokeWidth,
+            cap = StrokeCap.Round
         )
         val sliderValue = Offset(
-            sliderStart.x + (sliderEnd.x - sliderStart.x) * positionFraction,
-            center.y
+            x = center.x,
+            y = sliderStart.y - (sliderEnd.y + sliderStart.y) * positionFraction
         )
 
-        drawLine(color, sliderStart, sliderValue, trackStrokeWidth, StrokeCap.Round)
+        drawLine(
+            color = color,
+            start = sliderStart,
+            end = sliderValue,
+            strokeWidth = trackStrokeWidth,
+            cap = StrokeCap.Round
+        )
         tickFractions.groupBy { it > positionFraction }.forEach { (afterFraction, list) ->
             drawPoints(
                 list.map {
@@ -445,10 +449,10 @@ private val ThumbPressedElevation = 6.dp
 
 // Internal to be referred to in tests
 internal val TrackHeight = 32.dp
-private val SliderHeight = 48.dp
-private val SliderMinWidth = 144.dp // TODO: clarify min width
+private val SliderWidth = 48.dp
+private val SliderMinHeight = 144.dp // TODO: clarify min width
 private val DefaultSliderConstraints =
-    Modifier.preferredWidthIn(minWidth = SliderMinWidth)
-        .preferredHeightIn(maxHeight = SliderHeight)
+    Modifier.preferredHeightIn(minHeight = SliderMinHeight)
+        .preferredWidthIn(maxWidth = SliderWidth)
 
 private val SliderToTickAnimation = TweenSpec<Float>(durationMillis = 100)
