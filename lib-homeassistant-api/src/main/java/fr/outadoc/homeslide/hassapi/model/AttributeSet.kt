@@ -25,5 +25,7 @@ data class AttributeSet(
     @Json(name = "min")
     val min: Float? = null,
     @Json(name = "max")
-    val max: Float? = null
+    val max: Float? = null,
+    @Json(name = "supported_features")
+    val supportedFeatures: Int = 0
 ) : Parcelable
