@@ -2,6 +2,7 @@ package fr.outadoc.homeslide.app.overlay.ui
 
 import androidx.compose.foundation.Box
 import androidx.compose.foundation.ContentGravity
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -44,6 +45,7 @@ fun LightControlOverlay(light: Light) {
     light.brightness?.let { brightness ->
         VerticalSlider(
             value = brightness,
+            modifier = Modifier.fillMaxHeight(0.6f),
             onValueChange = {
                 // update brightness
             }
