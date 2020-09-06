@@ -58,6 +58,24 @@ fun VerticalSliderPreview() {
     )
 }
 
+@Preview
+@Composable
+fun VerticalSliderPreviewZero() {
+    VerticalSlider(
+        value = 0f,
+        onValueChange = {}
+    )
+}
+
+@Preview
+@Composable
+fun VerticalSliderPreviewOne() {
+    VerticalSlider(
+        value = 1f,
+        onValueChange = {}
+    )
+}
+
 @Composable
 fun VerticalSlider(
     value: Float,
@@ -114,7 +132,7 @@ fun VerticalSlider(
         )
         val coerced = value.coerceIn(position.startValue, position.endValue)
         val fraction = calcFraction(position.startValue, position.endValue, coerced)
-        SliderImpl(
+        VerticalSliderImpl(
             positionFraction = fraction,
             thumbColor = thumbColor,
             trackColor = activeTrackColor,
@@ -127,7 +145,7 @@ fun VerticalSlider(
 }
 
 @Composable
-private fun SliderImpl(
+private fun VerticalSliderImpl(
     positionFraction: Float,
     thumbColor: Color,
     trackColor: Color,
@@ -139,6 +157,7 @@ private fun SliderImpl(
     val heightDp = with(DensityAmbient.current) {
         height.toDp()
     }
+
     Stack(modifier.then(DefaultSliderConstraints)) {
         val thumbSize = ThumbRadius * 2
         val offset = (heightDp - thumbSize) * positionFraction
