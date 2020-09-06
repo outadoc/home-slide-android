@@ -30,10 +30,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.WithConstraints
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Radius
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.gesture.pressIndicatorGestureFilter
 import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.AnimationClockAmbient
 import androidx.compose.ui.platform.DensityAmbient
 import androidx.compose.ui.semantics.AccessibilityRangeInfo
@@ -53,7 +53,7 @@ import kotlin.math.roundToInt
 @Composable
 fun VerticalSliderPreview() {
     VerticalSlider(
-        value = 0.5f,
+        value = 0.7f,
         onValueChange = {}
     )
 }
@@ -144,14 +144,14 @@ private fun SliderImpl(
         val offset = (heightDp - thumbSize) * positionFraction
         val center = Modifier.gravity(Alignment.BottomCenter)
 
-        val trackStrokeWidth: Float
+        val trackWidth: Float
         val thumbPx: Float
         val radiusPx: Float
 
         with(DensityAmbient.current) {
-            trackStrokeWidth = TrackWidth.toPx()
+            trackWidth = TrackWidth.toPx()
             thumbPx = ThumbRadius.toPx()
-            radiusPx = 16.dp.toPx()
+            radiusPx = TrackRadius.toPx()
         }
 
         Track(
@@ -160,8 +160,8 @@ private fun SliderImpl(
             inactiveColor = inactiveTrackColor,
             positionFraction = positionFraction,
             thumbPx = thumbPx,
-            trackStrokeWidth = trackStrokeWidth,
-            radiusPx = radiusPx
+            trackWidth = trackWidth,
+            trackRadius = Radius(radiusPx)
         )
 
         Box(center.padding(bottom = offset)) {
@@ -174,7 +174,7 @@ private fun SliderImpl(
             }
 
             Surface(
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(TrackRadius),
                 color = thumbColor,
                 elevation = elevation,
                 modifier = Modifier.indication(
@@ -198,33 +198,27 @@ private fun Track(
     inactiveColor: Color,
     positionFraction: Float,
     thumbPx: Float,
-    trackStrokeWidth: Float,
-    radiusPx: Float
+    trackWidth: Float,
+    trackRadius: Radius
 ) {
     Canvas(modifier) {
-        val sliderStart = Offset(x = center.x, y = size.height - thumbPx)
-        val sliderEnd = Offset(x = center.x, y = thumbPx)
+        val topLeft = Offset(x = (size.width - trackWidth) / 2, y = 0f)
+        val trackSize = Size(height = size.height, width = trackWidth)
 
         // Main track background
         drawRoundRect(
             color = inactiveColor,
-            radius = Radius(radiusPx),
-            size = size.copy(width = trackStrokeWidth),
-            topLeft = Offset(x = (size.width - trackStrokeWidth) / 2, y = 0f)
-        )
-
-        val sliderValue = Offset(
-            x = center.x,
-            y = sliderStart.y - (sliderEnd.y + sliderStart.y) * positionFraction
+            radius = trackRadius,
+            size = trackSize,
+            topLeft = topLeft
         )
 
         // Active track background
-        drawLine(
+        drawRoundRect(
             color = color,
-            start = sliderStart,
-            end = sliderValue,
-            strokeWidth = trackStrokeWidth,
-            cap = StrokeCap.Square
+            radius = trackRadius,
+            size = trackSize.copy(height = size.height * positionFraction + thumbPx),
+            topLeft = topLeft.copy(y = size.height * (1 - positionFraction) - thumbPx)
         )
     }
 }
@@ -358,14 +352,13 @@ private class CallbackBasedAnimatedFloat(
         }
 }
 
-// Internal to be referred to in tests
-internal val ThumbRadius = 24.dp
+private val ThumbRadius = 24.dp
 private val ThumbRippleRadius = 64.dp
 private val ThumbDefaultElevation = 1.dp
 private val ThumbPressedElevation = 6.dp
 
-// Internal to be referred to in tests
-internal val TrackWidth = 56.dp
+private val TrackWidth = 56.dp
+private val TrackRadius = 16.dp
 private val SliderWidth = 64.dp
 private val SliderMinHeight = 96.dp
 private val DefaultSliderConstraints =
