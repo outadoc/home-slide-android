@@ -168,27 +168,27 @@ private fun VerticalSliderImpl(
     }
 
     Stack(modifier.then(DefaultSliderConstraints)) {
-        val thumbSize = ThumbRadius * 2
-        val offset = (heightDp - thumbSize) * positionFraction
         val center = Modifier.gravity(Alignment.BottomCenter)
+        val thumbReservedVerticalSpace = ThumbPadding * 2 + ThumbHeight
 
-        val trackWidth: Float
-        val thumbPx: Float
+        val trackWidthPx: Float
+        val thumbReservedVerticalSpacePx: Float
         val radiusPx: Float
-
         with(DensityAmbient.current) {
-            trackWidth = TrackWidth.toPx()
-            thumbPx = ThumbRadius.toPx()
+            trackWidthPx = TrackWidth.toPx()
+            thumbReservedVerticalSpacePx = thumbReservedVerticalSpace.toPx()
             radiusPx = TrackRadius.toPx()
         }
+
+        val offset = (heightDp * positionFraction) + ThumbPadding
 
         Track(
             modifier = center.fillMaxSize(),
             color = trackColor,
             inactiveColor = inactiveTrackColor,
             positionFraction = positionFraction,
-            thumbPx = thumbPx,
-            trackWidth = trackWidth,
+            thumbReservedVerticalSpacePx = thumbReservedVerticalSpacePx,
+            trackWidthPx = trackWidthPx,
             trackRadius = Radius(radiusPx)
         )
 
@@ -202,7 +202,7 @@ private fun VerticalSliderImpl(
             }
 
             Surface(
-                shape = RoundedCornerShape(TrackRadius),
+                shape = RoundedCornerShape(percent = 50),
                 color = thumbColor,
                 elevation = elevation,
                 modifier = Modifier.indication(
@@ -213,7 +213,12 @@ private fun VerticalSliderImpl(
                     )
                 )
             ) {
-                Spacer(Modifier.preferredSize(thumbSize, thumbSize))
+                Spacer(
+                    Modifier.preferredSize(
+                        width = TrackWidth - ThumbPadding,
+                        height = ThumbHeight
+                    )
+                )
             }
         }
     }
@@ -225,13 +230,13 @@ private fun Track(
     color: Color,
     inactiveColor: Color,
     positionFraction: Float,
-    thumbPx: Float,
-    trackWidth: Float,
+    thumbReservedVerticalSpacePx: Float,
+    trackWidthPx: Float,
     trackRadius: Radius
 ) {
     Canvas(modifier) {
-        val topLeft = Offset(x = (size.width - trackWidth) / 2, y = 0f)
-        val trackSize = Size(height = size.height, width = trackWidth)
+        val topLeft = Offset(x = (size.width - trackWidthPx) / 2, y = 0f)
+        val trackSize = Size(height = size.height, width = trackWidthPx)
 
         // Main track background
         drawRoundRect(
@@ -245,8 +250,8 @@ private fun Track(
         drawRoundRect(
             color = color,
             radius = trackRadius,
-            size = trackSize.copy(height = size.height * positionFraction + thumbPx),
-            topLeft = topLeft.copy(y = size.height * (1 - positionFraction) - thumbPx)
+            size = trackSize.copy(height = size.height * positionFraction + thumbReservedVerticalSpacePx),
+            topLeft = topLeft.copy(y = size.height * (1 - positionFraction) - thumbReservedVerticalSpacePx)
         )
     }
 }
@@ -376,8 +381,9 @@ private class CallbackBasedAnimatedFloat(
         }
 }
 
-private val ThumbRadius = 24.dp
-private val ThumbRippleRadius = 64.dp
+private val ThumbHeight = 24.dp
+private val ThumbPadding = 8.dp
+private val ThumbRippleRadius = 32.dp
 private val ThumbDefaultElevation = 1.dp
 private val ThumbPressedElevation = 6.dp
 
