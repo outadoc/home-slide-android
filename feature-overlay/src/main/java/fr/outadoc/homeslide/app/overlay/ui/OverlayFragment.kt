@@ -8,10 +8,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import fr.outadoc.homeslide.app.overlay.R
 import fr.outadoc.homeslide.hassapi.model.EntityState
 
-class OverlayFragment private constructor() : Fragment(R.layout.fragment_overlay_container) {
+class OverlayFragment private constructor() : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,7 +21,7 @@ class OverlayFragment private constructor() : Fragment(R.layout.fragment_overlay
         return ComposeView(requireContext()).apply {
             setContent {
                 MaterialTheme {
-                    ControlOverlay(entityState = entityState)
+                    ControlOverlayScreen(entityState = entityState)
                 }
             }
         }
@@ -31,9 +30,9 @@ class OverlayFragment private constructor() : Fragment(R.layout.fragment_overlay
     companion object {
         private const val ARG_STATE = "ARG_STATE"
 
-        fun newInstance(entity: EntityState): OverlayFragment {
+        fun newInstance(entityState: EntityState): OverlayFragment {
             return OverlayFragment().apply {
-                arguments = bundleOf(ARG_STATE to entity)
+                arguments = bundleOf(ARG_STATE to entityState)
             }
         }
     }
