@@ -288,15 +288,11 @@ private fun setSliderProgress(
 private const val AccessibilityStepsCount = 20
 
 /**
- * Internal state for [Slider] that represents the Slider value, its bounds and optional amount of
- * steps evenly distributed across the Slider range.
+ * Internal state for [Slider] that represents the Slider value and its bounds.
  *
  * @param initial initial value for the Slider when created. If outside of range provided,
  * initial position will be coerced to this range
  * @param valueRange range of values that Slider value can take
- * @param steps if greater than 0, specifies the amounts of discrete values, evenly distributed
- * between across the whole value range. If 0, slider will behave as a continuous slider and allow
- * to choose any value from the range specified
  */
 private class SliderPosition(
     initial: Float = 0f,
