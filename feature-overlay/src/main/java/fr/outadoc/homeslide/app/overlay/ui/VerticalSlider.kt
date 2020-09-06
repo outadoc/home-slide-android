@@ -49,29 +49,38 @@ import androidx.compose.ui.util.lerp
 import androidx.ui.tooling.preview.Preview
 import kotlin.math.roundToInt
 
-@Preview
+@Preview(name = "Vertical slider 70%")
 @Composable
-fun VerticalSliderPreview() {
+fun VerticalSliderPreview70() {
     VerticalSlider(
         value = 0.7f,
         onValueChange = {}
     )
 }
 
-@Preview
+@Preview(name = "Vertical slider 0%")
 @Composable
-fun VerticalSliderPreviewZero() {
+fun VerticalSliderPreview0() {
     VerticalSlider(
         value = 0f,
         onValueChange = {}
     )
 }
 
-@Preview
+@Preview(name = "Vertical slider 100%")
 @Composable
-fun VerticalSliderPreviewOne() {
+fun VerticalSliderPreview100() {
     VerticalSlider(
         value = 1f,
+        onValueChange = {}
+    )
+}
+
+@Preview(name = "Vertical slider 40%")
+@Composable
+fun VerticalSliderPreview40() {
+    VerticalSlider(
+        value = 0.4f,
         onValueChange = {}
     )
 }
