@@ -3,7 +3,6 @@ package fr.outadoc.homeslide.app.overlay.ui
 import androidx.compose.animation.asDisposableClock
 import androidx.compose.animation.core.AnimatedFloat
 import androidx.compose.animation.core.AnimationClockObservable
-import androidx.compose.animation.core.TweenSpec
 import androidx.compose.foundation.Box
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Interaction
@@ -30,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.WithConstraints
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Radius
 import androidx.compose.ui.gesture.pressIndicatorGestureFilter
 import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.Color
@@ -146,18 +146,24 @@ private fun SliderImpl(
 
         val trackStrokeWidth: Float
         val thumbPx: Float
+        val radiusPx: Float
+
         with(DensityAmbient.current) {
             trackStrokeWidth = TrackWidth.toPx()
             thumbPx = ThumbRadius.toPx()
+            radiusPx = 16.dp.toPx()
         }
+
         Track(
             modifier = center.fillMaxSize(),
             color = trackColor,
             inactiveColor = inactiveTrackColor,
             positionFraction = positionFraction,
             thumbPx = thumbPx,
-            trackStrokeWidth = trackStrokeWidth
+            trackStrokeWidth = trackStrokeWidth,
+            radiusPx = radiusPx
         )
+
         Box(center.padding(bottom = offset)) {
             val elevation = if (
                 Interaction.Pressed in interactionState || Interaction.Dragged in interactionState
@@ -166,6 +172,7 @@ private fun SliderImpl(
             } else {
                 ThumbDefaultElevation
             }
+
             Surface(
                 shape = RoundedCornerShape(8.dp),
                 color = thumbColor,
@@ -191,19 +198,19 @@ private fun Track(
     inactiveColor: Color,
     positionFraction: Float,
     thumbPx: Float,
-    trackStrokeWidth: Float
+    trackStrokeWidth: Float,
+    radiusPx: Float
 ) {
     Canvas(modifier) {
         val sliderStart = Offset(x = center.x, y = size.height - thumbPx)
         val sliderEnd = Offset(x = center.x, y = thumbPx)
 
         // Main track background
-        drawLine(
+        drawRoundRect(
             color = inactiveColor,
-            start = sliderStart,
-            end = sliderEnd,
-            strokeWidth = trackStrokeWidth,
-            cap = StrokeCap.Square
+            radius = Radius(radiusPx),
+            size = size.copy(width = trackStrokeWidth),
+            topLeft = Offset(x = (size.width - trackStrokeWidth) / 2, y = 0f)
         )
 
         val sliderValue = Offset(
