@@ -3,6 +3,8 @@ package fr.outadoc.homeslide.app.preferences
 import android.content.Context
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import fr.outadoc.homeslide.common.feature.consent.ConsentPreferenceRepository
+import fr.outadoc.homeslide.common.feature.daynight.ThemePreferenceRepository
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
@@ -15,7 +17,11 @@ import java.time.format.DateTimeParseException
 class PreferenceRepositoryImpl(
     context: Context,
     private val dataSyncClient: DataSyncClient
-) : GlobalPreferenceRepository, UrlPreferenceRepository, TokenPreferenceRepository,
+) : GlobalPreferenceRepository,
+    UrlPreferenceRepository,
+    TokenPreferenceRepository,
+    ThemePreferenceRepository,
+    ConsentPreferenceRepository,
     PreferencePublisher {
 
     private val appPrefs = PreferenceManager.getDefaultSharedPreferences(context)!!
@@ -80,6 +86,9 @@ class PreferenceRepositoryImpl(
     override val theme: String
         get() = appPrefs.getString(KEY_THEME, "system")!!
 
+    override val isCrashReportingEnabled: Boolean
+        get() = appPrefs.getBoolean(KEY_ENABLE_CRASH_REPORTING, true)
+
     override var isOnboardingDone: Boolean
         get() = appPrefs.getBoolean(KEY_IS_ONBOARDING_DONE, false)
         set(value) {
@@ -121,5 +130,6 @@ class PreferenceRepositoryImpl(
         const val KEY_IS_ONBOARDING_DONE = "chk_pref_onboarding_ok"
         const val KEY_SHOW_WHEN_LOCKED = "chk_pref_show_when_locked"
         const val KEY_REFRESH_INTERVAL = "seek_pref_refresh_interval_s"
+        const val KEY_ENABLE_CRASH_REPORTING = "chk_pref_enable_crash_reporting"
     }
 }

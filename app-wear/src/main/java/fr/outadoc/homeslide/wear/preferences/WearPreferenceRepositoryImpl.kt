@@ -79,9 +79,6 @@ class WearPreferenceRepositoryImpl(context: Context) : GlobalPreferenceRepositor
         get() = false
         set(_) {}
 
-    override val theme: String
-        get() = "day"
-
     override var isOnboardingDone: Boolean
         get() = true
         set(_) {}

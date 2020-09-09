@@ -1,16 +1,14 @@
-package fr.outadoc.homeslide.common
+package fr.outadoc.homeslide.common.feature.daynight
 
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 
-abstract class DayNightActivity : AppCompatActivity() {
-
-    abstract val themeProvider: ThemeProvider
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        applyPreferredTheme(themeProvider.preferredTheme)
+class DayNightActivityDelegate(
+    private val activity: AppCompatActivity,
+    private val prefs: ThemePreferenceRepository
+) {
+    fun onCreate() {
+        applyPreferredTheme(prefs.theme)
     }
 
     private fun applyPreferredTheme(mode: String?) {
@@ -25,6 +23,6 @@ abstract class DayNightActivity : AppCompatActivity() {
 
     fun refreshTheme(updatedValue: String?) {
         applyPreferredTheme(updatedValue)
-        delegate.applyDayNight()
+        activity.delegate.applyDayNight()
     }
 }

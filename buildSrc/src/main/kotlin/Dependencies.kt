@@ -58,7 +58,17 @@ object Dependencies {
     object Google {
         const val material = "com.google.android.material:material:1.3.0-alpha02"
 
+        object Firebase {
+            object Crashlytics {
+                const val core = "com.google.firebase:firebase-crashlytics-ktx:17.2.1"
+                const val classpath = "com.google.firebase:firebase-crashlytics-gradle:2.2.1"
+                const val plugin = "com.google.firebase.crashlytics"
+            }
+        }
+
         object PlayServices {
+            const val classpath = "com.google.gms:google-services:4.3.3"
+            const val plugin = "com.google.gms.google-services"
             const val wearable = "com.google.android.gms:play-services-wearable:17.0.0"
         }
 

@@ -13,6 +13,8 @@ buildscript {
     dependencies {
         classpath(Dependencies.Kotlin.classpath)
         classpath(Dependencies.Android.classpath)
+        classpath(Dependencies.Google.PlayServices.classpath)
+        classpath(Dependencies.Google.Firebase.Crashlytics.classpath)
         classpath(Dependencies.AndroidX.Navigation.SafeArgs.classpath)
     }
 }

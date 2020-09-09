@@ -1,15 +1,10 @@
 package fr.outadoc.homeslide.wear
 
 import android.os.Bundle
-import fr.outadoc.homeslide.common.DayNightActivity
-import fr.outadoc.homeslide.common.ThemeProvider
+import androidx.appcompat.app.AppCompatActivity
 import fr.outadoc.homeslide.wear.feature.list.EntityListFragment
 
-class MainActivity : DayNightActivity() {
-
-    override val themeProvider: ThemeProvider = object : ThemeProvider {
-        override val preferredTheme: String? = null
-    }
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
