@@ -1,5 +1,7 @@
 plugins {
     id(Dependencies.Android.application)
+    id(Dependencies.Google.PlayServices.plugin)
+    id(Dependencies.Google.Firebase.Crashlytics.plugin)
     kotlin(Dependencies.Kotlin.Plugin.android)
 }
 
@@ -113,6 +115,9 @@ dependencies {
     // DI
     implementation(Dependencies.Koin.android)
     implementation(Dependencies.Koin.viewModel)
+
+    // Firebase
+    implementation(Dependencies.Google.Firebase.Crashlytics.core)
 
     // Tools
     debugImplementation(Dependencies.LeakCanary.core)

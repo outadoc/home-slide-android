@@ -6,35 +6,42 @@ import android.os.Bundle
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.app.feature.slideover.ui.SlideOverFragment
 import fr.outadoc.homeslide.app.preferences.PreferencePublisher
-import fr.outadoc.homeslide.common.DayNightActivity
-import fr.outadoc.homeslide.common.ThemeProvider
+import fr.outadoc.homeslide.common.feature.daynight.DayNightActivityDelegate
 import fr.outadoc.homeslide.common.extensions.isInteractive
 import fr.outadoc.homeslide.common.extensions.setShowWhenLockedCompat
+import fr.outadoc.homeslide.common.feature.consent.ConsentPreferenceRepository
+import fr.outadoc.homeslide.common.feature.daynight.DayNightActivity
+import fr.outadoc.homeslide.common.feature.daynight.ThemePreferenceRepository
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import org.koin.android.ext.android.inject
 
-class SlideOverActivity : DayNightActivity() {
+class SlideOverActivity : AppCompatActivity(), DayNightActivity {
 
     private val prefs: GlobalPreferenceRepository by inject()
+    private val themePrefs: ThemePreferenceRepository by inject()
+    private val consentPrefs: ConsentPreferenceRepository by inject()
     private val prefPublisher: PreferencePublisher by inject()
 
     private val prefChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, _ ->
         prefPublisher.publish()
     }
 
-    override val themeProvider: ThemeProvider = object :
-        ThemeProvider {
-        override val preferredTheme: String?
-            get() = prefs.theme
-    }
+    private val dayNightActivityDelegate = DayNightActivityDelegate(this, themePrefs)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_slideover)
+
+        dayNightActivityDelegate.onCreate()
+
+        FirebaseCrashlytics.getInstance()
+            .setCrashlyticsCollectionEnabled(consentPrefs.isCrashReportingEnabled)
 
         // Sync with watch, just in case this hasn't been done yet
         prefPublisher.publish()
@@ -49,7 +56,8 @@ class SlideOverActivity : DayNightActivity() {
 
     override fun onCreateView(name: String, context: Context, attrs: AttributeSet) =
         super.onCreateView(name, context, attrs)?.apply {
-            systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         }
 
     override fun onResume() {
@@ -73,5 +81,9 @@ class SlideOverActivity : DayNightActivity() {
         }
 
         super.onPause()
+    }
+
+    override fun refreshTheme(updatedValue: String?) {
+        dayNightActivityDelegate.refreshTheme(updatedValue)
     }
 }

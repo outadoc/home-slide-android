@@ -60,6 +60,13 @@
             app:key="list_pref_theme"
             app:summary="%s"
             app:title="@string/pref_theme_title" />
+
+        <SwitchPreference
+            app:defaultValue="true"
+            app:icon="@drawable/ic_analytics"
+            app:key="chk_pref_enable_crash_reporting"
+            app:summary="@string/pref_enable_crash_reporting_summary"
+            app:title="@string/pref_enable_crash_reporting_title" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/pref_about_title">

@@ -16,10 +16,11 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.app.onboarding.OnboardingActivity
-import fr.outadoc.homeslide.common.DayNightActivity
 import fr.outadoc.homeslide.common.extensions.setupToolbar
+import fr.outadoc.homeslide.common.feature.daynight.DayNightActivity
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import fr.outadoc.homeslide.hassapi.repository.AuthRepository
 import fr.outadoc.homeslide.logging.KLog
@@ -144,6 +145,11 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
 
                 false
             }
+
+            enableCrashReportingPref.setOnPreferenceChangeListener { _, value ->
+                FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(value as Boolean)
+                true
+            }
         }
 
         licenses.forEach { (license, content) ->
@@ -222,6 +228,8 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
         val versionPref: Preference = fragment.findPreference("pref_about_version")!!
         val renewAuthPref: Preference = fragment.findPreference("pref_renew_auth")!!
         val shortcutHelpPref: Preference = fragment.findPreference("pref_help_shortcuts")!!
+        val enableCrashReportingPref: SwitchPreference =
+            fragment.findPreference("chk_pref_enable_crash_reporting")!!
     }
 
     companion object {

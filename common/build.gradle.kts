@@ -86,6 +86,9 @@ dependencies {
     // Logging
     implementation(Dependencies.OkHttp.logging)
 
+    // Firebase
+    implementation(Dependencies.Google.Firebase.Crashlytics.core)
+
     // DI
     implementation(Dependencies.Koin.android)
     implementation(Dependencies.Koin.viewModel)

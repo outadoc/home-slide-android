@@ -35,4 +35,7 @@ android {
 dependencies {
     implementation(Dependencies.Timber.core)
     coreLibraryDesugaring(Dependencies.Tools.desugaring)
+
+    // Firebase
+    implementation(Dependencies.Google.Firebase.Crashlytics.core)
 }

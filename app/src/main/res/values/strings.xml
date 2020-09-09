@@ -22,6 +22,8 @@
     <string name="pref_cat_app_title">Application Settings</string>
     <string name="pref_cat_hass_title">Home\u00A0Assistant Settings</string>
     <string name="pref_cat_help_title">Help</string>
+    <string name="pref_enable_crash_reporting_summary">Helps me a lot to fix and improve the app.</string>
+    <string name="pref_enable_crash_reporting_title">Enable crash reporting</string>
     <string name="pref_help_shortcuts_title">Setup quick access</string>
     <string name="pref_help_shortcuts_summary">Find out how to access Home Slide even more quickly, from anywhere on your device.</string>
     <string name="pref_legal_title">Awesome Software We Use</string>

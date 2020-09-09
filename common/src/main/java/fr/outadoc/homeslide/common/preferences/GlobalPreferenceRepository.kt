@@ -5,5 +5,4 @@ interface GlobalPreferenceRepository {
     var isOnboardingDone: Boolean
     val refreshIntervalSeconds: Long
     var showWhenLocked: Boolean
-    val theme: String
 }

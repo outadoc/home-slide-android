@@ -22,6 +22,8 @@
     <string name="pref_cat_app_title">Réglages de l\'application</string>
     <string name="pref_cat_hass_title">Réglages de Home\u00A0Assistant</string>
     <string name="pref_cat_help_title">Aide</string>
+    <string name="pref_enable_crash_reporting_summary">Cette fonctionnalité m\'aide beaucoup à corriger et améliorer l\'app.</string>
+    <string name="pref_enable_crash_reporting_title">Partage des rapports de plantage</string>
     <string name="pref_help_shortcuts_title">Configurer l\'accès rapide</string>
     <string name="pref_help_shortcuts_summary">Découvrez comment accéder à Home Slide encore plus facilement, depuis n\'importe où sur votre appareil.</string>
     <string name="pref_legal_title">Logiciels cool qu\'on utilise</string>

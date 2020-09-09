@@ -15,6 +15,8 @@ import fr.outadoc.homeslide.app.onboarding.feature.success.SuccessViewModel
 import fr.outadoc.homeslide.app.onboarding.feature.welcome.WelcomeViewModel
 import fr.outadoc.homeslide.app.preferences.PreferencePublisher
 import fr.outadoc.homeslide.app.preferences.PreferenceRepositoryImpl
+import fr.outadoc.homeslide.common.feature.consent.ConsentPreferenceRepository
+import fr.outadoc.homeslide.common.feature.daynight.ThemePreferenceRepository
 import fr.outadoc.homeslide.common.feature.details.vm.EntityDetailViewModel
 import fr.outadoc.homeslide.common.inject.commonModule
 import fr.outadoc.homeslide.common.inject.systemModule
@@ -76,6 +78,8 @@ class MainApplication : Application() {
         single<GlobalPreferenceRepository> { get<PreferenceRepositoryImpl>() }
         single<UrlPreferenceRepository> { get<PreferenceRepositoryImpl>() }
         single<TokenPreferenceRepository> { get<PreferenceRepositoryImpl>() }
+        single<ThemePreferenceRepository> { get<PreferenceRepositoryImpl>() }
+        single<ConsentPreferenceRepository> { get<PreferenceRepositoryImpl>() }
         single<PreferencePublisher> { get<PreferenceRepositoryImpl>() }
 
         viewModel { WelcomeViewModel() }
