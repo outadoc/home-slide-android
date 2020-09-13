@@ -4,9 +4,9 @@ import fr.outadoc.homeslide.hassapi.model.EntityState
 import fr.outadoc.homeslide.hassapi.model.entity.base.ToggleableEntity
 import fr.outadoc.mdi.toIcon
 
-class Group(state: EntityState) : ToggleableEntity(state, "google-circles-communities".toIcon()) {
+class Fan(state: EntityState) : ToggleableEntity(state, "fan".toIcon()) {
 
     companion object {
-        const val DOMAIN = "group"
+        const val DOMAIN = "fan"
     }
 }
