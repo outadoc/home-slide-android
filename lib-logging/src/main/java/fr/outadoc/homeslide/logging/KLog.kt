@@ -8,8 +8,8 @@ object KLog {
 
     @PublishedApi
     internal inline fun log(t: Throwable? = null, content: () -> Unit) {
-        if (t != null) FirebaseCrashlytics.getInstance().recordException(t)
         if (Timber.treeCount() > 0) content()
+        if (t != null) FirebaseCrashlytics.getInstance().recordException(t)
     }
 
     inline fun v(t: Throwable?) =
