@@ -52,6 +52,8 @@ dependencies {
     implementation(Dependencies.Konfetti.core)
     implementation(Dependencies.Google.material)
 
+    implementation(Dependencies.Kotlin.DateTime.core)
+
     // Data flow
     implementation(Dependencies.Uniflow.core)
 

@@ -26,6 +26,9 @@ allprojects {
 
         // Required for Chucker
         maven(url = "https://jitpack.io")
+
+        // Required for kotlinx.datetime
+        maven(url = "https://kotlin.bintray.com/kotlinx/")
     }
 }
 

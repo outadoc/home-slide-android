@@ -11,8 +11,7 @@ import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
 import fr.outadoc.homeslide.common.sync.DataSyncClient
 import fr.outadoc.homeslide.common.sync.model.PreferencesPayload
 import fr.outadoc.homeslide.rest.baseurl.PreferredBaseUrl
-import java.time.Instant
-import java.time.format.DateTimeParseException
+import kotlinx.datetime.Instant
 
 class PreferenceRepositoryImpl(
     context: Context,
@@ -62,7 +61,7 @@ class PreferenceRepositoryImpl(
         get() = appPrefs.getString(KEY_TOKEN_EXPIRATION_TIME, null)?.let { instantStr ->
             try {
                 Instant.parse(instantStr)
-            } catch (e: DateTimeParseException) {
+            } catch (e: Exception) {
                 null
             }
         }

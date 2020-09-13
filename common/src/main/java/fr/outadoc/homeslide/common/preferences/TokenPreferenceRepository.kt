@@ -1,6 +1,6 @@
 package fr.outadoc.homeslide.common.preferences
 
-import java.time.Instant
+import kotlinx.datetime.Instant
 
 interface TokenPreferenceRepository {
 

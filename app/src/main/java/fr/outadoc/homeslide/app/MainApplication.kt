@@ -91,7 +91,7 @@ class MainApplication : Application() {
                 get()
             )
         }
-        viewModel { AuthCallbackViewModel(get(), get()) }
+        viewModel { AuthCallbackViewModel(get(), get(), get()) }
         viewModel { ShortcutSetupViewModel() }
         viewModel {
             SuccessViewModel(

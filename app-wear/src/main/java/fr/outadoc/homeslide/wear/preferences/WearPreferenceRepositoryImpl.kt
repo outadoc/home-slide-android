@@ -7,8 +7,7 @@ import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
 import fr.outadoc.homeslide.rest.baseurl.PreferredBaseUrl
-import java.time.Instant
-import java.time.format.DateTimeParseException
+import kotlinx.datetime.Instant
 
 class WearPreferenceRepositoryImpl(context: Context) : GlobalPreferenceRepository,
     UrlPreferenceRepository, TokenPreferenceRepository {
@@ -51,7 +50,7 @@ class WearPreferenceRepositoryImpl(context: Context) : GlobalPreferenceRepositor
         get() = appPrefs.getString(KEY_TOKEN_EXPIRATION_TIME, null)?.let { instantStr ->
             try {
                 Instant.parse(instantStr)
-            } catch (e: DateTimeParseException) {
+            } catch (e: Exception) {
                 null
             }
         }
