@@ -35,7 +35,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 fun commonModule() = module {
     single<BaseUrlConfigProvider> { BaseUrlConfigProviderImpl(get()) }
-    single<AccessTokenProvider> { TokenProviderImpl(get(), get()) }
+    single<AccessTokenProvider> { TokenProviderImpl(get(), get(), get()) }
     single<OAuthConfiguration> { AppOAuthConfiguration() }
     single<AuthRepository> { AuthRepositoryImpl(get(), get(), get(), get(), get()) }
 
@@ -66,7 +66,7 @@ fun commonModule() = module {
         }
     }
 
-    single {
+    single<Moshi> {
         Moshi.Builder()
             .add(SkipBadElementsListAdapter.newFactory())
             .build()

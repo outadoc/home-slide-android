@@ -75,6 +75,7 @@ dependencies {
 
     implementation(Dependencies.Kotlin.Coroutines.core)
     implementation(Dependencies.Kotlin.Coroutines.android)
+    implementation(Dependencies.Kotlin.DateTime.core)
 
     // UI libs
     implementation(Dependencies.Google.material)

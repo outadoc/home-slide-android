@@ -12,11 +12,11 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.app.feature.slideover.ui.SlideOverFragment
 import fr.outadoc.homeslide.app.preferences.PreferencePublisher
-import fr.outadoc.homeslide.common.feature.daynight.DayNightActivityDelegate
 import fr.outadoc.homeslide.common.extensions.isInteractive
 import fr.outadoc.homeslide.common.extensions.setShowWhenLockedCompat
 import fr.outadoc.homeslide.common.feature.consent.ConsentPreferenceRepository
 import fr.outadoc.homeslide.common.feature.daynight.DayNightActivity
+import fr.outadoc.homeslide.common.feature.daynight.DayNightActivityDelegate
 import fr.outadoc.homeslide.common.feature.daynight.ThemePreferenceRepository
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import org.koin.android.ext.android.inject

@@ -99,6 +99,11 @@ object Dependencies {
             const val jdk9 = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk9:$version"
         }
 
+        object DateTime {
+            private const val version = "0.1.0"
+            const val core = "org.jetbrains.kotlinx:kotlinx-datetime:$version"
+        }
+
         object Plugin {
             const val android = "android"
             const val androidExtensions = "android.extensions"

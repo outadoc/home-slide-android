@@ -42,7 +42,8 @@ android {
     kotlinOptions {
         jvmTarget = Dependencies.Build.jvmTarget
         freeCompilerArgs = listOf(
-            "-Xuse-experimental=kotlin.Experimental"
+            "-Xuse-experimental=kotlin.Experimental",
+            "-Xuse-experimental=kotlin.time.ExperimentalTime"
         )
     }
 }
@@ -64,6 +65,7 @@ dependencies {
 
     implementation(Dependencies.AndroidX.core)
     implementation(Dependencies.AndroidX.appcompat)
+    implementation(Dependencies.Kotlin.DateTime.core)
 
     // AndroidX lifecycle
     implementation(Dependencies.AndroidX.Lifecycle.extensions)

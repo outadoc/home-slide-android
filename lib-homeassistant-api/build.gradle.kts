@@ -32,7 +32,8 @@ android {
     kotlinOptions {
         jvmTarget = Dependencies.Build.jvmTarget
         freeCompilerArgs = listOf(
-            "-Xuse-experimental=kotlin.Experimental"
+            "-Xuse-experimental=kotlin.Experimental",
+            "-Xuse-experimental=kotlin.time.ExperimentalTime"
         )
     }
 }
