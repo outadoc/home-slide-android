@@ -6,6 +6,7 @@ import fr.outadoc.homeslide.hassapi.model.entity.BinarySensor
 import fr.outadoc.homeslide.hassapi.model.entity.Calendar
 import fr.outadoc.homeslide.hassapi.model.entity.Climate
 import fr.outadoc.homeslide.hassapi.model.entity.Cover
+import fr.outadoc.homeslide.hassapi.model.entity.Fan
 import fr.outadoc.homeslide.hassapi.model.entity.GenericEntity
 import fr.outadoc.homeslide.hassapi.model.entity.Group
 import fr.outadoc.homeslide.hassapi.model.entity.InputBoolean
@@ -42,6 +43,7 @@ object EntityFactory {
         Vacuum.DOMAIN -> Vacuum(state)
         Lock.DOMAIN -> Lock(state)
         Calendar.DOMAIN -> Calendar(state)
+        Fan.DOMAIN -> Fan(state)
         else -> GenericEntity(state)
     }
 }
