@@ -17,11 +17,11 @@ class AppControlsProviderService : ControlsProviderService() {
     private val vm: ControlsProviderViewModel by inject()
 
     override fun createPublisherForAllAvailable(): Flow.Publisher<Control> {
-        return vm.getControls().asPublisher()
+        return vm.getControls(this).asPublisher()
     }
 
     override fun createPublisherFor(controlIds: List<String>): Flow.Publisher<Control> {
-        vm.getControlsWithState(controlIds)
+        vm.getControlsWithState(this, controlIds)
         return vm.publisher
     }
 
@@ -30,7 +30,7 @@ class AppControlsProviderService : ControlsProviderService() {
         action: ControlAction,
         consumer: Consumer<Int>
     ) {
-        vm.performAction(controlId, action)
+        vm.performAction(this, controlId, action)
         consumer.accept(ControlAction.RESPONSE_OK)
     }
 }

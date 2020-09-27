@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="devicecontrol_template_toggle_action_description">Allumer/éteindre</string>
+    <string name="devicecontrol_template_status_unavailable">Indisponible</string>
+    <string name="devicecontrol_template_status_on">Allumé·e</string>
+    <string name="devicecontrol_template_status_off">Éteint·e</string>
+    <string name="devicecontrol_template_status_open">Ouvert·e</string>
+    <string name="devicecontrol_template_status_closed">Fermé·e</string>
+    <string name="devicecontrol_template_status_enabled">Activé·e</string>
+    <string name="devicecontrol_template_status_disabled">Désactivé·e</string>
+
+</resources>

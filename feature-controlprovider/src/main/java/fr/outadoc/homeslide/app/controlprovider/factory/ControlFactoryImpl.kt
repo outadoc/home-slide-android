@@ -1,5 +1,6 @@
 package fr.outadoc.homeslide.app.controlprovider.factory
 
+import android.content.Context
 import android.os.Build
 import android.service.controls.Control
 import android.service.controls.DeviceTypes
@@ -7,30 +8,42 @@ import android.service.controls.templates.ControlButton
 import android.service.controls.templates.ControlTemplate
 import android.service.controls.templates.ToggleTemplate
 import androidx.annotation.RequiresApi
+import fr.outadoc.homeslide.app.controlprovider.R
 import fr.outadoc.homeslide.app.controlprovider.inject.IntentProvider
+import fr.outadoc.homeslide.hassapi.model.entity.Automation
+import fr.outadoc.homeslide.hassapi.model.entity.Climate
 import fr.outadoc.homeslide.hassapi.model.entity.Cover
+import fr.outadoc.homeslide.hassapi.model.entity.Fan
 import fr.outadoc.homeslide.hassapi.model.entity.Light
+import fr.outadoc.homeslide.hassapi.model.entity.Lock
+import fr.outadoc.homeslide.hassapi.model.entity.MediaPlayer
+import fr.outadoc.homeslide.hassapi.model.entity.Script
+import fr.outadoc.homeslide.hassapi.model.entity.Switch
+import fr.outadoc.homeslide.hassapi.model.entity.Vacuum
 import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
-import fr.outadoc.homeslide.hassapi.model.entity.base.ToggleableEntity
 
 @RequiresApi(Build.VERSION_CODES.R)
-class ControlFactoryImpl(intentProvider: IntentProvider) : ControlFactory {
+class ControlFactoryImpl(
+    private val intentProvider: IntentProvider,
+    private val context: Context
+) : ControlFactory {
 
-    private val pi = intentProvider.getEntityDetailsActivityIntent()
-
-    override fun createStatefulControl(entity: Entity): Control? {
+    override fun createStatefulControl(context: Context, entity: Entity): Control? {
         val deviceType = entity.getDeviceType() ?: return null
+        val pi = intentProvider.getEntityDetailsActivityIntent(context)
         return Control.StatefulBuilder(entity.entityId, pi)
             .setTitle(entity.friendlyName ?: entity.entityId)
             .setSubtitle("")
             .setDeviceType(deviceType)
             .setControlTemplate(entity.getControlTemplate())
             .setStatus(entity.getStatus())
+            .setStatusText(entity.getStatusText())
             .build()
     }
 
-    override fun createControl(entity: Entity): Control? {
+    override fun createControl(context: Context, entity: Entity): Control? {
         val deviceType = entity.getDeviceType() ?: return null
+        val pi = intentProvider.getEntityDetailsActivityIntent(context)
         return Control.StatelessBuilder(entity.entityId, pi)
             .setTitle(entity.friendlyName ?: entity.entityId)
             .setSubtitle("")
@@ -40,21 +53,61 @@ class ControlFactoryImpl(intentProvider: IntentProvider) : ControlFactory {
 
     private fun Entity.getDeviceType(): Int? {
         return when (this) {
-            is Light -> DeviceTypes.TYPE_LIGHT
+            is Automation -> DeviceTypes.TYPE_GENERIC_START_STOP
+            is Climate -> DeviceTypes.TYPE_THERMOSTAT
             is Cover -> DeviceTypes.TYPE_BLINDS
-            else -> null
+            is Fan -> DeviceTypes.TYPE_FAN
+            is Light -> DeviceTypes.TYPE_LIGHT
+            is Lock -> DeviceTypes.TYPE_GENERIC_LOCK_UNLOCK
+            is MediaPlayer -> DeviceTypes.TYPE_TV
+            is Script -> DeviceTypes.TYPE_GENERIC_START_STOP
+            is Switch -> DeviceTypes.TYPE_SWITCH
+            is Vacuum -> DeviceTypes.TYPE_VACUUM
+            else -> {
+                if (isToggleable) DeviceTypes.TYPE_GENERIC_ON_OFF
+                else DeviceTypes.TYPE_UNKNOWN
+            }
         }
     }
 
     private fun Entity.getControlTemplate(): ControlTemplate {
-        return when (this) {
-            is ToggleableEntity -> ToggleTemplate("ABinaryEntity", ControlButton(this.isOn, "toggle"))
-            is Cover -> ToggleTemplate("CoverEntity", ControlButton(this.isOn, "open/close"))
-            else -> ControlTemplate.getNoTemplateObject()
+        return if (isToggleable) {
+            ToggleTemplate(
+                "OnOffTemplate",
+                ControlButton(
+                    this.isOn,
+                    context.getString(R.string.devicecontrol_template_toggle_action_description)
+                )
+            )
+        } else {
+            ControlTemplate.getNoTemplateObject()
         }
     }
 
     private fun Entity.getStatus(): Int {
-        return Control.STATUS_OK
+        return if (!isAvailable) Control.STATUS_NOT_FOUND
+        else Control.STATUS_OK
+    }
+
+    private fun Entity.getStatusText(): String {
+        val formattedState = getFormattedState(context)
+        return when {
+            !isAvailable -> context.getString(R.string.devicecontrol_template_status_unavailable)
+            formattedState != null -> formattedState
+            else -> when (this) {
+                is Light -> {
+                    if (isOn) context.getString(R.string.devicecontrol_template_status_on)
+                    else context.getString(R.string.devicecontrol_template_status_off)
+                }
+                is Cover -> {
+                    if (isOn) context.getString(R.string.devicecontrol_template_status_open)
+                    else context.getString(R.string.devicecontrol_template_status_closed)
+                }
+                else -> {
+                    if (isOn) context.getString(R.string.devicecontrol_template_status_enabled)
+                    else context.getString(R.string.devicecontrol_template_status_disabled)
+                }
+            }
+        }
     }
 }

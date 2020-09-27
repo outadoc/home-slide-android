@@ -49,6 +49,9 @@ abstract class BaseEntity(
 
     protected val additionalAttributes = state.attributes
 
+    override val isAvailable: Boolean
+        get() = state.state != "unavailable"
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

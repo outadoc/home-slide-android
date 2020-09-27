@@ -26,5 +26,7 @@ interface Entity {
 
     val primaryAction: Action?
 
+    val isAvailable: Boolean
+
     fun getFormattedState(context: Context): String?
 }
