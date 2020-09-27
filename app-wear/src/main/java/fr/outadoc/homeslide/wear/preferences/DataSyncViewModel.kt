@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.wearable.DataEventBuffer
 import fr.outadoc.homeslide.common.persistence.EntityDao
+import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
 import fr.outadoc.homeslide.common.sync.DataSyncClient
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 
 class DataSyncViewModel(
     private val dataSyncClient: DataSyncClient,
+    private val globalPrefs: GlobalPreferenceRepository,
     private val urlPrefs: UrlPreferenceRepository,
     private val tokenPrefs: TokenPreferenceRepository,
     private val entityDao: EntityDao
@@ -26,6 +28,7 @@ class DataSyncViewModel(
             urlPrefs.altInstanceBaseUrl = altInstanceBaseUrl
             tokenPrefs.accessToken = accessToken
             tokenPrefs.refreshToken = refreshToken
+            globalPrefs.isOnboardingDone = true
         }
 
         dataSyncClient.getDatabaseFromDataEvents(dataEvents)?.apply {

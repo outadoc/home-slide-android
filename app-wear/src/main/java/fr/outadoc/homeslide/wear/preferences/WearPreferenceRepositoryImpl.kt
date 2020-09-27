@@ -79,8 +79,12 @@ class WearPreferenceRepositoryImpl(context: Context) : GlobalPreferenceRepositor
         set(_) {}
 
     override var isOnboardingDone: Boolean
-        get() = true
-        set(_) {}
+        get() = appPrefs.getBoolean(KEY_IS_ONBOARDING_DONE, false)
+        set(value) {
+            appPrefs.edit {
+                putBoolean(KEY_IS_ONBOARDING_DONE, value)
+            }
+        }
 
     companion object {
         const val KEY_INSTANCE_BASE_URL = "et_pref_instance_base_url"
@@ -89,5 +93,6 @@ class WearPreferenceRepositoryImpl(context: Context) : GlobalPreferenceRepositor
         const val KEY_ACCESS_TOKEN = "et_pref_auth_token"
         const val KEY_REFRESH_TOKEN = "et_pref_refresh_token"
         const val KEY_TOKEN_EXPIRATION_TIME = "et_pref_token_expiration_time"
+        const val KEY_IS_ONBOARDING_DONE = "chk_pref_onboarding_ok"
     }
 }
