@@ -12,7 +12,7 @@ android {
         targetSdk = AppInfo.targetSdkVersion
 
         versionCode = 2
-        versionName = "5.3.45"
+        versionName = "5.5.55"
     }
 
     buildTypes {
