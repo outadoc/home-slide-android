@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.postDelayed
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.wear.activity.ConfirmationActivity
 import androidx.wear.widget.WearableLinearLayoutManager
@@ -35,11 +36,16 @@ class EntityListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentEntityListBinding.inflate(inflater, container, false)
+        binding = FragmentEntityListBinding.inflate(inflater, container, false).apply {
+            wearableRecyclerViewShortcuts.apply {
+                layoutManager = WearableLinearLayoutManager(context)
+                adapter = tileAdapter
+            }
 
-        binding?.wearableRecyclerViewShortcuts?.apply {
-            layoutManager = WearableLinearLayoutManager(context)
-            adapter = tileAdapter
+            layoutNoContent.buttonNoContentRetry.setOnClickListener {
+                cancelRefresh()
+                vm.loadEntities()
+            }
         }
 
         onStates(vm) { state ->
@@ -48,6 +54,12 @@ class EntityListFragment : Fragment() {
                     binding?.apply {
                         wearableRecyclerViewShortcuts.requestFocus()
                         tileAdapter.submitList(state.displayTiles)
+                    }
+                }
+                is State.InitialError -> {
+                    binding?.layoutNoContent?.textViewNoContentErrorMessage?.apply {
+                        text = state.errorMessage
+                        isGone = state.errorMessage.isNullOrBlank()
                     }
                 }
             }
@@ -70,7 +82,17 @@ class EntityListFragment : Fragment() {
         }
 
         onEvents(vm) { event ->
-            when (event.take()) {
+            when (val data = event.take()) {
+                is Event.StartOnboarding -> {
+                    binding?.apply {
+                        layoutNoContent.textViewNoContentErrorMessage.apply {
+                            text = getString(R.string.onboarding_required_error)
+                            isGone = false
+                        }
+
+                        viewFlipperEntityList.displayedChild = CHILD_NO_CONTENT
+                    }
+                }
                 is Event.Error -> {
                     Intent(requireContext(), ConfirmationActivity::class.java).apply {
                         putExtra(
@@ -81,8 +103,14 @@ class EntityListFragment : Fragment() {
                             ConfirmationActivity.EXTRA_MESSAGE,
                             getString(R.string.list_loading_error)
                         )
+                        putExtra(
+                            ConfirmationActivity.EXTRA_ANIMATION_DURATION_MILLIS,
+                            ERROR_DISPLAY_DURATION_MS
+                        )
                     }.also { intent ->
-                        startActivity(intent)
+                        if (!data.isInitialLoad) {
+                            startActivity(intent)
+                        }
                     }
                 }
             }
@@ -123,5 +151,7 @@ class EntityListFragment : Fragment() {
         private const val CHILD_CONTENT = 0
         private const val CHILD_NO_CONTENT = 1
         private const val CHILD_LOADING = 2
+
+        private const val ERROR_DISPLAY_DURATION_MS = 5000
     }
 }

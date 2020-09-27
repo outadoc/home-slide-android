@@ -44,7 +44,7 @@ class WearApplication : Application() {
                 .build()
         }
 
-        viewModel { DataSyncViewModel(get(), get(), get(), get()) }
+        viewModel { DataSyncViewModel(get(), get(), get(), get(), get()) }
     }
 
     override fun onCreate() {
