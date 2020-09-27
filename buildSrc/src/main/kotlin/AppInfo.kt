@@ -2,18 +2,18 @@
 object AppInfo {
 
     const val targetSdkVersion = 30
-    const val versionName = "1.5.2"
+    const val versionName = "1.5.3"
 
     const val applicationId = "fr.outadoc.quickhass"
     const val applicationIdSuffix = ".debug"
 
     object Mobile {
-        val versionCode = getVersionCode(0)
+        val versionCode = getVersionCode(variant = 0)
         const val minSdkVersion = 21
     }
 
     object Wear {
-        val versionCode = getVersionCode(1)
+        val versionCode = getVersionCode(variant = 1)
         const val minSdkVersion = 25
     }
 
