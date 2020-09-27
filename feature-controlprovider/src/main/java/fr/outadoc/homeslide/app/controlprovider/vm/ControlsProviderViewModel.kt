@@ -1,5 +1,6 @@
 package fr.outadoc.homeslide.app.controlprovider.vm
 
+import android.content.Context
 import android.os.Build
 import android.service.controls.Control
 import android.service.controls.actions.BooleanAction
@@ -26,10 +27,10 @@ class ControlsProviderViewModel(
     private val channel = Channel<Control>()
     val publisher = channel.receiveAsFlow().asPublisher()
 
-    fun getControls(): Flow<Control> {
+    fun getControls(context: Context): Flow<Control> {
         return flow {
             try {
-                controlRepository.getEntities()
+                controlRepository.getEntities(context)
                     .forEach { control ->
                         KLog.d { "Found control ${control.controlId}" }
                         emit(control)
@@ -40,10 +41,10 @@ class ControlsProviderViewModel(
         }.flowOn(Dispatchers.IO)
     }
 
-    fun getControlsWithState(includeIds: List<String>?) {
+    fun getControlsWithState(context: Context, includeIds: List<String>?) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                controlRepository.getEntitiesWithState()
+                controlRepository.getEntitiesWithState(context)
                     .filter { control -> includeIds == null || control.controlId in includeIds }
                     .forEach { control ->
                         KLog.d { "Found control ${control.controlId}" }
@@ -55,16 +56,14 @@ class ControlsProviderViewModel(
         }
     }
 
-    fun performAction(controlId: String, action: ControlAction) {
+    fun performAction(context: Context, controlId: String, action: ControlAction) {
         viewModelScope.launch(Dispatchers.IO) {
             when (action) {
-                is BooleanAction -> {
-                    controlRepository.toggleEntity(controlId)
-                }
+                is BooleanAction -> controlRepository.toggleEntity(controlId)
             }
 
             // Refresh controls
-            getControlsWithState(listOf(controlId))
+            getControlsWithState(context, listOf(controlId))
         }
     }
 }

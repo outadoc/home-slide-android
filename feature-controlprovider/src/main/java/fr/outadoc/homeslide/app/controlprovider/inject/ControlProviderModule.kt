@@ -12,7 +12,7 @@ import org.koin.dsl.module
 fun controlProviderModule() = module {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         single<ControlRepository> { ControlRepositoryImpl(get(), get(), get()) }
-        single<ControlFactory> { ControlFactoryImpl(get()) }
+        single<ControlFactory> { ControlFactoryImpl(get(), get()) }
         viewModel { ControlsProviderViewModel(get()) }
     }
 }

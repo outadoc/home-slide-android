@@ -72,7 +72,7 @@ class MainApplication : Application() {
 
         single<ZeroconfDiscoveryService<ZeroconfHost>> { HassZeroconfDiscoveryServiceImpl(get()) }
         single<DiscoveryRepository> { DiscoveryRepositoryImpl(get()) }
-        single<IntentProvider> { AppIntentProvider(get()) }
+        single<IntentProvider> { AppIntentProvider() }
 
         single { PreferenceRepositoryImpl(get(), get()) }
         single<GlobalPreferenceRepository> { get<PreferenceRepositoryImpl>() }

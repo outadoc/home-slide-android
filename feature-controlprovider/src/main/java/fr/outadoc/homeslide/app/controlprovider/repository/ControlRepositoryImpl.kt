@@ -1,5 +1,6 @@
 package fr.outadoc.homeslide.app.controlprovider.repository
 
+import android.content.Context
 import android.os.Build
 import android.service.controls.Control
 import androidx.annotation.RequiresApi
@@ -18,21 +19,21 @@ class ControlRepositoryImpl(
     private val entityRepository: EntityRepository
 ) : ControlRepository {
 
-    override suspend fun getEntities(): List<Control> {
+    override suspend fun getEntities(context: Context): List<Control> {
         return client.getStates()
             .getResponseOrThrow()
             .let { states ->
                 states.map { EntityFactory.create(it) }
-                    .mapNotNull { entity -> entity.asControl() }
+                    .mapNotNull { entity -> entity.asControl(context) }
             }
     }
 
-    override suspend fun getEntitiesWithState(): List<Control> {
+    override suspend fun getEntitiesWithState(context: Context): List<Control> {
         return client.getStates()
             .getResponseOrThrow()
             .let { states ->
                 states.map { EntityFactory.create(it) }
-                    .mapNotNull { entity -> entity.asStatefulControl() }
+                    .mapNotNull { entity -> entity.asStatefulControl(context) }
             }
     }
 
@@ -53,11 +54,11 @@ class ControlRepositoryImpl(
         }
     }
 
-    private fun Entity.asControl(): Control? {
-        return controlFactory.createControl(this)
+    private fun Entity.asControl(context: Context): Control? {
+        return controlFactory.createControl(context, this)
     }
 
-    private fun Entity.asStatefulControl(): Control? {
-        return controlFactory.createStatefulControl(this)
+    private fun Entity.asStatefulControl(context: Context): Control? {
+        return controlFactory.createStatefulControl(context, this)
     }
 }

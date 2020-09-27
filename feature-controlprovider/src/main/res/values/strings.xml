@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="devicecontrol_template_toggle_action_description">Toggle on/off</string>
+    <string name="devicecontrol_template_status_unavailable">Unavailable</string>
+    <string name="devicecontrol_template_status_on">On</string>
+    <string name="devicecontrol_template_status_off">Off</string>
+    <string name="devicecontrol_template_status_open">Open</string>
+    <string name="devicecontrol_template_status_closed">Closed</string>
+    <string name="devicecontrol_template_status_enabled">Enabled</string>
+    <string name="devicecontrol_template_status_disabled">Disabled</string>
+
+</resources>
