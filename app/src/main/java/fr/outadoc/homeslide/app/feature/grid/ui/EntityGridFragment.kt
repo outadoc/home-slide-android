@@ -159,10 +159,15 @@ class EntityGridFragment : Fragment() {
                 is Event.StartOnboarding -> startOnboarding(R.id.welcomeFragment)
                 is Event.LoggedOut -> startOnboarding(R.id.setupHostFragment)
                 is Event.Error -> if (!data.isInitialLoad) displayError(data.e)
+                is Event.NotifyUser -> displayToast(data.message)
             }
         }
 
         return binding?.root
+    }
+
+    private fun displayToast(message: String) {
+        binding?.recyclerViewShortcuts?.showSnackbar(message)
     }
 
     private fun displayError(e: Throwable) {

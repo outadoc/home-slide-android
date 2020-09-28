@@ -8,6 +8,7 @@ import com.google.android.gms.wearable.Wearable
 import com.squareup.moshi.Moshi
 import fr.outadoc.homeslide.common.feature.auth.repository.AppOAuthConfiguration
 import fr.outadoc.homeslide.common.feature.auth.repository.AuthRepositoryImpl
+import fr.outadoc.homeslide.common.feature.grid.vm.EntityListResourceManager
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel
 import fr.outadoc.homeslide.common.feature.slideover.EntityRepositoryImpl
 import fr.outadoc.homeslide.common.json.SkipBadElementsListAdapter
@@ -40,6 +41,8 @@ fun commonModule() = module {
     single<AuthRepository> { AuthRepositoryImpl(get(), get(), get(), get(), get()) }
 
     single<EntityRepository> { EntityRepositoryImpl(get(), get(), get(), get()) }
+
+    single { EntityListResourceManager(get()) }
 
     single<TileFactory> { TileFactoryImpl(get()) }
 
@@ -74,7 +77,7 @@ fun commonModule() = module {
 
     single<Converter.Factory> { MoshiConverterFactory.create(get()) }
 
-    viewModel { EntityListViewModel(get(), get()) }
+    viewModel { EntityListViewModel(get(), get(), get()) }
 
     UniFlowLogger.init(UniFlowCustomLogger())
 }

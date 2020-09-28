@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="grid_entity_hidden_message">Masqué %1$s</string>
+    <string name="grid_entity_visible_message">Ré-affiché %1$s</string>
     <string name="grid_nocontent_label">Il s\'est passé quelque chose.</string>
     <string name="grid_nocontent_retry">Réessayer</string>
+
 </resources>

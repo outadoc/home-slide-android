@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="grid_entity_hidden_message">Made %1$s hidden</string>
+    <string name="grid_entity_visible_message">Made %1$s visible</string>
     <string name="grid_nocontent_label">Something happened.</string>
     <string name="grid_nocontent_retry">Retry</string>
+
 </resources>
