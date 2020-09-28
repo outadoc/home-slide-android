@@ -43,7 +43,6 @@ android {
 
         named(BuildTypes.release) {
             isMinifyEnabled = true
-            isShrinkResources = true
             signingConfig = signingConfigs.getByName(BuildTypes.release)
             buildConfigField("boolean", fieldEnableDetails, "false")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
