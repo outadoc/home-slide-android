@@ -17,7 +17,8 @@ import io.uniflow.core.threading.onMain
 
 class EntityListViewModel(
     private val prefs: GlobalPreferenceRepository,
-    private val repository: EntityRepository
+    private val repository: EntityRepository,
+    private val resourceManager: EntityListResourceManager
 ) : AndroidDataFlow(defaultState = State.InitialLoading) {
 
     sealed class State : UIState() {
@@ -31,6 +32,7 @@ class EntityListViewModel(
 
     sealed class Event : UIEvent() {
         data class Error(val e: Throwable, val isInitialLoad: Boolean) : Event()
+        data class NotifyUser(val message: String) : Event()
         object StartOnboarding : Event()
         object LoggedOut : Event()
     }
@@ -185,9 +187,21 @@ class EntityListViewModel(
                     entity -> tile.copy(isHidden = !isVisible)
                     else -> tile
                 }
-            }
+            }.sortedBy { it.isHidden }
 
             setState { currentState.copy(tiles = newList) }
+
+            entity.friendlyName?.let { entityName ->
+                sendEvent {
+                    Event.NotifyUser(
+                        if (isVisible) {
+                            resourceManager.getEntityVisibleMessage(entityName)
+                        } else {
+                            resourceManager.getEntityHiddenMessage(entityName)
+                        }
+                    )
+                }
+            }
         }
 
     private suspend fun updateEntityDatabase(currentState: State.Editing) {
