@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import android.widget.ProgressBar
@@ -34,8 +33,6 @@ class EntityTileAdapter(
                 notifyDataSetChanged()
             }
         }
-
-    private var wiggleWiggle: Animation? = null
 
     private var lastMeasuredHeight: Int = 0
         set(value) {
@@ -88,10 +85,7 @@ class EntityTileAdapter(
             when {
                 isEditingMode -> {
                     // When editing, start animation, clear listeners
-                    if (wiggleWiggle == null) {
-                        wiggleWiggle = AnimationUtils.loadAnimation(view.context, R.anim.shake)
-                    }
-
+                    val wiggleWiggle = AnimationUtils.loadAnimation(view.context, R.anim.shake)
                     view.startAnimation(wiggleWiggle)
 
                     view.setOnClickListener {
