@@ -1,5 +1,6 @@
 package fr.outadoc.homeslide.app.feature.slideover.ui
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +8,12 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.edit
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN
@@ -24,14 +27,19 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
 
     private var binding: FragmentSlideoverBinding? = null
     private val inAppReviewManager: InAppReviewManager by inject()
+    private lateinit var sharedPreferences: SharedPreferences
 
     private var _additionalBottomInsets: Int = 0
     private var _peekHeight: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-        _peekHeight = resources.getDimension(R.dimen.slideover_peekHeight).toInt()
+        _peekHeight = sharedPreferences.getInt(
+            KEY_LAST_PEEK_HEIGHT,
+            resources.getDimension(R.dimen.slideover_peekHeight).toInt()
+        )
 
         childFragmentManager
             .beginTransaction()
@@ -84,7 +92,11 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
             .commit()
     }
 
-    private fun updatePeekHeightAndInsets(peekHeight: Int? = null, bottomInsets: Int? = null, animate: Boolean = true) {
+    private fun updatePeekHeightAndInsets(
+        peekHeight: Int? = null,
+        bottomInsets: Int? = null,
+        animate: Boolean = true
+    ) {
         if (peekHeight != null) _peekHeight = peekHeight
         if (bottomInsets != null) _additionalBottomInsets = bottomInsets
         binding?.bottomSheetBehavior?.setPeekHeight(_peekHeight + _additionalBottomInsets, animate)
@@ -92,6 +104,9 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
 
     override fun updatePeekHeight(peekHeight: Int) {
         updatePeekHeightAndInsets(peekHeight = peekHeight)
+        sharedPreferences.edit {
+            putInt(KEY_LAST_PEEK_HEIGHT, peekHeight)
+        }
     }
 
     override fun setIsExpandable(isExpandable: Boolean) {
@@ -118,7 +133,10 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
             // Set top padding to account for status bar
             v.setPadding(0, insets.systemWindowInsetTop, 0, 0)
 
-            updatePeekHeightAndInsets(bottomInsets = insets.systemWindowInsetBottom, animate = false)
+            updatePeekHeightAndInsets(
+                bottomInsets = insets.systemWindowInsetBottom,
+                animate = false
+            )
 
             // Tell system we've consumed our insets
             WindowInsetsCompat.Builder()
@@ -151,6 +169,8 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
         }
 
     companion object {
+        private const val KEY_LAST_PEEK_HEIGHT = "pref_last_peek_height"
+
         fun newInstance() = SlideOverFragment()
     }
 }
