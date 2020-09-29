@@ -1,6 +1,8 @@
 package fr.outadoc.homeslide.wear
 
 import android.app.Application
+import fr.outadoc.homeslide.common.feature.review.InAppReviewManager
+import fr.outadoc.homeslide.common.feature.review.NoopInAppReviewManager
 import fr.outadoc.homeslide.common.inject.commonModule
 import fr.outadoc.homeslide.common.inject.systemModule
 import fr.outadoc.homeslide.common.log.KoinCustomLogger
@@ -31,6 +33,8 @@ class WearApplication : Application() {
         single<GlobalPreferenceRepository> { get<WearPreferenceRepositoryImpl>() }
         single<UrlPreferenceRepository> { get<WearPreferenceRepositoryImpl>() }
         single<TokenPreferenceRepository> { get<WearPreferenceRepositoryImpl>() }
+
+        single<InAppReviewManager> { get<NoopInAppReviewManager>() }
 
         single {
             SimpleApiClientBuilder.newBuilder<AuthApi>(get())

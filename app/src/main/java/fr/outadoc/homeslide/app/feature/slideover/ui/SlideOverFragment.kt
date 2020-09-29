@@ -17,10 +17,13 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN
 import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.app.databinding.FragmentSlideoverBinding
 import fr.outadoc.homeslide.app.feature.grid.ui.EntityGridFragment
+import fr.outadoc.homeslide.common.feature.review.InAppReviewManager
+import org.koin.android.ext.android.inject
 
 class SlideOverFragment : Fragment(), SlideOverNavigator {
 
     private var binding: FragmentSlideoverBinding? = null
+    private val inAppReviewManager: InAppReviewManager by inject()
 
     private var _additionalBottomInsets: Int = 0
     private var _peekHeight: Int = 0
@@ -129,6 +132,11 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
                 )
                 .build()
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        activity?.let { inAppReviewManager.askForStoreReview(it) }
     }
 
     override fun onDestroyView() {
