@@ -2,8 +2,11 @@ package fr.outadoc.homeslide.app
 
 import android.app.Application
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.google.android.play.core.review.ReviewManagerFactory
 import fr.outadoc.homeslide.app.controlprovider.inject.IntentProvider
 import fr.outadoc.homeslide.app.controlprovider.inject.controlProviderModule
+import fr.outadoc.homeslide.app.feature.review.GoogleInAppReviewManager
+import fr.outadoc.homeslide.app.feature.review.InAppReviewLaunchCounter
 import fr.outadoc.homeslide.app.inject.AppIntentProvider
 import fr.outadoc.homeslide.app.onboarding.feature.authcallback.AuthCallbackViewModel
 import fr.outadoc.homeslide.app.onboarding.feature.host.HostSetupViewModel
@@ -18,6 +21,7 @@ import fr.outadoc.homeslide.app.preferences.PreferenceRepositoryImpl
 import fr.outadoc.homeslide.common.feature.consent.ConsentPreferenceRepository
 import fr.outadoc.homeslide.common.feature.daynight.ThemePreferenceRepository
 import fr.outadoc.homeslide.common.feature.details.vm.EntityDetailViewModel
+import fr.outadoc.homeslide.common.feature.review.InAppReviewManager
 import fr.outadoc.homeslide.common.inject.commonModule
 import fr.outadoc.homeslide.common.inject.systemModule
 import fr.outadoc.homeslide.common.log.KoinCustomLogger
@@ -81,6 +85,10 @@ class MainApplication : Application() {
         single<ThemePreferenceRepository> { get<PreferenceRepositoryImpl>() }
         single<ConsentPreferenceRepository> { get<PreferenceRepositoryImpl>() }
         single<PreferencePublisher> { get<PreferenceRepositoryImpl>() }
+
+        single { ReviewManagerFactory.create(get()) }
+        single { InAppReviewLaunchCounter(get()) }
+        single<InAppReviewManager> { GoogleInAppReviewManager(get(), get()) }
 
         viewModel { WelcomeViewModel() }
         viewModel {

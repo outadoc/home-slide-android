@@ -66,6 +66,10 @@ object Dependencies {
             }
         }
 
+        object Play {
+            const val core = "com.google.android.play:core-ktx:1.8.1"
+        }
+
         object PlayServices {
             const val classpath = "com.google.gms:google-services:4.3.3"
             const val plugin = "com.google.gms.google-services"

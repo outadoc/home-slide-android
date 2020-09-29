@@ -120,6 +120,8 @@ dependencies {
     // Firebase
     implementation(Dependencies.Google.Firebase.Crashlytics.core)
 
+    implementation(Dependencies.Google.Play.core)
+
     // Tools
     debugImplementation(Dependencies.LeakCanary.core)
     debugImplementation(Dependencies.Chucker.core)
