@@ -339,7 +339,7 @@ class EntityGridFragment : Fragment() {
                 v.paddingLeft,
                 v.paddingTop,
                 v.paddingRight,
-                v.paddingBottom + insets.systemWindowInsetBottom
+                v.paddingLeft + insets.systemWindowInsetBottom
             )
 
             WindowInsetsCompat.Builder()

@@ -85,8 +85,7 @@ class EntityTileAdapter(
             when {
                 isEditingMode -> {
                     // When editing, start animation, clear listeners
-                    val wiggleWiggle = AnimationUtils.loadAnimation(view.context, R.anim.shake)
-                    view.startAnimation(wiggleWiggle)
+                    view.wiggleWiggle(true)
 
                     view.setOnClickListener {
                         // Hide / unhide an item
@@ -98,7 +97,7 @@ class EntityTileAdapter(
                 }
                 else -> {
                     // When not editing, stop animation, set listeners
-                    view.clearAnimation()
+                    view.wiggleWiggle(false)
 
                     view.setOnClickListener {
                         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
@@ -114,6 +113,20 @@ class EntityTileAdapter(
                     }
                 }
             }
+        }
+    }
+
+    override fun onViewAttachedToWindow(holder: ViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        holder.view.wiggleWiggle(isEditingMode)
+    }
+
+    private fun View.wiggleWiggle(wiggle: Boolean) {
+        if (wiggle) {
+            val wiggleWiggle = AnimationUtils.loadAnimation(context, R.anim.shake)
+            startAnimation(wiggleWiggle)
+        } else {
+            clearAnimation()
         }
     }
 
