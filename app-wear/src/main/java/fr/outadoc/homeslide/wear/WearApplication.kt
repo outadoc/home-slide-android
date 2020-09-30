@@ -1,6 +1,7 @@
 package fr.outadoc.homeslide.wear
 
 import android.app.Application
+import fr.outadoc.homeslide.common.feature.consent.ConsentPreferenceRepository
 import fr.outadoc.homeslide.common.feature.review.InAppReviewManager
 import fr.outadoc.homeslide.common.feature.review.NoopInAppReviewManager
 import fr.outadoc.homeslide.common.inject.commonModule
@@ -33,6 +34,7 @@ class WearApplication : Application() {
         single<GlobalPreferenceRepository> { get<WearPreferenceRepositoryImpl>() }
         single<UrlPreferenceRepository> { get<WearPreferenceRepositoryImpl>() }
         single<TokenPreferenceRepository> { get<WearPreferenceRepositoryImpl>() }
+        single< ConsentPreferenceRepository> { get<WearPreferenceRepositoryImpl>() }
 
         single<InAppReviewManager> { get<NoopInAppReviewManager>() }
 

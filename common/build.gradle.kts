@@ -66,6 +66,7 @@ dependencies {
     implementation(Dependencies.AndroidX.core)
     implementation(Dependencies.AndroidX.appcompat)
     implementation(Dependencies.Kotlin.DateTime.core)
+    implementation(Dependencies.AndroidX.preference)
 
     // AndroidX lifecycle
     implementation(Dependencies.AndroidX.Lifecycle.extensions)

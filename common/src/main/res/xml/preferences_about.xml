@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="@string/title_about"
+        app:title="@string/title_about">
+        <Preference
+            android:key="pref_about_version"
+            android:title="@string/app_name"
+            app:icon="@drawable/ic_home"
+            app:key="pref_about_version"
+            app:title="@string/app_name" />
+
+        <Preference
+            android:key="pref_about_author"
+            android:summary="@string/pref_author_summary"
+            android:title="@string/pref_author_title"
+            app:key="pref_about_author"
+            app:summary="@string/pref_author_summary"
+            app:title="@string/pref_author_title" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="chk_pref_enable_crash_reporting"
+            android:summary="@string/pref_enable_crash_reporting_summary"
+            android:title="@string/pref_enable_crash_reporting_title"
+            app:defaultValue="true"
+            app:icon="@drawable/ic_analytics"
+            app:key="chk_pref_enable_crash_reporting"
+            app:summary="@string/pref_enable_crash_reporting_summary"
+            app:title="@string/pref_enable_crash_reporting_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pref_legal_title">
+        <Preference
+            android:key="pref_oss_apache2"
+            android:title="@string/pref_oss_apache2_title"
+            app:key="pref_oss_apache2"
+            app:title="@string/pref_oss_apache2_title" />
+
+        <Preference
+            android:key="pref_oss_mit"
+            android:title="@string/pref_oss_mit_title"
+            app:key="pref_oss_mit"
+            app:title="@string/pref_oss_mit_title" />
+
+        <Preference
+            android:key="pref_oss_isc"
+            android:title="@string/pref_oss_isc_title"
+            app:key="pref_oss_isc"
+            app:title="@string/pref_oss_isc_title" />
+
+        <Preference
+            android:key="pref_oss_ofl"
+            android:title="@string/pref_oss_ofl_title"
+            app:key="pref_oss_ofl"
+            app:title="@string/pref_oss_ofl_title" />
+
+        <Preference
+            android:key="pref_oss_ofl"
+            android:title="@string/pref_oss_ofl_title"
+            app:key="pref_oss_ofl"
+            app:title="@string/pref_oss_ofl_title" />
+
+        <Preference
+            android:key="pref_oss_ccbyncsa4"
+            android:title="@string/pref_oss_ccbyncsa4_title"
+            app:key="pref_oss_ccbyncsa4"
+            app:title="@string/pref_oss_ccbyncsa4_title" />
+    </PreferenceCategory>
+</PreferenceScreen>

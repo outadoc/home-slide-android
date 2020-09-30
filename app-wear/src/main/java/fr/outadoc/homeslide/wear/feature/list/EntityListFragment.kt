@@ -15,27 +15,46 @@ import androidx.wear.widget.WearableLinearLayoutManager
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel.Event
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel.State
+import fr.outadoc.homeslide.hassapi.factory.TileFactory
+import fr.outadoc.homeslide.hassapi.model.Tile
+import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.wear.R
 import fr.outadoc.homeslide.wear.databinding.FragmentEntityListBinding
+import fr.outadoc.homeslide.wear.feature.about.AboutActivity
+import fr.outadoc.mdi.toIcon
 import io.uniflow.androidx.flow.onEvents
 import io.uniflow.androidx.flow.onStates
-import java.util.concurrent.TimeUnit
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.concurrent.TimeUnit
 
 class EntityListFragment : Fragment() {
 
     private val vm: EntityListViewModel by viewModel()
+    private val tileFactory: TileFactory by inject()
 
     private var binding: FragmentEntityListBinding? = null
     private val handler: Handler = Handler(Looper.getMainLooper())
-    private val tileAdapter = EntityTileAdapter { entity -> vm.onEntityClick(entity) }
+    private val tileAdapter = EntityTileAdapter { entity -> onEntityClick(entity) }
+
+    private lateinit var additionalTiles: List<Tile<Entity>>
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        additionalTiles = listOf(
+            tileFactory.create(
+                PlaceholderEntity(
+                    id = PLACEHOLDER_ID_ABOUT,
+                    icon = "mdi:information".toIcon(),
+                    friendlyName = getString(R.string.list_item_about)
+                )
+            )
+        )
+
         binding = FragmentEntityListBinding.inflate(inflater, container, false).apply {
             wearableRecyclerViewShortcuts.apply {
                 layoutManager = WearableLinearLayoutManager(context)
@@ -53,7 +72,7 @@ class EntityListFragment : Fragment() {
                 is State.Content -> {
                     binding?.apply {
                         wearableRecyclerViewShortcuts.requestFocus()
-                        tileAdapter.submitList(state.displayTiles)
+                        tileAdapter.submitList(state.displayTiles + additionalTiles)
                     }
                 }
                 is State.InitialError -> {
@@ -120,6 +139,22 @@ class EntityListFragment : Fragment() {
         return binding?.root
     }
 
+    private fun onEntityClick(entity: Entity) {
+        when (entity) {
+            is PlaceholderEntity -> {
+                startActivity(
+                    Intent(
+                        requireContext(), when (entity.id) {
+                            PLACEHOLDER_ID_ABOUT -> AboutActivity::class.java
+                            else -> throw IllegalArgumentException("placeholder id $id is unknown")
+                        }
+                    )
+                )
+            }
+            else -> vm.onEntityClick(entity)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         vm.loadEntities()
@@ -151,6 +186,8 @@ class EntityListFragment : Fragment() {
         private const val CHILD_CONTENT = 0
         private const val CHILD_NO_CONTENT = 1
         private const val CHILD_LOADING = 2
+
+        private const val PLACEHOLDER_ID_ABOUT = "about"
 
         private const val ERROR_DISPLAY_DURATION_MS = 5000
     }

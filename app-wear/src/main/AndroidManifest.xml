@@ -36,6 +36,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".feature.about.AboutActivity"
+            android:label="@string/title_about" />
+
         <activity android:name="androidx.wear.activity.ConfirmationActivity" />
 
         <service android:name=".service.DataSyncListenerService">
