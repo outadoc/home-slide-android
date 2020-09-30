@@ -3,14 +3,18 @@ package fr.outadoc.homeslide.wear.preferences
 import android.content.Context
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import fr.outadoc.homeslide.common.feature.consent.ConsentPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.TokenPreferenceRepository
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
 import fr.outadoc.homeslide.rest.baseurl.PreferredBaseUrl
 import kotlinx.datetime.Instant
 
-class WearPreferenceRepositoryImpl(context: Context) : GlobalPreferenceRepository,
-    UrlPreferenceRepository, TokenPreferenceRepository {
+class WearPreferenceRepositoryImpl(context: Context) :
+    GlobalPreferenceRepository,
+    UrlPreferenceRepository,
+    TokenPreferenceRepository,
+    ConsentPreferenceRepository {
 
     private val appPrefs = PreferenceManager.getDefaultSharedPreferences(context)!!
 
@@ -78,6 +82,9 @@ class WearPreferenceRepositoryImpl(context: Context) : GlobalPreferenceRepositor
         get() = false
         set(_) {}
 
+    override val isCrashReportingEnabled: Boolean
+        get() = appPrefs.getBoolean(KEY_ENABLE_CRASH_REPORTING, true)
+
     override var isOnboardingDone: Boolean
         get() = appPrefs.getBoolean(KEY_IS_ONBOARDING_DONE, false)
         set(value) {
@@ -94,5 +101,6 @@ class WearPreferenceRepositoryImpl(context: Context) : GlobalPreferenceRepositor
         const val KEY_REFRESH_TOKEN = "et_pref_refresh_token"
         const val KEY_TOKEN_EXPIRATION_TIME = "et_pref_token_expiration_time"
         const val KEY_IS_ONBOARDING_DONE = "chk_pref_onboarding_ok"
+        const val KEY_ENABLE_CRASH_REPORTING = "chk_pref_enable_crash_reporting"
     }
 }

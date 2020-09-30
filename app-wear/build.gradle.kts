@@ -99,6 +99,9 @@ dependencies {
     // Data flow
     implementation(Dependencies.Uniflow.core)
 
+    // Firebase
+    implementation(Dependencies.Google.Firebase.Crashlytics.core)
+
     // Preferences
     implementation(Dependencies.AndroidX.preference)
 

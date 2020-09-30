@@ -4,36 +4,21 @@
     <string name="grid_snackbar_generic_error_title">Une erreur est survenue.</string>
     <string name="grid_snackbar_loading_error_title">Impossible de charger vos appareils : %s</string>
 
-    <string name="menu_item_about">À propos</string>
     <string name="menu_item_done">Terminé</string>
     <string name="menu_item_edit">Réorganiser</string>
     <string name="menu_item_hide_all">Tout cacher</string>
     <string name="menu_item_settings">Réglages</string>
     <string name="menu_item_show_all">Tout afficher</string>
 
-    <string name="pref_about_title">À propos</string>
     <string name="pref_alt_base_url_summary">Optionnelle. URL de votre instance Home\u00A0Assistant accessible depuis Internet. (ex : DynDNS, Hass.io…)</string>
     <string name="pref_alt_base_url_title">URL de Home\u00A0Assistant (sur Internet)</string>
     <string name="pref_authDialog_subtitle">Autoriser l\'utilisation de Home Slide lorsque votre appareil est déverrouillé peut être dangereux. Soyez prudent·e.</string>
     <string name="pref_authDialog_title">Autorisation requise</string>
-    <string name="pref_author_summary">Tous droits réservés.</string>
-    <string name="pref_author_title">Créée par Baptiste Candellier</string>
     <string name="pref_base_url_summary">URL de votre instance Home\u00A0Assistant.</string>
     <string name="pref_base_url_title">URL de Home\u00A0Assistant</string>
     <string name="pref_cat_app_title">Réglages de l\'application</string>
     <string name="pref_cat_hass_title">Réglages de Home\u00A0Assistant</string>
     <string name="pref_cat_help_title">Aide</string>
-    <string name="pref_enable_crash_reporting_summary">Cette fonctionnalité m\'aide beaucoup à corriger et améliorer l\'app.</string>
-    <string name="pref_enable_crash_reporting_title">Partage des rapports de plantage</string>
-    <string name="pref_help_shortcuts_title">Configurer l\'accès rapide</string>
-    <string name="pref_help_shortcuts_summary">Découvrez comment accéder à Home Slide encore plus facilement, depuis n\'importe où sur votre appareil.</string>
-    <string name="pref_legal_title">Logiciels cool qu\'on utilise</string>
-    <string name="pref_oss_apache2_title">Licence Apache 2.0</string>
-    <string name="pref_oss_ccby_title">Creative Commons BY 3.0</string>
-    <string name="pref_oss_ccbyncsa4_title">Creative Commons BY-NC-SA 4.0</string>
-    <string name="pref_oss_isc_title">Licence ISC</string>
-    <string name="pref_oss_mit_title">Licence MIT</string>
-    <string name="pref_oss_ofl_title">SIL Open Font License</string>
     <string name="pref_refresh_interval_summary">Fréquence à laquelle rafraîchir l\'état de vos appareils, en secondes.</string>
     <string name="pref_refresh_inverval_title">Fréquence d\'actualisation</string>
     <string name="pref_renew_auth_title">Se déconnecter de l\'instance…</string>
@@ -48,11 +33,9 @@
         <item>Mode sombre</item>
     </string-array>
     <string name="pref_theme_title">Thème de l\'application</string>
-    <string name="pref_version_summary">Version %1$s</string>
 
     <string name="tile_label">Maison</string>
 
-    <string name="title_about">À propos</string>
     <string name="title_onboarding">Configuration Home Slide</string>
     <string name="title_preferences">Réglages</string>
     <string name="title_quick_access">Actions rapides</string>

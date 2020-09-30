@@ -11,22 +11,14 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import fr.outadoc.homeslide.app.R
+import fr.outadoc.homeslide.common.R
 import fr.outadoc.homeslide.common.extensions.setupToolbar
+import fr.outadoc.homeslide.common.feature.about.ThirdPartyLibraries
 import fr.outadoc.homeslide.logging.KLog
 
 class AboutFragment : PreferenceFragmentCompat() {
 
     private var preferenceHolder: PreferenceHolder? = null
-
-    private val licenses = mapOf(
-        "mit" to R.array.pref_oss_mit_summary,
-        "apache2" to R.array.pref_oss_apache2_summary,
-        "isc" to R.array.pref_oss_isc_summary,
-        "ofl" to R.array.pref_oss_ofl_summary,
-        "ccby" to R.array.pref_oss_ccby_summary,
-        "ccbyncsa4" to R.array.pref_oss_ccbyncsa4_summary
-    )
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences_about, rootKey)
@@ -48,7 +40,7 @@ class AboutFragment : PreferenceFragmentCompat() {
             }
         }
 
-        licenses.forEach { (license, content) ->
+        ThirdPartyLibraries.licenses.forEach { (license, content) ->
             findPreference<Preference>("pref_oss_$license")?.apply {
                 summary = resources
                     .getStringArray(content)

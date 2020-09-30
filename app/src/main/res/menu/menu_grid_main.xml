@@ -39,7 +39,7 @@
         <item
             android:id="@+id/menuItem_about"
             android:icon="@drawable/ic_info"
-            android:title="@string/menu_item_about"
+            android:title="@string/title_about"
             app:showAsAction="never" />
     </group>
 </menu>
