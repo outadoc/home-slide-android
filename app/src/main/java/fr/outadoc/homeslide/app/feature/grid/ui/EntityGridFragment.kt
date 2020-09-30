@@ -33,6 +33,7 @@ import fr.outadoc.homeslide.app.feature.details.ui.EntityDetailFragment
 import fr.outadoc.homeslide.app.feature.slideover.ui.EntityTileAdapter
 import fr.outadoc.homeslide.app.feature.slideover.ui.SlideOverNavigator
 import fr.outadoc.homeslide.app.onboarding.OnboardingActivity
+import fr.outadoc.homeslide.app.preferences.AboutFragment
 import fr.outadoc.homeslide.app.preferences.AppPreferencesFragment
 import fr.outadoc.homeslide.common.extensions.setupToolbar
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel
@@ -281,6 +282,10 @@ class EntityGridFragment : Fragment() {
                 openSettings()
                 true
             }
+            R.id.menuItem_about -> {
+                openAbout()
+                true
+            }
             R.id.menuItem_done -> {
                 vm.exitEditMode()
                 true
@@ -331,6 +336,10 @@ class EntityGridFragment : Fragment() {
 
     private fun openSettings() {
         navigator?.navigateTo(AppPreferencesFragment.newInstance())
+    }
+
+    private fun openAbout() {
+        navigator?.navigateTo(AboutFragment.newInstance())
     }
 
     private fun FragmentEntityGridBinding.setWindowInsets() {

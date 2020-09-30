@@ -1,6 +1,5 @@
 package fr.outadoc.homeslide.app.preferences
 
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -16,14 +15,12 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.app.onboarding.OnboardingActivity
 import fr.outadoc.homeslide.common.extensions.setupToolbar
 import fr.outadoc.homeslide.common.feature.daynight.DayNightActivity
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import fr.outadoc.homeslide.hassapi.repository.AuthRepository
-import fr.outadoc.homeslide.logging.KLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -37,15 +34,6 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
     private var biometricPrompt: BiometricPrompt? = null
 
     private var preferenceHolder: PreferenceHolder? = null
-
-    private val licenses = mapOf(
-        "mit" to R.array.pref_oss_mit_summary,
-        "apache2" to R.array.pref_oss_apache2_summary,
-        "isc" to R.array.pref_oss_isc_summary,
-        "ofl" to R.array.pref_oss_ofl_summary,
-        "ccby" to R.array.pref_oss_ccby_summary,
-        "ccbyncsa4" to R.array.pref_oss_ccbyncsa4_summary
-    )
 
     private val authCallback = object : BiometricPrompt.AuthenticationCallback() {
 
@@ -85,15 +73,6 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
         setupToolbar(R.string.title_preferences, true)
 
         preferenceHolder = PreferenceHolder(this).apply {
-            versionPref.summary = try {
-                val pInfo =
-                    requireContext().packageManager.getPackageInfo(requireContext().packageName, 0)
-                getString(R.string.pref_version_summary, pInfo.versionName)
-            } catch (e: PackageManager.NameNotFoundException) {
-                KLog.e(e)
-                null
-            }
-
             themePref.setOnPreferenceChangeListener { _, newValue ->
                 (activity as? DayNightActivity)?.refreshTheme(newValue as String)
                 true
@@ -144,23 +123,6 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
                 activity?.finish()
 
                 false
-            }
-
-            enableCrashReportingPref.setOnPreferenceChangeListener { _, value ->
-                FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(value as Boolean)
-                true
-            }
-        }
-
-        licenses.forEach { (license, content) ->
-            findPreference<Preference>("pref_oss_$license")?.apply {
-                summary = resources
-                    .getStringArray(content)
-                    .joinToString(separator = "\n")
-
-                if (summary.isNullOrBlank()) {
-                    isVisible = false
-                }
             }
         }
     }
@@ -225,11 +187,8 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
         val showWhenLockedPref: SwitchPreference =
             fragment.findPreference("chk_pref_show_when_locked")!!
         val themePref: Preference = fragment.findPreference("list_pref_theme")!!
-        val versionPref: Preference = fragment.findPreference("pref_about_version")!!
         val renewAuthPref: Preference = fragment.findPreference("pref_renew_auth")!!
         val shortcutHelpPref: Preference = fragment.findPreference("pref_help_shortcuts")!!
-        val enableCrashReportingPref: SwitchPreference =
-            fragment.findPreference("chk_pref_enable_crash_reporting")!!
     }
 
     companion object {

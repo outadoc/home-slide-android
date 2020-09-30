@@ -4,6 +4,7 @@
     <string name="grid_snackbar_generic_error_title">Une erreur est survenue.</string>
     <string name="grid_snackbar_loading_error_title">Impossible de charger vos appareils : %s</string>
 
+    <string name="menu_item_about">À propos</string>
     <string name="menu_item_done">Terminé</string>
     <string name="menu_item_edit">Réorganiser</string>
     <string name="menu_item_hide_all">Tout cacher</string>
@@ -51,6 +52,7 @@
 
     <string name="tile_label">Maison</string>
 
+    <string name="title_about">À propos</string>
     <string name="title_onboarding">Configuration Home Slide</string>
     <string name="title_preferences">Réglages</string>
     <string name="title_quick_access">Actions rapides</string>
