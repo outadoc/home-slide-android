@@ -35,5 +35,11 @@
             android:icon="@drawable/ic_settings"
             android:title="@string/menu_item_settings"
             app:showAsAction="never" />
+
+        <item
+            android:id="@+id/menuItem_about"
+            android:icon="@drawable/ic_info"
+            android:title="@string/menu_item_about"
+            app:showAsAction="never" />
     </group>
 </menu>
