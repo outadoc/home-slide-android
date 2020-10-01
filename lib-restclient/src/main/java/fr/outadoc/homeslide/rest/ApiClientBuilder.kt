@@ -20,6 +20,8 @@ class ApiClientBuilder<T>(
 ) {
     private val clientBuilder = OkHttpClient.Builder()
         .connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        .writeTimeout(WRITE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        .readTimeout(READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
         .authenticator(
             AccessTokenAuthenticator(
                 accessTokenProvider
@@ -48,6 +50,8 @@ class ApiClientBuilder<T>(
 
     companion object {
         const val CONNECT_TIMEOUT_SECONDS = 3L
+        const val WRITE_TIMEOUT_SECONDS = 60L
+        const val READ_TIMEOUT_SECONDS = 10L
 
         inline fun <reified T> newBuilder(
             parserFactory: Converter.Factory,
