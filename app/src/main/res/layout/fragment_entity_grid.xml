@@ -15,6 +15,7 @@
         android:clipToPadding="false"
         android:focusable="false"
         android:paddingHorizontal="16dp"
+        android:scrollbarStyle="outsideOverlay"
         tools:itemCount="20"
         tools:layoutManager="GridLayoutManager"
         tools:listitem="@layout/item_shortcut"
