@@ -58,6 +58,7 @@ class EntityListFragment : Fragment() {
         binding = FragmentEntityListBinding.inflate(inflater, container, false).apply {
             wearableRecyclerViewShortcuts.apply {
                 layoutManager = WearableLinearLayoutManager(context)
+                setHasFixedSize(true)
                 adapter = tileAdapter
             }
 

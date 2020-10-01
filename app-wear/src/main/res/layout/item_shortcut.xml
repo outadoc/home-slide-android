@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="52dp"
     android:orientation="horizontal"
-    android:paddingHorizontal="10dp">
+    android:paddingStart="8dp"
+    android:paddingEnd="16dp">
 
-    <FrameLayout
-        android:id="@+id/frameLayout_actionContainer"
-        android:layout_width="wrap_content"
+    <ViewFlipper
+        android:id="@+id/viewFlipper_actionContainer"
+        android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_gravity="center_vertical|start"
         android:background="?android:attr/selectableItemBackgroundBorderless">
 
         <TextView
             android:id="@+id/tv_shortcut_icon"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:gravity="center"
@@ -27,7 +29,7 @@
 
         <TextView
             android:id="@+id/tv_extra_state"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:gravity="center"
@@ -35,6 +37,7 @@
             android:textColor="@color/color_surface_shortcut_item"
             android:textSize="14sp"
             android:textStyle="bold"
+            app:autoSizeTextType="uniform"
             tools:ignore="ContentDescription"
             tools:text="24°C" />
 
@@ -44,14 +47,13 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:indeterminate="true"
-            android:indeterminateTint="@color/colorSurfaceLight"
-            android:visibility="gone" />
+            android:indeterminateTint="@color/colorSurfaceLight" />
 
-    </FrameLayout>
+    </ViewFlipper>
 
     <TextView
         android:id="@+id/tv_shortcut_label"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="4dp"

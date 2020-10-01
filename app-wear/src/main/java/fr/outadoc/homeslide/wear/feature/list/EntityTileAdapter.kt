@@ -4,10 +4,8 @@ import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
+import android.widget.ViewFlipper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import fr.outadoc.homeslide.common.feature.grid.ui.TileDiffer
@@ -35,16 +33,22 @@ class EntityTileAdapter(
             // Set label
             label.text = tile.label
 
-            // Set icon or state label
-            icon.setTextOrInvisible(tile.icon)
-            state.setTextOrInvisible(tile.state)
+            state.text = null
+            icon.text = null
 
-            // Display loading indicator if relevant
-            loadingIndicator.isVisible = tile.isLoading
-
-            if (tile.isLoading) {
-                icon.isInvisible = true
-                state.isInvisible = true
+            when {
+                tile.isLoading -> {
+                    viewFlipper.displayedChild = CHILD_LOADING
+                }
+                tile.state != null -> {
+                    state.text = tile.state
+                    viewFlipper.displayedChild = CHILD_STATE
+                }
+                tile.icon != null -> {
+                    // Set icon or state label
+                    icon.text = tile.icon
+                    viewFlipper.displayedChild = CHILD_ICON
+                }
             }
 
             view.setOnClickListener {
@@ -58,15 +62,16 @@ class EntityTileAdapter(
         }
     }
 
-    private fun TextView.setTextOrInvisible(text: String?) {
-        isInvisible = text == null
-        this.text = text
-    }
-
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val label: TextView = view.findViewById(R.id.tv_shortcut_label)
         val icon: TextView = view.findViewById(R.id.tv_shortcut_icon)
         val state: TextView = view.findViewById(R.id.tv_extra_state)
-        val loadingIndicator: ProgressBar = view.findViewById(R.id.pb_shortcut_loading)
+        val viewFlipper: ViewFlipper = view.findViewById(R.id.viewFlipper_actionContainer)
+    }
+
+    companion object {
+        private const val CHILD_ICON = 0
+        private const val CHILD_STATE = 1
+        private const val CHILD_LOADING = 2
     }
 }
