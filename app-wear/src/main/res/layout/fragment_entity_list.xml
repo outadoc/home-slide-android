@@ -18,10 +18,12 @@
         android:id="@+id/layout_noContent"
         layout="@layout/view_no_content_wear" />
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/view_loading"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <ProgressBar
             android:layout_width="64dp"
@@ -29,6 +31,14 @@
             android:layout_gravity="center"
             android:indeterminateTint="@color/colorPrimary" />
 
-    </FrameLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:text="@string/list_loading_message"
+            android:textAppearance="?textAppearanceBody1" />
+
+    </LinearLayout>
 
 </ViewFlipper>

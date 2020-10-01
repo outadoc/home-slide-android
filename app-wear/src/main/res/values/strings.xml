@@ -3,6 +3,7 @@
 
     <string name="list_item_about">About…</string>
     <string name="list_loading_error">An error occurred.</string>
+    <string name="list_loading_message">Loading…</string>
     <string name="onboarding_required_error">Please open the Home Slide app on your phone to finish setting it up, then come back.</string>
 
 </resources>
