@@ -50,7 +50,7 @@ object Dependencies {
     }
 
     object Chucker {
-        private const val version = "3.2.0"
+        private const val version = "3.3.0"
         const val core = "com.github.ChuckerTeam.Chucker:library:$version"
         const val noop = "com.github.ChuckerTeam.Chucker:library-no-op:$version"
     }
@@ -89,7 +89,7 @@ object Dependencies {
     }
 
     object Konfetti {
-        const val core = "nl.dionsegijn:konfetti:1.1.3"
+        const val core = "nl.dionsegijn:konfetti:1.2.5"
     }
 
     object Kotlin {
@@ -116,11 +116,11 @@ object Dependencies {
     }
 
     object LeakCanary {
-        const val core = "com.squareup.leakcanary:leakcanary-android:2.4"
+        const val core = "com.squareup.leakcanary:leakcanary-android:2.5"
     }
 
     object Moshi {
-        private const val version = "1.9.2"
+        private const val version = "1.10.0"
         const val core = "com.squareup.moshi:moshi:$version"
         const val codegen = "com.squareup.moshi:moshi-kotlin-codegen:$version"
     }
@@ -158,6 +158,6 @@ object Dependencies {
     }
 
     object Uniflow {
-        const val core = "io.uniflow:uniflow-androidx:0.11.1"
+        const val core = "io.uniflow:uniflow-androidx:0.11.6"
     }
 }

@@ -7,6 +7,8 @@ import io.uniflow.core.logger.Logger
 
 class UniFlowCustomLogger : Logger {
 
+    override fun debug(message: String) = KLog.d { message }
+
     override fun log(message: String) = KLog.i { message }
 
     override fun logState(state: UIState) = KLog.i { "[STATE] - $state" }
