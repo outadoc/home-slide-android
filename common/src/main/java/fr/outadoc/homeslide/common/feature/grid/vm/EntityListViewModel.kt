@@ -116,7 +116,7 @@ class EntityListViewModel(
         }
 
     fun enterEditMode() = actionOn<State.Content> { currentState ->
-        setState { State.Editing(currentState.allTiles) }
+        setState { State.Editing(currentState.allTiles.sortByVisibility()) }
     }
 
     fun exitEditMode() = actionOn<State.Editing> { currentState ->
@@ -187,7 +187,7 @@ class EntityListViewModel(
                     entity -> tile.copy(isHidden = !isVisible)
                     else -> tile
                 }
-            }.sortedBy { it.isHidden }
+            }.sortByVisibility()
 
             setState { currentState.copy(tiles = newList) }
 
@@ -216,4 +216,6 @@ class EntityListViewModel(
             repository.saveEntityListState(toBePersisted)
         }
     }
+
+    private fun List<Tile<Entity>>.sortByVisibility() = sortedBy { it.isHidden }
 }
