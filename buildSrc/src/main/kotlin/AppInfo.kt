@@ -2,7 +2,7 @@
 object AppInfo {
 
     const val targetSdkVersion = 30
-    const val versionName = "1.5.7"
+    const val versionName = "1.5.8"
 
     const val applicationId = "fr.outadoc.quickhass"
     const val applicationIdSuffix = ".debug"
