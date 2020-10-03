@@ -28,7 +28,7 @@ Home Slide does not make use of cookies or other unique identifiers.
 
 Home Slide will never report data to a third-party service without a secure TLS connection.
 
-However, the user is free to connect Home Slide to a Home Assistant instance using an unsecured ("plain-HTTP") connection. By so doing, the user acknowledges that a third-party might snoop on their connection and collect personal information without the user's knowledge. Thus it is strongly suggested that the user only ever setup Home Slide using a secure TLS connection to their instance. 
+However, the user is free to connect Home Slide to a Home Assistant instance using an unsecured ("plain-HTTP") connection. By so doing, the user acknowledges that a third-party might snoop on their connection and collect personal information without the user's knowledge. Thus it is strongly suggested that the user only ever setup Home Slide using a secure TLS connection to their instance.
 
 ## Changes to This Privacy Policy
 

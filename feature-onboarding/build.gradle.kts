@@ -29,7 +29,6 @@ android {
     compileOptions {
         sourceCompatibility = Dependencies.Build.sourceCompatibility
         targetCompatibility = Dependencies.Build.sourceCompatibility
-        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
@@ -82,6 +81,4 @@ dependencies {
     implementation(Dependencies.AndroidX.Lifecycle.extensions)
     implementation(Dependencies.AndroidX.Lifecycle.liveData)
     implementation(Dependencies.AndroidX.Lifecycle.viewModel)
-
-    coreLibraryDesugaring(Dependencies.Tools.desugaring)
 }
