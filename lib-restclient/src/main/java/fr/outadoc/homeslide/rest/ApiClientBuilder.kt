@@ -50,8 +50,8 @@ class ApiClientBuilder<T>(
 
     companion object {
         const val CONNECT_TIMEOUT_SECONDS = 3L
-        const val WRITE_TIMEOUT_SECONDS = 60L
-        const val READ_TIMEOUT_SECONDS = 10L
+        const val WRITE_TIMEOUT_SECONDS = 10L
+        const val READ_TIMEOUT_SECONDS = 60L
 
         inline fun <reified T> newBuilder(
             parserFactory: Converter.Factory,
