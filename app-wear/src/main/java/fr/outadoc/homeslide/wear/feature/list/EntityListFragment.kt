@@ -25,9 +25,9 @@ import fr.outadoc.homeslide.wear.feature.about.AboutActivity
 import fr.outadoc.mdi.toIcon
 import io.uniflow.androidx.flow.onEvents
 import io.uniflow.androidx.flow.onStates
+import java.util.concurrent.TimeUnit
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.concurrent.TimeUnit
 
 class EntityListFragment : Fragment() {
 

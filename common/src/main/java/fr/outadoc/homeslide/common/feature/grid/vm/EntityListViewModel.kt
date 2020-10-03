@@ -2,7 +2,6 @@ package fr.outadoc.homeslide.common.feature.grid.vm
 
 import fr.outadoc.homeslide.common.feature.auth.InvalidRefreshTokenException
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
-import fr.outadoc.homeslide.hassapi.model.Action
 import fr.outadoc.homeslide.hassapi.model.PersistedEntity
 import fr.outadoc.homeslide.hassapi.model.Tile
 import fr.outadoc.homeslide.hassapi.model.entity.base.Entity

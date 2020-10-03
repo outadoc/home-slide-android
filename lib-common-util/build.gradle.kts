@@ -24,7 +24,6 @@ android {
     compileOptions {
         sourceCompatibility = Dependencies.Build.sourceCompatibility
         targetCompatibility = Dependencies.Build.sourceCompatibility
-        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
@@ -35,6 +34,4 @@ android {
 dependencies {
     implementation(Dependencies.AndroidX.core)
     implementation(Dependencies.Google.material)
-
-    coreLibraryDesugaring(Dependencies.Tools.desugaring)
 }
