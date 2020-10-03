@@ -86,15 +86,12 @@ class EntityListViewModel(
     }
 
     fun onEntityClick(item: Entity) = actionOn<State.Content> { currentState ->
-        if (item.primaryAction == null) {
-            return@actionOn
-        }
-
+        val action = item.primaryAction ?: return@actionOn
         setState { onEntityLoadStart(currentState, item) }
 
         onIO {
             try {
-                repository.callService(item.primaryAction as Action)
+                repository.callService(action)
                 setState { onEntityLoadStop(currentState, item, failure = false) }
                 onMain { loadEntities() }
             } catch (e: Exception) {
