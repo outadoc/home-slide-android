@@ -5,9 +5,9 @@
 
     <color name="colorPrimary">#0098F9</color>
     <color name="colorPrimaryDark">#1E88E5</color>
-    <color name="colorAccent">#4FC3F7</color>
-    <color name="colorSurfaceLight">#FAFAFA</color>
-    <color name="colorOnAccent">#FFF</color>
+    <color name="colorSecondary">#4FC3F7</color>
+    <color name="colorSurface">#FAFAFA</color>
+    <color name="colorOnSecondary">#FFF</color>
     <color name="colorSuccess">#7CB342</color>
 
 </resources>

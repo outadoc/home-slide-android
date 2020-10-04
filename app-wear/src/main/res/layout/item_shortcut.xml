@@ -22,7 +22,7 @@
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.MaterialDesignIcons"
-            android:textColor="@color/color_surface_shortcut_item"
+            android:textColor="@color/item_textcolor"
             android:textSize="32sp"
             tools:ignore="ContentDescription"
             tools:text="" />
@@ -34,20 +34,21 @@
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:maxLines="1"
-            android:textColor="@color/color_surface_shortcut_item"
+            android:textColor="@color/item_textcolor"
             android:textSize="14sp"
             android:textStyle="bold"
             app:autoSizeTextType="uniform"
             tools:ignore="ContentDescription"
             tools:text="24°C" />
 
-        <ProgressBar
+        <com.google.android.material.progressindicator.ProgressIndicator
             android:id="@+id/pb_shortcut_loading"
-            style="?android:attr/progressBarStyle"
+            style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:indeterminate="true"
-            android:indeterminateTint="@color/colorSurfaceLight" />
+            android:layout_gravity="center"
+            app:circularRadius="12dp"
+            app:indicatorColor="?colorOnBackground" />
 
     </ViewFlipper>
 

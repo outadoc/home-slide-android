@@ -36,7 +36,7 @@
     <style name="TextAppearance.App.Overline" parent="TextAppearance.MaterialComponents.Overline" />
 
     <style name="Widget.App.TextView" parent="Widget.MaterialComponents.TextView">
-        <item name="android:textAppearance">?android:textAppearance</item>
+        <item name="android:textAppearance">?textAppearanceBody2</item>
     </style>
 
 </resources>

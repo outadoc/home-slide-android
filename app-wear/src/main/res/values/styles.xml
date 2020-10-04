@@ -3,13 +3,13 @@
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorSecondary">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSuccess">@color/colorSuccess</item>
+        <item name="colorOnBackground">#fff</item>
+        <item name="android:colorBackground">#000</item>
+        <item name="android:windowBackground">?android:colorBackground</item>
 
-        <item name="android:textAppearance">?textAppearanceBody2</item>
         <item name="android:textViewStyle">@style/Widget.App.TextView</item>
-
-        <item name="android:windowBackground">@color/windowBackgroundColor</item>
 
         <item name="textAppearanceHeadline1">@style/TextAppearance.App.Headline1</item>
         <item name="textAppearanceHeadline2">@style/TextAppearance.App.Headline2</item>

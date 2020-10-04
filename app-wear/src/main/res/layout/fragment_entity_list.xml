@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/viewFlipper_entityList"
     android:layout_width="match_parent"
@@ -25,11 +26,12 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <ProgressBar
+        <com.google.android.material.progressindicator.ProgressIndicator
+            style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_gravity="center"
-            android:indeterminateTint="@color/colorPrimary" />
+            app:indicatorColor="?colorPrimary" />
 
         <TextView
             android:layout_width="match_parent"

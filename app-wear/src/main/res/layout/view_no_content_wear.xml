@@ -27,7 +27,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed"
                 app:srcCompat="@drawable/ic_cat"
-                app:tint="@color/colorSurfaceLight"
                 tools:tint="#fff" />
 
             <TextView
