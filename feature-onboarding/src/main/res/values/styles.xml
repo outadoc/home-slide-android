@@ -4,12 +4,12 @@
     <style name="Widget.App.Button.Login" parent="Widget.MaterialComponents.Button.Icon">
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
-        <item name="android:textColor">@color/colorOnAccent</item>
+        <item name="android:textColor">?colorOnSecondary</item>
         <item name="backgroundTint">@color/hass_logo_background</item>
         <item name="icon">@drawable/ic_hass_logo</item>
         <item name="iconGravity">textStart</item>
         <item name="iconSize">32dp</item>
-        <item name="iconTint">@color/colorOnAccent</item>
+        <item name="iconTint">?colorOnSecondary</item>
     </style>
 
 </resources>

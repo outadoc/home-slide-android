@@ -11,11 +11,11 @@
         android:id="@+id/icon_success"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorSuccess"
+        android:background="?colorSuccess"
         android:contentDescription="@string/result_contentDescription_success"
         android:padding="4dp"
         android:paddingStart="20dp"
-        app:tint="@color/colorOnAccent"
+        app:tint="?colorOnSecondary"
         app:srcCompat="@drawable/ic_check" />
 
     <ImageView
@@ -26,7 +26,7 @@
         android:contentDescription="@string/result_contentDescription_error"
         android:padding="4dp"
         android:paddingStart="20dp"
-        app:tint="@color/colorOnAccent"
+        app:tint="?colorOnSecondary"
         app:srcCompat="@drawable/ic_error" />
 
     <ImageView
@@ -36,7 +36,7 @@
         android:contentDescription="@string/result_contentDescription_loading"
         android:padding="4dp"
         android:paddingStart="20dp"
-        app:tint="@color/colorPrimary"
+        app:tint="?colorPrimary"
         app:srcCompat="@drawable/avd_loading" />
 
 

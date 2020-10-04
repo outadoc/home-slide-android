@@ -22,8 +22,12 @@ class SuccessFragment : Fragment() {
     private val vm: SuccessViewModel by viewModel()
 
     private var binding: FragmentSuccessBinding? = null
-    private val confettiColors =
-        intArrayOf(R.color.lt_yellow, R.color.lt_orange, R.color.lt_purple, R.color.lt_pink)
+    private val confettiColors = intArrayOf(
+        R.color.confetti1,
+        R.color.confetti2,
+        R.color.confetti3,
+        R.color.confetti4
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,

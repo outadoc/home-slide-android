@@ -8,6 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:contentDescription="@string/item_hidden_contentDescription"
         android:src="@drawable/ic_visibility_off" />
 
 </FrameLayout>

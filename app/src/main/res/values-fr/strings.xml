@@ -10,6 +10,8 @@
     <string name="menu_item_settings">Réglages</string>
     <string name="menu_item_show_all">Tout afficher</string>
 
+    <string name="item_hidden_contentDescription">Cet appareil est caché</string>
+
     <string name="pref_alt_base_url_summary">Optionnelle. URL de votre instance Home\u00A0Assistant accessible depuis Internet. (ex : DynDNS, Hass.io…)</string>
     <string name="pref_alt_base_url_title">URL de Home\u00A0Assistant (sur Internet)</string>
     <string name="pref_authDialog_subtitle">Autoriser l\'utilisation de Home Slide lorsque votre appareil est déverrouillé peut être dangereux. Soyez prudent·e.</string>
