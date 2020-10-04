@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorNavigationShim">#32000000</color>
     <color name="colorTileOverlay">#80000000</color>
-
     <color name="skeleton_maskColor">#E0E0E0</color>
     <color name="skeleton_shimmerColor">#d5d5d5</color>
 
