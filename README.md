@@ -3,6 +3,8 @@ Home Slide for Home Assistant
 
 [![Build Status](https://app.bitrise.io/app/8f33442736249b8f/status.svg?token=KawpirekqCG5esf90xrG0Q&branch=develop)](https://app.bitrise.io/app/8f33442736249b8f)
 
+<img height="192" src="assets/home_slide.svg">
+
 Home Slide is an Android app for Home Assistant users that allows them to control their devices as easily as possible, *à la* HomeKit controls on iOS.
 
 It's available for phones, tablets, and Wear OS devices.
