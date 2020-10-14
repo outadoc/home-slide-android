@@ -58,10 +58,10 @@
             app:title="@string/pref_oss_ofl_title" />
 
         <Preference
-            android:key="pref_oss_ofl"
-            android:title="@string/pref_oss_ofl_title"
-            app:key="pref_oss_ofl"
-            app:title="@string/pref_oss_ofl_title" />
+            android:key="pref_oss_ccby"
+            android:title="@string/pref_oss_ccby_title"
+            app:key="pref_oss_ccby"
+            app:title="@string/pref_oss_ccby_title" />
 
         <Preference
             android:key="pref_oss_ccbyncsa4"
