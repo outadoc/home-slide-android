@@ -52,6 +52,6 @@ object AppInfo {
         val versionStr = baseVersionCode.toString()
         val variantStr = variant.toString().padStart(2, '0')
         val targetVersionStr = targetSdkVersion.toString()
-        return "${targetVersionStr}${versionStr}${variantStr}".toInt()
+        return "$targetVersionStr$versionStr$variantStr".toInt()
     }
 }
