@@ -17,8 +17,10 @@
 @Suppress("MemberVisibilityCanBePrivate")
 object AppInfo {
 
-    const val targetSdkVersion = 30
     const val versionName = "1.5.9"
+    const val baseVersionCode = 159
+
+    const val targetSdkVersion = 30
 
     const val applicationId = "fr.outadoc.quickhass"
     const val applicationIdSuffix = ".debug"
@@ -34,25 +36,22 @@ object AppInfo {
     }
 
     /**
-     *  --- Versioning scheme ---
-     *  first two digits: targetSdkVersion
-     *  next three digits: versionName
-     *  last two digits: multi-APK variant
+     *  Computes the app's version code.
+     *
+     *  Output format:
+     *  aabbbcc
+     *
+     *  aa          the targetSdkVersion
+     *    bb        base version code (see [baseVersionCode])
+     *      cc      multi-APK variant
      */
     private fun getVersionCode(variant: Int): Int {
-        val versionStr = versionName
-            .replace(".", "")
-            .also {
-                assert(it.length <= 3) {
-                    "versionName must respect format x.y.z"
-                }
-            }
-            .replace(".", "")
-            .padEnd(3, '0')
+        check(baseVersionCode in 100..999)
+        check(variant in 0..99)
 
+        val versionStr = baseVersionCode.toString()
         val variantStr = variant.toString().padStart(2, '0')
         val targetVersionStr = targetSdkVersion.toString()
-
-        return "${targetVersionStr}${versionStr}$variantStr".toInt()
+        return "${targetVersionStr}${versionStr}${variantStr}".toInt()
     }
 }
