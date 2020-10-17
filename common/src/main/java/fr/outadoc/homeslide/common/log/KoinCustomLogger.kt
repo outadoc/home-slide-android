@@ -28,6 +28,7 @@ class KoinCustomLogger : Logger() {
             Level.DEBUG -> KLog.d { msg }
             Level.INFO -> KLog.i { msg }
             Level.ERROR -> KLog.e { msg }
+            Level.NONE -> Unit
         }
     }
 }
