@@ -81,11 +81,11 @@ class SuccessFragment : Fragment() {
         binding?.konfetti?.apply {
             build()
                 .addColors(confettiColors.map { ContextCompat.getColor(context, it) })
-                .setDirection(0.0, 359.0)
+                .setDirection(0.0, 360.0)
                 .setSpeed(4f, 7f)
                 .setFadeOutEnabled(true)
                 .setTimeToLive(2000L)
-                .addShapes(Shape.RECT, Shape.CIRCLE)
+                .addShapes(Shape.Square, Shape.Circle)
                 .addSizes(Size(12), Size(16, 6f))
                 .setPosition(-50f, width + 50f, -50f, -50f)
                 .streamFor(300, 2000L)
