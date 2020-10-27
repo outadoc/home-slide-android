@@ -36,6 +36,13 @@
             app:summary="@string/pref_author_summary"
             app:title="@string/pref_author_title" />
 
+        <Preference
+            android:key="pref_about_repo"
+            android:summary="@string/pref_repo_summary"
+            android:title="@string/pref_repo_title"
+            app:summary="@string/pref_repo_summary"
+            app:title="@string/pref_repo_title" />
+
         <SwitchPreference
             android:defaultValue="true"
             android:key="chk_pref_enable_crash_reporting"
