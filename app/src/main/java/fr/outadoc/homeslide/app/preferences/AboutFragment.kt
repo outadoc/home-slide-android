@@ -17,10 +17,13 @@
 package fr.outadoc.homeslide.app.preferences
 
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.graphics.Insets
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.preference.Preference
@@ -35,6 +38,9 @@ import fr.outadoc.homeslide.logging.KLog
 class AboutFragment : PreferenceFragmentCompat() {
 
     private var preferenceHolder: PreferenceHolder? = null
+
+    private val repoUrl: Uri
+        get() = "https://github.com/${getString(R.string.repo_name)}".toUri()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences_about, rootKey)
@@ -54,6 +60,14 @@ class AboutFragment : PreferenceFragmentCompat() {
                 FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(value as Boolean)
                 true
             }
+        }
+
+        val repoPref: Preference? = findPreference("pref_about_repo")
+        repoPref?.setOnPreferenceClickListener { _ ->
+            CustomTabsIntent.Builder()
+                .build()
+                .launchUrl(requireContext(), repoUrl)
+            true
         }
 
         ThirdPartyLibraries.licenses.forEach { (license, content) ->

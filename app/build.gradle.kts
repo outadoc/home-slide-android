@@ -97,6 +97,7 @@ dependencies {
     implementation(Dependencies.AndroidX.constraintLayout)
     implementation(Dependencies.AndroidX.appcompat)
     implementation(Dependencies.AndroidX.biometric)
+    implementation(Dependencies.AndroidX.browser)
 
     // AndroidX lifecycle
     implementation(Dependencies.AndroidX.Lifecycle.extensions)

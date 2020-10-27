@@ -32,9 +32,18 @@
             android:key="pref_about_author"
             android:summary="@string/pref_author_summary"
             android:title="@string/pref_author_title"
+            app:icon="@drawable/ic_code"
             app:key="pref_about_author"
             app:summary="@string/pref_author_summary"
             app:title="@string/pref_author_title" />
+
+        <Preference
+            android:key="pref_about_repo"
+            android:summary="@string/pref_repo_summary"
+            android:title="@string/repo_name"
+            app:icon="@drawable/ic_open"
+            app:summary="@string/pref_repo_summary"
+            app:title="@string/repo_name" />
 
         <SwitchPreference
             android:defaultValue="true"
