@@ -16,5 +16,8 @@
   -->
 
 <resources>
+
     <string name="app_name" translatable="false">Home Slide</string>
+    <string name="repo_name" translatable="false">outadoc/home-slide-android</string>
+
 </resources>

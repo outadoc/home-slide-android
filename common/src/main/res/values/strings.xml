@@ -59,7 +59,6 @@
     <string name="pref_oss_ofl_title">SIL Open Font License</string>
 
     <string name="pref_repo_summary">Check out the repository for support and to contribute to the project!</string>
-    <string name="pref_repo_title" translatable="false">outadoc/home-slide-android</string>
 
     <string name="title_about">About</string>
     <string name="pref_version_summary">Version %1$s</string>

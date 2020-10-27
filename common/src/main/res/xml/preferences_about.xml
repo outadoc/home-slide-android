@@ -40,10 +40,10 @@
         <Preference
             android:key="pref_about_repo"
             android:summary="@string/pref_repo_summary"
-            android:title="@string/pref_repo_title"
+            android:title="@string/repo_name"
             app:icon="@drawable/ic_open"
             app:summary="@string/pref_repo_summary"
-            app:title="@string/pref_repo_title" />
+            app:title="@string/repo_name" />
 
         <SwitchPreference
             android:defaultValue="true"
