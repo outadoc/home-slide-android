@@ -1,13 +1,3 @@
-v1.5.8
-- corrigé un bug avec la réorganisation
-- corrigé l'apparence de la scrollbar
+Home Slide est maintenant open-source ! Vous trouverez un lien vers le dépôt dans l'écran À propos.
 
-v1.5.7
-- amélioré les performances de l'app Wear OS
-- amélioré l'écran À propos
-- augmenté le temps de timeout des requêtes
-
-v1.5.6
-- corrigé le bug où les entités n'étaient pas re-triées lors d'un changement de visibilité
-- corrigé le bug où l'animation d'édition s'arrêtait parfois sans raison
-- sauvegarde et restauration de la hauteur optimale de la fenêtre
+- Mis à jour MDI en v5.8.55
