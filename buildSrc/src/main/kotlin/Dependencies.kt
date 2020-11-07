@@ -135,6 +135,10 @@ object Dependencies {
         const val core = "com.squareup.leakcanary:leakcanary-android:2.5"
     }
 
+    object Mdi {
+        const val android = "fr.outadoc.mdi:mdi-android:5.8.55-d"
+    }
+
     object Moshi {
         private const val version = "1.10.0"
         const val core = "com.squareup.moshi:moshi:$version"

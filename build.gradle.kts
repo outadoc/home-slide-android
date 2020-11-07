@@ -40,11 +40,14 @@ allprojects {
         google()
         jcenter()
 
-        // Required for Chucker
-        maven(url = "https://jitpack.io")
-
-        // Required for kotlinx.datetime
-        maven(url = "https://kotlin.bintray.com/kotlinx/")
+        maven(url = "https://jitpack.io") // Required for Chucker
+        maven(url = "https://kotlin.bintray.com/kotlinx/") // Required for kotlinx.datetime
+        maven(url = "https://maven.pkg.github.com/outadoc/mdi-android") {
+            credentials {
+                username = "token"
+                password = "25561c78ff9ca9262eb6e1790a8c3597d0537d62"
+            }
+        }
     }
 }
 
