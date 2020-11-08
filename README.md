@@ -1,4 +1,4 @@
-Home Slide for Home Assistant [![Build Status](https://app.bitrise.io/app/559f3465686f9092/status.svg?token=47mKMyVqhfxUR6P9rXj3tQ&branch=develop)](https://app.bitrise.io/app/559f3465686f9092)
+Home Slide for Home Assistant [![Build Status](https://app.bitrise.io/app/559f3465686f9092/status.svg?token=47mKMyVqhfxUR6P9rXj3tQ&branch=develop)](https://app.bitrise.io/app/559f3465686f9092) ![Latest release](https://img.shields.io/github/release/outadoc/home-slide-android.svg?logo=github) [![GitHub license](https://img.shields.io/github/license/outadoc/home-slide-android)](https://github.com/outadoc/home-slide-android/blob/develop/LICENSE)
 =============================
 
 <img height="128" src="assets/home_slide.svg">
