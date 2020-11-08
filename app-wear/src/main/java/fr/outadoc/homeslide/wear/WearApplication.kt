@@ -34,8 +34,8 @@ import fr.outadoc.homeslide.rest.ApiClientBuilder
 import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
 import fr.outadoc.homeslide.wear.preferences.DataSyncViewModel
 import fr.outadoc.homeslide.wear.preferences.WearPreferenceRepositoryImpl
-import fr.outadoc.mdi.MaterialIconAssetMapperImpl
-import fr.outadoc.mdi.MaterialIconLocator
+import fr.outadoc.mdi.AndroidMdiMapper
+import fr.outadoc.mdi.common.MdiMapperLocator
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -82,6 +82,6 @@ class WearApplication : Application() {
             modules(systemModule() + commonModule() + wearModule)
         }
 
-        MaterialIconLocator.instance = MaterialIconAssetMapperImpl(applicationContext)
+        MdiMapperLocator.instance = AndroidMdiMapper(applicationContext)
     }
 }
