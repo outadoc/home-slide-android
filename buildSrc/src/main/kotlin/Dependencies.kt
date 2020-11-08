@@ -31,14 +31,14 @@ object Dependencies {
     }
 
     object AndroidX {
-        const val appcompat = "androidx.appcompat:appcompat:1.3.0-alpha01"
+        const val appcompat = "androidx.appcompat:appcompat:1.3.0-alpha02"
         const val biometric = "androidx.biometric:biometric:1.0.1"
-        const val browser = "androidx.browser:browser:1.3.0-alpha01"
+        const val browser = "androidx.browser:browser:1.3.0-beta01"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
-        const val core = "androidx.core:core-ktx:1.3.0"
+        const val core = "androidx.core:core-ktx:1.3.2"
         const val preference = "androidx.preference:preference-ktx:1.1.1"
         const val recyclerview = "androidx.recyclerview:recyclerview:1.1.0"
-        const val wear = "androidx.wear:wear:1.1.0-rc02"
+        const val wear = "androidx.wear:wear:1.1.0"
 
         object Lifecycle {
             private const val version = "2.2.0"
@@ -48,7 +48,7 @@ object Dependencies {
         }
 
         object Navigation {
-            private const val version = "2.2.2"
+            private const val version = "2.3.1"
             const val fragment = "androidx.navigation:navigation-fragment-ktx:$version"
             const val ui = "androidx.navigation:navigation-ui-ktx:$version"
 
@@ -66,18 +66,18 @@ object Dependencies {
     }
 
     object Chucker {
-        private const val version = "3.3.0"
+        private const val version = "3.4.0"
         const val core = "com.github.ChuckerTeam.Chucker:library:$version"
         const val noop = "com.github.ChuckerTeam.Chucker:library-no-op:$version"
     }
 
     object Google {
-        const val material = "com.google.android.material:material:1.3.0-alpha02"
+        const val material = "com.google.android.material:material:1.3.0-alpha03"
 
         object Firebase {
             object Crashlytics {
-                const val core = "com.google.firebase:firebase-crashlytics-ktx:17.2.1"
-                const val classpath = "com.google.firebase:firebase-crashlytics-gradle:2.2.1"
+                const val core = "com.google.firebase:firebase-crashlytics-ktx:17.2.2"
+                const val classpath = "com.google.firebase:firebase-crashlytics-gradle:2.3.0"
                 const val plugin = "com.google.firebase.crashlytics"
             }
         }
@@ -87,13 +87,13 @@ object Dependencies {
         }
 
         object PlayServices {
-            const val classpath = "com.google.gms:google-services:4.3.3"
+            const val classpath = "com.google.gms:google-services:4.3.4"
             const val plugin = "com.google.gms.google-services"
             const val wearable = "com.google.android.gms:play-services-wearable:17.0.0"
         }
 
         object Wearable {
-            private const val version = "2.7.0"
+            private const val version = "2.8.1"
             const val core = "com.google.android.wearable:wearable:$version"
         }
     }
@@ -109,11 +109,11 @@ object Dependencies {
     }
 
     object Kotlin {
-        private const val version = "1.4.0"
+        private const val version = "1.4.10"
         const val classpath = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
 
         object Coroutines {
-            private const val version = "1.3.8"
+            private const val version = "1.4.1"
             const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
             const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
             const val jdk9 = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk9:$version"
@@ -140,37 +140,37 @@ object Dependencies {
     }
 
     object Moshi {
-        private const val version = "1.10.0"
+        private const val version = "1.11.0"
         const val core = "com.squareup.moshi:moshi:$version"
         const val codegen = "com.squareup.moshi:moshi-kotlin-codegen:$version"
     }
 
     object OkHttp {
-        const val logging = "com.squareup.okhttp3:logging-interceptor:4.6.0"
+        const val logging = "com.squareup.okhttp3:logging-interceptor:4.9.0"
     }
 
     object Retrofit {
-        private const val version = "2.8.1"
+        private const val version = "2.9.0"
         const val core = "com.squareup.retrofit2:retrofit:$version"
         const val moshiConverter = "com.squareup.retrofit2:converter-moshi:$version"
     }
 
     object Skeleton {
-        const val core = "com.faltenreich:skeletonlayout:2.0.0"
+        const val core = "com.faltenreich:skeletonlayout:2.1.0"
     }
 
     object Spotless {
-        const val version = "3.27.1"
+        const val version = "3.30.0"
         const val plugin = "com.diffplug.gradle.spotless"
     }
 
     object Test {
-        const val junit = "org.junit.jupiter:junit-jupiter:5.6.0"
-        const val mockito = "org.mockito:mockito-core:3.2.4"
+        const val junit = "org.junit.jupiter:junit-jupiter:5.7.0"
+        const val mockito = "org.mockito:mockito-core:3.6.0"
     }
 
     object Tools {
-        const val desugaring = "com.android.tools:desugar_jdk_libs:1.0.9"
+        const val desugaring = "com.android.tools:desugar_jdk_libs:1.1.0"
     }
 
     object Timber {
