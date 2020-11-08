@@ -18,7 +18,7 @@ package fr.outadoc.homeslide.hassapi.model.entity
 
 import fr.outadoc.homeslide.hassapi.model.EntityState
 import fr.outadoc.homeslide.hassapi.model.entity.base.BaseEntity
-import fr.outadoc.mdi.FontIcon
+import fr.outadoc.mdi.common.MdiFontIcon
 import fr.outadoc.mdi.toIcon
 import fr.outadoc.mdi.toIconOrNull
 
@@ -28,7 +28,7 @@ class Person(state: EntityState) : BaseEntity(state, "account".toIcon()) {
         const val DOMAIN = "person"
     }
 
-    override val fallbackIcon: FontIcon?
+    override val fallbackIcon: MdiFontIcon?
         get() = when (stateStr) {
             "home" -> "account-check"
             else -> "account-remove-outline"

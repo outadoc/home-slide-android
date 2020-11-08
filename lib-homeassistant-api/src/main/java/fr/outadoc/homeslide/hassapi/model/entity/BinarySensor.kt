@@ -18,7 +18,7 @@ package fr.outadoc.homeslide.hassapi.model.entity
 
 import fr.outadoc.homeslide.hassapi.model.EntityState
 import fr.outadoc.homeslide.hassapi.model.entity.base.BaseEntity
-import fr.outadoc.mdi.FontIcon
+import fr.outadoc.mdi.common.MdiFontIcon
 import fr.outadoc.mdi.toIcon
 
 class BinarySensor(state: EntityState) : BaseEntity(state, "eye".toIcon()) {
@@ -27,7 +27,7 @@ class BinarySensor(state: EntityState) : BaseEntity(state, "eye".toIcon()) {
         const val DOMAIN = "binary_sensor"
     }
 
-    override val fallbackIcon: FontIcon?
+    override val fallbackIcon: MdiFontIcon?
         get() = when (state.state) {
             "on" -> "eye-check"
             else -> "eye-outline"

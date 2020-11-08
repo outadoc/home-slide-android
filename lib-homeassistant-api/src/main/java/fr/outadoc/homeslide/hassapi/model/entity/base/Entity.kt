@@ -21,7 +21,7 @@ import fr.outadoc.homeslide.hassapi.model.Action
 import fr.outadoc.homeslide.hassapi.model.EntityState
 import fr.outadoc.homeslide.hassapi.model.annotation.StringDomain
 import fr.outadoc.homeslide.hassapi.model.annotation.StringEntityId
-import fr.outadoc.mdi.FontIcon
+import fr.outadoc.mdi.common.MdiFontIcon
 
 interface Entity {
 
@@ -34,7 +34,7 @@ interface Entity {
     val entityId: String
 
     val friendlyName: String?
-    val icon: FontIcon
+    val icon: MdiFontIcon
 
     val isVisible: Boolean
     val isToggleable: Boolean

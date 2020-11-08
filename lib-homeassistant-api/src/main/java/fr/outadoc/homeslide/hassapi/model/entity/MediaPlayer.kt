@@ -19,7 +19,7 @@ package fr.outadoc.homeslide.hassapi.model.entity
 import fr.outadoc.homeslide.hassapi.model.Action
 import fr.outadoc.homeslide.hassapi.model.EntityState
 import fr.outadoc.homeslide.hassapi.model.entity.base.ToggleableEntity
-import fr.outadoc.mdi.FontIcon
+import fr.outadoc.mdi.common.MdiFontIcon
 import fr.outadoc.mdi.toIcon
 
 class MediaPlayer(state: EntityState) : ToggleableEntity(state, "cast".toIcon()) {
@@ -36,7 +36,7 @@ class MediaPlayer(state: EntityState) : ToggleableEntity(state, "cast".toIcon())
     override val primaryAction =
         Action(DOMAIN, "media_play_pause", entityId)
 
-    override val fallbackIcon: FontIcon?
+    override val fallbackIcon: MdiFontIcon?
         get() = when (stateStr) {
             STATE_PLAYING -> "cast-connected".toIcon()
             STATE_UNAVAILABLE -> "cast-off".toIcon()
