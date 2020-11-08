@@ -18,9 +18,9 @@ package fr.outadoc.homeslide.hassapi.model.entity.base
 
 import fr.outadoc.homeslide.hassapi.model.Action
 import fr.outadoc.homeslide.hassapi.model.EntityState
-import fr.outadoc.mdi.FontIcon
+import fr.outadoc.mdi.common.MdiFontIcon
 
-abstract class ToggleableEntity(state: EntityState, defaultIcon: FontIcon) :
+abstract class ToggleableEntity(state: EntityState, defaultIcon: MdiFontIcon) :
     BaseEntity(state, defaultIcon) {
 
     override val isOn: Boolean = stateStr == "on"

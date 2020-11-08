@@ -20,11 +20,11 @@ import android.content.Context
 import fr.outadoc.homeslide.hassapi.model.Action
 import fr.outadoc.homeslide.hassapi.model.EntityState
 import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
-import fr.outadoc.mdi.FontIcon
+import fr.outadoc.mdi.common.MdiFontIcon
 
 class PlaceholderEntity(
     val id: String,
-    override val icon: FontIcon,
+    override val icon: MdiFontIcon,
     override val friendlyName: String
 ) : Entity {
 

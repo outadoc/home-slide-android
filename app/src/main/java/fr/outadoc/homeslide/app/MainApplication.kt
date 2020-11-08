@@ -53,8 +53,8 @@ import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.ApiClientBuilder
 import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
 import fr.outadoc.homeslide.zeroconf.ZeroconfDiscoveryService
-import fr.outadoc.mdi.MaterialIconAssetMapperImpl
-import fr.outadoc.mdi.MaterialIconLocator
+import fr.outadoc.mdi.AndroidMdiMapper
+import fr.outadoc.mdi.common.MdiMapperLocator
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -140,6 +140,6 @@ class MainApplication : Application() {
             modules(systemModule() + commonModule() + controlProviderModule() + appModule)
         }
 
-        MaterialIconLocator.instance = MaterialIconAssetMapperImpl(applicationContext)
+        MdiMapperLocator.instance = AndroidMdiMapper(applicationContext)
     }
 }

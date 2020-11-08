@@ -66,7 +66,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":lib-mdi"))
     implementation(project(":lib-zeroconf"))
     implementation(project(":lib-restclient"))
     implementation(project(":lib-homeassistant-api"))
@@ -82,6 +81,7 @@ dependencies {
 
     // UI libs
     implementation(Dependencies.Google.material)
+    implementation(Dependencies.Mdi.android)
 
     // AndroidX libs
     implementation(Dependencies.AndroidX.core)

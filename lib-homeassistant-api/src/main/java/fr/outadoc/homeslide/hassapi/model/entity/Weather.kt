@@ -18,7 +18,7 @@ package fr.outadoc.homeslide.hassapi.model.entity
 
 import fr.outadoc.homeslide.hassapi.model.EntityState
 import fr.outadoc.homeslide.hassapi.model.entity.base.BaseEntity
-import fr.outadoc.mdi.FontIcon
+import fr.outadoc.mdi.common.MdiFontIcon
 import fr.outadoc.mdi.toIcon
 import fr.outadoc.mdi.toIconOrNull
 
@@ -28,7 +28,7 @@ class Weather(state: EntityState) : BaseEntity(state, "weather-cloudy".toIcon())
         const val DOMAIN = "weather"
     }
 
-    override val fallbackIcon: FontIcon?
+    override val fallbackIcon: MdiFontIcon?
         get() = when (stateStr) {
             "clear-night" -> "weather-night"
             "cloudy" -> "weather-cloudy"

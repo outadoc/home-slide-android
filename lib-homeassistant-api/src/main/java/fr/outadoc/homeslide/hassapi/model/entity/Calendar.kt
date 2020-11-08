@@ -18,7 +18,7 @@ package fr.outadoc.homeslide.hassapi.model.entity
 
 import fr.outadoc.homeslide.hassapi.model.EntityState
 import fr.outadoc.homeslide.hassapi.model.entity.base.ToggleableEntity
-import fr.outadoc.mdi.FontIcon
+import fr.outadoc.mdi.common.MdiFontIcon
 import fr.outadoc.mdi.toIcon
 
 class Calendar(state: EntityState) : ToggleableEntity(state, "calendar-blank-outline".toIcon()) {
@@ -27,7 +27,7 @@ class Calendar(state: EntityState) : ToggleableEntity(state, "calendar-blank-out
         const val DOMAIN = "calendar"
     }
 
-    override val fallbackIcon: FontIcon?
+    override val fallbackIcon: MdiFontIcon?
         get() = when (stateStr) {
             "on" -> "calendar-check-outline".toIcon()
             else -> null

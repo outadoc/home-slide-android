@@ -64,7 +64,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":lib-mdi"))
     implementation(project(":lib-restclient"))
     implementation(project(":lib-homeassistant-api"))
     implementation(project(":lib-common-util"))
@@ -77,6 +76,7 @@ dependencies {
     implementation(Dependencies.Google.PlayServices.wearable)
 
     implementation(Dependencies.Google.material)
+    implementation(Dependencies.Mdi.android)
 
     implementation(Dependencies.AndroidX.core)
     implementation(Dependencies.AndroidX.appcompat)

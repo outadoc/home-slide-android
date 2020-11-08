@@ -19,7 +19,7 @@ package fr.outadoc.homeslide.hassapi.model.entity
 import fr.outadoc.homeslide.hassapi.model.Action
 import fr.outadoc.homeslide.hassapi.model.EntityState
 import fr.outadoc.homeslide.hassapi.model.entity.base.BaseEntity
-import fr.outadoc.mdi.FontIcon
+import fr.outadoc.mdi.common.MdiFontIcon
 import fr.outadoc.mdi.toIcon
 
 class Lock(state: EntityState) : BaseEntity(state, "lock-question".toIcon()) {
@@ -40,7 +40,7 @@ class Lock(state: EntityState) : BaseEntity(state, "lock-question".toIcon()) {
             else -> null
         }
 
-    override val fallbackIcon: FontIcon?
+    override val fallbackIcon: MdiFontIcon?
         get() = when (stateStr) {
             STATE_LOCKED -> "lock-outline".toIcon()
             STATE_UNLOCKED -> "lock-open-variant-outline".toIcon()

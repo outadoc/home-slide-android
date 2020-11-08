@@ -55,12 +55,12 @@ android {
 
 dependencies {
     implementation(project(":lib-common-util"))
-    implementation(project(":lib-mdi"))
     implementation(project(":lib-logging"))
 
     implementation(Dependencies.AndroidX.core)
     implementation(Dependencies.AndroidX.appcompat)
 
+    implementation(Dependencies.Mdi.android)
     implementation(Dependencies.AndroidX.Room.common)
 
     // Network libs

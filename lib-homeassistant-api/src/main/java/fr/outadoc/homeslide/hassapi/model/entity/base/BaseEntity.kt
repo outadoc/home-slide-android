@@ -22,12 +22,12 @@ import fr.outadoc.homeslide.hassapi.model.EntityState
 import fr.outadoc.homeslide.hassapi.model.annotation.StringDomain
 import fr.outadoc.homeslide.hassapi.model.annotation.StringEntityId
 import fr.outadoc.homeslide.hassapi.model.annotation.StringState
-import fr.outadoc.mdi.FontIcon
+import fr.outadoc.mdi.common.MdiFontIcon
 import fr.outadoc.mdi.toIconOrNull
 
 abstract class BaseEntity(
     final override val state: EntityState,
-    private val defaultIcon: FontIcon
+    private val defaultIcon: MdiFontIcon
 ) : Entity {
 
     @StringEntityId
@@ -58,9 +58,9 @@ abstract class BaseEntity(
      * Can be overridden by children to provide a contextual icon.
      * e.g. different icon for different weather
      */
-    open val fallbackIcon: FontIcon? = null
+    open val fallbackIcon: MdiFontIcon? = null
 
-    override val icon: FontIcon
+    override val icon: MdiFontIcon
         get() = state.attributes.icon?.toIconOrNull() ?: fallbackIcon ?: defaultIcon
 
     protected val additionalAttributes = state.attributes
