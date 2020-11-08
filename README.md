@@ -1,5 +1,8 @@
-Home Slide for Home Assistant [![Build Status](https://app.bitrise.io/app/559f3465686f9092/status.svg?token=47mKMyVqhfxUR6P9rXj3tQ&branch=develop)](https://app.bitrise.io/app/559f3465686f9092) ![Latest release](https://img.shields.io/github/release/outadoc/home-slide-android.svg?logo=github) [![GitHub license](https://img.shields.io/github/license/outadoc/home-slide-android)](https://github.com/outadoc/home-slide-android/blob/develop/LICENSE)
+Home Slide for Home Assistant
 =============================
+[![Build Status](https://app.bitrise.io/app/559f3465686f9092/status.svg?token=47mKMyVqhfxUR6P9rXj3tQ&branch=develop)](https://app.bitrise.io/app/559f3465686f9092)
+![Latest release](https://img.shields.io/github/release/outadoc/home-slide-android.svg?logo=github)
+[![GitHub license](https://img.shields.io/github/license/outadoc/home-slide-android)](https://github.com/outadoc/home-slide-android/blob/develop/LICENSE)
 
 <img height="128" src="assets/home_slide.svg">
 
@@ -19,3 +22,27 @@ Features
   - Quick settings tile
   - Android 11 power menu integration
   - Can be set as your assistant
+
+Donate
+------
+You can donate to this project *via* Liberapay.
+
+<a href="https://liberapay.com/outadoc/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
+
+License
+-------
+```
+Copyright (C) 2020 Baptiste Candellier.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
