@@ -19,7 +19,7 @@ package fr.outadoc.homeslide.hassapi.model
 import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import fr.outadoc.mdi.IconStringRef
+import fr.outadoc.mdi.common.MdiStringRef
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -27,7 +27,7 @@ import kotlinx.android.parcel.Parcelize
 data class AttributeSet(
     @Json(name = "friendly_name")
     val friendlyName: String?,
-    @IconStringRef
+    @MdiStringRef
     @Json(name = "icon")
     val icon: String?,
     @Json(name = "hidden")

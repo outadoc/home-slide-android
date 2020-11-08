@@ -60,7 +60,7 @@ dependencies {
     implementation(Dependencies.AndroidX.core)
     implementation(Dependencies.AndroidX.appcompat)
 
-    implementation(Dependencies.Mdi.android)
+    implementation(Dependencies.Mdi.common)
     implementation(Dependencies.AndroidX.Room.common)
 
     // Network libs
