@@ -18,7 +18,6 @@ package fr.outadoc.homeslide.app.onboarding
 
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.plusAssign
 import fr.outadoc.homeslide.app.onboarding.navigation.CustomTabsNavigator
 
 @Suppress("unused")
@@ -28,7 +27,7 @@ class OnboardingNavHostFragment : NavHostFragment() {
         super.onCreateNavController(navController)
 
         context?.let {
-            navController.navigatorProvider += CustomTabsNavigator(it)
+            navController.navigatorProvider.addNavigator(CustomTabsNavigator(it))
         }
     }
 }
