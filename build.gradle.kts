@@ -43,7 +43,7 @@ allprojects {
         maven(url = "https://jitpack.io") // Required for Chucker
         maven(url = "https://kotlin.bintray.com/kotlinx/") // Required for kotlinx.datetime
 
-        val githubPackagesToken: String by project
+        val githubPackagesToken: String? by project
         maven(url = "https://maven.pkg.github.com/outadoc/mdi-android") {
             credentials {
                 username = "token"
