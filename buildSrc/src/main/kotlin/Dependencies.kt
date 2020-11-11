@@ -136,7 +136,7 @@ object Dependencies {
     }
 
     object Mdi {
-        const val android = "fr.outadoc.mdi:mdi-android:5.8.55-g"
+        const val android = "fr.outadoc.mdi:mdi-android:5.8.55-i"
     }
 
     object Moshi {

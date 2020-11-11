@@ -65,7 +65,7 @@ class EntityListFragment : Fragment() {
             tileFactory.create(
                 PlaceholderEntity(
                     id = PLACEHOLDER_ID_ABOUT,
-                    icon = "mdi:information".toIcon(),
+                    icon = "information".toIcon(),
                     friendlyName = getString(R.string.list_item_about)
                 )
             )
