@@ -43,22 +43,19 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
+            <fr.outadoc.mdi.MdiFontIconView
                 android:id="@+id/tv_shortcut_icon"
                 android:layout_width="0dp"
                 android:layout_height="36dp"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:textAppearance="@style/TextAppearance.MaterialDesignIcons"
                 android:textColor="@color/item_textcolor"
                 android:textSize="32sp"
                 app:layout_constraintBottom_toTopOf="@+id/tv_shortcut_label"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed"
-                tools:ignore="ContentDescription"
-                tools:text="" />
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
                 android:id="@+id/tv_extra_state"
