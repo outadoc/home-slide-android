@@ -33,7 +33,7 @@ object Dependencies {
     object AndroidX {
         const val appcompat = "androidx.appcompat:appcompat:1.3.0-alpha02"
         const val biometric = "androidx.biometric:biometric:1.0.1"
-        const val browser = "androidx.browser:browser:1.3.0-beta01"
+        const val browser = "androidx.browser:browser:1.3.0-rc01"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
         const val core = "androidx.core:core-ktx:1.3.2"
         const val preference = "androidx.preference:preference-ktx:1.1.1"
@@ -72,12 +72,12 @@ object Dependencies {
     }
 
     object Google {
-        const val material = "com.google.android.material:material:1.3.0-alpha03"
+        const val material = "com.google.android.material:material:1.3.0-alpha04"
 
         object Firebase {
             object Crashlytics {
-                const val core = "com.google.firebase:firebase-crashlytics-ktx:17.2.2"
-                const val classpath = "com.google.firebase:firebase-crashlytics-gradle:2.3.0"
+                const val core = "com.google.firebase:firebase-crashlytics-ktx:17.3.0"
+                const val classpath = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
                 const val plugin = "com.google.firebase.crashlytics"
             }
         }
@@ -99,7 +99,7 @@ object Dependencies {
     }
 
     object Koin {
-        private const val version = "2.1.6"
+        private const val version = "2.2.1"
         const val android = "org.koin:koin-core:$version"
         const val viewModel = "org.koin:koin-androidx-viewmodel:$version"
     }
@@ -109,18 +109,18 @@ object Dependencies {
     }
 
     object Kotlin {
-        private const val version = "1.4.10"
+        private const val version = "1.4.20"
         const val classpath = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
 
         object Coroutines {
-            private const val version = "1.4.1"
+            private const val version = "1.4.2"
             const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
             const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
             const val jdk9 = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk9:$version"
         }
 
         object DateTime {
-            private const val version = "0.1.0"
+            private const val version = "0.1.1"
             const val core = "org.jetbrains.kotlinx:kotlinx-datetime:$version"
         }
 
@@ -170,7 +170,7 @@ object Dependencies {
     }
 
     object Tools {
-        const val desugaring = "com.android.tools:desugar_jdk_libs:1.1.0"
+        const val desugaring = "com.android.tools:desugar_jdk_libs:1.1.1"
     }
 
     object Timber {
