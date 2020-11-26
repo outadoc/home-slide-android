@@ -42,11 +42,11 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <com.google.android.material.progressindicator.ProgressIndicator
-            style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
+        <com.google.android.material.progressindicator.CircularProgressIndicator
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_gravity="center"
+            android:indeterminate="true"
             app:indicatorColor="?colorPrimary" />
 
         <TextView
