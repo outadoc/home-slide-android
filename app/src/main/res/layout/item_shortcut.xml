@@ -93,14 +93,14 @@
                 app:layout_constraintVertical_chainStyle="packed"
                 tools:text="@tools:sample/first_names" />
 
-            <com.google.android.material.progressindicator.ProgressIndicator
+            <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/pb_shortcut_loading"
-                style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:indeterminate="true"
                 android:visibility="gone"
-                app:circularRadius="14dp"
                 app:indicatorColor="@color/item_textcolor"
+                app:indicatorSize="28dp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_shortcut_icon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

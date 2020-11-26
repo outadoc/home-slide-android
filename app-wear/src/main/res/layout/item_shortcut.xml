@@ -57,14 +57,14 @@
             tools:ignore="ContentDescription"
             tools:text="24°C" />
 
-        <com.google.android.material.progressindicator.ProgressIndicator
+        <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/pb_shortcut_loading"
-            style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            app:circularRadius="12dp"
-            app:indicatorColor="?colorOnBackground" />
+            android:indeterminate="true"
+            app:indicatorColor="?colorOnBackground"
+            app:indicatorSize="24dp" />
 
     </ViewFlipper>
 
