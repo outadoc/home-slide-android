@@ -1,3 +1,6 @@
-Home Slide est maintenant open-source ! Vous trouverez un lien vers le dépôt dans l'écran À propos.
+Home Slide est maintenant open-source !
+Vous pouvez parcourir et supporter le projet en tapant sur le lien dans l'écran "À propos".
 
-- Mis à jour MDI en v5.8.55
+domain: ajouté le support du domaine scene (#352)
+mdi: extracté mdi dans son propre projet (#340)
+wear: corrigé l'écran à propos sur wear os (#350)
