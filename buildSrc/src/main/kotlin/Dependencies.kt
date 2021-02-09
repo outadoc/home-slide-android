@@ -127,6 +127,7 @@ object Dependencies {
         object Plugin {
             const val android = "android"
             const val kapt = "kapt"
+            const val parcelize = "parcelize"
         }
     }
 

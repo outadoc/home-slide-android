@@ -22,8 +22,8 @@ import com.squareup.moshi.JsonClass
 import fr.outadoc.homeslide.hassapi.model.annotation.StringDomain
 import fr.outadoc.homeslide.hassapi.model.annotation.StringEntityId
 import fr.outadoc.homeslide.hassapi.model.annotation.StringState
-import kotlinx.android.parcel.IgnoredOnParcel
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @JsonClass(generateAdapter = true)
