@@ -25,15 +25,15 @@ object Dependencies {
     }
 
     object Android {
-        const val classpath = "com.android.tools.build:gradle:4.1.0"
+        const val classpath = "com.android.tools.build:gradle:4.1.2"
         const val application = "com.android.application"
         const val library = "com.android.library"
     }
 
     object AndroidX {
-        const val appcompat = "androidx.appcompat:appcompat:1.3.0-alpha02"
-        const val biometric = "androidx.biometric:biometric:1.0.1"
-        const val browser = "androidx.browser:browser:1.3.0-rc01"
+        const val appcompat = "androidx.appcompat:appcompat:1.3.0-beta01"
+        const val biometric = "androidx.biometric:biometric:1.1.0"
+        const val browser = "androidx.browser:browser:1.3.0"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
         const val core = "androidx.core:core-ktx:1.3.2"
         const val preference = "androidx.preference:preference-ktx:1.1.1"
@@ -48,7 +48,7 @@ object Dependencies {
         }
 
         object Navigation {
-            private const val version = "2.3.1"
+            private const val version = "2.3.3"
             const val fragment = "androidx.navigation:navigation-fragment-ktx:$version"
             const val ui = "androidx.navigation:navigation-ui-ktx:$version"
 
@@ -59,7 +59,7 @@ object Dependencies {
         }
 
         object Room {
-            private const val version = "2.2.5"
+            private const val version = "2.2.6"
             const val common = "androidx.room:room-ktx:$version"
             const val compiler = "androidx.room:room-compiler:$version"
         }
@@ -76,7 +76,7 @@ object Dependencies {
 
         object Firebase {
             object Crashlytics {
-                const val core = "com.google.firebase:firebase-crashlytics-ktx:17.3.0"
+                const val core = "com.google.firebase:firebase-crashlytics-ktx:17.3.1"
                 const val classpath = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
                 const val plugin = "com.google.firebase.crashlytics"
             }
@@ -99,17 +99,17 @@ object Dependencies {
     }
 
     object Koin {
-        private const val version = "2.2.1"
+        private const val version = "2.2.2"
         const val android = "org.koin:koin-core:$version"
         const val viewModel = "org.koin:koin-androidx-viewmodel:$version"
     }
 
     object Konfetti {
-        const val core = "nl.dionsegijn:konfetti:1.2.5"
+        const val core = "nl.dionsegijn:konfetti:1.2.6"
     }
 
     object Kotlin {
-        private const val version = "1.4.20"
+        private const val version = "1.4.30"
         const val classpath = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
 
         object Coroutines {
@@ -132,7 +132,7 @@ object Dependencies {
     }
 
     object LeakCanary {
-        const val core = "com.squareup.leakcanary:leakcanary-android:2.5"
+        const val core = "com.squareup.leakcanary:leakcanary-android:2.6"
     }
 
     object Mdi {
@@ -146,7 +146,7 @@ object Dependencies {
     }
 
     object OkHttp {
-        const val logging = "com.squareup.okhttp3:logging-interceptor:4.9.0"
+        const val logging = "com.squareup.okhttp3:logging-interceptor:4.9.1"
     }
 
     object Retrofit {
@@ -166,7 +166,7 @@ object Dependencies {
 
     object Test {
         const val junit = "org.junit.jupiter:junit-jupiter:5.7.0"
-        const val mockito = "org.mockito:mockito-core:3.6.0"
+        const val mockito = "org.mockito:mockito-core:3.7.7"
     }
 
     object Tools {
