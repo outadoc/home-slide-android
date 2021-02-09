@@ -87,7 +87,7 @@ object Dependencies {
         }
 
         object PlayServices {
-            const val classpath = "com.google.gms:google-services:4.3.4"
+            const val classpath = "com.google.gms:google-services:4.3.5"
             const val plugin = "com.google.gms.google-services"
             const val wearable = "com.google.android.gms:play-services-wearable:17.0.0"
         }
