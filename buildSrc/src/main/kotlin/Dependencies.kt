@@ -126,7 +126,6 @@ object Dependencies {
 
         object Plugin {
             const val android = "android"
-            const val androidExtensions = "android.extensions"
             const val kapt = "kapt"
         }
     }
