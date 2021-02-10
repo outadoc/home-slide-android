@@ -97,7 +97,7 @@
             android:id="@+id/finishOnboardingAction"
             app:destination="@id/slideOverActivity"
             app:enterAnim="@anim/slide_in_up"
-            app:exitAnim="@anim/fragment_fade_exit" />
+            app:exitAnim="@anim/fade_out" />
     </fragment>
 
     <activity
