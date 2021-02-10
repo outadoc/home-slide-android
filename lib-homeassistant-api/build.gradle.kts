@@ -17,8 +17,8 @@
 plugins {
     id(Dependencies.Android.library)
     kotlin(Dependencies.Kotlin.Plugin.android)
-    kotlin(Dependencies.Kotlin.Plugin.androidExtensions)
     kotlin(Dependencies.Kotlin.Plugin.kapt)
+    id(Dependencies.Kotlin.Plugin.parcelize)
 }
 
 android {
