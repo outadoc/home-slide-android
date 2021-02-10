@@ -50,10 +50,10 @@ allprojects {
                 password = System.getenv("GITHUB_PACKAGES_TOKEN") ?: githubPackagesToken
             }
         }
+    }
 
-        tasks.withType<KotlinJvmCompile> {
-            kotlinOptions.useIR = true
-        }
+    tasks.withType<KotlinJvmCompile> {
+        kotlinOptions.useIR = true
     }
 }
 
