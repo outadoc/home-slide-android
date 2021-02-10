@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 
 plugins {
     id(Dependencies.Spotless.plugin) version Dependencies.Spotless.version
@@ -50,6 +50,10 @@ allprojects {
                 password = System.getenv("GITHUB_PACKAGES_TOKEN") ?: githubPackagesToken
             }
         }
+    }
+
+    tasks.withType<KotlinJvmCompile> {
+        kotlinOptions.useIR = true
     }
 }
 
