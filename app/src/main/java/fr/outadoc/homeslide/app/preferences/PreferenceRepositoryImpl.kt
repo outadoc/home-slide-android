@@ -41,7 +41,7 @@ class PreferenceRepositoryImpl(
 
     private val appPrefs = PreferenceManager.getDefaultSharedPreferences(context)!!
 
-    override var instanceBaseUrl: String?
+    override var localInstanceBaseUrl: String?
         get() = appPrefs.getString(KEY_INSTANCE_BASE_URL, null)
         set(value) {
             appPrefs.edit {
@@ -49,7 +49,7 @@ class PreferenceRepositoryImpl(
             }
         }
 
-    override var altInstanceBaseUrl: String?
+    override var remoteInstanceBaseUrl: String?
         get() = appPrefs.getString(KEY_INSTANCE_ALT_BASE_URL, null)
         set(value) {
             appPrefs.edit {
@@ -125,8 +125,8 @@ class PreferenceRepositoryImpl(
 
     override fun publish() {
         val payload = PreferencesPayload(
-            instanceBaseUrl = instanceBaseUrl,
-            altInstanceBaseUrl = altInstanceBaseUrl,
+            localInstanceBaseUrl = localInstanceBaseUrl,
+            remoteInstanceBaseUrl = remoteInstanceBaseUrl,
             accessToken = accessToken,
             refreshToken = refreshToken
         )

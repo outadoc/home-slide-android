@@ -26,11 +26,11 @@ import okhttp3.Response
 
 class AltBaseUrlInterceptor(private val config: BaseUrlConfigProvider) : Interceptor {
 
-    private val baseUri: HttpUrl?
-        get() = config.instanceBaseUrl.toUrlOrNull()
+    private val localBaseUri: HttpUrl?
+        get() = config.localInstanceBaseUrl.toUrlOrNull()
 
-    private val altBaseUri: HttpUrl?
-        get() = config.altInstanceBaseUrl.toUrlOrNull()
+    private val remoteBaseUri: HttpUrl?
+        get() = config.remoteInstanceBaseUrl.toUrlOrNull()
 
     private val preferredBaseUrl: PreferredBaseUrl
         get() = config.preferredBaseUrl
@@ -65,8 +65,8 @@ class AltBaseUrlInterceptor(private val config: BaseUrlConfigProvider) : Interce
             return requestUrl.toString().replace(PLACEHOLDER_BASE_URL, newBase.toString()).toUrl()
         }
 
-        val internalUrl = PreferredBaseUrl.PRIMARY to replaceBaseUrl(baseUri)
-        val externalUrl = PreferredBaseUrl.ALTERNATIVE to replaceBaseUrl(altBaseUri)
+        val internalUrl = PreferredBaseUrl.PRIMARY to replaceBaseUrl(localBaseUri)
+        val externalUrl = PreferredBaseUrl.ALTERNATIVE to replaceBaseUrl(remoteBaseUri)
 
         return when (preferredBaseUrl) {
             PreferredBaseUrl.PRIMARY -> listOf(internalUrl, externalUrl)

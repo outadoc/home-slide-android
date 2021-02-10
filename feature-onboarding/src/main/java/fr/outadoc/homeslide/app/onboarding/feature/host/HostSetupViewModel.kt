@@ -118,7 +118,7 @@ class HostSetupViewModel(
 
     fun onOpen() = actionOn<State.Initial> {
         sendEvent {
-            Event.SetInstanceUrl(urlPrefs.instanceBaseUrl ?: DEFAULT_INSTANCE_URL)
+            Event.SetInstanceUrl(urlPrefs.localInstanceBaseUrl ?: DEFAULT_INSTANCE_URL)
         }
     }
 
@@ -161,7 +161,7 @@ class HostSetupViewModel(
     fun onLoginClicked() = actionOn<State.Success> { currentState ->
         stopDiscovery()
 
-        urlPrefs.instanceBaseUrl = currentState.sanitizedInstanceUrl
+        urlPrefs.localInstanceBaseUrl = currentState.sanitizedInstanceUrl
         startAuthenticationFlow(currentState.sanitizedInstanceUrl)
     }
 
@@ -170,8 +170,8 @@ class HostSetupViewModel(
 
         val localUrl = "http://${zeroconfHost.hostName}"
         urlPrefs.apply {
-            instanceBaseUrl = localUrl
-            altInstanceBaseUrl = zeroconfHost.baseUrl
+            localInstanceBaseUrl = localUrl
+            remoteInstanceBaseUrl = zeroconfHost.baseUrl
         }
 
         startAuthenticationFlow(localUrl)

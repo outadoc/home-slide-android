@@ -107,8 +107,8 @@ class AltBaseUrlInterceptorTest {
         preferred: PreferredBaseUrl
     ): AltBaseUrlInterceptor {
         val repo = Mockito.mock(BaseUrlConfigProvider::class.java).apply {
-            `when`(instanceBaseUrl).thenReturn(baseUrl)
-            `when`(altInstanceBaseUrl).thenReturn(altBaseUrl)
+            `when`(localInstanceBaseUrl).thenReturn(baseUrl)
+            `when`(remoteInstanceBaseUrl).thenReturn(altBaseUrl)
             `when`(preferredBaseUrl).thenReturn(preferred)
         }
 

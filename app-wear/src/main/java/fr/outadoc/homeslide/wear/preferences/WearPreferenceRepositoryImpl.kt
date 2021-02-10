@@ -34,7 +34,7 @@ class WearPreferenceRepositoryImpl(context: Context) :
 
     private val appPrefs = PreferenceManager.getDefaultSharedPreferences(context)!!
 
-    override var instanceBaseUrl: String?
+    override var localInstanceBaseUrl: String?
         get() = appPrefs.getString(KEY_INSTANCE_BASE_URL, null)
         set(value) {
             appPrefs.edit {
@@ -42,7 +42,7 @@ class WearPreferenceRepositoryImpl(context: Context) :
             }
         }
 
-    override var altInstanceBaseUrl: String?
+    override var remoteInstanceBaseUrl: String?
         get() = appPrefs.getString(KEY_INSTANCE_ALT_BASE_URL, null)
         set(value) {
             appPrefs.edit {
