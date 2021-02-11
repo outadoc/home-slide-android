@@ -16,6 +16,10 @@
 
 package fr.outadoc.homeslide.rest.baseurl
 
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import fr.outadoc.homeslide.rest.util.toUrlOrNull
 import okhttp3.HttpUrl
 
@@ -23,13 +27,12 @@ import okhttp3.HttpUrl
  * Default base URL provider.
  *
  * Will provide as a primary URL the one that was last successfully used.
- * Initially, favor the local base URL.
+ * When connecting to Wi-Fi, favor the local URL initially. When disconnecting, favor the remote.
  */
-class DefaultBaseUrlProvider(private val config: BaseUrlConfigProvider) : BaseUrlProvider {
-
-    // TODO Observe network state.
-    // Clear preferred url on network change,
-    // When WiFi is available prefer local by default
+class DefaultBaseUrlProvider(
+    private val config: BaseUrlConfigProvider,
+    connectivityManager: ConnectivityManager
+) : BaseUrlProvider {
 
     private val localBaseUri: HttpUrl?
         get() = config.localInstanceBaseUrl.toUrlOrNull()
@@ -37,9 +40,25 @@ class DefaultBaseUrlProvider(private val config: BaseUrlConfigProvider) : BaseUr
     private val remoteBaseUri: HttpUrl?
         get() = config.remoteInstanceBaseUrl.toUrlOrNull()
 
-    private val preferLocalBaseUrlByDefault = true
+    private var preferLocalBaseUrl = true
 
-    private var preferLocalBaseUrl = preferLocalBaseUrlByDefault
+    init {
+        val req = NetworkRequest.Builder()
+            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+            .addTransportType(NetworkCapabilities.TRANSPORT_ETHERNET)
+            .build()
+
+        connectivityManager.registerNetworkCallback(req, object: ConnectivityManager.NetworkCallback() {
+
+            override fun onAvailable(network: Network) {
+                preferLocalBaseUrl = true
+            }
+
+            override fun onLost(network: Network) {
+                preferLocalBaseUrl = false
+            }
+        })
+    }
 
     override fun getBaseUrl(rank: BaseUrlRank) =
         when (rank) {
@@ -48,11 +67,9 @@ class DefaultBaseUrlProvider(private val config: BaseUrlConfigProvider) : BaseUr
         }
 
     override fun rememberSuccessWith(which: BaseUrlRank?) {
-        preferLocalBaseUrl = if (which == BaseUrlRank.SECONDARY) {
+        if (which == BaseUrlRank.SECONDARY) {
             // Make the secondary URL the primary one
-            !preferLocalBaseUrl
-        } else {
-            preferLocalBaseUrlByDefault
+            preferLocalBaseUrl = !preferLocalBaseUrl
         }
     }
 }
