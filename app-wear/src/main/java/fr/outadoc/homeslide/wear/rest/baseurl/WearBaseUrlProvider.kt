@@ -14,53 +14,65 @@
  *    limitations under the License.
  */
 
-package fr.outadoc.homeslide.rest.baseurl
+package fr.outadoc.homeslide.wear.rest.baseurl
 
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import fr.outadoc.homeslide.logging.KLog
+import fr.outadoc.homeslide.rest.baseurl.BaseUrlConfigProvider
+import fr.outadoc.homeslide.rest.baseurl.BaseUrlProvider
+import fr.outadoc.homeslide.rest.baseurl.BaseUrlRank
 import fr.outadoc.homeslide.rest.util.toUrlOrNull
+import fr.outadoc.homeslide.wear.MainActivity
 import okhttp3.HttpUrl
 
-/**
- * Default base URL provider.
- *
- * Will provide as a primary URL the one that was last successfully used.
- * When connecting to Wi-Fi, favor the local URL initially. When disconnecting, favor the remote.
- */
-class DefaultBaseUrlProvider(
+class WearBaseUrlProvider(
+    private val context: Context,
     private val config: BaseUrlConfigProvider,
-    connectivityManager: ConnectivityManager
+    private val connectivityManager: ConnectivityManager
 ) : BaseUrlProvider {
 
     private val localBaseUri: HttpUrl?
-        get() = config.localInstanceBaseUrl.toUrlOrNull()
+        get() {
+            requestWifiNetwork()
+            return config.localInstanceBaseUrl.toUrlOrNull()
+        }
 
     private val remoteBaseUri: HttpUrl?
         get() = config.remoteInstanceBaseUrl.toUrlOrNull()
 
-    private var preferLocalBaseUrl = true
+    private var preferLocalBaseUrl = false
+
+    private val wifiRequest = NetworkRequest.Builder()
+        .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+        .build()
 
     init {
-        val req = NetworkRequest.Builder()
-            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-            .addTransportType(NetworkCapabilities.TRANSPORT_ETHERNET)
-            .build()
+        connectivityManager.registerNetworkCallback(
+            wifiRequest,
+            object : ConnectivityManager.NetworkCallback() {
 
-        connectivityManager.registerNetworkCallback(req, object: ConnectivityManager.NetworkCallback() {
+                override fun onAvailable(network: Network) {
+                    KLog.d { "Connected to Wi-Fi, preferring local base URL" }
+                    preferLocalBaseUrl = true
+                }
 
-            override fun onAvailable(network: Network) {
-                KLog.d { "Connected to Wi-Fi, preferring local base URL" }
-                preferLocalBaseUrl = true
-            }
+                override fun onLost(network: Network) {
+                    KLog.d { "Disconnected from Wi-Fi, preferring remote base URL" }
+                    preferLocalBaseUrl = false
+                }
+            })
+    }
 
-            override fun onLost(network: Network) {
-                KLog.d { "Disconnected from Wi-Fi, preferring remote base URL" }
-                preferLocalBaseUrl = false
-            }
-        })
+    private fun requestWifiNetwork() {
+        val intent = Intent(context, MainActivity::class.java)
+        val pi = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        connectivityManager.requestNetwork(wifiRequest, pi)
     }
 
     override fun getBaseUrl(rank: BaseUrlRank) =

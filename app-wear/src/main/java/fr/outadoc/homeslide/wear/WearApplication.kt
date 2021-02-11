@@ -33,7 +33,7 @@ import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.ApiClientBuilder
 import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlProvider
-import fr.outadoc.homeslide.rest.baseurl.WearBaseUrlProvider
+import fr.outadoc.homeslide.wear.rest.baseurl.WearBaseUrlProvider
 import fr.outadoc.homeslide.wear.preferences.DataSyncViewModel
 import fr.outadoc.homeslide.wear.preferences.WearPreferenceRepositoryImpl
 import fr.outadoc.mdi.AndroidMdiMapper
@@ -56,7 +56,7 @@ class WearApplication : Application() {
 
         single<InAppReviewManager> { get<NoopInAppReviewManager>() }
 
-        single<BaseUrlProvider> { WearBaseUrlProvider(get()) }
+        single<BaseUrlProvider> { WearBaseUrlProvider(get(), get(), get()) }
 
         single {
             SimpleApiClientBuilder.newBuilder<AuthApi>(get())
