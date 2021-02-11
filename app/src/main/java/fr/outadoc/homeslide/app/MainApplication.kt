@@ -17,6 +17,7 @@
 package fr.outadoc.homeslide.app
 
 import android.app.Application
+import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.android.play.core.review.ReviewManagerFactory
 import fr.outadoc.homeslide.app.controlprovider.inject.IntentProvider
@@ -66,7 +67,11 @@ class MainApplication : Application() {
 
     private val appModule = module {
 
-        single { ChuckerInterceptor(get()) }
+        single {
+            ChuckerInterceptor.Builder(get())
+                .collector(ChuckerCollector(get()))
+                .build()
+        }
 
         single {
             ApiClientBuilder.newBuilder<HomeAssistantApi>(get(), get(), get())

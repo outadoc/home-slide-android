@@ -50,7 +50,7 @@ class WearApplication : Application() {
         single<GlobalPreferenceRepository> { get<WearPreferenceRepositoryImpl>() }
         single<UrlPreferenceRepository> { get<WearPreferenceRepositoryImpl>() }
         single<TokenPreferenceRepository> { get<WearPreferenceRepositoryImpl>() }
-        single< ConsentPreferenceRepository> { get<WearPreferenceRepositoryImpl>() }
+        single<ConsentPreferenceRepository> { get<WearPreferenceRepositoryImpl>() }
 
         single<InAppReviewManager> { get<NoopInAppReviewManager>() }
 
