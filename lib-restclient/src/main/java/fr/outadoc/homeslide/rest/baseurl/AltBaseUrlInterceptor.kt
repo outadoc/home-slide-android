@@ -16,6 +16,7 @@
 
 package fr.outadoc.homeslide.rest.baseurl
 
+import fr.outadoc.homeslide.logging.KLog
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -56,11 +57,16 @@ class AltBaseUrlInterceptor(private val config: BaseUrlProvider) : Interceptor {
 
     private fun Interceptor.Chain.tryWithBaseUrl(rank: BaseUrlRank): AttemptResult {
         val originalRequestUrl = request().url()
+
+        KLog.d { "Trying URL for rank $rank" }
+
         val targetBaseUrl = checkNotNull(config.getBaseUrl(rank)) {
             "No such URL for rank $rank"
         }
 
         val targetUrl = originalRequestUrl.substituteHost(targetBaseUrl)
+
+        KLog.d { "Transformed URL: $targetUrl" }
 
         val req = request()
             .newBuilder()

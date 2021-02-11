@@ -20,6 +20,7 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
+import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.util.toUrlOrNull
 import okhttp3.HttpUrl
 
@@ -51,10 +52,12 @@ class DefaultBaseUrlProvider(
         connectivityManager.registerNetworkCallback(req, object: ConnectivityManager.NetworkCallback() {
 
             override fun onAvailable(network: Network) {
+                KLog.d { "Connected to Wi-Fi, preferring local base URL" }
                 preferLocalBaseUrl = true
             }
 
             override fun onLost(network: Network) {
+                KLog.d { "Connected to Wi-Fi, preferring remote base URL" }
                 preferLocalBaseUrl = false
             }
         })
@@ -70,6 +73,8 @@ class DefaultBaseUrlProvider(
         if (which == BaseUrlRank.SECONDARY) {
             // Make the secondary URL the primary one
             preferLocalBaseUrl = !preferLocalBaseUrl
+
+            KLog.d { "$which base URL succeeded, flipping preferLocalBaseUrl to $preferLocalBaseUrl" }
         }
     }
 }
