@@ -83,7 +83,7 @@ class AltBaseUrlInterceptor(private val config: BaseUrlProvider) : Interceptor {
 
     private fun HttpUrl.substituteHost(baseUrl: HttpUrl): HttpUrl {
         return baseUrl.newBuilder()
-            .addEncodedPathSegments(encodedPath())
+            .addEncodedPathSegments(encodedPath().trimStart('/'))
             .build()
     }
 }
