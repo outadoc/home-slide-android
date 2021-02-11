@@ -16,69 +16,68 @@
 
 package fr.outadoc.homeslide.rest.baseurl
 
-import fr.outadoc.homeslide.logging.KLog
-import fr.outadoc.homeslide.rest.util.PLACEHOLDER_BASE_URL
-import fr.outadoc.homeslide.rest.util.toUrl
-import fr.outadoc.homeslide.rest.util.toUrlOrNull
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.Response
+import java.io.IOException
+import kotlin.jvm.Throws
 
-class AltBaseUrlInterceptor(private val config: BaseUrlConfigProvider) : Interceptor {
-
-    private val localBaseUri: HttpUrl?
-        get() = config.localInstanceBaseUrl.toUrlOrNull()
-
-    private val remoteBaseUri: HttpUrl?
-        get() = config.remoteInstanceBaseUrl.toUrlOrNull()
-
-    private val preferredBaseUrl: PreferredBaseUrl
-        get() = config.preferredBaseUrl
+class AltBaseUrlInterceptor(private val config: BaseUrlProvider) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val req = chain.request()
+        return chain.tryWithPossibleBaseUrls()
+    }
 
-        getUrlsToTry(req.url())
-            .map { (type, url) ->
-                type to chain.request()
-                    .newBuilder()
-                    .url(url)
-                    .build()
-            }.forEach { (type, req) ->
-                try {
-                    return chain.proceed(req).also { res ->
-                        if (res.isSuccessful) {
-                            config.preferredBaseUrl = type
-                        }
-                    }
-                } catch (e: Exception) {
-                    KLog.e(e)
+    private sealed class AttemptResult {
+        class Success(val response: Response) : AttemptResult()
+        sealed class Error : AttemptResult() {
+            class WithResponse(val response: Response) : Error()
+            class Exception(val e: Throwable) : Error()
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun Interceptor.Chain.tryWithPossibleBaseUrls(): Response {
+        var lastError: AttemptResult.Error? = null
+
+        BaseUrlRank.values()
+            .forEach { rank ->
+                when (val res = tryWithBaseUrl(rank)) {
+                    is AttemptResult.Success -> return res.response
+                    is AttemptResult.Error -> lastError = res
                 }
             }
 
-        return chain.proceed(req)
+        when (val error = lastError!!) {
+            is AttemptResult.Error.Exception -> throw error.e
+            is AttemptResult.Error.WithResponse -> return error.response
+        }
+    }
+
+    private fun Interceptor.Chain.tryWithBaseUrl(rank: BaseUrlRank): AttemptResult {
+        val originalRequestUrl = request().url()
+        val targetBaseUrl = checkNotNull(config.getBaseUrl(rank)) {
+            "No such URL for rank $rank"
+        }
+
+        val targetUrl = originalRequestUrl.substituteHost(targetBaseUrl)
+
+        val req = request()
+            .newBuilder()
+            .url(targetUrl)
+            .build()
+
+        return proceed(req).also { res ->
+            config.rememberSuccessWith(if (res.isSuccessful) rank else null)
+        }.let { res ->
+            if (res.isSuccessful) AttemptResult.Success(res)
+            else AttemptResult.Error.WithResponse(res)
+        }
     }
 
     private fun HttpUrl.substituteHost(baseUrl: HttpUrl): HttpUrl {
         return baseUrl.newBuilder()
             .addEncodedPathSegments(encodedPath())
             .build()
-    }
-
-    fun getUrlsToTry(requestUrl: HttpUrl): List<Pair<PreferredBaseUrl, HttpUrl>> {
-        fun replaceBaseUrl(newBase: HttpUrl?): HttpUrl? {
-            if (newBase == null) return null
-            return requestUrl.toString().replace(PLACEHOLDER_BASE_URL, newBase.toString()).toUrl()
-        }
-
-        val internalUrl = PreferredBaseUrl.PRIMARY to replaceBaseUrl(localBaseUri)
-        val externalUrl = PreferredBaseUrl.ALTERNATIVE to replaceBaseUrl(remoteBaseUri)
-
-        return when (preferredBaseUrl) {
-            PreferredBaseUrl.PRIMARY -> listOf(internalUrl, externalUrl)
-            PreferredBaseUrl.ALTERNATIVE -> listOf(externalUrl, internalUrl)
-        }.mapNotNull { (type, url) ->
-            if (url != null) type to url else null
-        }
     }
 }

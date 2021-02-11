@@ -18,9 +18,9 @@ package fr.outadoc.homeslide.rest
 
 import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlConfigProvider
-import fr.outadoc.homeslide.rest.baseurl.PreferredBaseUrl
-import fr.outadoc.homeslide.rest.baseurl.PreferredBaseUrl.ALTERNATIVE
-import fr.outadoc.homeslide.rest.baseurl.PreferredBaseUrl.PRIMARY
+import fr.outadoc.homeslide.rest.baseurl.BaseUrlRank
+import fr.outadoc.homeslide.rest.baseurl.BaseUrlRank.SECONDARY
+import fr.outadoc.homeslide.rest.baseurl.BaseUrlRank.PRIMARY
 import fr.outadoc.homeslide.rest.util.PLACEHOLDER_BASE_URL
 import fr.outadoc.homeslide.rest.util.toUrl
 import okhttp3.HttpUrl
@@ -41,7 +41,7 @@ class AltBaseUrlInterceptorTest {
             assertEquals(
                 listOf(
                     PRIMARY to "https://test.xyz/test/".toUrl(),
-                    ALTERNATIVE to "https://test.abc/test/".toUrl()
+                    SECONDARY to "https://test.abc/test/".toUrl()
                 ),
                 getUrlsToTry(getUrlForPath("test/"))
             )
@@ -53,11 +53,11 @@ class AltBaseUrlInterceptorTest {
         setupWith(
             baseUrl = "https://test.xyz",
             altBaseUrl = "https://test.abc",
-            preferred = ALTERNATIVE
+            preferred = SECONDARY
         ).apply {
             assertEquals(
                 listOf(
-                    ALTERNATIVE to "https://test.abc/test/".toUrl(),
+                    SECONDARY to "https://test.abc/test/".toUrl(),
                     PRIMARY to "https://test.xyz/test/".toUrl()
                 ),
                 getUrlsToTry(getUrlForPath("test/"))
@@ -86,7 +86,7 @@ class AltBaseUrlInterceptorTest {
         setupWith(
             baseUrl = "https://test.xyz",
             altBaseUrl = null,
-            preferred = ALTERNATIVE
+            preferred = SECONDARY
         ).apply {
             assertEquals(
                 listOf(
@@ -104,7 +104,7 @@ class AltBaseUrlInterceptorTest {
     private fun setupWith(
         baseUrl: String,
         altBaseUrl: String?,
-        preferred: PreferredBaseUrl
+        preferred: BaseUrlRank
     ): AltBaseUrlInterceptor {
         val repo = Mockito.mock(BaseUrlConfigProvider::class.java).apply {
             `when`(localInstanceBaseUrl).thenReturn(baseUrl)

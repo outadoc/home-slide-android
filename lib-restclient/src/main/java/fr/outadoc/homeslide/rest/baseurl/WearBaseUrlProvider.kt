@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Baptiste Candellier
+ * Copyright 2021 Baptiste Candellier
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,8 +16,22 @@
 
 package fr.outadoc.homeslide.rest.baseurl
 
-interface BaseUrlConfigProvider {
-    val localInstanceBaseUrl: String?
-    val remoteInstanceBaseUrl: String?
-    var preferredBaseUrl: BaseUrlRank
+import fr.outadoc.homeslide.rest.util.toUrlOrNull
+import okhttp3.HttpUrl
+
+class WearBaseUrlProvider(private val config: BaseUrlConfigProvider) : BaseUrlProvider {
+
+    private val localBaseUri: HttpUrl?
+        get() = config.localInstanceBaseUrl.toUrlOrNull()
+
+    private val remoteBaseUri: HttpUrl?
+        get() = config.remoteInstanceBaseUrl.toUrlOrNull()
+
+    override fun getBaseUrl(rank: BaseUrlRank): HttpUrl? {
+        TODO("Not yet implemented")
+    }
+
+    override fun rememberSuccessWith(which: BaseUrlRank?) {
+        TODO("Not yet implemented")
+    }
 }

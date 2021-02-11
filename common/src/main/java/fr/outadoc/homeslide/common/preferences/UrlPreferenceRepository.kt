@@ -16,11 +16,7 @@
 
 package fr.outadoc.homeslide.common.preferences
 
-import fr.outadoc.homeslide.rest.baseurl.PreferredBaseUrl
-
 interface UrlPreferenceRepository {
-
     var localInstanceBaseUrl: String?
     var remoteInstanceBaseUrl: String?
-    var preferredBaseUrl: PreferredBaseUrl
 }
