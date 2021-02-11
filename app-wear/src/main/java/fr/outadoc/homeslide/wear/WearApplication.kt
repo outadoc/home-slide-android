@@ -32,6 +32,8 @@ import fr.outadoc.homeslide.hassapi.api.HomeAssistantApi
 import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.ApiClientBuilder
 import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
+import fr.outadoc.homeslide.rest.baseurl.BaseUrlProvider
+import fr.outadoc.homeslide.rest.baseurl.WearBaseUrlProvider
 import fr.outadoc.homeslide.wear.preferences.DataSyncViewModel
 import fr.outadoc.homeslide.wear.preferences.WearPreferenceRepositoryImpl
 import fr.outadoc.mdi.AndroidMdiMapper
@@ -53,6 +55,8 @@ class WearApplication : Application() {
         single<ConsentPreferenceRepository> { get<WearPreferenceRepositoryImpl>() }
 
         single<InAppReviewManager> { get<NoopInAppReviewManager>() }
+
+        single<BaseUrlProvider> { WearBaseUrlProvider(get()) }
 
         single {
             SimpleApiClientBuilder.newBuilder<AuthApi>(get())

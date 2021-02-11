@@ -17,7 +17,6 @@
 package fr.outadoc.homeslide.common.preferences
 
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlConfigProvider
-import fr.outadoc.homeslide.rest.baseurl.BaseUrlRank
 
 class BaseUrlConfigProviderImpl(private val prefs: UrlPreferenceRepository) :
     BaseUrlConfigProvider {
@@ -27,10 +26,4 @@ class BaseUrlConfigProviderImpl(private val prefs: UrlPreferenceRepository) :
 
     override val remoteInstanceBaseUrl: String?
         get() = prefs.remoteInstanceBaseUrl
-
-    override var preferredBaseUrl: BaseUrlRank
-        get() = prefs.preferredBaseUrl
-        set(value) {
-            prefs.preferredBaseUrl = value
-        }
 }

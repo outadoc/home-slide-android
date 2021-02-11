@@ -19,5 +19,4 @@ package fr.outadoc.homeslide.rest.baseurl
 interface BaseUrlConfigProvider {
     val localInstanceBaseUrl: String?
     val remoteInstanceBaseUrl: String?
-    var preferredBaseUrl: BaseUrlRank
 }

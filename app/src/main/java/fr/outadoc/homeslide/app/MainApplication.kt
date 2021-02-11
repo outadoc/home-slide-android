@@ -53,6 +53,8 @@ import fr.outadoc.homeslide.hassapi.repository.DiscoveryRepository
 import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.ApiClientBuilder
 import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
+import fr.outadoc.homeslide.rest.baseurl.BaseUrlProvider
+import fr.outadoc.homeslide.rest.baseurl.DefaultBaseUrlProvider
 import fr.outadoc.homeslide.zeroconf.ZeroconfDiscoveryService
 import fr.outadoc.mdi.AndroidMdiMapper
 import fr.outadoc.mdi.common.MdiMapperLocator
@@ -109,7 +111,9 @@ class MainApplication : Application() {
 
         single { ReviewManagerFactory.create(get()) }
         single { InAppReviewLaunchCounter(get()) }
+
         single<InAppReviewManager> { GoogleInAppReviewManager(get(), get()) }
+        single<BaseUrlProvider> { DefaultBaseUrlProvider(get(), get()) }
 
         viewModel { WelcomeViewModel() }
         viewModel {
