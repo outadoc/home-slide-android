@@ -59,6 +59,12 @@ class AltBaseUrlInterceptor(private val config: BaseUrlConfigProvider) : Interce
         return chain.proceed(req)
     }
 
+    private fun HttpUrl.substituteHost(baseUrl: HttpUrl): HttpUrl {
+        return baseUrl.newBuilder()
+            .addEncodedPathSegments(encodedPath())
+            .build()
+    }
+
     fun getUrlsToTry(requestUrl: HttpUrl): List<Pair<PreferredBaseUrl, HttpUrl>> {
         fun replaceBaseUrl(newBase: HttpUrl?): HttpUrl? {
             if (newBase == null) return null
