@@ -17,6 +17,7 @@
 package fr.outadoc.homeslide.rest.baseurl
 
 import fr.outadoc.homeslide.logging.KLog
+import fr.outadoc.homeslide.rest.throwable.CompositeIOException
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -31,28 +32,27 @@ class AltBaseUrlInterceptor(private val config: BaseUrlProvider) : Interceptor {
 
     private sealed class AttemptResult {
         class Success(val response: Response) : AttemptResult()
-        sealed class Error : AttemptResult() {
-            class WithResponse(val response: Response) : Error()
-            class Exception(val e: Throwable) : Error()
-        }
+        class Error(val e: Throwable) : AttemptResult()
+        object Ignored : AttemptResult()
     }
 
     @Throws(IOException::class)
     private fun Interceptor.Chain.tryWithPossibleBaseUrls(): Response {
-        var lastError: AttemptResult.Error? = null
+        val errorList = mutableListOf<Throwable>()
 
         BaseUrlRank.values()
             .forEach { rank ->
                 when (val res = tryWithBaseUrl(rank)) {
                     is AttemptResult.Success -> return res.response
-                    is AttemptResult.Error -> lastError = res
+                    is AttemptResult.Error -> errorList.add(res.e)
                 }
             }
 
-        when (val error = lastError!!) {
-            is AttemptResult.Error.Exception -> throw error.e
-            is AttemptResult.Error.WithResponse -> return error.response
+        if (errorList.isNotEmpty()) {
+            throw CompositeIOException(errorList.toList())
         }
+
+        throw IOException("No base URL configured. Please check your settings.")
     }
 
     private fun Interceptor.Chain.tryWithBaseUrl(rank: BaseUrlRank): AttemptResult {
@@ -60,10 +60,7 @@ class AltBaseUrlInterceptor(private val config: BaseUrlProvider) : Interceptor {
 
         KLog.d { "Trying URL for rank $rank" }
 
-        val targetBaseUrl = checkNotNull(config.getBaseUrl(rank)) {
-            "No such URL for rank $rank"
-        }
-
+        val targetBaseUrl = config.getBaseUrl(rank) ?: return AttemptResult.Ignored
         val targetUrl = originalRequestUrl.substituteHost(targetBaseUrl)
 
         KLog.d { "Transformed URL: $targetUrl" }
@@ -73,11 +70,15 @@ class AltBaseUrlInterceptor(private val config: BaseUrlProvider) : Interceptor {
             .url(targetUrl)
             .build()
 
-        return proceed(req).also { res ->
-            config.rememberSuccessWith(if (res.isSuccessful) rank else null)
-        }.let { res ->
-            if (res.isSuccessful) AttemptResult.Success(res)
-            else AttemptResult.Error.WithResponse(res)
+        return try {
+            proceed(req).let { response ->
+                if (response.isSuccessful) AttemptResult.Success(response)
+                else AttemptResult.Error(IOException("HTTP Error: ${response.code()}"))
+            }
+        } catch (e: IOException) {
+            AttemptResult.Error(e)
+        }.also { result ->
+            config.rememberSuccessWith(if (result is AttemptResult.Success) rank else null)
         }
     }
 

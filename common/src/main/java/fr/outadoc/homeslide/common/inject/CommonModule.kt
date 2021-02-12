@@ -81,7 +81,7 @@ fun commonModule() = module {
 
     single {
         HttpLoggingInterceptor(OkHttpCustomLogger()).apply {
-            level = HttpLoggingInterceptor.Level.BODY
+            level = HttpLoggingInterceptor.Level.HEADERS
         }
     }
 
