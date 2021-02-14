@@ -16,9 +16,6 @@
 
 package fr.outadoc.homeslide.wear.rest.baseurl
 
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
@@ -28,51 +25,52 @@ import fr.outadoc.homeslide.rest.baseurl.BaseUrlConfigProvider
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlProvider
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlRank
 import fr.outadoc.homeslide.rest.util.toUrlOrNull
-import fr.outadoc.homeslide.wear.MainActivity
 import okhttp3.HttpUrl
+import kotlin.properties.Delegates
 
 class WearBaseUrlProvider(
-    private val context: Context,
     private val config: BaseUrlConfigProvider,
     private val connectivityManager: ConnectivityManager
 ) : BaseUrlProvider {
 
     private val localBaseUri: HttpUrl?
         get() {
-            requestWifiNetwork()
+            connectivityManager.bindProcessToNetwork(currentWifiNetwork)
             return config.localInstanceBaseUrl.toUrlOrNull()
         }
 
     private val remoteBaseUri: HttpUrl?
-        get() = config.remoteInstanceBaseUrl.toUrlOrNull()
+        get() {
+            connectivityManager.bindProcessToNetwork(null)
+            return config.remoteInstanceBaseUrl.toUrlOrNull()
+        }
 
-    private var preferLocalBaseUrl = false
+    private var preferLocalBaseUrl: Boolean = false
 
-    private val wifiRequest = NetworkRequest.Builder()
-        .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-        .build()
+    private var currentWifiNetwork: Network?
+        by Delegates.observable(null) { _, _, value ->
+            preferLocalBaseUrl = value != null
+        }
 
     init {
+        val wifiRequest = NetworkRequest.Builder()
+            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+            .build()
+
         connectivityManager.registerNetworkCallback(
             wifiRequest,
             object : ConnectivityManager.NetworkCallback() {
 
                 override fun onAvailable(network: Network) {
-                    KLog.d { "Connected to Wi-Fi, preferring local base URL" }
-                    preferLocalBaseUrl = true
+                    KLog.d { "Connected to Wi-Fi" }
+                    currentWifiNetwork = network
                 }
 
                 override fun onLost(network: Network) {
                     KLog.d { "Disconnected from Wi-Fi, preferring remote base URL" }
-                    preferLocalBaseUrl = false
+                    currentWifiNetwork = null
                 }
             })
-    }
-
-    private fun requestWifiNetwork() {
-        val intent = Intent(context, MainActivity::class.java)
-        val pi = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-        connectivityManager.requestNetwork(wifiRequest, pi)
     }
 
     override fun getBaseUrl(rank: BaseUrlRank) =

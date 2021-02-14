@@ -56,7 +56,7 @@ class WearApplication : Application() {
 
         single<InAppReviewManager> { get<NoopInAppReviewManager>() }
 
-        single<BaseUrlProvider> { WearBaseUrlProvider(get(), get(), get()) }
+        single<BaseUrlProvider> { WearBaseUrlProvider(get(), get()) }
 
         single {
             SimpleApiClientBuilder.newBuilder<AuthApi>(get())
