@@ -26,8 +26,8 @@ import fr.outadoc.homeslide.rest.baseurl.BaseUrlConfigProvider
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlProvider
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlRank
 import fr.outadoc.homeslide.rest.util.toUrlOrNull
-import okhttp3.HttpUrl
 import kotlin.properties.Delegates
+import okhttp3.HttpUrl
 
 /**
  * Base URL provider for Wear.

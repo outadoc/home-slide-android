@@ -18,11 +18,11 @@ package fr.outadoc.homeslide.rest.baseurl
 
 import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.throwable.CompositeIOException
+import java.io.IOException
+import kotlin.jvm.Throws
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.Response
-import java.io.IOException
-import kotlin.jvm.Throws
 
 class AltBaseUrlInterceptor(private val config: BaseUrlProvider) : Interceptor {
 

@@ -62,8 +62,8 @@ import fr.outadoc.homeslide.util.view.showSnackbar
 import io.uniflow.androidx.flow.onEvents
 import io.uniflow.androidx.flow.onStates
 import io.uniflow.core.flow.getCurrentStateOrNull
-import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EntityGridFragment : Fragment() {

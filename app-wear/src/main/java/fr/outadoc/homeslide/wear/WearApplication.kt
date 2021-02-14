@@ -34,9 +34,9 @@ import fr.outadoc.homeslide.rest.ApiClientBuilder
 import fr.outadoc.homeslide.rest.NetworkAccessManager
 import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlProvider
-import fr.outadoc.homeslide.wear.rest.baseurl.WearBaseUrlProvider
 import fr.outadoc.homeslide.wear.preferences.DataSyncViewModel
 import fr.outadoc.homeslide.wear.preferences.WearPreferenceRepositoryImpl
+import fr.outadoc.homeslide.wear.rest.baseurl.WearBaseUrlProvider
 import fr.outadoc.mdi.AndroidMdiMapper
 import fr.outadoc.mdi.common.MdiMapperLocator
 import okhttp3.logging.HttpLoggingInterceptor
