@@ -57,16 +57,20 @@ import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel.Event
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel.State
 import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 import fr.outadoc.homeslide.logging.KLog
+import fr.outadoc.homeslide.rest.NetworkAccessManager
 import fr.outadoc.homeslide.util.view.showSnackbar
 import io.uniflow.androidx.flow.onEvents
 import io.uniflow.androidx.flow.onStates
 import io.uniflow.core.flow.getCurrentStateOrNull
 import java.util.concurrent.TimeUnit
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EntityGridFragment : Fragment() {
 
     private val vm: EntityListViewModel by viewModel()
+
+    private val networkAccessManager: NetworkAccessManager by inject()
 
     private var binding: FragmentEntityGridBinding? = null
     private val handler: Handler = Handler(Looper.getMainLooper())
@@ -405,6 +409,11 @@ class EntityGridFragment : Fragment() {
         super.onDestroyView()
         binding = null
         skeleton = null
+    }
+
+    override fun onStop() {
+        super.onStop()
+        networkAccessManager.releaseNetwork()
     }
 
     companion object {

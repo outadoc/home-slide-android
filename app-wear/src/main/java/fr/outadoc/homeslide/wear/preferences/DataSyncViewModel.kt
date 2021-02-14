@@ -40,8 +40,8 @@ class DataSyncViewModel(
         dataSyncClient.getPreferencesFromDataEvents(dataEvents)?.apply {
             KLog.d { "received prefs: $this" }
 
-            urlPrefs.instanceBaseUrl = instanceBaseUrl
-            urlPrefs.altInstanceBaseUrl = altInstanceBaseUrl
+            urlPrefs.localInstanceBaseUrl = localInstanceBaseUrl
+            urlPrefs.remoteInstanceBaseUrl = remoteInstanceBaseUrl
             tokenPrefs.accessToken = accessToken
             tokenPrefs.refreshToken = refreshToken
             globalPrefs.isOnboardingDone = true

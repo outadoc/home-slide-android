@@ -17,6 +17,7 @@
 package fr.outadoc.homeslide.app
 
 import android.app.Application
+import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.android.play.core.review.ReviewManagerFactory
 import fr.outadoc.homeslide.app.controlprovider.inject.IntentProvider
@@ -51,7 +52,10 @@ import fr.outadoc.homeslide.hassapi.api.HomeAssistantApi
 import fr.outadoc.homeslide.hassapi.repository.DiscoveryRepository
 import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.ApiClientBuilder
+import fr.outadoc.homeslide.rest.NetworkAccessManager
 import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
+import fr.outadoc.homeslide.rest.baseurl.BaseUrlProvider
+import fr.outadoc.homeslide.rest.baseurl.DefaultBaseUrlProvider
 import fr.outadoc.homeslide.zeroconf.ZeroconfDiscoveryService
 import fr.outadoc.mdi.AndroidMdiMapper
 import fr.outadoc.mdi.common.MdiMapperLocator
@@ -66,7 +70,11 @@ class MainApplication : Application() {
 
     private val appModule = module {
 
-        single { ChuckerInterceptor(get()) }
+        single {
+            ChuckerInterceptor.Builder(get())
+                .collector(ChuckerCollector(get()))
+                .build()
+        }
 
         single {
             ApiClientBuilder.newBuilder<HomeAssistantApi>(get(), get(), get())
@@ -104,7 +112,12 @@ class MainApplication : Application() {
 
         single { ReviewManagerFactory.create(get()) }
         single { InAppReviewLaunchCounter(get()) }
+
         single<InAppReviewManager> { GoogleInAppReviewManager(get(), get()) }
+
+        single { DefaultBaseUrlProvider(get(), get()) }
+        single<BaseUrlProvider> { get<DefaultBaseUrlProvider>() }
+        single<NetworkAccessManager> { get<DefaultBaseUrlProvider>() }
 
         viewModel { WelcomeViewModel() }
         viewModel {

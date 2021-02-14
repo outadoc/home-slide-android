@@ -22,9 +22,9 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class PreferencesPayload(
     @Json(name = "instanceBaseUrl")
-    val instanceBaseUrl: String?,
+    val localInstanceBaseUrl: String?,
     @Json(name = "altInstanceBaseUrl")
-    val altInstanceBaseUrl: String?,
+    val remoteInstanceBaseUrl: String?,
     @Json(name = "accessToken")
     val accessToken: String?,
     @Json(name = "refreshToken")

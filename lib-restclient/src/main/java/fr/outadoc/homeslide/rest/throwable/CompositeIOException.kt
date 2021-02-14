@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Baptiste Candellier
+ * Copyright 2021 Baptiste Candellier
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,19 +14,18 @@
  *    limitations under the License.
  */
 
-package fr.outadoc.homeslide.common.inject
+package fr.outadoc.homeslide.rest.throwable
 
-import android.app.ActivityManager
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.nsd.NsdManager
-import androidx.core.content.getSystemService
-import kotlinx.datetime.Clock
-import org.koin.dsl.module
+import java.io.IOException
 
-fun Context.systemModule() = module {
-    single { getSystemService<NsdManager>() }
-    single { getSystemService<ActivityManager>() }
-    single { getSystemService<ConnectivityManager>() }
-    single<Clock> { Clock.System }
+class CompositeIOException(private val exceptions: List<Throwable>) : IOException() {
+
+    override fun printStackTrace() {
+        exceptions.forEach { e ->
+            e.printStackTrace()
+        }
+    }
+
+    override val message: String
+        get() = exceptions.map { it.message }.joinToString("\n")
 }

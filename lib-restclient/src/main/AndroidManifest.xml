@@ -15,4 +15,9 @@
   ~    limitations under the License.
   -->
 
-<manifest package="fr.outadoc.homeslide.rest" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="fr.outadoc.homeslide.rest">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+</manifest>

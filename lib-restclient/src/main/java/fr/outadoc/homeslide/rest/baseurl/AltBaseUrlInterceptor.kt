@@ -17,62 +17,74 @@
 package fr.outadoc.homeslide.rest.baseurl
 
 import fr.outadoc.homeslide.logging.KLog
-import fr.outadoc.homeslide.rest.util.PLACEHOLDER_BASE_URL
-import fr.outadoc.homeslide.rest.util.toUrl
-import fr.outadoc.homeslide.rest.util.toUrlOrNull
+import fr.outadoc.homeslide.rest.throwable.CompositeIOException
+import java.io.IOException
+import kotlin.jvm.Throws
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class AltBaseUrlInterceptor(private val config: BaseUrlConfigProvider) : Interceptor {
-
-    private val baseUri: HttpUrl?
-        get() = config.instanceBaseUrl.toUrlOrNull()
-
-    private val altBaseUri: HttpUrl?
-        get() = config.altInstanceBaseUrl.toUrlOrNull()
-
-    private val preferredBaseUrl: PreferredBaseUrl
-        get() = config.preferredBaseUrl
+class AltBaseUrlInterceptor(private val config: BaseUrlProvider) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val req = chain.request()
+        return chain.tryWithPossibleBaseUrls()
+    }
 
-        getUrlsToTry(req.url())
-            .map { (type, url) ->
-                type to chain.request()
-                    .newBuilder()
-                    .url(url)
-                    .build()
-            }.forEach { (type, req) ->
-                try {
-                    return chain.proceed(req).also { res ->
-                        if (res.isSuccessful) {
-                            config.preferredBaseUrl = type
-                        }
-                    }
-                } catch (e: Exception) {
-                    KLog.e(e)
+    private sealed class AttemptResult {
+        class Success(val response: Response) : AttemptResult()
+        class Error(val e: Throwable) : AttemptResult()
+        object Ignored : AttemptResult()
+    }
+
+    @Throws(IOException::class)
+    private fun Interceptor.Chain.tryWithPossibleBaseUrls(): Response {
+        val errorList = mutableListOf<Throwable>()
+
+        BaseUrlRank.values()
+            .forEach { rank ->
+                when (val res = tryWithBaseUrl(rank)) {
+                    is AttemptResult.Success -> return res.response
+                    is AttemptResult.Error -> errorList.add(res.e)
                 }
             }
 
-        return chain.proceed(req)
+        if (errorList.isNotEmpty()) {
+            throw CompositeIOException(errorList.toList())
+        }
+
+        throw IOException("No base URL configured. Please check your settings.")
     }
 
-    fun getUrlsToTry(requestUrl: HttpUrl): List<Pair<PreferredBaseUrl, HttpUrl>> {
-        fun replaceBaseUrl(newBase: HttpUrl?): HttpUrl? {
-            if (newBase == null) return null
-            return requestUrl.toString().replace(PLACEHOLDER_BASE_URL, newBase.toString()).toUrl()
-        }
+    private fun Interceptor.Chain.tryWithBaseUrl(rank: BaseUrlRank): AttemptResult {
+        val originalRequestUrl = request().url()
 
-        val internalUrl = PreferredBaseUrl.PRIMARY to replaceBaseUrl(baseUri)
-        val externalUrl = PreferredBaseUrl.ALTERNATIVE to replaceBaseUrl(altBaseUri)
+        KLog.d { "Trying URL for rank $rank" }
 
-        return when (preferredBaseUrl) {
-            PreferredBaseUrl.PRIMARY -> listOf(internalUrl, externalUrl)
-            PreferredBaseUrl.ALTERNATIVE -> listOf(externalUrl, internalUrl)
-        }.mapNotNull { (type, url) ->
-            if (url != null) type to url else null
+        val targetBaseUrl = config.getBaseUrl(rank) ?: return AttemptResult.Ignored
+        val targetUrl = originalRequestUrl.substituteHost(targetBaseUrl)
+
+        KLog.d { "Transformed URL: $targetUrl" }
+
+        val req = request()
+            .newBuilder()
+            .url(targetUrl)
+            .build()
+
+        return try {
+            proceed(req).let { response ->
+                if (response.isSuccessful) AttemptResult.Success(response)
+                else AttemptResult.Error(IOException("HTTP Error: ${response.code()}"))
+            }
+        } catch (e: IOException) {
+            AttemptResult.Error(e)
+        }.also { result ->
+            config.rememberSuccessWith(if (result is AttemptResult.Success) rank else null)
         }
+    }
+
+    private fun HttpUrl.substituteHost(baseUrl: HttpUrl): HttpUrl {
+        return baseUrl.newBuilder()
+            .addEncodedPathSegments(encodedPath().trimStart('/'))
+            .build()
     }
 }

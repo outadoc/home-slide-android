@@ -20,7 +20,7 @@ import fr.outadoc.homeslide.rest.auth.AccessTokenAuthenticator
 import fr.outadoc.homeslide.rest.auth.AccessTokenInterceptor
 import fr.outadoc.homeslide.rest.auth.AccessTokenProvider
 import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
-import fr.outadoc.homeslide.rest.baseurl.BaseUrlConfigProvider
+import fr.outadoc.homeslide.rest.baseurl.BaseUrlProvider
 import fr.outadoc.homeslide.rest.util.PLACEHOLDER_BASE_URL
 import java.util.concurrent.TimeUnit
 import okhttp3.Interceptor
@@ -32,7 +32,7 @@ class ApiClientBuilder<T>(
     private val type: Class<T>,
     private val parserFactory: Converter.Factory,
     accessTokenProvider: AccessTokenProvider,
-    configProvider: BaseUrlConfigProvider
+    baseUrlProvider: BaseUrlProvider
 ) {
     private val clientBuilder = OkHttpClient.Builder()
         .connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
@@ -50,7 +50,7 @@ class ApiClientBuilder<T>(
         )
         .addInterceptor(
             AltBaseUrlInterceptor(
-                configProvider
+                baseUrlProvider
             )
         )
 
@@ -72,13 +72,13 @@ class ApiClientBuilder<T>(
         inline fun <reified T> newBuilder(
             parserFactory: Converter.Factory,
             accessTokenProvider: AccessTokenProvider,
-            configProvider: BaseUrlConfigProvider
+            baseUrlProvider: BaseUrlProvider
         ): ApiClientBuilder<T> =
             ApiClientBuilder(
                 T::class.java,
                 parserFactory,
                 accessTokenProvider,
-                configProvider
+                baseUrlProvider
             )
     }
 }
