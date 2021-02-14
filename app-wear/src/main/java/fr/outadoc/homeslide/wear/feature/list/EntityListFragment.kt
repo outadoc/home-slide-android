@@ -35,6 +35,7 @@ import fr.outadoc.homeslide.hassapi.factory.TileFactory
 import fr.outadoc.homeslide.hassapi.model.Tile
 import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 import fr.outadoc.homeslide.logging.KLog
+import fr.outadoc.homeslide.rest.NetworkAccessManager
 import fr.outadoc.homeslide.wear.R
 import fr.outadoc.homeslide.wear.databinding.FragmentEntityListBinding
 import fr.outadoc.homeslide.wear.feature.about.AboutActivity
@@ -49,6 +50,8 @@ class EntityListFragment : Fragment() {
 
     private val vm: EntityListViewModel by viewModel()
     private val tileFactory: TileFactory by inject()
+
+    private val networkAccessManager: NetworkAccessManager by inject()
 
     private var binding: FragmentEntityListBinding? = null
     private val handler: Handler = Handler(Looper.getMainLooper())
@@ -195,6 +198,11 @@ class EntityListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    override fun onStop() {
+        super.onStop()
+        networkAccessManager.releaseNetwork()
     }
 
     companion object {

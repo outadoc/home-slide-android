@@ -52,6 +52,7 @@ import fr.outadoc.homeslide.hassapi.api.HomeAssistantApi
 import fr.outadoc.homeslide.hassapi.repository.DiscoveryRepository
 import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.ApiClientBuilder
+import fr.outadoc.homeslide.rest.NetworkAccessManager
 import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlProvider
 import fr.outadoc.homeslide.rest.baseurl.DefaultBaseUrlProvider
@@ -113,7 +114,10 @@ class MainApplication : Application() {
         single { InAppReviewLaunchCounter(get()) }
 
         single<InAppReviewManager> { GoogleInAppReviewManager(get(), get()) }
-        single<BaseUrlProvider> { DefaultBaseUrlProvider(get(), get()) }
+
+        single { DefaultBaseUrlProvider(get(), get()) }
+        single<BaseUrlProvider> { get<DefaultBaseUrlProvider>() }
+        single<NetworkAccessManager> { get<DefaultBaseUrlProvider>() }
 
         viewModel { WelcomeViewModel() }
         viewModel {

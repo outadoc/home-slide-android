@@ -21,6 +21,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import fr.outadoc.homeslide.logging.KLog
+import fr.outadoc.homeslide.rest.NetworkAccessManager
 import fr.outadoc.homeslide.rest.util.toUrlOrNull
 import okhttp3.HttpUrl
 
@@ -33,7 +34,7 @@ import okhttp3.HttpUrl
 class DefaultBaseUrlProvider(
     private val config: BaseUrlConfigProvider,
     connectivityManager: ConnectivityManager
-) : BaseUrlProvider {
+) : BaseUrlProvider, NetworkAccessManager {
 
     private val localBaseUri: HttpUrl?
         get() = config.localInstanceBaseUrl.toUrlOrNull()
@@ -44,23 +45,25 @@ class DefaultBaseUrlProvider(
     private var preferLocalBaseUrl = true
 
     init {
-        val req = NetworkRequest.Builder()
+        val localNetworkRequest = NetworkRequest.Builder()
             .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
             .addTransportType(NetworkCapabilities.TRANSPORT_ETHERNET)
             .build()
 
-        connectivityManager.registerNetworkCallback(req, object: ConnectivityManager.NetworkCallback() {
+        connectivityManager.registerNetworkCallback(
+            localNetworkRequest,
+            object : ConnectivityManager.NetworkCallback() {
 
-            override fun onAvailable(network: Network) {
-                KLog.d { "Connected to Wi-Fi, preferring local base URL" }
-                preferLocalBaseUrl = true
-            }
+                override fun onAvailable(network: Network) {
+                    KLog.d { "Connected to Wi-Fi, preferring local base URL" }
+                    preferLocalBaseUrl = true
+                }
 
-            override fun onLost(network: Network) {
-                KLog.d { "Disconnected from Wi-Fi, preferring remote base URL" }
-                preferLocalBaseUrl = false
-            }
-        })
+                override fun onLost(network: Network) {
+                    KLog.d { "Disconnected from Wi-Fi, preferring remote base URL" }
+                    preferLocalBaseUrl = false
+                }
+            })
     }
 
     override fun getBaseUrl(rank: BaseUrlRank) =
@@ -77,4 +80,6 @@ class DefaultBaseUrlProvider(
             KLog.d { "$which base URL succeeded, flipping preferLocalBaseUrl to $preferLocalBaseUrl" }
         }
     }
+
+    override fun releaseNetwork() {}
 }

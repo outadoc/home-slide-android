@@ -21,6 +21,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import fr.outadoc.homeslide.logging.KLog
+import fr.outadoc.homeslide.rest.NetworkAccessManager
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlConfigProvider
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlProvider
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlRank
@@ -28,10 +29,14 @@ import fr.outadoc.homeslide.rest.util.toUrlOrNull
 import okhttp3.HttpUrl
 import kotlin.properties.Delegates
 
+/**
+ * Base URL provider for Wear.
+ * Will bind to the available Wi-Fi network if trying to reach the local base URL.
+ */
 class WearBaseUrlProvider(
     private val config: BaseUrlConfigProvider,
     private val connectivityManager: ConnectivityManager
-) : BaseUrlProvider {
+) : BaseUrlProvider, NetworkAccessManager {
 
     private val localBaseUri: HttpUrl?
         get() {
@@ -86,5 +91,9 @@ class WearBaseUrlProvider(
 
             KLog.d { "$which base URL succeeded, flipping preferLocalBaseUrl to $preferLocalBaseUrl" }
         }
+    }
+
+    override fun releaseNetwork() {
+        connectivityManager.bindProcessToNetwork(null)
     }
 }

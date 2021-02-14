@@ -31,6 +31,7 @@ import fr.outadoc.homeslide.hassapi.api.AuthApi
 import fr.outadoc.homeslide.hassapi.api.HomeAssistantApi
 import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.ApiClientBuilder
+import fr.outadoc.homeslide.rest.NetworkAccessManager
 import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlProvider
 import fr.outadoc.homeslide.wear.rest.baseurl.WearBaseUrlProvider
@@ -56,7 +57,9 @@ class WearApplication : Application() {
 
         single<InAppReviewManager> { get<NoopInAppReviewManager>() }
 
-        single<BaseUrlProvider> { WearBaseUrlProvider(get(), get()) }
+        single { WearBaseUrlProvider(get(), get()) }
+        single<BaseUrlProvider> { get<WearBaseUrlProvider>() }
+        single<NetworkAccessManager> { get<WearBaseUrlProvider>() }
 
         single {
             SimpleApiClientBuilder.newBuilder<AuthApi>(get())
