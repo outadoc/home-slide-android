@@ -1,6 +1,11 @@
-Home Slide est maintenant open-source !
-Vous pouvez parcourir et supporter le projet en tapant sur le lien dans l'écran "À propos".
+Cette version cible une meilleure stabilité de l'app.
 
-domain: ajouté le support du domaine scene (#352)
-mdi: extracté mdi dans son propre projet (#340)
-wear: corrigé l'écran à propos sur wear os (#350)
+Correctifs :
+- Améliorations de la sélection de l'URL de l'instance à utiliser
+- L'app Wear OS demande maintenant la connexion Wi-Fi à la montre si disponible
+
+Mention spéciale à @zeroos pour leur aide sur l'amélioration de la gestion réseau sur Wear OS !
+
+Autres :
+- Mise à jour de Material Design Icons en 5.9.55
+- Mise à jour d'autres dépendances

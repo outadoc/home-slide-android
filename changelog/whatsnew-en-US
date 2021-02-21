@@ -1,6 +1,11 @@
-Home Slide is now open-source!
-You can browse and support the project by tapping on the link in the "About" screen.
+This release focuses on stability.
 
-domain: add support for scene domain (#352)
-mdi: extract mdi to its own project (#340)
-wear: fix about background on wear os (#350)
+Fixes:
+- Improve base url selection
+- Properly request Wi-Fi network when needed
+
+Special thanks to @zeroos for their help on improving network access on Wear OS!
+
+Chores:
+- Update Material Design Icons to 5.9.55
+- Update other dependencies
