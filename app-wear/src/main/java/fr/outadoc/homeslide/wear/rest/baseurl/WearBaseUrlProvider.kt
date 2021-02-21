@@ -25,8 +25,9 @@ import fr.outadoc.homeslide.rest.NetworkAccessManager
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlConfigProvider
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlProvider
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlRank
+import fr.outadoc.homeslide.rest.requestNetwork
 import fr.outadoc.homeslide.rest.util.toUrlOrNull
-import kotlin.properties.Delegates
+import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl
 
 /**
@@ -38,9 +39,19 @@ class WearBaseUrlProvider(
     private val connectivityManager: ConnectivityManager
 ) : BaseUrlProvider, NetworkAccessManager {
 
+    companion object {
+        private const val WIFI_REQUEST_TIMEOUT_MS = 5_000
+    }
+
     private val localBaseUri: HttpUrl?
         get() {
-            connectivityManager.bindProcessToNetwork(currentWifiNetwork)
+            if (currentWiFiNetwork == null) {
+                // When remote URL has failed once, we want to request a Wi-Fi network
+                // because we know it's going to be more reliable, especially for local network access.
+                requestWiFiNetworkBlocking()
+            }
+
+            connectivityManager.bindProcessToNetwork(currentWiFiNetwork)
             return config.localInstanceBaseUrl.toUrlOrNull()
         }
 
@@ -52,30 +63,44 @@ class WearBaseUrlProvider(
 
     private var preferLocalBaseUrl: Boolean = false
 
-    private var currentWifiNetwork: Network?
-        by Delegates.observable(null) { _, _, value ->
+    private var currentWiFiNetwork: Network? = null
+        set(value) {
+            if (value === field) return
+
+            if (value == null) {
+                KLog.d { "Disconnected from Wi-Fi, preferring remote base URL" }
+            } else {
+                KLog.d { "Connected to Wi-Fi" }
+            }
+
+            field = value
             preferLocalBaseUrl = value != null
         }
 
+    private val wiFiRequest = NetworkRequest.Builder()
+        .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+        .build()
+
     init {
-        val wifiRequest = NetworkRequest.Builder()
-            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-            .build()
-
+        // Listen for Wi-Fi state changes
         connectivityManager.registerNetworkCallback(
-            wifiRequest,
+            wiFiRequest,
             object : ConnectivityManager.NetworkCallback() {
-
                 override fun onAvailable(network: Network) {
-                    KLog.d { "Connected to Wi-Fi" }
-                    currentWifiNetwork = network
+                    currentWiFiNetwork = network
                 }
 
                 override fun onLost(network: Network) {
-                    KLog.d { "Disconnected from Wi-Fi, preferring remote base URL" }
-                    currentWifiNetwork = null
+                    currentWiFiNetwork = null
                 }
             })
+    }
+
+    private fun requestWiFiNetworkBlocking() {
+        runBlocking {
+            currentWiFiNetwork =
+                connectivityManager.requestNetwork(wiFiRequest, WIFI_REQUEST_TIMEOUT_MS)
+        }
     }
 
     override fun getBaseUrl(rank: BaseUrlRank) =
