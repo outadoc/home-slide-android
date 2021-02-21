@@ -57,6 +57,8 @@ dependencies {
     implementation(Dependencies.AndroidX.core)
     implementation(Dependencies.AndroidX.appcompat)
 
+    implementation(Dependencies.Kotlin.Coroutines.core)
+
     // Network libs
     implementation(Dependencies.Retrofit.core)
 

@@ -25,7 +25,9 @@ import fr.outadoc.homeslide.rest.NetworkAccessManager
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlConfigProvider
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlProvider
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlRank
+import fr.outadoc.homeslide.rest.requestNetwork
 import fr.outadoc.homeslide.rest.util.toUrlOrNull
+import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl
 
 /**
@@ -37,11 +39,15 @@ class WearBaseUrlProvider(
     private val connectivityManager: ConnectivityManager
 ) : BaseUrlProvider, NetworkAccessManager {
 
+    companion object {
+        private const val WIFI_REQUEST_TIMEOUT_MS = 5_000
+    }
+
     private val localBaseUri: HttpUrl?
         get() {
             // When remote URL has failed once, we want to request a Wi-Fi network
             // because we know it's going to be more reliable, especially for local network access.
-            requestWiFiNetwork()
+            requestWiFiNetworkBlocking()
             connectivityManager.bindProcessToNetwork(currentWifiNetwork)
             return config.localInstanceBaseUrl.toUrlOrNull()
         }
@@ -85,19 +91,11 @@ class WearBaseUrlProvider(
             })
     }
 
-    private val networkRequestCallback = object : ConnectivityManager.NetworkCallback() {
-
-        override fun onAvailable(network: Network) {
-            currentWifiNetwork = network
+    private fun requestWiFiNetworkBlocking() {
+        runBlocking {
+            currentWifiNetwork =
+                connectivityManager.requestNetwork(wifiRequest, WIFI_REQUEST_TIMEOUT_MS)
         }
-
-        override fun onLost(network: Network) {
-            currentWifiNetwork = null
-        }
-    }
-
-    private fun requestWiFiNetwork() {
-        connectivityManager.requestNetwork(wifiRequest, networkRequestCallback)
     }
 
     override fun getBaseUrl(rank: BaseUrlRank) =
@@ -116,7 +114,6 @@ class WearBaseUrlProvider(
     }
 
     override fun releaseNetwork() {
-        connectivityManager.unregisterNetworkCallback(networkRequestCallback)
         connectivityManager.bindProcessToNetwork(null)
     }
 }
