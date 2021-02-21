@@ -45,9 +45,12 @@ class WearBaseUrlProvider(
 
     private val localBaseUri: HttpUrl?
         get() {
-            // When remote URL has failed once, we want to request a Wi-Fi network
-            // because we know it's going to be more reliable, especially for local network access.
-            requestWiFiNetworkBlocking()
+            if (currentWifiNetwork == null) {
+                // When remote URL has failed once, we want to request a Wi-Fi network
+                // because we know it's going to be more reliable, especially for local network access.
+                requestWiFiNetworkBlocking()
+            }
+
             connectivityManager.bindProcessToNetwork(currentWifiNetwork)
             return config.localInstanceBaseUrl.toUrlOrNull()
         }
@@ -62,6 +65,8 @@ class WearBaseUrlProvider(
 
     private var currentWifiNetwork: Network? = null
         set(value) {
+            if (value === field) return
+
             if (value == null) {
                 KLog.d { "Disconnected from Wi-Fi, preferring remote base URL" }
             } else {
