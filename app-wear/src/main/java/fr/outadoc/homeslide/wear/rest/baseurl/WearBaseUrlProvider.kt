@@ -26,7 +26,6 @@ import fr.outadoc.homeslide.rest.baseurl.BaseUrlConfigProvider
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlProvider
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlRank
 import fr.outadoc.homeslide.rest.util.toUrlOrNull
-import kotlin.properties.Delegates
 import okhttp3.HttpUrl
 
 /**
@@ -40,6 +39,9 @@ class WearBaseUrlProvider(
 
     private val localBaseUri: HttpUrl?
         get() {
+            // When remote URL has failed once, we want to request a Wi-Fi network
+            // because we know it's going to be more reliable, especially for local network access.
+            requestWiFiNetwork()
             connectivityManager.bindProcessToNetwork(currentWifiNetwork)
             return config.localInstanceBaseUrl.toUrlOrNull()
         }
@@ -52,30 +54,50 @@ class WearBaseUrlProvider(
 
     private var preferLocalBaseUrl: Boolean = false
 
-    private var currentWifiNetwork: Network?
-        by Delegates.observable(null) { _, _, value ->
+    private var currentWifiNetwork: Network? = null
+        set(value) {
+            if (value == null) {
+                KLog.d { "Disconnected from Wi-Fi, preferring remote base URL" }
+            } else {
+                KLog.d { "Connected to Wi-Fi" }
+            }
+
+            field = value
             preferLocalBaseUrl = value != null
         }
 
-    init {
-        val wifiRequest = NetworkRequest.Builder()
-            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-            .build()
+    private val wifiRequest = NetworkRequest.Builder()
+        .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+        .build()
 
+    init {
+        // Listen for Wi-Fi state changes
         connectivityManager.registerNetworkCallback(
             wifiRequest,
             object : ConnectivityManager.NetworkCallback() {
-
                 override fun onAvailable(network: Network) {
-                    KLog.d { "Connected to Wi-Fi" }
                     currentWifiNetwork = network
                 }
 
                 override fun onLost(network: Network) {
-                    KLog.d { "Disconnected from Wi-Fi, preferring remote base URL" }
                     currentWifiNetwork = null
                 }
             })
+    }
+
+    private val networkRequestCallback = object : ConnectivityManager.NetworkCallback() {
+
+        override fun onAvailable(network: Network) {
+            currentWifiNetwork = network
+        }
+
+        override fun onLost(network: Network) {
+            currentWifiNetwork = null
+        }
+    }
+
+    private fun requestWiFiNetwork() {
+        connectivityManager.requestNetwork(wifiRequest, networkRequestCallback)
     }
 
     override fun getBaseUrl(rank: BaseUrlRank) =
@@ -94,6 +116,7 @@ class WearBaseUrlProvider(
     }
 
     override fun releaseNetwork() {
+        connectivityManager.unregisterNetworkCallback(networkRequestCallback)
         connectivityManager.bindProcessToNetwork(null)
     }
 }
