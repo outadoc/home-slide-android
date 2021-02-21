@@ -20,9 +20,9 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
 import android.os.Build
+import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeout
-import kotlin.coroutines.resume
 
 suspend fun ConnectivityManager.requestNetwork(request: NetworkRequest, timeoutMs: Int): Network? =
     withTimeout(timeoutMs.toLong()) {
