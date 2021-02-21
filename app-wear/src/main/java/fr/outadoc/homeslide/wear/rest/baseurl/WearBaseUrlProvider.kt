@@ -45,13 +45,13 @@ class WearBaseUrlProvider(
 
     private val localBaseUri: HttpUrl?
         get() {
-            if (currentWifiNetwork == null) {
+            if (currentWiFiNetwork == null) {
                 // When remote URL has failed once, we want to request a Wi-Fi network
                 // because we know it's going to be more reliable, especially for local network access.
                 requestWiFiNetworkBlocking()
             }
 
-            connectivityManager.bindProcessToNetwork(currentWifiNetwork)
+            connectivityManager.bindProcessToNetwork(currentWiFiNetwork)
             return config.localInstanceBaseUrl.toUrlOrNull()
         }
 
@@ -63,7 +63,7 @@ class WearBaseUrlProvider(
 
     private var preferLocalBaseUrl: Boolean = false
 
-    private var currentWifiNetwork: Network? = null
+    private var currentWiFiNetwork: Network? = null
         set(value) {
             if (value === field) return
 
@@ -77,29 +77,29 @@ class WearBaseUrlProvider(
             preferLocalBaseUrl = value != null
         }
 
-    private val wifiRequest = NetworkRequest.Builder()
+    private val wiFiRequest = NetworkRequest.Builder()
         .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
         .build()
 
     init {
         // Listen for Wi-Fi state changes
         connectivityManager.registerNetworkCallback(
-            wifiRequest,
+            wiFiRequest,
             object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
-                    currentWifiNetwork = network
+                    currentWiFiNetwork = network
                 }
 
                 override fun onLost(network: Network) {
-                    currentWifiNetwork = null
+                    currentWiFiNetwork = null
                 }
             })
     }
 
     private fun requestWiFiNetworkBlocking() {
         runBlocking {
-            currentWifiNetwork =
-                connectivityManager.requestNetwork(wifiRequest, WIFI_REQUEST_TIMEOUT_MS)
+            currentWiFiNetwork =
+                connectivityManager.requestNetwork(wiFiRequest, WIFI_REQUEST_TIMEOUT_MS)
         }
     }
 
