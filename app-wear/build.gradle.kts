@@ -93,7 +93,6 @@ dependencies {
     implementation(Dependencies.OkHttp.logging)
 
     // AndroidX lifecycle
-    implementation(Dependencies.AndroidX.Lifecycle.extensions)
     implementation(Dependencies.AndroidX.Lifecycle.liveData)
     implementation(Dependencies.AndroidX.Lifecycle.viewModel)
 
