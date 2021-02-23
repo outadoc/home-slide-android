@@ -42,7 +42,6 @@ object Dependencies {
 
         object Lifecycle {
             private const val version = "2.3.0"
-            const val extensions = "androidx.lifecycle:lifecycle-extensions:$version"
             const val liveData = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
             const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
         }
