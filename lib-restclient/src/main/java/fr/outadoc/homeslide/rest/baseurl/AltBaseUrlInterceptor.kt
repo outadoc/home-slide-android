@@ -19,7 +19,6 @@ package fr.outadoc.homeslide.rest.baseurl
 import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.throwable.CompositeIOException
 import java.io.IOException
-import kotlin.jvm.Throws
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -73,7 +72,9 @@ class AltBaseUrlInterceptor(private val config: BaseUrlProvider) : Interceptor {
         return try {
             proceed(req).let { response ->
                 if (response.isSuccessful) AttemptResult.Success(response)
-                else AttemptResult.Error(IOException("HTTP Error: ${response.code()}"))
+                else AttemptResult.Error(IOException("HTTP Error: ${response.code()}")).also {
+                    response.close()
+                }
             }
         } catch (e: IOException) {
             AttemptResult.Error(e)
