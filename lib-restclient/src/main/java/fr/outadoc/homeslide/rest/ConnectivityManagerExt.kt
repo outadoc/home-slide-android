@@ -22,10 +22,12 @@ import android.net.NetworkRequest
 import android.os.Build
 import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.withTimeoutOrNull
+
+private const val TIMEOUT_PADDING_MS = 1000L
 
 suspend fun ConnectivityManager.requestNetwork(request: NetworkRequest, timeoutMs: Int): Network? =
-    withTimeout(timeoutMs.toLong()) {
+    withTimeoutOrNull(timeoutMs.toLong() + TIMEOUT_PADDING_MS) {
         suspendCancellableCoroutine { cont ->
             val callback = object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
