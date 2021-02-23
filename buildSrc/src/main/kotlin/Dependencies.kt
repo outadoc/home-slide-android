@@ -41,7 +41,7 @@ object Dependencies {
         const val wear = "androidx.wear:wear:1.1.0"
 
         object Lifecycle {
-            private const val version = "2.2.0"
+            private const val version = "2.3.0"
             const val extensions = "androidx.lifecycle:lifecycle-extensions:$version"
             const val liveData = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
             const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
@@ -77,7 +77,7 @@ object Dependencies {
         object Firebase {
             object Crashlytics {
                 const val core = "com.google.firebase:firebase-crashlytics-ktx:17.3.1"
-                const val classpath = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
+                const val classpath = "com.google.firebase:firebase-crashlytics-gradle:2.5.0"
                 const val plugin = "com.google.firebase.crashlytics"
             }
         }
@@ -166,7 +166,7 @@ object Dependencies {
 
     object Test {
         const val junit = "org.junit.jupiter:junit-jupiter:5.7.0"
-        const val mockito = "org.mockito:mockito-core:3.7.7"
+        const val mockito = "org.mockito:mockito-core:3.8.0"
     }
 
     object Tools {
