@@ -16,17 +16,21 @@
 
 package fr.outadoc.homeslide.common.sync.model
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class PreferencesPayload(
-    @Json(name = "instanceBaseUrl")
-    val localInstanceBaseUrl: String?,
-    @Json(name = "altInstanceBaseUrl")
-    val remoteInstanceBaseUrl: String?,
-    @Json(name = "accessToken")
-    val accessToken: String?,
-    @Json(name = "refreshToken")
-    val refreshToken: String?
+
+    @SerialName("instanceBaseUrl")
+    val localInstanceBaseUrl: String? = null,
+
+    @SerialName("altInstanceBaseUrl")
+    val remoteInstanceBaseUrl: String? = null,
+
+    @SerialName("accessToken")
+    val accessToken: String? = null,
+
+    @SerialName("refreshToken")
+    val refreshToken: String? = null
 )

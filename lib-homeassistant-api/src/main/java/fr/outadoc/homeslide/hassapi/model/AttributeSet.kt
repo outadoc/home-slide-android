@@ -17,31 +17,40 @@
 package fr.outadoc.homeslide.hassapi.model
 
 import android.os.Parcelable
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import fr.outadoc.mdi.common.MdiStringRef
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 @Parcelize
-@JsonClass(generateAdapter = true)
+@Serializable
 data class AttributeSet(
-    @Json(name = "friendly_name")
-    val friendlyName: String?,
+
+    @SerialName("friendly_name")
+    val friendlyName: String? = null,
+
     @MdiStringRef
-    @Json(name = "icon")
-    val icon: String?,
-    @Json(name = "hidden")
+    @SerialName("icon")
+    val icon: String? = null,
+
+    @SerialName("hidden")
     val isHidden: Boolean = false,
-    @Json(name = "operation_list")
-    val operationList: List<String>?,
-    @Json(name = "current_temperature")
+
+    @SerialName("operation_list")
+    val operationList: List<String>? = null,
+
+    @SerialName("current_temperature")
     val currentTemperature: Float? = null,
-    @Json(name = "unit_of_measurement")
+
+    @SerialName("unit_of_measurement")
     val unit: String? = null,
-    @Json(name = "brightness")
+
+    @SerialName("brightness")
     val brightness: Float? = null,
-    @Json(name = "min")
+
+    @SerialName("min")
     val min: Float? = null,
-    @Json(name = "max")
+
+    @SerialName("max")
     val max: Float? = null
 ) : Parcelable

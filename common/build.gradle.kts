@@ -18,6 +18,7 @@ plugins {
     id(Dependencies.Android.library)
     kotlin(Dependencies.Kotlin.Plugin.android)
     kotlin(Dependencies.Kotlin.Plugin.kapt)
+    kotlin(Dependencies.Kotlin.Plugin.serialization)
 }
 
 android {
@@ -58,7 +59,8 @@ android {
         jvmTarget = Dependencies.Build.jvmTarget
         freeCompilerArgs = listOf(
             "-Xuse-experimental=kotlin.Experimental",
-            "-Xuse-experimental=kotlin.time.ExperimentalTime"
+            "-Xuse-experimental=kotlin.time.ExperimentalTime",
+            "-Xuse-experimental=kotlinx.serialization.ExperimentalSerializationApi"
         )
     }
 }
@@ -92,9 +94,8 @@ dependencies {
 
     // Network libs
     implementation(Dependencies.Retrofit.core)
-    implementation(Dependencies.Retrofit.moshiConverter)
-    implementation(Dependencies.Moshi.core)
-    kapt(Dependencies.Moshi.codegen)
+    implementation(Dependencies.Retrofit.serializationConverter)
+    implementation(Dependencies.Kotlin.Serialization.json)
 
     // Persistence
     implementation(Dependencies.AndroidX.Room.common)

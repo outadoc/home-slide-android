@@ -127,6 +127,13 @@ object Dependencies {
             const val android = "android"
             const val kapt = "kapt"
             const val parcelize = "kotlin-parcelize"
+            const val serialization = "plugin.serialization"
+        }
+
+        object Serialization {
+            private const val version = "1.1.0"
+            const val classpath = "org.jetbrains.kotlin:kotlin-serialization:${Kotlin.version}"
+            const val json = "org.jetbrains.kotlinx:kotlinx-serialization-json:$version"
         }
     }
 
@@ -138,12 +145,6 @@ object Dependencies {
         const val android = "fr.outadoc.mdi:mdi-android:5.9.55-a"
     }
 
-    object Moshi {
-        private const val version = "1.11.0"
-        const val core = "com.squareup.moshi:moshi:$version"
-        const val codegen = "com.squareup.moshi:moshi-kotlin-codegen:$version"
-    }
-
     object OkHttp {
         const val logging = "com.squareup.okhttp3:logging-interceptor:4.9.1"
     }
@@ -151,7 +152,7 @@ object Dependencies {
     object Retrofit {
         private const val version = "2.9.0"
         const val core = "com.squareup.retrofit2:retrofit:$version"
-        const val moshiConverter = "com.squareup.retrofit2:converter-moshi:$version"
+        const val serializationConverter = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
     }
 
     object Skeleton {

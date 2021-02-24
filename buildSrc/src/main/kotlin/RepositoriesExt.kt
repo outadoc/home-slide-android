@@ -1,5 +1,8 @@
+import org.gradle.api.artifacts.dsl.RepositoryHandler
+import org.gradle.kotlin.dsl.maven
+
 /*
- * Copyright 2020 Baptiste Candellier
+ * Copyright 2021 Baptiste Candellier
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,27 +17,10 @@
  *    limitations under the License.
  */
 
-package fr.outadoc.homeslide.hassapi.model
+fun RepositoryHandler.kotlinx() {
+    maven(url = "https://kotlin.bintray.com/kotlinx/")
+}
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-
-@Entity
-@Serializable
-data class PersistedEntity(
-
-    @PrimaryKey
-    @SerialName("i")
-    val entityId: String,
-
-    @SerialName("o")
-    @ColumnInfo(name = "order")
-    val order: Int,
-
-    @SerialName("h")
-    @ColumnInfo(name = "hidden", defaultValue = "0")
-    val hidden: Boolean
-)
+fun RepositoryHandler.jitpack() {
+    maven(url = "https://jitpack.io")
+}

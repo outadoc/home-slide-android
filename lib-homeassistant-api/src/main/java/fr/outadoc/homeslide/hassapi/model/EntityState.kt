@@ -17,32 +17,39 @@
 package fr.outadoc.homeslide.hassapi.model
 
 import android.os.Parcelable
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import fr.outadoc.homeslide.hassapi.model.annotation.StringDomain
 import fr.outadoc.homeslide.hassapi.model.annotation.StringEntityId
 import fr.outadoc.homeslide.hassapi.model.annotation.StringState
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Parcelize
-@JsonClass(generateAdapter = true)
+@Serializable
 data class EntityState(
-    @Json(name = "entity_id")
+
     @StringEntityId
+    @SerialName("entity_id")
     val entityId: String,
-    @Json(name = "last_changed")
+
+    @SerialName("last_changed")
     val lastChanged: String,
-    @Json(name = "last_updated")
+
+    @SerialName("last_updated")
     val lastUpdated: String,
-    @Json(name = "state")
+
+    @SerialName("state")
     @StringState
     val state: String,
-    @Json(name = "attributes")
+
+    @SerialName("attributes")
     val attributes: AttributeSet
 ) : Parcelable {
 
-    @IgnoredOnParcel
+    @Transient
     @StringDomain
+    @IgnoredOnParcel
     val domain: String = entityId.takeWhile { it != '.' }
 }

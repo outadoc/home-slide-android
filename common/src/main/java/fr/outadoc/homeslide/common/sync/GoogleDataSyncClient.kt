@@ -21,12 +21,14 @@ import com.google.android.gms.wearable.DataEvent
 import com.google.android.gms.wearable.DataEventBuffer
 import com.google.android.gms.wearable.DataMapItem
 import com.google.android.gms.wearable.PutDataMapRequest
-import com.squareup.moshi.Moshi
 import fr.outadoc.homeslide.common.sync.model.DatabasePayload
 import fr.outadoc.homeslide.common.sync.model.PreferencesPayload
 import fr.outadoc.homeslide.logging.KLog
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
-class GoogleDataSyncClient(moshi: Moshi, private val dataClient: DataClient) : DataSyncClient {
+class GoogleDataSyncClient(private val json: Json, private val dataClient: DataClient) : DataSyncClient {
 
     companion object {
         private const val PATH_SYNC_PREFERENCES = "/sync-preferences"
@@ -36,15 +38,12 @@ class GoogleDataSyncClient(moshi: Moshi, private val dataClient: DataClient) : D
         private const val KEY_DATABASE_PAYLOAD = "KEY_DATABASE_PAYLOAD"
     }
 
-    private val prefsAdapter = moshi.adapter(PreferencesPayload::class.java)
-    private val dbAdapter = moshi.adapter(DatabasePayload::class.java)
-
     override fun syncPreferences(payload: PreferencesPayload) {
         KLog.d { "synchronizing prefs: $payload" }
 
         try {
             val putDataReq = PutDataMapRequest.create(PATH_SYNC_PREFERENCES).run {
-                dataMap.putString(KEY_PREFERENCES_PAYLOAD, prefsAdapter.toJson(payload))
+                dataMap.putString(KEY_PREFERENCES_PAYLOAD, json.encodeToString(payload))
                 setUrgent()
                 asPutDataRequest()
             }
@@ -60,7 +59,7 @@ class GoogleDataSyncClient(moshi: Moshi, private val dataClient: DataClient) : D
 
         try {
             val putDataReq = PutDataMapRequest.create(PATH_SYNC_DATABASE).run {
-                dataMap.putString(KEY_DATABASE_PAYLOAD, dbAdapter.toJson(payload))
+                dataMap.putString(KEY_DATABASE_PAYLOAD, json.encodeToString(payload))
                 asPutDataRequest()
             }
 
@@ -77,7 +76,7 @@ class GoogleDataSyncClient(moshi: Moshi, private val dataClient: DataClient) : D
         }.map { event ->
             val dataMap = DataMapItem.fromDataItem(event.dataItem).dataMap
             val payloadStr = dataMap.getString(KEY_PREFERENCES_PAYLOAD)
-            prefsAdapter.fromJson(payloadStr)
+            json.decodeFromString<PreferencesPayload?>(payloadStr)
         }.firstOrNull()
     }
 
@@ -88,7 +87,7 @@ class GoogleDataSyncClient(moshi: Moshi, private val dataClient: DataClient) : D
         }.map { event ->
             val dataMap = DataMapItem.fromDataItem(event.dataItem).dataMap
             val payloadStr = dataMap.getString(KEY_DATABASE_PAYLOAD)
-            dbAdapter.fromJson(payloadStr)
+            json.decodeFromString<DatabasePayload?>(payloadStr)
         }.firstOrNull()
     }
 }
