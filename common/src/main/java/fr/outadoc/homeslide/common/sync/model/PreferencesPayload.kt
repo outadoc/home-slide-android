@@ -21,12 +21,16 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PreferencesPayload(
+
     @SerialName("instanceBaseUrl")
     val localInstanceBaseUrl: String?,
+
     @SerialName("altInstanceBaseUrl")
     val remoteInstanceBaseUrl: String?,
+
     @SerialName("accessToken")
     val accessToken: String?,
+
     @SerialName("refreshToken")
     val refreshToken: String?
 )

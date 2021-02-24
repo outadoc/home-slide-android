@@ -25,23 +25,32 @@ import kotlinx.serialization.Serializable
 @Parcelize
 @Serializable
 data class AttributeSet(
+
     @SerialName("friendly_name")
     val friendlyName: String?,
+
     @MdiStringRef
     @SerialName("icon")
     val icon: String?,
+
     @SerialName("hidden")
     val isHidden: Boolean = false,
+
     @SerialName("operation_list")
     val operationList: List<String>?,
+
     @SerialName("current_temperature")
     val currentTemperature: Float? = null,
+
     @SerialName("unit_of_measurement")
     val unit: String? = null,
+
     @SerialName("brightness")
     val brightness: Float? = null,
+
     @SerialName("min")
     val min: Float? = null,
+
     @SerialName("max")
     val max: Float? = null
 ) : Parcelable

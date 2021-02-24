@@ -25,13 +25,16 @@ import kotlinx.serialization.Serializable
 @Entity
 @Serializable
 data class PersistedEntity(
+
     @PrimaryKey
     @SerialName("i")
     val entityId: String,
-    @ColumnInfo(name = "order")
+
     @SerialName("o")
+    @ColumnInfo(name = "order")
     val order: Int,
-    @ColumnInfo(name = "hidden", defaultValue = "0")
+
     @SerialName("h")
+    @ColumnInfo(name = "hidden", defaultValue = "0")
     val hidden: Boolean
 )

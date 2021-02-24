@@ -24,25 +24,32 @@ import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Parcelize
 @Serializable
 data class EntityState(
-    @SerialName("entity_id")
+
     @StringEntityId
+    @SerialName("entity_id")
     val entityId: String,
+
     @SerialName("last_changed")
     val lastChanged: String,
+
     @SerialName("last_updated")
     val lastUpdated: String,
+
     @SerialName("state")
     @StringState
     val state: String,
+
     @SerialName("attributes")
     val attributes: AttributeSet
 ) : Parcelable {
 
-    @IgnoredOnParcel
+    @Transient
     @StringDomain
+    @IgnoredOnParcel
     val domain: String = entityId.takeWhile { it != '.' }
 }
