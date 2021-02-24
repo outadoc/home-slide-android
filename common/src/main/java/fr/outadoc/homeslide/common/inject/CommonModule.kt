@@ -21,13 +21,12 @@ import androidx.room.Room
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.wearable.Wearable
-import com.squareup.moshi.Moshi
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import fr.outadoc.homeslide.common.feature.auth.repository.AppOAuthConfiguration
 import fr.outadoc.homeslide.common.feature.auth.repository.AuthRepositoryImpl
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListResourceManager
 import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel
 import fr.outadoc.homeslide.common.feature.slideover.EntityRepositoryImpl
-import fr.outadoc.homeslide.common.json.SkipBadElementsListAdapter
 import fr.outadoc.homeslide.common.log.OkHttpCustomLogger
 import fr.outadoc.homeslide.common.log.UniFlowCustomLogger
 import fr.outadoc.homeslide.common.persistence.EntityDatabase
@@ -44,11 +43,11 @@ import fr.outadoc.homeslide.rest.auth.AccessTokenProvider
 import fr.outadoc.homeslide.rest.auth.OAuthConfiguration
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlConfigProvider
 import io.uniflow.core.logger.UniFlowLogger
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import retrofit2.Converter
-import retrofit2.converter.moshi.MoshiConverterFactory
 
 fun commonModule() = module {
     single<BaseUrlConfigProvider> { BaseUrlConfigProviderImpl(get()) }
@@ -85,13 +84,14 @@ fun commonModule() = module {
         }
     }
 
-    single<Moshi> {
-        Moshi.Builder()
-            .add(SkipBadElementsListAdapter.newFactory())
-            .build()
+    single {
+        Json {}
     }
 
-    single<Converter.Factory> { MoshiConverterFactory.create(get()) }
+    single {
+        val contentType = "application/json".toMediaType()
+        get<Json>().asConverterFactory(contentType)
+    }
 
     viewModel { EntityListViewModel(get(), get(), get()) }
 

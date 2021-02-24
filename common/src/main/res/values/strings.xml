@@ -32,9 +32,9 @@
     <string name="pref_legal_title">Awesome Software We Use</string>
     <string-array name="pref_oss_apache2_summary">
         <item>square/retrofit</item>
-        <item>square/moshi</item>
         <item>square/okhttp</item>
         <item>Faltenreich/SkeletonLayout</item>
+        <item>JakeWharton/retrofit2-kotlinx-serialization-converter</item>
     </string-array>
     <string name="pref_oss_apache2_title">Apache 2.0 License</string>
     <string-array name="pref_oss_ccby_summary">
