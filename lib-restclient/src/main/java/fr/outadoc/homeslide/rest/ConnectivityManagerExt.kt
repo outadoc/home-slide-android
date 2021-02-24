@@ -31,15 +31,24 @@ suspend fun ConnectivityManager.requestNetwork(request: NetworkRequest, timeoutM
         suspendCancellableCoroutine { cont ->
             val callback = object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
-                    cont.resume(network)
-                }
-
-                override fun onUnavailable() {
-                    cont.resume(null)
+                    if (cont.isActive) {
+                        unregisterNetworkCallback(this)
+                        cont.resume(network)
+                    }
                 }
 
                 override fun onLost(network: Network) {
-                    cont.resume(null)
+                    if (cont.isActive) {
+                        unregisterNetworkCallback(this)
+                        cont.resume(null)
+                    }
+                }
+
+                override fun onUnavailable() {
+                    // Called if no suitable network was found before timeout
+                    if (cont.isActive) {
+                        cont.resume(null)
+                    }
                 }
             }
 
