@@ -85,7 +85,11 @@ fun commonModule() = module {
     }
 
     single {
-        Json {}
+        Json {
+            isLenient = true
+            encodeDefaults = true
+            ignoreUnknownKeys = true
+        }
     }
 
     single {
