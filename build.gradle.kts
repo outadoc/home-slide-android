@@ -24,6 +24,7 @@ buildscript {
     repositories {
         google()
         jcenter()
+        kotlinx()
     }
 
     dependencies {
@@ -32,6 +33,7 @@ buildscript {
         classpath(Dependencies.Google.PlayServices.classpath)
         classpath(Dependencies.Google.Firebase.Crashlytics.classpath)
         classpath(Dependencies.AndroidX.Navigation.SafeArgs.classpath)
+        classpath(Dependencies.Kotlin.Serialization.classpath)
     }
 }
 
@@ -39,9 +41,8 @@ allprojects {
     repositories {
         google()
         jcenter()
-
-        maven(url = "https://jitpack.io") // Required for Chucker
-        maven(url = "https://kotlin.bintray.com/kotlinx/") // Required for kotlinx.datetime
+        kotlinx()
+        jitpack()
 
         val githubPackagesToken: String? by project
         maven(url = "https://maven.pkg.github.com/outadoc/mdi-android") {

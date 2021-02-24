@@ -17,7 +17,7 @@
 plugins {
     id(Dependencies.Android.library)
     kotlin(Dependencies.Kotlin.Plugin.android)
-    kotlin(Dependencies.Kotlin.Plugin.kapt)
+    kotlin(Dependencies.Kotlin.Plugin.serialization)
     id(Dependencies.Kotlin.Plugin.parcelize)
 }
 
@@ -65,8 +65,7 @@ dependencies {
 
     // Network libs
     implementation(Dependencies.Retrofit.core)
-    implementation(Dependencies.Moshi.core)
-    kapt(Dependencies.Moshi.codegen)
+    implementation(Dependencies.Kotlin.Serialization.json)
 
     // Testing
     testImplementation(Dependencies.Test.junit)
