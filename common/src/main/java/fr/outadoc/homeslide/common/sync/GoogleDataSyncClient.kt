@@ -76,7 +76,7 @@ class GoogleDataSyncClient(private val json: Json, private val dataClient: DataC
         }.map { event ->
             val dataMap = DataMapItem.fromDataItem(event.dataItem).dataMap
             val payloadStr = dataMap.getString(KEY_PREFERENCES_PAYLOAD)
-            json.decodeFromString<PreferencesPayload>(payloadStr)
+            json.decodeFromString<PreferencesPayload?>(payloadStr)
         }.firstOrNull()
     }
 
@@ -87,7 +87,7 @@ class GoogleDataSyncClient(private val json: Json, private val dataClient: DataC
         }.map { event ->
             val dataMap = DataMapItem.fromDataItem(event.dataItem).dataMap
             val payloadStr = dataMap.getString(KEY_DATABASE_PAYLOAD)
-            json.decodeFromString<DatabasePayload>(payloadStr)
+            json.decodeFromString<DatabasePayload?>(payloadStr)
         }.firstOrNull()
     }
 }
