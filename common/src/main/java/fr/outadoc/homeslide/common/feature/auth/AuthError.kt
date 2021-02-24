@@ -23,8 +23,8 @@ import kotlinx.serialization.Serializable
 data class AuthError(
 
     @SerialName("error")
-    val errorCode: String?,
+    val errorCode: String? = null,
 
     @SerialName("error_description")
-    val description: String?
+    val description: String? = null
 )

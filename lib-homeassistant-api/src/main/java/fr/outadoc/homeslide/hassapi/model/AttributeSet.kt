@@ -27,17 +27,17 @@ import kotlinx.serialization.Serializable
 data class AttributeSet(
 
     @SerialName("friendly_name")
-    val friendlyName: String?,
+    val friendlyName: String? = null,
 
     @MdiStringRef
     @SerialName("icon")
-    val icon: String?,
+    val icon: String? = null,
 
     @SerialName("hidden")
     val isHidden: Boolean = false,
 
     @SerialName("operation_list")
-    val operationList: List<String>?,
+    val operationList: List<String>? = null,
 
     @SerialName("current_temperature")
     val currentTemperature: Float? = null,
