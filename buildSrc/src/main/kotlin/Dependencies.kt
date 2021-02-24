@@ -77,6 +77,7 @@ object Dependencies {
             object Crashlytics {
                 const val core = "com.google.firebase:firebase-crashlytics-ktx:17.3.1"
                 const val classpath = "com.google.firebase:firebase-crashlytics-gradle:2.5.0"
+                const val plugin = "com.google.firebase.crashlytics"
             }
         }
 
@@ -86,6 +87,7 @@ object Dependencies {
 
         object PlayServices {
             const val classpath = "com.google.gms:google-services:4.3.5"
+            const val plugin = "com.google.gms.google-services"
             const val wearable = "com.google.android.gms:play-services-wearable:17.0.0"
         }
 
@@ -121,6 +123,13 @@ object Dependencies {
             const val core = "org.jetbrains.kotlinx:kotlinx-datetime:$version"
         }
 
+        object Plugin {
+            const val android = "android"
+            const val kapt = "kapt"
+            const val parcelize = "kotlin-parcelize"
+            const val serialization = "plugin.serialization"
+        }
+
         object Serialization {
             private const val version = "1.1.0"
             const val classpath = "org.jetbrains.kotlin:kotlin-serialization:${Kotlin.version}"
@@ -151,8 +160,8 @@ object Dependencies {
     }
 
     object Spotless {
-        private const val version = "5.10.2"
-        const val classpath = "com.diffplug.spotless:spotless-plugin-gradle:$version"
+        const val version = "3.30.0"
+        const val plugin = "com.diffplug.gradle.spotless"
     }
 
     object Test {

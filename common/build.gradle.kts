@@ -15,10 +15,10 @@
  */
 
 plugins {
-    androidLibrary()
-    kotlinAndroid()
-    kotlinSerialization()
-    kapt()
+    id(Dependencies.Android.library)
+    kotlin(Dependencies.Kotlin.Plugin.android)
+    kotlin(Dependencies.Kotlin.Plugin.kapt)
+    kotlin(Dependencies.Kotlin.Plugin.serialization)
 }
 
 android {

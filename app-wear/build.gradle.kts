@@ -15,10 +15,10 @@
  */
 
 plugins {
-    androidApp()
-    playServices()
-    crashlytics()
-    kotlinAndroid()
+    id(Dependencies.Android.application)
+    id(Dependencies.Google.PlayServices.plugin)
+    id(Dependencies.Google.Firebase.Crashlytics.plugin)
+    kotlin(Dependencies.Kotlin.Plugin.android)
 }
 
 android {

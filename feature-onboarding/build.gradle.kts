@@ -15,8 +15,8 @@
  */
 
 plugins {
-    androidLibrary()
-    kotlinAndroid()
+    id(Dependencies.Android.library)
+    kotlin(Dependencies.Kotlin.Plugin.android)
     id(Dependencies.AndroidX.Navigation.SafeArgs.plugin)
 }
 

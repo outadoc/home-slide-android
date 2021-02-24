@@ -17,7 +17,7 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 
 plugins {
-    spotless()
+    id(Dependencies.Spotless.plugin) version Dependencies.Spotless.version
 }
 
 buildscript {
@@ -34,7 +34,6 @@ buildscript {
         classpath(Dependencies.Google.Firebase.Crashlytics.classpath)
         classpath(Dependencies.AndroidX.Navigation.SafeArgs.classpath)
         classpath(Dependencies.Kotlin.Serialization.classpath)
-        classpath(Dependencies.Spotless.classpath)
     }
 }
 
