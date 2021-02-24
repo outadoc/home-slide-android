@@ -16,13 +16,13 @@
 
 package fr.outadoc.homeslide.common.feature.auth
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class AuthError(
-    @Json(name = "error")
+    @SerialName("error")
     val errorCode: String?,
-    @Json(name = "error_description")
+    @SerialName("error_description")
     val description: String?
 )

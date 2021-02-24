@@ -19,19 +19,19 @@ package fr.outadoc.homeslide.hassapi.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 @Entity
-@JsonClass(generateAdapter = true)
+@Serializable
 data class PersistedEntity(
     @PrimaryKey
-    @Json(name = "i")
+    @SerialName("i")
     val entityId: String,
     @ColumnInfo(name = "order")
-    @Json(name = "o")
+    @SerialName("o")
     val order: Int,
     @ColumnInfo(name = "hidden", defaultValue = "0")
-    @Json(name = "h")
+    @SerialName("h")
     val hidden: Boolean
 )

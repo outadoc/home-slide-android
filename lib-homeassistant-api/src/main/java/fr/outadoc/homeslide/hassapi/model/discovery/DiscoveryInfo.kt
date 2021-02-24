@@ -16,18 +16,18 @@
 
 package fr.outadoc.homeslide.hassapi.model.discovery
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class DiscoveryInfo(
     val hostName: String? = null,
-    @Json(name = "base_url")
+    @SerialName("base_url")
     val baseUrl: String,
-    @Json(name = "location_name")
+    @SerialName("location_name")
     val locationName: String? = null,
-    @Json(name = "requires_api_password")
+    @SerialName("requires_api_password")
     val requiresApiPassword: Boolean,
-    @Json(name = "version")
+    @SerialName("version")
     val version: String
 )

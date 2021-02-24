@@ -16,12 +16,12 @@
 
 package fr.outadoc.homeslide.common.sync.model
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import fr.outadoc.homeslide.hassapi.model.PersistedEntity
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class DatabasePayload(
-    @Json(name = "entities")
+    @SerialName("entities")
     val entities: List<PersistedEntity>
 )
