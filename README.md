@@ -23,16 +23,14 @@ Features
   - Android 11 power menu integration
   - Can be set as your assistant
 
-Donate
-------
-You can donate to this project *via* Liberapay.
-
-<a href="https://liberapay.com/outadoc/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
+Support the project
+-------------------
+<a href="https://www.buymeacoffee.com/outadoc" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 License
 -------
 ```
-Copyright (C) 2020 Baptiste Candellier.
+Copyright (C) 2019-2021 Baptiste Candellier.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
