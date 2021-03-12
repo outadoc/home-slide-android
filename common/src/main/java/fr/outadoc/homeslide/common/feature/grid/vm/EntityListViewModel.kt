@@ -183,7 +183,7 @@ class EntityListViewModel(
             when (tile.source) {
                 entity -> tile.copy(
                     isLoading = false,
-                    isActivated = if (failure) tile.isActivated else !tile.isActivated
+                    isActivated = if (failure) tile.isActivated else tile.source.isOn
                 )
                 else -> tile
             }

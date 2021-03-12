@@ -16,6 +16,7 @@
 
 package fr.outadoc.homeslide.hassapi.model.entity
 
+import fr.outadoc.homeslide.hassapi.model.Action
 import fr.outadoc.homeslide.hassapi.model.EntityState
 import fr.outadoc.homeslide.hassapi.model.entity.base.ToggleableEntity
 import fr.outadoc.mdi.toIcon
@@ -25,4 +26,10 @@ class Group(state: EntityState) : ToggleableEntity(state, "google-circles-commun
     companion object {
         const val DOMAIN = "group"
     }
+
+    override val primaryAction: Action
+        get() = when (stateStr) {
+            "off" -> Action("homeassistant", "turn_on", entityId)
+            else -> Action("homeassistant", "turn_off", entityId)
+        }
 }
