@@ -29,6 +29,8 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentSetupHostBinding
+import fr.outadoc.homeslide.app.onboarding.feature.host.HostSetupViewModel.Event
+import fr.outadoc.homeslide.app.onboarding.feature.host.HostSetupViewModel.State
 import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
 import fr.outadoc.homeslide.util.view.addTextChangedListener
 import io.uniflow.androidx.flow.onEvents
@@ -79,11 +81,11 @@ class HostSetupFragment : Fragment() {
 
         onStates(vm) { state ->
             binding?.apply {
-                if (state is HostSetupViewModel.State) {
+                if (state is State) {
                     resultIconViewDiscoveryResult.state = when (state) {
-                        is HostSetupViewModel.State.Loading -> ResultIconView.State.LOADING
-                        is HostSetupViewModel.State.Error -> ResultIconView.State.ERROR
-                        is HostSetupViewModel.State.Success -> ResultIconView.State.SUCCESS
+                        is State.Loading -> ResultIconView.State.LOADING
+                        is State.Error -> ResultIconView.State.ERROR
+                        is State.Success -> ResultIconView.State.SUCCESS
                         else -> ResultIconView.State.NONE
                     }
 
@@ -92,8 +94,8 @@ class HostSetupFragment : Fragment() {
 
                     buttonContinue.apply {
                         isEnabled = when (state) {
-                            is HostSetupViewModel.State.Initial, is HostSetupViewModel.State.Loading -> false
-                            is HostSetupViewModel.State.Success, is HostSetupViewModel.State.Error -> true
+                            is State.Initial, is State.Loading -> false
+                            is State.Success, is State.Error -> true
                         }
                         alpha = if (isEnabled) 1f else 0.6f
                     }
@@ -104,15 +106,15 @@ class HostSetupFragment : Fragment() {
         onEvents(vm) { event ->
             binding?.apply {
                 when (val data = event.take()) {
-                    is HostSetupViewModel.Event.SetInstanceUrl -> {
+                    is Event.SetInstanceUrl ->
                         editTextInstanceBaseUrl.setText(data.instanceUrl)
-                    }
-                    is HostSetupViewModel.Event.DisplayErrorModal -> {
+
+                    is Event.DisplayErrorModal ->
                         MaterialAlertDialogBuilder(requireContext())
                             .setMessage(data.message)
                             .setPositiveButton(android.R.string.ok, null)
                             .show()
-                    }
+
                     is NavigationEvent.Url -> navigate(
                         HostSetupFragmentDirections.startOAuthFlowAction(data.url)
                     )
