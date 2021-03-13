@@ -18,6 +18,7 @@
 <resources>
 
     <string name="onboarding_setup_auth_action">Sign in with Home\u00A0Assistant</string>
+    <string name="onboarding_setup_host_discoveryError_message">An error occurred while contacting your instance. Check that the internal and external URLs are properly set up in its settings.</string>
     <string name="onboarding_setup_host_hint">Home\u00A0Assistant URL</string>
     <string name="onboarding_setup_host_subtitle">Find your installation</string>
     <string name="onboarding_setup_host_zeroconf">

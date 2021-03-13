@@ -18,6 +18,7 @@
 <resources>
 
     <string name="onboarding_setup_auth_action">Connexion avec Home\u00A0Assistant</string>
+    <string name="onboarding_setup_host_discoveryError_message">Une erreur est survenue lors de la connexion à votre instance. Vérifiez que les URLs internes et externes sont correctement renseignées dans ses paramètres.</string>
     <string name="onboarding_setup_host_hint">URL de Home\u00A0Assistant</string>
     <string name="onboarding_setup_host_subtitle">Trouvez votre installation</string>
     <string name="onboarding_setup_host_zeroconf">

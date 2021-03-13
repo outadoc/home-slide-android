@@ -22,6 +22,7 @@ import androidx.lifecycle.viewModelScope
 import fr.outadoc.homeslide.app.onboarding.feature.host.model.ZeroconfHost
 import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
+import fr.outadoc.homeslide.hassapi.model.discovery.DiscoveryInfo
 import fr.outadoc.homeslide.hassapi.repository.DiscoveryRepository
 import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.auth.OAuthConfiguration
@@ -46,7 +47,8 @@ class HostSetupViewModel(
     private val urlPrefs: UrlPreferenceRepository,
     private val repository: DiscoveryRepository,
     private val oAuthConfiguration: OAuthConfiguration,
-    private val zeroconfDiscoveryService: ZeroconfDiscoveryService<ZeroconfHost>
+    private val zeroconfDiscoveryService: ZeroconfDiscoveryService<ZeroconfHost>,
+    private val hostSetupResourceProvider: HostSetupResourceProvider
 ) : AndroidDataFlow(State.Initial(discoveredInstances = emptySet())) {
 
     sealed class State(
@@ -61,17 +63,20 @@ class HostSetupViewModel(
             override val discoveredInstances: Set<ZeroconfHost>
         ) : State(discoveredInstances)
 
-        data class Error(override val discoveredInstances: Set<ZeroconfHost>) :
-            State(discoveredInstances)
+        data class Error(
+            override val discoveredInstances: Set<ZeroconfHost>,
+            val exception: Exception?
+        ) : State(discoveredInstances)
 
         data class Success(
-            val sanitizedInstanceUrl: String,
+            val discoveryInfo: DiscoveryInfo,
             override val discoveredInstances: Set<ZeroconfHost>
         ) : State(discoveredInstances)
     }
 
     sealed class Event : UIEvent() {
         data class SetInstanceUrl(val instanceUrl: String) : Event()
+        data class DisplayErrorModal(val message: String?) : Event()
     }
 
     private fun Uri.toAuthenticationPageUrl() =
@@ -131,6 +136,13 @@ class HostSetupViewModel(
     }
 
     private fun probeUrl(instanceUrl: String) = actionOn<State> { currentState ->
+        if (instanceUrl.isBlank()) {
+            setState {
+                State.Initial(discoveredInstances = currentState.discoveredInstances)
+            }
+            return@actionOn
+        }
+
         setState {
             State.Loading(
                 selectedInstanceUrl = instanceUrl,
@@ -140,44 +152,77 @@ class HostSetupViewModel(
 
         instanceUrl.sanitizeUrl()?.let { sanitizedUrl ->
             try {
-                repository.getDiscoveryInfo(sanitizedUrl)
+                val discoveryInfo = repository.getDiscoveryInfo(sanitizedUrl)
                 setState {
                     State.Success(
-                        sanitizedInstanceUrl = sanitizedUrl,
+                        discoveryInfo = discoveryInfo,
                         discoveredInstances = currentState.discoveredInstances
                     )
                 }
             } catch (e: Exception) {
                 setState {
-                    // URL can't be sanitized
-                    State.Error(discoveredInstances = currentState.discoveredInstances)
+                    // Error during discovery
+                    State.Error(
+                        discoveredInstances = currentState.discoveredInstances,
+                        exception = DiscoveryException(
+                            hostSetupResourceProvider.invalidDiscoveryInfoMessage,
+                            e
+                        )
+                    )
                 }
             }
         } ?: setState {
-            State.Error(discoveredInstances = currentState.discoveredInstances)
+            // URL can't be sanitized
+            State.Error(
+                discoveredInstances = currentState.discoveredInstances,
+                exception = null
+            )
         }
     }
 
-    fun onLoginClicked() = actionOn<State.Success> { currentState ->
-        stopDiscovery()
+    fun onLoginClicked() = actionOn<State> { currentState ->
+        when (currentState) {
+            is State.Success -> {
+                stopDiscovery()
 
-        urlPrefs.localInstanceBaseUrl = currentState.sanitizedInstanceUrl
-        startAuthenticationFlow(currentState.sanitizedInstanceUrl)
+                with(currentState.discoveryInfo) {
+                    saveAndProceed(
+                        localBaseUrl = localBaseUrl ?: baseUrl ?: throw DiscoveryException(
+                            hostSetupResourceProvider.invalidDiscoveryInfoMessage
+                        ),
+                        remoteBaseUrl = remoteBaseUrl ?: baseUrl
+                    )
+                }
+            }
+            is State.Error -> sendEvent {
+                val message = listOf(
+                    currentState.exception?.message,
+                    currentState.exception?.cause?.message
+                ).joinToString(separator = "\n\n")
+
+                Event.DisplayErrorModal(message)
+            }
+            else -> Unit
+        }
     }
 
     fun onZeroconfHostSelected(zeroconfHost: ZeroconfHost) = actionOn<State> {
         stopDiscovery()
-
-        urlPrefs.apply {
-            localInstanceBaseUrl = zeroconfHost.localBaseUrl
-            remoteInstanceBaseUrl = zeroconfHost.remoteBaseUrl
-        }
-
-        startAuthenticationFlow(zeroconfHost.localBaseUrl)
+        saveAndProceed(
+            localBaseUrl = zeroconfHost.localBaseUrl,
+            remoteBaseUrl = zeroconfHost.remoteBaseUrl
+        )
     }
 
-    private fun startAuthenticationFlow(instanceUrl: String) = action {
-        instanceUrl.toUri()
+    private fun saveAndProceed(localBaseUrl: String, remoteBaseUrl: String?) = action {
+        urlPrefs.apply {
+            localInstanceBaseUrl = localBaseUrl
+            remoteInstanceBaseUrl = remoteBaseUrl
+        }
+
+        // Remote should be accessible from anywhere, so use that by default
+        val urlToUseForAuth = remoteBaseUrl ?: localBaseUrl
+        urlToUseForAuth.toUri()
             .toAuthenticationPageUrl()
             ?.let { url ->
                 sendEvent { NavigationEvent.Url(url) }

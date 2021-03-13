@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Baptiste Candellier
+ * Copyright 2021 Baptiste Candellier
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,20 +14,9 @@
  *    limitations under the License.
  */
 
-package fr.outadoc.homeslide.hassapi.model.discovery
+package fr.outadoc.homeslide.app.onboarding.feature.host
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class DiscoveryInfo(
-
-    @SerialName("base_url")
-    val baseUrl: String? = null,
-
-    @SerialName("internal_url")
-    val localBaseUrl: String? = null,
-
-    @SerialName("external_url")
-    val remoteBaseUrl: String? = null
-)
+class DiscoveryException(
+    message: String? = null,
+    cause: Throwable? = null
+) : Exception(message, cause)

@@ -26,6 +26,7 @@ import fr.outadoc.homeslide.app.feature.review.GoogleInAppReviewManager
 import fr.outadoc.homeslide.app.feature.review.InAppReviewLaunchCounter
 import fr.outadoc.homeslide.app.inject.AppIntentProvider
 import fr.outadoc.homeslide.app.onboarding.feature.authcallback.AuthCallbackViewModel
+import fr.outadoc.homeslide.app.onboarding.feature.host.HostSetupResourceProvider
 import fr.outadoc.homeslide.app.onboarding.feature.host.HostSetupViewModel
 import fr.outadoc.homeslide.app.onboarding.feature.host.model.ZeroconfHost
 import fr.outadoc.homeslide.app.onboarding.feature.host.rest.DiscoveryRepositoryImpl
@@ -118,10 +119,12 @@ class MainApplication : Application() {
         single { DefaultBaseUrlProvider(get(), get()) }
         single<BaseUrlProvider> { get<DefaultBaseUrlProvider>() }
         single<NetworkAccessManager> { get<DefaultBaseUrlProvider>() }
+        single { HostSetupResourceProvider(get()) }
 
         viewModel { WelcomeViewModel() }
         viewModel {
             HostSetupViewModel(
+                get(),
                 get(),
                 get(),
                 get(),

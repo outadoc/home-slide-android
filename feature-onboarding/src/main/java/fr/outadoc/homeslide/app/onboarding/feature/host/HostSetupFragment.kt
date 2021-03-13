@@ -27,6 +27,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentSetupHostBinding
 import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
 import fr.outadoc.homeslide.util.view.addTextChangedListener
@@ -90,16 +91,11 @@ class HostSetupFragment : Fragment() {
                     zeroconfAdapter.submitList(state.discoveredInstances.toList())
 
                     buttonContinue.apply {
-                        when (state) {
-                            is HostSetupViewModel.State.Success -> {
-                                isEnabled = true
-                                alpha = 1f
-                            }
-                            else -> {
-                                isEnabled = false
-                                alpha = 0.6f
-                            }
+                        isEnabled = when (state) {
+                            is HostSetupViewModel.State.Initial, is HostSetupViewModel.State.Loading -> false
+                            is HostSetupViewModel.State.Success, is HostSetupViewModel.State.Error -> true
                         }
+                        alpha = if (isEnabled) 1f else 0.6f
                     }
                 }
             }
@@ -110,6 +106,12 @@ class HostSetupFragment : Fragment() {
                 when (val data = event.take()) {
                     is HostSetupViewModel.Event.SetInstanceUrl -> {
                         editTextInstanceBaseUrl.setText(data.instanceUrl)
+                    }
+                    is HostSetupViewModel.Event.DisplayErrorModal -> {
+                        MaterialAlertDialogBuilder(requireContext())
+                            .setMessage(data.message)
+                            .setPositiveButton(android.R.string.ok, null)
+                            .show()
                     }
                     is NavigationEvent.Url -> navigate(
                         HostSetupFragmentDirections.startOAuthFlowAction(data.url)
