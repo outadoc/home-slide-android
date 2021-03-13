@@ -31,10 +31,11 @@ class HassZeroconfDiscoveryServiceImpl(nsdManager: NsdManager) :
     override fun parseServiceInfo(serviceInfo: NsdServiceInfo): ZeroconfHost {
         return with(serviceInfo) {
             ZeroconfHost(
-                hostName = "${host.hostAddress}:$port",
-                baseUrl = attributes["base_url"]?.decodeToString(),
-                version = attributes["version"]?.decodeToString(),
-                instanceName = serviceName
+                localBaseUrl = tryGetAttribute("internal_url") ?: "http://${host.hostAddress}:$port",
+                remoteBaseUrl = tryGetAttribute("external_url") ?: tryGetAttribute("base_url"),
+                version = tryGetAttribute("version"),
+                instanceName = tryGetAttribute("location_name"),
+                uuid = tryGetAttribute("uuid") ?: host.hostAddress
             )
         }
     }

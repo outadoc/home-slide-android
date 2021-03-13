@@ -22,14 +22,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DiscoveryInfo(
 
-    // TODO serialize external_url and internal_url, and use those for setup
-
     @SerialName("base_url")
-    val baseUrl: String,
+    val baseUrl: String? = null,
 
-    @SerialName("location_name")
-    val locationName: String? = null,
+    @SerialName("internal_url")
+    val localBaseUrl: String? = null,
 
-    @SerialName("version")
-    val version: String
+    @SerialName("external_url")
+    val remoteBaseUrl: String? = null
 )

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Baptiste Candellier
+ * Copyright 2021 Baptiste Candellier
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,12 +14,9 @@
  *    limitations under the License.
  */
 
-package fr.outadoc.homeslide.app.onboarding.feature.host.model
+package fr.outadoc.homeslide.app.onboarding.feature.host
 
-data class ZeroconfHost(
-    val uuid: String,
-    val localBaseUrl: String,
-    val remoteBaseUrl: String?,
-    val version: String?,
-    val instanceName: String?
-)
+class DiscoveryException(
+    message: String? = null,
+    cause: Throwable? = null
+) : Exception(message, cause)

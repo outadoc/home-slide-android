@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Baptiste Candellier
+ * Copyright 2021 Baptiste Candellier
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,12 +14,13 @@
  *    limitations under the License.
  */
 
-package fr.outadoc.homeslide.app.onboarding.feature.host.model
+package fr.outadoc.homeslide.app.onboarding.feature.host
 
-data class ZeroconfHost(
-    val uuid: String,
-    val localBaseUrl: String,
-    val remoteBaseUrl: String?,
-    val version: String?,
-    val instanceName: String?
-)
+import android.content.Context
+import fr.outadoc.homeslide.app.onboarding.R
+
+class HostSetupResourceProvider(private val context: Context) {
+
+    val invalidDiscoveryInfoMessage: String
+        get() = context.resources.getString(R.string.onboarding_setup_host_discoveryError_message)
+}
