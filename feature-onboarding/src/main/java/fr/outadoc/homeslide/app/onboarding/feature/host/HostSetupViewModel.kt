@@ -168,13 +168,12 @@ class HostSetupViewModel(
     fun onZeroconfHostSelected(zeroconfHost: ZeroconfHost) = actionOn<State> {
         stopDiscovery()
 
-        val localUrl = "http://${zeroconfHost.hostName}"
         urlPrefs.apply {
-            localInstanceBaseUrl = localUrl
-            remoteInstanceBaseUrl = zeroconfHost.baseUrl
+            localInstanceBaseUrl = zeroconfHost.localBaseUrl
+            remoteInstanceBaseUrl = zeroconfHost.remoteBaseUrl
         }
 
-        startAuthenticationFlow(localUrl)
+        startAuthenticationFlow(zeroconfHost.localBaseUrl)
     }
 
     private fun startAuthenticationFlow(instanceUrl: String) = action {

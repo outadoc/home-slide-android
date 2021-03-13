@@ -41,8 +41,8 @@ class ZeroconfAdapter(val onItemClick: (ZeroconfHost) -> Unit, val onItemCountCh
         with(holder) {
             instanceName.text = item.instanceName
             version.text = item.version
-            ip.text = item.hostName
-            baseUrl.text = item.baseUrl
+            localBaseUrl.text = item.localBaseUrl
+            remoteBaseUrl.text = item.remoteBaseUrl
 
             view.setOnClickListener { onItemClick(item) }
         }
@@ -62,7 +62,7 @@ class ZeroconfAdapter(val onItemClick: (ZeroconfHost) -> Unit, val onItemCountCh
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val instanceName: TextView = view.findViewById(R.id.textView_host_instanceName)
         val version: TextView = view.findViewById(R.id.textView_host_version)
-        val ip: TextView = view.findViewById(R.id.textView_host_ip)
-        val baseUrl: TextView = view.findViewById(R.id.textView_host_baseUrl)
+        val localBaseUrl: TextView = view.findViewById(R.id.textView_host_ip)
+        val remoteBaseUrl: TextView = view.findViewById(R.id.textView_host_baseUrl)
     }
 }
