@@ -161,7 +161,9 @@ class EntityListViewModel(
 
     fun showAll() = actionOn<State.Editing> { currentState ->
         val newList = currentState.allTiles.map { tile ->
-            tile.copy(isHidden = false)
+            if (tile in currentState.displayTiles) {
+                tile.copy(isHidden = false)
+            } else tile
         }
 
         setState { currentState.copy(allTiles = newList) }
@@ -169,7 +171,9 @@ class EntityListViewModel(
 
     fun hideAll() = actionOn<State.Editing> { currentState ->
         val newList = currentState.allTiles.map { tile ->
-            tile.copy(isHidden = true)
+            if (tile in currentState.displayTiles) {
+                tile.copy(isHidden = true)
+            } else tile
         }
 
         setState { currentState.copy(allTiles = newList) }
