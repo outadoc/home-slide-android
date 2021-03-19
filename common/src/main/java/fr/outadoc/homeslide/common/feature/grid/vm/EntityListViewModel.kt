@@ -27,6 +27,7 @@ import io.uniflow.androidx.flow.AndroidDataFlow
 import io.uniflow.core.flow.actionOn
 import io.uniflow.core.flow.data.UIEvent
 import io.uniflow.core.flow.data.UIState
+import io.uniflow.core.threading.onDefault
 import io.uniflow.core.threading.onIO
 import io.uniflow.core.threading.onMain
 
@@ -81,11 +82,13 @@ class EntityListViewModel(
         onIO {
             try {
                 val tiles = repository.getEntityTiles()
-                setState {
-                    if (tiles.isNullOrEmpty()) {
-                        State.InitialError(null)
-                    } else {
-                        State.Content(tiles)
+                setStateAsync {
+                    onDefault {
+                        if (tiles.isNullOrEmpty()) {
+                            State.InitialError(null)
+                        } else {
+                            State.Content(tiles)
+                        }
                     }
                 }
             } catch (e: Exception) {
@@ -98,12 +101,8 @@ class EntityListViewModel(
                     }
                 }
 
-                setState {
-                    if (currentState !is State.InitialLoading) {
-                        currentState
-                    } else {
-                        State.InitialError(e.localizedMessage)
-                    }
+                if (currentState is State.InitialLoading) {
+                    setState { State.InitialError(e.localizedMessage) }
                 }
             }
         }
@@ -111,16 +110,26 @@ class EntityListViewModel(
 
     fun onEntityClick(item: Entity) = actionOn<State.Content> { currentState ->
         val action = item.primaryAction ?: return@actionOn
-        setState { onEntityLoadStart(currentState, item) }
+        setStateAsync {
+            onDefault { onEntityLoadStart(currentState, item) }
+        }
 
         onIO {
             try {
                 repository.callService(action)
-                setState { onEntityLoadStop(currentState, item, failure = false) }
+
+                setStateAsync {
+                    onDefault { onEntityLoadStop(currentState, item, failure = false) }
+                }
+
                 onMain { loadEntities() }
             } catch (e: Exception) {
                 KLog.e(e) { "Error while executing action" }
-                setState { onEntityLoadStop(currentState, item, failure = true) }
+
+                setStateAsync {
+                    onDefault { onEntityLoadStop(currentState, item, failure = true) }
+                }
+
                 sendEvent {
                     when (e) {
                         is InvalidRefreshTokenException -> Event.LoggedOut
@@ -133,50 +142,64 @@ class EntityListViewModel(
 
     fun onReorderedEntities(items: List<Tile<Entity>>) =
         actionOn<State.Editing> { currentState ->
-            setState { currentState.copy(allTiles = items) }
+            setStateAsync {
+                onDefault { currentState.copy(allTiles = items) }
+            }
         }
 
     fun enterEditMode() = actionOn<State.Content> { currentState ->
-        setState {
-            State.Editing(
-                allTiles = currentState.allTiles.sortByVisibility(),
-                filter = ""
-            )
+        setStateAsync {
+            onDefault {
+                State.Editing(
+                    allTiles = currentState.allTiles.sortByVisibility(),
+                    filter = ""
+                )
+            }
         }
     }
 
     fun onFilterChange(filter: String) = actionOn<State.Editing> { currentState ->
-        setState {
-            currentState.copy(filter = filter)
+        setStateAsync {
+            onDefault { currentState.copy(filter = filter) }
         }
     }
 
     fun exitEditMode() = actionOn<State.Editing> { currentState ->
         onIO {
             updateEntityDatabase(currentState)
-        }
 
-        setState { State.Content(currentState.allTiles) }
+            setStateAsync {
+                onDefault { State.Content(currentState.allTiles) }
+            }
+        }
     }
 
     fun showAll() = actionOn<State.Editing> { currentState ->
-        val newList = currentState.allTiles.map { tile ->
-            if (tile in currentState.displayTiles) {
-                tile.copy(isHidden = false)
-            } else tile
-        }
+        setStateAsync {
+            onDefault {
+                val newList = currentState.allTiles.map { tile ->
+                    if (tile in currentState.displayTiles) {
+                        tile.copy(isHidden = false)
+                    } else tile
+                }
 
-        setState { currentState.copy(allTiles = newList) }
+                currentState.copy(allTiles = newList)
+            }
+        }
     }
 
     fun hideAll() = actionOn<State.Editing> { currentState ->
-        val newList = currentState.allTiles.map { tile ->
-            if (tile in currentState.displayTiles) {
-                tile.copy(isHidden = true)
-            } else tile
-        }
+        setStateAsync {
+            onDefault {
+                val newList = currentState.allTiles.map { tile ->
+                    if (tile in currentState.displayTiles) {
+                        tile.copy(isHidden = true)
+                    } else tile
+                }
 
-        setState { currentState.copy(allTiles = newList) }
+                currentState.copy(allTiles = newList)
+            }
+        }
     }
 
     private fun onEntityLoadStart(
@@ -218,14 +241,18 @@ class EntityListViewModel(
 
     fun onItemVisibilityChange(entity: Entity, isVisible: Boolean) =
         actionOn<State.Editing> { currentState ->
-            val newList = currentState.allTiles.map { tile ->
-                when (tile.source) {
-                    entity -> tile.copy(isHidden = !isVisible)
-                    else -> tile
-                }
-            }.sortByVisibility()
+            setStateAsync {
+                onDefault {
+                    val newList = currentState.allTiles.map { tile ->
+                        when (tile.source) {
+                            entity -> tile.copy(isHidden = !isVisible)
+                            else -> tile
+                        }
+                    }.sortByVisibility()
 
-            setState { currentState.copy(allTiles = newList) }
+                    currentState.copy(allTiles = newList)
+                }
+            }
 
             entity.friendlyName?.let { entityName ->
                 sendEvent {
