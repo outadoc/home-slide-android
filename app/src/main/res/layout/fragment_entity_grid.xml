@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2020 Baptiste Candellier
   ~
   ~    Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,7 @@
   -->
 
 <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/viewFlipper_entityGrid"
     android:layout_width="match_parent"
@@ -24,18 +24,41 @@
     android:inAnimation="@anim/fade_in"
     android:outAnimation="@anim/fade_out">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_shortcuts"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:focusable="false"
-        android:paddingHorizontal="16dp"
-        android:scrollbarStyle="outsideOverlay"
-        tools:itemCount="20"
-        tools:layoutManager="GridLayoutManager"
-        tools:listitem="@layout/item_shortcut"
-        tools:spanCount="3" />
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_shortcuts_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/grid_filter_hint"
+            android:padding="16dp"
+            app:endIconMode="clear_text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editText_shortcuts_filter"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:imeOptions="actionSearch" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_shortcuts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:focusable="false"
+            android:paddingHorizontal="16dp"
+            android:scrollbarStyle="outsideOverlay"
+            tools:itemCount="20"
+            tools:layoutManager="GridLayoutManager"
+            tools:listitem="@layout/item_shortcut"
+            tools:spanCount="3" />
+
+    </LinearLayout>
 
     <include
         android:id="@+id/layout_noContent"

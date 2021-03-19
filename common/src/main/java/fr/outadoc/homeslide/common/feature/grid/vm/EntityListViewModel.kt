@@ -39,7 +39,16 @@ class EntityListViewModel(
     sealed class State : UIState() {
         data class InitialError(val errorMessage: String?) : State()
         object InitialLoading : State()
-        data class Editing(val tiles: List<Tile<Entity>>) : State()
+
+        data class Editing(
+            val allTiles: List<Tile<Entity>>,
+            val filter: String
+        ) : State() {
+            val displayTiles = allTiles.filter { tile ->
+                tile.label.contains(filter, ignoreCase = true)
+            }
+        }
+
         data class Content(val allTiles: List<Tile<Entity>>) : State() {
             val displayTiles = allTiles.filter { !it.isHidden }
         }
@@ -124,11 +133,22 @@ class EntityListViewModel(
 
     fun onReorderedEntities(items: List<Tile<Entity>>) =
         actionOn<State.Editing> { currentState ->
-            setState { currentState.copy(tiles = items) }
+            setState { currentState.copy(allTiles = items) }
         }
 
     fun enterEditMode() = actionOn<State.Content> { currentState ->
-        setState { State.Editing(currentState.allTiles.sortByVisibility()) }
+        setState {
+            State.Editing(
+                allTiles = currentState.allTiles.sortByVisibility(),
+                filter = ""
+            )
+        }
+    }
+
+    fun onFilterChange(filter: String) = actionOn<State.Editing> { currentState ->
+        setState {
+            currentState.copy(filter = filter)
+        }
     }
 
     fun exitEditMode() = actionOn<State.Editing> { currentState ->
@@ -136,23 +156,23 @@ class EntityListViewModel(
             updateEntityDatabase(currentState)
         }
 
-        setState { State.Content(currentState.tiles) }
+        setState { State.Content(currentState.allTiles) }
     }
 
     fun showAll() = actionOn<State.Editing> { currentState ->
-        val newList = currentState.tiles.map { tile ->
+        val newList = currentState.allTiles.map { tile ->
             tile.copy(isHidden = false)
         }
 
-        setState { currentState.copy(tiles = newList) }
+        setState { currentState.copy(allTiles = newList) }
     }
 
     fun hideAll() = actionOn<State.Editing> { currentState ->
-        val newList = currentState.tiles.map { tile ->
+        val newList = currentState.allTiles.map { tile ->
             tile.copy(isHidden = true)
         }
 
-        setState { currentState.copy(tiles = newList) }
+        setState { currentState.copy(allTiles = newList) }
     }
 
     private fun onEntityLoadStart(
@@ -194,14 +214,14 @@ class EntityListViewModel(
 
     fun onItemVisibilityChange(entity: Entity, isVisible: Boolean) =
         actionOn<State.Editing> { currentState ->
-            val newList = currentState.tiles.map { tile ->
+            val newList = currentState.allTiles.map { tile ->
                 when (tile.source) {
                     entity -> tile.copy(isHidden = !isVisible)
                     else -> tile
                 }
             }.sortByVisibility()
 
-            setState { currentState.copy(tiles = newList) }
+            setState { currentState.copy(allTiles = newList) }
 
             entity.friendlyName?.let { entityName ->
                 sendEvent {
@@ -217,7 +237,7 @@ class EntityListViewModel(
         }
 
     private suspend fun updateEntityDatabase(currentState: State.Editing) {
-        currentState.tiles.mapIndexed { idx, item ->
+        currentState.allTiles.mapIndexed { idx, item ->
             PersistedEntity(
                 item.source.entityId,
                 idx,

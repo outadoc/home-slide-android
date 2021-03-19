@@ -37,6 +37,7 @@ import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -58,6 +59,7 @@ import fr.outadoc.homeslide.common.feature.grid.vm.EntityListViewModel.State
 import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.NetworkAccessManager
+import fr.outadoc.homeslide.util.view.addTextChangedListener
 import fr.outadoc.homeslide.util.view.showSnackbar
 import io.uniflow.androidx.flow.onEvents
 import io.uniflow.androidx.flow.onStates
@@ -149,6 +151,10 @@ class EntityGridFragment : Fragment() {
                 vm.loadEntities()
             }
 
+            editTextShortcutsFilter.addTextChangedListener { filter ->
+                vm.onFilterChange(filter)
+            }
+
             skeleton = recyclerViewShortcuts.applySkeleton(
                 listItemLayoutResId = R.layout.item_shortcut_shimmer,
                 itemCount = SKELETON_ITEM_COUNT
@@ -220,7 +226,7 @@ class EntityGridFragment : Fragment() {
         itemAdapter.apply {
             when (state) {
                 is State.Content -> submitList(state.displayTiles)
-                is State.Editing -> submitList(state.tiles)
+                is State.Editing -> submitList(state.displayTiles)
                 is State.InitialError -> {
                     binding?.layoutNoContent?.textViewNoContentErrorMessage?.apply {
                         text = state.errorMessage
@@ -258,6 +264,8 @@ class EntityGridFragment : Fragment() {
         binding?.recyclerViewShortcuts?.setOnTouchListener { _, _ ->
             state is State.InitialLoading
         }
+
+        binding?.textInputLayoutShortcutsFilter?.isVisible = state is State.Editing
 
         binding?.viewFlipperEntityGrid?.apply {
             if (displayedChild != childToDisplay) {

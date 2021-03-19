@@ -16,6 +16,7 @@
   -->
 
 <resources>
+    <string name="grid_filter_hint">Filter by name…</string>
     <string name="grid_snackbar_error_action_retry">Retry</string>
     <string name="grid_snackbar_generic_error_title">An error occurred.</string>
     <string name="grid_snackbar_loading_error_title">Could not load your devices: %s</string>
