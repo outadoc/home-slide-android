@@ -16,6 +16,7 @@
   -->
 
 <resources>
+    <string name="grid_filter_hint">Filtrer par nom…</string>
     <string name="grid_snackbar_error_action_retry">Réessayer</string>
     <string name="grid_snackbar_generic_error_title">Une erreur est survenue.</string>
     <string name="grid_snackbar_loading_error_title">Impossible de charger vos appareils : %s</string>

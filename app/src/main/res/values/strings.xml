@@ -16,15 +16,16 @@
   -->
 
 <resources>
+    <string name="grid_filter_hint">Filter by name…</string>
     <string name="grid_snackbar_error_action_retry">Retry</string>
     <string name="grid_snackbar_generic_error_title">An error occurred.</string>
     <string name="grid_snackbar_loading_error_title">Could not load your devices: %s</string>
 
     <string name="menu_item_done">Done</string>
     <string name="menu_item_edit">Reorganize</string>
-    <string name="menu_item_hide_all">Hide all entities</string>
+    <string name="menu_item_hide_all">Hide all visible</string>
     <string name="menu_item_settings">Settings</string>
-    <string name="menu_item_show_all">Show all entities</string>
+    <string name="menu_item_show_all">Show all visible</string>
 
     <string name="item_hidden_contentDescription">This device is hidden</string>
 
