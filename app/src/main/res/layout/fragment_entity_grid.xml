@@ -41,7 +41,8 @@
                 android:id="@+id/editText_shortcuts_filter"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:imeOptions="actionSearch" />
+                android:imeOptions="actionDone"
+                android:inputType="text|textFilter" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
