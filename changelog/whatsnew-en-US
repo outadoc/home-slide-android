@@ -1,11 +1,9 @@
-This release focuses on stability.
+Features:
+‣ Improve support for internal/external URLs
+‣ Add filter box in edit mode
 
-Fixes:
-- Improve base url selection
-- Properly request Wi-Fi network when needed
+Improvements:
+‣ Properly handle group toggle
+‣ Improve performance on main screen
 
-Special thanks to @zeroos for their help on improving network access on Wear OS!
-
-Chores:
-- Update Material Design Icons to 5.9.55
-- Update other dependencies
+Thank you @bambidotexe for their group toggle fix!

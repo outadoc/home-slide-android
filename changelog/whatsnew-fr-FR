@@ -1,11 +1,9 @@
-Cette version cible une meilleure stabilité de l'app.
+Fonctionnalités :
+‣ Amélioration du support des URLs internes/externes
+‣ Ajouté la possibilité de filtrer en mode édition
 
-Correctifs :
-- Améliorations de la sélection de l'URL de l'instance à utiliser
-- L'app Wear OS demande maintenant la connexion Wi-Fi à la montre si disponible
+Améliorations :
+‣ Meilleure gestion du domaine "group"
+‣ Amélioré les performances de l'écran principal
 
-Mention spéciale à @zeroos pour leur aide sur l'amélioration de la gestion réseau sur Wear OS !
-
-Autres :
-- Mise à jour de Material Design Icons en 5.9.55
-- Mise à jour d'autres dépendances
+Merci à @bambidotexe pour leur correctif du domaine "group" !
