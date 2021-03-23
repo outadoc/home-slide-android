@@ -15,6 +15,20 @@
   ~    limitations under the License.
   -->
 
-<network-security-config>
-    <base-config cleartextTrafficPermitted="true" />
+<!--
+ Ignore warnings caused by allowing clear-text and user certificates,
+ since this is an app that allows collecting to arbitrary servers.
+ -->
+<network-security-config xmlns:tools="http://schemas.android.com/tools">
+    <base-config
+        cleartextTrafficPermitted="true"
+        tools:ignore="InsecureBaseConfiguration">
+
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates
+                src="user"
+                tools:ignore="AcceptsUserCertificates" />
+        </trust-anchors>
+    </base-config>
 </network-security-config>
