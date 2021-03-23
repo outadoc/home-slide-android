@@ -25,6 +25,7 @@ import fr.outadoc.homeslide.rest.tls.TlsConfigurationProvider
 import fr.outadoc.homeslide.rest.tls.UnsafeHostnameVerifier
 import fr.outadoc.homeslide.rest.tls.UnsafeX509TrustManager
 import fr.outadoc.homeslide.rest.tls.createSocketFactory
+import fr.outadoc.homeslide.rest.tls.defaultTrustManager
 import fr.outadoc.homeslide.rest.util.PLACEHOLDER_BASE_URL
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -43,7 +44,7 @@ class ApiClientBuilder<T>(
 ) {
     private val unsafeTrustManager = UnsafeX509TrustManager(
         tlsConfigurationProvider,
-        delegate = Util.platformTrustManager()
+        delegate = defaultTrustManager
     )
 
     private val unsafeHostnameVerifier = UnsafeHostnameVerifier(
