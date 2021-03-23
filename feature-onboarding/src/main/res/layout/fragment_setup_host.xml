@@ -73,7 +73,7 @@
             android:id="@+id/checkBox_host_ignoreTlsErrors"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Ignore invalid TLS certificates"
+            android:text="@string/onboarding_setup_host_ignoreTlsErrors_text"
             app:layout_constraintEnd_toEndOf="@+id/resultIconView_discoveryResult"
             app:layout_constraintStart_toStartOf="@+id/textInputLayout_host"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout_host" />
@@ -82,7 +82,7 @@
             android:id="@+id/textView_host_ignoreTlsErrorsWarning"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="This option is dangerous for your privacy, as it will allow anyone to snoop on your HTTPS connection. If you use a custom certificate authority, please add its root to your device's root certificate store instead."
+            android:text="@string/onboarding_setup_host_ignoreTlsErrors_warning"
             android:textColor="?colorError"
             app:layout_constraintEnd_toEndOf="@+id/resultIconView_discoveryResult"
             app:layout_constraintStart_toStartOf="@+id/textInputLayout_host"
