@@ -19,4 +19,5 @@ package fr.outadoc.homeslide.common.preferences
 interface UrlPreferenceRepository {
     var localInstanceBaseUrl: String?
     var remoteInstanceBaseUrl: String?
+    var ignoreTlsErrors: Boolean
 }

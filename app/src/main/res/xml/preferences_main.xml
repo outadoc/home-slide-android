@@ -22,14 +22,14 @@
         <EditTextPreference
             app:defaultValue="http://hass.local:8123"
             app:icon="@drawable/ic_local_network"
-            app:key="et_pref_instance_base_url"
+            app:key="@string/pref_key_instanceBaseUrl"
             app:singleLine="true"
             app:summary="@string/pref_base_url_summary"
             app:title="@string/pref_base_url_title" />
 
         <EditTextPreference
             app:icon="@drawable/ic_remote_network"
-            app:key="et_pref_instance_alt_base_url"
+            app:key="@string/pref_key_instanceBaseUrlAlt"
             app:singleLine="true"
             app:summary="@string/pref_alt_base_url_summary"
             app:title="@string/pref_alt_base_url_title" />
@@ -53,7 +53,7 @@
         <SwitchPreference
             app:defaultValue="false"
             app:icon="@drawable/ic_screen_lock"
-            app:key="chk_pref_show_when_locked"
+            app:key="@string/pref_key_showWhenLocked"
             app:summary="@string/pref_show_when_locked_summary"
             app:title="@string/pref_show_when_locked_title" />
 
@@ -61,7 +61,7 @@
             android:max="60"
             app:defaultValue="10"
             app:icon="@drawable/ic_refresh"
-            app:key="seek_pref_refresh_interval_s"
+            app:key="@string/pref_key_refreshIntervalSeconds"
             app:min="3"
             app:seekBarIncrement="5"
             app:showSeekBarValue="true"
@@ -73,7 +73,7 @@
             app:entries="@array/pref_theme_entry_names"
             app:entryValues="@array/pref_theme_entry_values"
             app:icon="@drawable/ic_invert_colors"
-            app:key="list_pref_theme"
+            app:key="@string/pref_key_theme"
             app:summary="%s"
             app:title="@string/pref_theme_title" />
 

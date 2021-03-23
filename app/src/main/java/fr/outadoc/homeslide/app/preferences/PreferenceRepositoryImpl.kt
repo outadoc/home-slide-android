@@ -19,6 +19,7 @@ package fr.outadoc.homeslide.app.preferences
 import android.content.Context
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import fr.outadoc.homeslide.app.R
 import fr.outadoc.homeslide.common.feature.consent.ConsentPreferenceRepository
 import fr.outadoc.homeslide.common.feature.daynight.ThemePreferenceRepository
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
@@ -29,7 +30,7 @@ import fr.outadoc.homeslide.common.sync.model.PreferencesPayload
 import kotlinx.datetime.Instant
 
 class PreferenceRepositoryImpl(
-    context: Context,
+    private val context: Context,
     private val dataSyncClient: DataSyncClient
 ) : GlobalPreferenceRepository,
     UrlPreferenceRepository,
@@ -41,75 +42,88 @@ class PreferenceRepositoryImpl(
     private val appPrefs = PreferenceManager.getDefaultSharedPreferences(context)!!
 
     override var localInstanceBaseUrl: String?
-        get() = appPrefs.getString(KEY_INSTANCE_BASE_URL, null)
+        get() = appPrefs.getString(context.getString(R.string.pref_key_instanceBaseUrl), null)
         set(value) {
             appPrefs.edit {
-                putString(KEY_INSTANCE_BASE_URL, value)
+                putString(context.getString(R.string.pref_key_instanceBaseUrl), value)
             }
         }
 
     override var remoteInstanceBaseUrl: String?
-        get() = appPrefs.getString(KEY_INSTANCE_ALT_BASE_URL, null)
+        get() = appPrefs.getString(context.getString(R.string.pref_key_instanceBaseUrlAlt), null)
         set(value) {
             appPrefs.edit {
-                putString(KEY_INSTANCE_ALT_BASE_URL, value)
+                putString(context.getString(R.string.pref_key_instanceBaseUrlAlt), value)
+            }
+        }
+
+    override var ignoreTlsErrors: Boolean
+        get() = appPrefs.getBoolean(context.getString(R.string.pref_key_ignoreTlsErrors), false)
+        set(value) {
+            appPrefs.edit {
+                putBoolean(context.getString(R.string.pref_key_ignoreTlsErrors), value)
             }
         }
 
     override var accessToken: String?
-        get() = appPrefs.getString(KEY_ACCESS_TOKEN, null)
+        get() = appPrefs.getString(context.getString(R.string.pref_key_authToken), null)
         set(value) {
             appPrefs.edit {
-                putString(KEY_ACCESS_TOKEN, value)
+                putString(context.getString(R.string.pref_key_authToken), value)
             }
         }
 
     override var refreshToken: String?
-        get() = appPrefs.getString(KEY_REFRESH_TOKEN, "")!!
+        get() = appPrefs.getString(context.getString(R.string.pref_key_refreshToken), "")!!
         set(value) {
             appPrefs.edit {
-                putString(KEY_REFRESH_TOKEN, value)
+                putString(context.getString(R.string.pref_key_refreshToken), value)
             }
         }
 
     override var tokenExpirationTime: Instant?
-        get() = appPrefs.getString(KEY_TOKEN_EXPIRATION_TIME, null)?.let { instantStr ->
-            try {
-                Instant.parse(instantStr)
-            } catch (e: Exception) {
-                null
+        get() = appPrefs.getString(context.getString(R.string.pref_key_tokenExpirationTime), null)
+            ?.let { instantStr ->
+                try {
+                    Instant.parse(instantStr)
+                } catch (e: Exception) {
+                    null
+                }
             }
-        }
         set(value) {
             appPrefs.edit {
-                putString(KEY_TOKEN_EXPIRATION_TIME, value?.toString())
+                putString(
+                    context.getString(R.string.pref_key_tokenExpirationTime),
+                    value?.toString()
+                )
             }
         }
 
     override val theme: String
-        get() = appPrefs.getString(KEY_THEME, "system")!!
+        get() = appPrefs.getString(context.getString(R.string.pref_key_theme), "system")!!
 
     override val isCrashReportingEnabled: Boolean
-        get() = appPrefs.getBoolean(KEY_ENABLE_CRASH_REPORTING, true)
+        get() = appPrefs.getBoolean(context.getString(R.string.pref_key_crashlyticsEnabled), true)
 
     override var isOnboardingDone: Boolean
-        get() = appPrefs.getBoolean(KEY_IS_ONBOARDING_DONE, false)
+        get() = appPrefs.getBoolean(context.getString(R.string.pref_key_onboardingDone), false)
         set(value) {
             appPrefs.edit {
-                putBoolean(KEY_IS_ONBOARDING_DONE, value)
+                putBoolean(context.getString(R.string.pref_key_onboardingDone), value)
             }
         }
 
     override var showWhenLocked: Boolean
-        get() = appPrefs.getBoolean(KEY_SHOW_WHEN_LOCKED, false)
+        get() = appPrefs.getBoolean(context.getString(R.string.pref_key_showWhenLocked), false)
         set(value) {
             appPrefs.edit {
-                putBoolean(KEY_SHOW_WHEN_LOCKED, value)
+                putBoolean(context.getString(R.string.pref_key_showWhenLocked), value)
             }
         }
 
     override val refreshIntervalSeconds: Long
-        get() = appPrefs.getInt(KEY_REFRESH_INTERVAL, 10).toLong()
+        get() = appPrefs.getInt(context.getString(R.string.pref_key_refreshIntervalSeconds), 10)
+            .toLong()
 
     override fun publish() {
         val payload = PreferencesPayload(
@@ -120,18 +134,5 @@ class PreferenceRepositoryImpl(
         )
 
         dataSyncClient.syncPreferences(payload)
-    }
-
-    companion object {
-        const val KEY_INSTANCE_BASE_URL = "et_pref_instance_base_url"
-        const val KEY_INSTANCE_ALT_BASE_URL = "et_pref_instance_alt_base_url"
-        const val KEY_ACCESS_TOKEN = "et_pref_auth_token"
-        const val KEY_REFRESH_TOKEN = "et_pref_refresh_token"
-        const val KEY_TOKEN_EXPIRATION_TIME = "et_pref_token_expiration_time"
-        const val KEY_THEME = "list_pref_theme"
-        const val KEY_IS_ONBOARDING_DONE = "chk_pref_onboarding_ok"
-        const val KEY_SHOW_WHEN_LOCKED = "chk_pref_show_when_locked"
-        const val KEY_REFRESH_INTERVAL = "seek_pref_refresh_interval_s"
-        const val KEY_ENABLE_CRASH_REPORTING = "chk_pref_enable_crash_reporting"
     }
 }

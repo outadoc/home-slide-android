@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2021 Baptiste Candellier
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<resources>
+
+    <string name="pref_key_instanceBaseUrl" translatable="false">et_pref_instance_base_url</string>
+    <string name="pref_key_instanceBaseUrlAlt" translatable="false">et_pref_instance_alt_base_url</string>
+    <string name="pref_key_ignoreTlsErrors" translatable="false">chk_pref_ignore_tls_errors</string>
+    <string name="pref_key_authToken" translatable="false">et_pref_auth_token</string>
+    <string name="pref_key_refreshToken" translatable="false">et_pref_refresh_token</string>
+    <string name="pref_key_tokenExpirationTime" translatable="false">et_pref_token_expiration_time</string>
+    <string name="pref_key_theme" translatable="false">list_pref_theme</string>
+    <string name="pref_key_onboardingDone" translatable="false">chk_pref_onboarding_ok</string>
+    <string name="pref_key_showWhenLocked" translatable="false">chk_pref_show_when_locked</string>
+    <string name="pref_key_refreshIntervalSeconds" translatable="false">seek_pref_refresh_interval_s</string>
+    <string name="pref_key_crashlyticsEnabled" translatable="false">chk_pref_enable_crash_reporting</string>
+
+</resources>
