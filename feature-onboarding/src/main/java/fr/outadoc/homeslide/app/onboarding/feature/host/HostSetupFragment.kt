@@ -22,6 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
@@ -100,6 +101,8 @@ class HostSetupFragment : Fragment() {
                         isEnabled = state !is State.Loading
                         isChecked = state.ignoreTlsErrors
                     }
+
+                    textViewHostIgnoreTlsErrorsWarning.isVisible = state.ignoreTlsErrors
 
                     buttonContinue.apply {
                         isEnabled = when (state) {
