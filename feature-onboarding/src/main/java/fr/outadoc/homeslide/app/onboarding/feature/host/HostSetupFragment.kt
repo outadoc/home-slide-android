@@ -77,6 +77,10 @@ class HostSetupFragment : Fragment() {
                 adapter = zeroconfAdapter
                 layoutManager = LinearLayoutManager(root.context)
             }
+
+            checkBoxHostIgnoreTlsErrors.setOnCheckedChangeListener { _, isChecked ->
+                vm.onIgnoreTlsErrorsChanged(isChecked)
+            }
         }
 
         onStates(vm) { state ->
@@ -91,6 +95,11 @@ class HostSetupFragment : Fragment() {
 
                     textViewZeroconfHelper.isInvisible = state.discoveredInstances.isEmpty()
                     zeroconfAdapter.submitList(state.discoveredInstances.toList())
+
+                    with(checkBoxHostIgnoreTlsErrors) {
+                        isEnabled = state !is State.Loading
+                        isChecked = state.ignoreTlsErrors
+                    }
 
                     buttonContinue.apply {
                         isEnabled = when (state) {
