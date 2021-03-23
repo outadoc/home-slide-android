@@ -78,7 +78,7 @@ class MainApplication : Application() {
         }
 
         single {
-            ApiClientBuilder.newBuilder<HomeAssistantApi>(get(), get(), get())
+            ApiClientBuilder.newBuilder<HomeAssistantApi>(get(), get(), get(), get())
                 .addInterceptor(get<HttpLoggingInterceptor>())
                 .addInterceptor(get<ChuckerInterceptor>())
                 .build()
