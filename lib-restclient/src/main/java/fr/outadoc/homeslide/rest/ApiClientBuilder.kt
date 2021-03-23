@@ -27,13 +27,12 @@ import fr.outadoc.homeslide.rest.tls.UnsafeX509TrustManager
 import fr.outadoc.homeslide.rest.tls.createSocketFactory
 import fr.outadoc.homeslide.rest.tls.defaultTrustManager
 import fr.outadoc.homeslide.rest.util.PLACEHOLDER_BASE_URL
+import java.util.concurrent.TimeUnit
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.internal.Util
 import okhttp3.internal.tls.OkHostnameVerifier
 import retrofit2.Converter
 import retrofit2.Retrofit
-import java.util.concurrent.TimeUnit
 
 class ApiClientBuilder<T>(
     private val type: Class<T>,
