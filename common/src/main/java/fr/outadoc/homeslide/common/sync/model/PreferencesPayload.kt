@@ -32,5 +32,8 @@ data class PreferencesPayload(
     val accessToken: String? = null,
 
     @SerialName("refreshToken")
-    val refreshToken: String? = null
+    val refreshToken: String? = null,
+
+    @SerialName("ignoreTlsErrors")
+    val ignoreTlsErrors: Boolean = false
 )

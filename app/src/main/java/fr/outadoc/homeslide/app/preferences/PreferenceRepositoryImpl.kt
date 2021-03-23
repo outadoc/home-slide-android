@@ -130,7 +130,8 @@ class PreferenceRepositoryImpl(
             localInstanceBaseUrl = localInstanceBaseUrl,
             remoteInstanceBaseUrl = remoteInstanceBaseUrl,
             accessToken = accessToken,
-            refreshToken = refreshToken
+            refreshToken = refreshToken,
+            ignoreTlsErrors = ignoreTlsErrors
         )
 
         dataSyncClient.syncPreferences(payload)
