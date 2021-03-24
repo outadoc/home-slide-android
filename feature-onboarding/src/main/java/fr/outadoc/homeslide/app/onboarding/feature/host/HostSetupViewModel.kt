@@ -22,7 +22,8 @@ import androidx.lifecycle.viewModelScope
 import fr.outadoc.homeslide.app.onboarding.feature.host.model.ZeroconfHost
 import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
-import fr.outadoc.homeslide.hassapi.model.discovery.DiscoveryInfo
+import fr.outadoc.homeslide.hassapi.model.discovery.ValidatedDiscoveryInfo
+import fr.outadoc.homeslide.hassapi.model.discovery.validate
 import fr.outadoc.homeslide.hassapi.repository.DiscoveryRepository
 import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.auth.OAuthConfiguration
@@ -85,7 +86,7 @@ class HostSetupViewModel(
             override val selectedInstanceUrl: String,
             override val discoveredInstances: Set<ZeroconfHost>,
             override val ignoreTlsErrors: Boolean,
-            val discoveryInfo: DiscoveryInfo
+            val discoveryInfo: ValidatedDiscoveryInfo
         ) : State(discoveredInstances, selectedInstanceUrl, ignoreTlsErrors)
     }
 
@@ -151,8 +152,19 @@ class HostSetupViewModel(
         instanceUrl.sanitizeUrl()?.let { sanitizedUrl ->
             try {
                 val discoveryInfo = repository.getDiscoveryInfo(sanitizedUrl)
-                setState { currentState.toSuccessState(instanceUrl, discoveryInfo) }
+                setState {
+                    when (val validated = discoveryInfo.validate()) {
+                        null -> currentState.toErrorState(
+                            instanceUrl,
+                            DiscoveryException(
+                                hostSetupResourceProvider.invalidDiscoveryInfoMessage
+                            )
+                        )
+                        else -> currentState.toSuccessState(instanceUrl, validated)
+                    }
+                }
             } catch (e: Exception) {
+                KLog.e(e) { "Exception thrown during probe" }
                 setState {
                     // Error during discovery
                     currentState.toErrorState(
@@ -176,10 +188,8 @@ class HostSetupViewModel(
 
                 with(currentState.discoveryInfo) {
                     saveAndProceed(
-                        localBaseUrl = localBaseUrl ?: baseUrl ?: throw DiscoveryException(
-                            hostSetupResourceProvider.invalidDiscoveryInfoMessage
-                        ),
-                        remoteBaseUrl = remoteBaseUrl ?: baseUrl
+                        localBaseUrl = localBaseUrl,
+                        remoteBaseUrl = remoteBaseUrl
                     )
                 }
             }
@@ -248,7 +258,7 @@ class HostSetupViewModel(
             ignoreTlsErrors = ignoreTlsErrors
         )
 
-    private fun State.toSuccessState(instanceUrl: String, discoveryInfo: DiscoveryInfo) =
+    private fun State.toSuccessState(instanceUrl: String, discoveryInfo: ValidatedDiscoveryInfo) =
         State.Success(
             discoveryInfo = discoveryInfo,
             selectedInstanceUrl = instanceUrl,
