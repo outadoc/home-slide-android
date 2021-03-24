@@ -16,6 +16,6 @@
 
 package fr.outadoc.homeslide.rest.tls
 
-fun interface TlsConfigurationProvider {
-    fun isCertificateCheckEnabled(): Boolean
+interface TlsConfigurationProvider {
+    val isCertificateCheckEnabled: Boolean
 }

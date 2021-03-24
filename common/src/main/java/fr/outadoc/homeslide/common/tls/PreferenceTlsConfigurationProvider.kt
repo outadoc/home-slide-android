@@ -23,5 +23,6 @@ class PreferenceTlsConfigurationProvider(
     private val urlPreferenceRepository: UrlPreferenceRepository
 ) : TlsConfigurationProvider {
 
-    override fun isCertificateCheckEnabled() = !urlPreferenceRepository.ignoreTlsErrors
+    override val isCertificateCheckEnabled
+        get() = !urlPreferenceRepository.ignoreTlsErrors
 }
