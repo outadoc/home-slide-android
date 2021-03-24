@@ -134,14 +134,14 @@ class SlideOverFragment : Fragment(), SlideOverNavigator {
 
     private fun FragmentSlideoverBinding.setBottomSheetCallback() {
         bottomSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (newState == STATE_HIDDEN) {
-                    activity?.finish()
+                BottomSheetBehavior.BottomSheetCallback() {
+                override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    if (newState == STATE_HIDDEN) {
+                        activity?.finish()
+                    }
                 }
-            }
-        })
+            })
     }
 
     private fun FragmentSlideoverBinding.setWindowInsets() {

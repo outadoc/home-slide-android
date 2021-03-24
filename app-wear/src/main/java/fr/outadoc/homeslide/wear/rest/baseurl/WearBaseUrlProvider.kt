@@ -93,7 +93,8 @@ class WearBaseUrlProvider(
                 override fun onLost(network: Network) {
                     currentWiFiNetwork = null
                 }
-            })
+            }
+        )
     }
 
     private fun requestWiFiNetworkBlocking() {

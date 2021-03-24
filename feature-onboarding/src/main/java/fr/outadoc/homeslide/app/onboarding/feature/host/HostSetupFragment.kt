@@ -46,9 +46,11 @@ class HostSetupFragment : Fragment() {
     private val zeroconfAdapter = ZeroconfAdapter(
         onItemClick = {
             vm.onZeroconfHostSelected(it)
-        }, onItemCountChanged = {
+        },
+        onItemCountChanged = {
             binding?.recyclerViewZeroconf?.scheduleLayoutAnimation()
-        })
+        }
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,

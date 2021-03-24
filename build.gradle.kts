@@ -68,11 +68,11 @@ spotless {
 
     kotlin {
         target("**/*.kt")
-        ktlint()
+        ktlint(Dependencies.Spotless.ktlintVersion)
     }
 
     kotlinGradle {
         target("*.gradle.kts")
-        ktlint()
+        ktlint(Dependencies.Spotless.ktlintVersion)
     }
 }

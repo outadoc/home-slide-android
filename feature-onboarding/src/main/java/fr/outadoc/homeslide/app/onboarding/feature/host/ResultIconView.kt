@@ -37,21 +37,21 @@ class ResultIconView : LinearLayout {
     constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0)
 
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) :
-            this(context, attrs, defStyleAttr, 0)
+        this(context, attrs, defStyleAttr, 0)
 
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) :
-            super(context, attrs, defStyleAttr, defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes) {
 
-        View.inflate(context, R.layout.view_onboarding_resulticon, this).let {
-            successView = it.findViewById(R.id.icon_success)
-            errorView = it.findViewById(R.id.icon_error)
-            loadingView = it.findViewById<ImageView>(R.id.icon_loading).apply {
-                (drawable as? AnimatedVectorDrawable)?.start()
+            View.inflate(context, R.layout.view_onboarding_resulticon, this).let {
+                successView = it.findViewById(R.id.icon_success)
+                errorView = it.findViewById(R.id.icon_error)
+                loadingView = it.findViewById<ImageView>(R.id.icon_loading).apply {
+                    (drawable as? AnimatedVectorDrawable)?.start()
+                }
             }
-        }
 
-        hideAll()
-    }
+            hideAll()
+        }
 
     private fun hideAll() {
         errorView.isGone = true

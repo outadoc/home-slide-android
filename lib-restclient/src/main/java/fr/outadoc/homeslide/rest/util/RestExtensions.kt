@@ -16,10 +16,10 @@
 
 package fr.outadoc.homeslide.rest.util
 
-import java.net.MalformedURLException
 import okhttp3.HttpUrl
 import retrofit2.HttpException
 import retrofit2.Response
+import java.net.MalformedURLException
 
 fun <T> Response<T>.getResponseOrThrow(): T {
     return if (isSuccessful && body() != null) {

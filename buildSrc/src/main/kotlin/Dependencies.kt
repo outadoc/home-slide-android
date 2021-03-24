@@ -160,8 +160,9 @@ object Dependencies {
     }
 
     object Spotless {
-        const val version = "3.30.0"
-        const val plugin = "com.diffplug.gradle.spotless"
+        const val version = "5.11.0"
+        const val plugin = "com.diffplug.spotless"
+        const val ktlintVersion = "0.41.0"
     }
 
     object Test {
