@@ -54,7 +54,7 @@ class HostSetupViewModel(
     State.Initial(
         selectedInstanceUrl = "",
         discoveredInstances = emptySet(),
-        ignoreTlsErrors = false
+        ignoreTlsErrors = urlPrefs.ignoreTlsErrors
     )
 ) {
     sealed class State(

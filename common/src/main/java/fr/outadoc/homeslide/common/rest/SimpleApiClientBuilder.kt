@@ -23,6 +23,7 @@ import fr.outadoc.homeslide.rest.tls.createSocketFactory
 import fr.outadoc.homeslide.rest.tls.getDefaultHostnameVerifier
 import fr.outadoc.homeslide.rest.tls.getDefaultTrustManager
 import fr.outadoc.homeslide.rest.util.PLACEHOLDER_BASE_URL
+import okhttp3.ConnectionPool
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Converter
@@ -43,9 +44,18 @@ class SimpleApiClientBuilder<T>(
         delegate = getDefaultHostnameVerifier()
     )
 
+    private val connectionPool = ConnectionPool()
+
+    init {
+        tlsConfigurationProvider.addCertificateCheckEnabledChangedListener {
+            connectionPool.evictAll()
+        }
+    }
+
     private val clientBuilder = OkHttpClient.Builder()
         .sslSocketFactory(unsafeTrustManager.createSocketFactory(), unsafeTrustManager)
         .hostnameVerifier(unsafeHostnameVerifier)
+        .connectionPool(connectionPool)
 
     fun addInterceptor(interceptor: Interceptor) =
         apply { clientBuilder.addInterceptor(interceptor) }
