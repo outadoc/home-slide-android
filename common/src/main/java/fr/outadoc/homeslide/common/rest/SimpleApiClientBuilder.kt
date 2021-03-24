@@ -23,6 +23,9 @@ import fr.outadoc.homeslide.rest.tls.createSocketFactory
 import fr.outadoc.homeslide.rest.tls.getDefaultHostnameVerifier
 import fr.outadoc.homeslide.rest.tls.getDefaultTrustManager
 import fr.outadoc.homeslide.rest.util.PLACEHOLDER_BASE_URL
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import okhttp3.ConnectionPool
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -48,7 +51,9 @@ class SimpleApiClientBuilder<T>(
 
     init {
         tlsConfigurationProvider.addCertificateCheckEnabledChangedListener {
-            connectionPool.evictAll()
+            GlobalScope.launch(Dispatchers.IO) {
+                connectionPool.evictAll()
+            }
         }
     }
 

@@ -17,6 +17,7 @@
 package fr.outadoc.homeslide.common.tls
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import fr.outadoc.homeslide.common.R
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
@@ -30,14 +31,16 @@ class PreferenceTlsConfigurationProvider(
 
     private val changeListeners = mutableListOf<TlsConfigurationChangedListener>()
 
+    private val isTlsCheckEnabledKey = context.getString(R.string.pref_key_ignoreTlsErrors)
+    private val prefsChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key == isTlsCheckEnabledKey) {
+            changeListeners.forEach { it.onTlsConfigurationChanged() }
+        }
+    }
+
     init {
-        val isTlsCheckEnabledKey = context.getString(R.string.pref_key_ignoreTlsErrors)
         PreferenceManager.getDefaultSharedPreferences(context)
-            .registerOnSharedPreferenceChangeListener { _, key ->
-                if (key == isTlsCheckEnabledKey) {
-                    changeListeners.forEach { it.onTlsConfigurationChanged() }
-                }
-            }
+            .registerOnSharedPreferenceChangeListener(prefsChangeListener)
     }
 
     override val isCertificateCheckEnabled
