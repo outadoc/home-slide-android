@@ -19,7 +19,7 @@ package fr.outadoc.homeslide.rest.tls
 import java.security.cert.X509Certificate
 import javax.net.ssl.X509TrustManager
 
-internal class UnsafeX509TrustManager(
+class UnsafeX509TrustManager(
     private val tlsConfigurationProvider: TlsConfigurationProvider,
     private val delegate: X509TrustManager
 ) : X509TrustManager {

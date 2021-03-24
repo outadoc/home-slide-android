@@ -62,7 +62,7 @@ class WearApplication : Application() {
         single<NetworkAccessManager> { get<WearBaseUrlProvider>() }
 
         single {
-            SimpleApiClientBuilder.newBuilder<AuthApi>(get())
+            SimpleApiClientBuilder.newBuilder<AuthApi>(get(), get())
                 .addInterceptor(AltBaseUrlInterceptor(get()))
                 .build()
         }

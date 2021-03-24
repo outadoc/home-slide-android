@@ -16,6 +16,12 @@
 
 package fr.outadoc.homeslide.common.rest
 
+import fr.outadoc.homeslide.rest.tls.TlsConfigurationProvider
+import fr.outadoc.homeslide.rest.tls.UnsafeHostnameVerifier
+import fr.outadoc.homeslide.rest.tls.UnsafeX509TrustManager
+import fr.outadoc.homeslide.rest.tls.createSocketFactory
+import fr.outadoc.homeslide.rest.tls.getDefaultHostnameVerifier
+import fr.outadoc.homeslide.rest.tls.getDefaultTrustManager
 import fr.outadoc.homeslide.rest.util.PLACEHOLDER_BASE_URL
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -24,9 +30,22 @@ import retrofit2.Retrofit
 
 class SimpleApiClientBuilder<T>(
     private val type: Class<T>,
-    private val parserFactory: Converter.Factory
+    private val parserFactory: Converter.Factory,
+    tlsConfigurationProvider: TlsConfigurationProvider
 ) {
+    private val unsafeTrustManager = UnsafeX509TrustManager(
+        tlsConfigurationProvider,
+        delegate = getDefaultTrustManager()
+    )
+
+    private val unsafeHostnameVerifier = UnsafeHostnameVerifier(
+        tlsConfigurationProvider,
+        delegate = getDefaultHostnameVerifier()
+    )
+
     private val clientBuilder = OkHttpClient.Builder()
+        .sslSocketFactory(unsafeTrustManager.createSocketFactory(), unsafeTrustManager)
+        .hostnameVerifier(unsafeHostnameVerifier)
 
     fun addInterceptor(interceptor: Interceptor) =
         apply { clientBuilder.addInterceptor(interceptor) }
@@ -40,11 +59,13 @@ class SimpleApiClientBuilder<T>(
 
     companion object {
         inline fun <reified T> newBuilder(
-            parserFactory: Converter.Factory
+            parserFactory: Converter.Factory,
+            tlsConfigurationProvider: TlsConfigurationProvider
         ): SimpleApiClientBuilder<T> =
             SimpleApiClientBuilder(
                 T::class.java,
-                parserFactory
+                parserFactory,
+                tlsConfigurationProvider
             )
     }
 }

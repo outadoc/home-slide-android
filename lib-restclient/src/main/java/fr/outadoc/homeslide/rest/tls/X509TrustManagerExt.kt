@@ -19,29 +19,32 @@ package fr.outadoc.homeslide.rest.tls
 import java.security.GeneralSecurityException
 import java.security.KeyStore
 import java.security.NoSuchAlgorithmException
+import java.security.SecureRandom
 import javax.net.ssl.SSLContext
+import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManager
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
 
-internal fun X509TrustManager.createSocketFactory() = try {
-    defaultSslContext
-        .apply { init(null, arrayOf<TrustManager>(this@createSocketFactory), null) }
-        .socketFactory
-} catch (e: GeneralSecurityException) {
-    // The system has no TLS. Just give up.
-    throw AssertionError("No System TLS", e)
-}
+fun X509TrustManager.createSocketFactory(): SSLSocketFactory =
+    try {
+        getDefaultSslContext()
+            .apply { init(null, arrayOf<TrustManager>(this@createSocketFactory), SecureRandom()) }
+            .socketFactory
+    } catch (e: GeneralSecurityException) {
+        // The system has no TLS. Just give up.
+        throw AssertionError("No System TLS", e)
+    }
 
-internal val defaultSslContext: SSLContext
-    get() = try {
+private fun getDefaultSslContext(): SSLContext =
+    try {
         SSLContext.getInstance("TLS")
     } catch (e: NoSuchAlgorithmException) {
         throw IllegalStateException("No TLS provider", e)
     }
 
-internal val defaultTrustManager: X509TrustManager
-    get() = try {
+fun getDefaultTrustManager(): X509TrustManager =
+    try {
         val trustManagers = TrustManagerFactory.getInstance(
             TrustManagerFactory.getDefaultAlgorithm()
         ).apply {

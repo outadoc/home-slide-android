@@ -16,16 +16,7 @@
 
 package fr.outadoc.homeslide.rest.tls
 
-import javax.net.ssl.HostnameVerifier
-import javax.net.ssl.SSLSession
+import okhttp3.internal.tls.OkHostnameVerifier
 
-class UnsafeHostnameVerifier(
-    private val tlsConfigurationProvider: TlsConfigurationProvider,
-    private val delegate: HostnameVerifier
-) : HostnameVerifier {
-
-    override fun verify(hostname: String?, session: SSLSession?): Boolean {
-        return !tlsConfigurationProvider.isCertificateCheckEnabled ||
-            delegate.verify(hostname, session)
-    }
-}
+fun getDefaultHostnameVerifier(): OkHostnameVerifier =
+    OkHostnameVerifier.INSTANCE
