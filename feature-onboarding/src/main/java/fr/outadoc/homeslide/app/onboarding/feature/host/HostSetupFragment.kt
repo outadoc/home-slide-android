@@ -22,6 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
@@ -77,6 +78,10 @@ class HostSetupFragment : Fragment() {
                 adapter = zeroconfAdapter
                 layoutManager = LinearLayoutManager(root.context)
             }
+
+            checkBoxHostIgnoreTlsErrors.setOnCheckedChangeListener { _, isChecked ->
+                vm.onIgnoreTlsErrorsChanged(isChecked)
+            }
         }
 
         onStates(vm) { state ->
@@ -91,6 +96,13 @@ class HostSetupFragment : Fragment() {
 
                     textViewZeroconfHelper.isInvisible = state.discoveredInstances.isEmpty()
                     zeroconfAdapter.submitList(state.discoveredInstances.toList())
+
+                    with(checkBoxHostIgnoreTlsErrors) {
+                        isEnabled = state !is State.Loading
+                        isChecked = state.ignoreTlsErrors
+                    }
+
+                    textViewHostIgnoreTlsErrorsWarning.isVisible = state.ignoreTlsErrors
 
                     buttonContinue.apply {
                         isEnabled = when (state) {

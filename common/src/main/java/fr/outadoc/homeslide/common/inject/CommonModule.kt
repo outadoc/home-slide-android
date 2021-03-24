@@ -34,6 +34,7 @@ import fr.outadoc.homeslide.common.preferences.BaseUrlConfigProviderImpl
 import fr.outadoc.homeslide.common.rest.TokenProviderImpl
 import fr.outadoc.homeslide.common.sync.GoogleDataSyncClient
 import fr.outadoc.homeslide.common.sync.NoopDataSyncClient
+import fr.outadoc.homeslide.common.tls.PreferenceTlsConfigurationProvider
 import fr.outadoc.homeslide.hassapi.factory.TileFactory
 import fr.outadoc.homeslide.hassapi.factory.TileFactoryImpl
 import fr.outadoc.homeslide.hassapi.repository.AuthRepository
@@ -42,6 +43,7 @@ import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.auth.AccessTokenProvider
 import fr.outadoc.homeslide.rest.auth.OAuthConfiguration
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlConfigProvider
+import fr.outadoc.homeslide.rest.tls.TlsConfigurationProvider
 import io.uniflow.core.logger.UniFlowLogger
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -54,6 +56,8 @@ fun commonModule() = module {
     single<AccessTokenProvider> { TokenProviderImpl(get(), get(), get()) }
     single<OAuthConfiguration> { AppOAuthConfiguration() }
     single<AuthRepository> { AuthRepositoryImpl(get(), get(), get(), get(), get()) }
+
+    single<TlsConfigurationProvider> { PreferenceTlsConfigurationProvider(get()) }
 
     single<EntityRepository> { EntityRepositoryImpl(get(), get(), get(), get()) }
 

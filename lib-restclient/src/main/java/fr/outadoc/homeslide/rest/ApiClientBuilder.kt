@@ -21,10 +21,16 @@ import fr.outadoc.homeslide.rest.auth.AccessTokenInterceptor
 import fr.outadoc.homeslide.rest.auth.AccessTokenProvider
 import fr.outadoc.homeslide.rest.baseurl.AltBaseUrlInterceptor
 import fr.outadoc.homeslide.rest.baseurl.BaseUrlProvider
+import fr.outadoc.homeslide.rest.tls.TlsConfigurationProvider
+import fr.outadoc.homeslide.rest.tls.UnsafeHostnameVerifier
+import fr.outadoc.homeslide.rest.tls.UnsafeX509TrustManager
+import fr.outadoc.homeslide.rest.tls.createSocketFactory
+import fr.outadoc.homeslide.rest.tls.defaultTrustManager
 import fr.outadoc.homeslide.rest.util.PLACEHOLDER_BASE_URL
 import java.util.concurrent.TimeUnit
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.internal.tls.OkHostnameVerifier
 import retrofit2.Converter
 import retrofit2.Retrofit
 
@@ -32,12 +38,25 @@ class ApiClientBuilder<T>(
     private val type: Class<T>,
     private val parserFactory: Converter.Factory,
     accessTokenProvider: AccessTokenProvider,
-    baseUrlProvider: BaseUrlProvider
+    baseUrlProvider: BaseUrlProvider,
+    tlsConfigurationProvider: TlsConfigurationProvider
 ) {
+    private val unsafeTrustManager = UnsafeX509TrustManager(
+        tlsConfigurationProvider,
+        delegate = defaultTrustManager
+    )
+
+    private val unsafeHostnameVerifier = UnsafeHostnameVerifier(
+        tlsConfigurationProvider,
+        delegate = OkHostnameVerifier.INSTANCE
+    )
+
     private val clientBuilder = OkHttpClient.Builder()
         .connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
         .writeTimeout(WRITE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
         .readTimeout(READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        .sslSocketFactory(unsafeTrustManager.createSocketFactory(), unsafeTrustManager)
+        .hostnameVerifier(unsafeHostnameVerifier)
         .authenticator(
             AccessTokenAuthenticator(
                 accessTokenProvider
@@ -72,13 +91,15 @@ class ApiClientBuilder<T>(
         inline fun <reified T> newBuilder(
             parserFactory: Converter.Factory,
             accessTokenProvider: AccessTokenProvider,
-            baseUrlProvider: BaseUrlProvider
+            baseUrlProvider: BaseUrlProvider,
+            tlsConfigurationProvider: TlsConfigurationProvider
         ): ApiClientBuilder<T> =
             ApiClientBuilder(
                 T::class.java,
                 parserFactory,
                 accessTokenProvider,
-                baseUrlProvider
+                baseUrlProvider,
+                tlsConfigurationProvider
             )
     }
 }

@@ -52,7 +52,7 @@
             android:title="@string/pref_enable_crash_reporting_title"
             app:defaultValue="true"
             app:icon="@drawable/ic_analytics"
-            app:key="chk_pref_enable_crash_reporting"
+            app:key="@string/pref_key_crashlyticsEnabled"
             app:summary="@string/pref_enable_crash_reporting_summary"
             app:title="@string/pref_enable_crash_reporting_title" />
     </PreferenceCategory>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Baptiste Candellier
+ * Copyright 2021 Baptiste Candellier
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,10 +14,15 @@
  *    limitations under the License.
  */
 
-package fr.outadoc.homeslide.common.preferences
+package fr.outadoc.homeslide.common.tls
 
-interface UrlPreferenceRepository {
-    var localInstanceBaseUrl: String?
-    var remoteInstanceBaseUrl: String?
-    var ignoreTlsErrors: Boolean
+import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
+import fr.outadoc.homeslide.rest.tls.TlsConfigurationProvider
+
+class PreferenceTlsConfigurationProvider(
+    private val urlPreferenceRepository: UrlPreferenceRepository
+) : TlsConfigurationProvider {
+
+    override val isCertificateCheckEnabled
+        get() = !urlPreferenceRepository.ignoreTlsErrors
 }

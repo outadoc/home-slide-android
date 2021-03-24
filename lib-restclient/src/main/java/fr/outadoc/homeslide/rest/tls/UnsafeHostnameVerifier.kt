@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Baptiste Candellier
+ * Copyright 2021 Baptiste Candellier
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,10 +14,18 @@
  *    limitations under the License.
  */
 
-package fr.outadoc.homeslide.common.preferences
+package fr.outadoc.homeslide.rest.tls
 
-interface UrlPreferenceRepository {
-    var localInstanceBaseUrl: String?
-    var remoteInstanceBaseUrl: String?
-    var ignoreTlsErrors: Boolean
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.SSLSession
+
+internal class UnsafeHostnameVerifier(
+    private val tlsConfigurationProvider: TlsConfigurationProvider,
+    private val delegate: HostnameVerifier
+) : HostnameVerifier {
+
+    override fun verify(hostname: String?, session: SSLSession?): Boolean {
+        return !tlsConfigurationProvider.isCertificateCheckEnabled ||
+            delegate.verify(hostname, session)
+    }
 }

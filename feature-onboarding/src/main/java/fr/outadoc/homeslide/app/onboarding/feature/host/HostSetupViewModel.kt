@@ -49,29 +49,44 @@ class HostSetupViewModel(
     private val oAuthConfiguration: OAuthConfiguration,
     private val zeroconfDiscoveryService: ZeroconfDiscoveryService<ZeroconfHost>,
     private val hostSetupResourceProvider: HostSetupResourceProvider
-) : AndroidDataFlow(State.Initial(discoveredInstances = emptySet())) {
-
+) : AndroidDataFlow(
+    State.Initial(
+        selectedInstanceUrl = "",
+        discoveredInstances = emptySet(),
+        ignoreTlsErrors = false
+    )
+) {
     sealed class State(
-        open val discoveredInstances: Set<ZeroconfHost>
+        open val discoveredInstances: Set<ZeroconfHost>,
+        open val selectedInstanceUrl: String,
+        open val ignoreTlsErrors: Boolean
     ) : UIState() {
 
-        data class Initial(override val discoveredInstances: Set<ZeroconfHost>) :
-            State(discoveredInstances)
+        data class Initial(
+            override val discoveredInstances: Set<ZeroconfHost>,
+            override val selectedInstanceUrl: String,
+            override val ignoreTlsErrors: Boolean
+        ) : State(discoveredInstances, selectedInstanceUrl, ignoreTlsErrors)
 
         data class Loading(
-            val selectedInstanceUrl: String,
-            override val discoveredInstances: Set<ZeroconfHost>
-        ) : State(discoveredInstances)
+            override val discoveredInstances: Set<ZeroconfHost>,
+            override val selectedInstanceUrl: String,
+            override val ignoreTlsErrors: Boolean
+        ) : State(discoveredInstances, selectedInstanceUrl, ignoreTlsErrors)
 
         data class Error(
             override val discoveredInstances: Set<ZeroconfHost>,
+            override val selectedInstanceUrl: String,
+            override val ignoreTlsErrors: Boolean,
             val exception: Exception?
-        ) : State(discoveredInstances)
+        ) : State(discoveredInstances, selectedInstanceUrl, ignoreTlsErrors)
 
         data class Success(
-            val discoveryInfo: DiscoveryInfo,
-            override val discoveredInstances: Set<ZeroconfHost>
-        ) : State(discoveredInstances)
+            override val selectedInstanceUrl: String,
+            override val discoveredInstances: Set<ZeroconfHost>,
+            override val ignoreTlsErrors: Boolean,
+            val discoveryInfo: DiscoveryInfo
+        ) : State(discoveredInstances, selectedInstanceUrl, ignoreTlsErrors)
     }
 
     sealed class Event : UIEvent() {
@@ -93,17 +108,7 @@ class HostSetupViewModel(
         zeroconfDiscoveryService.setOnServiceDiscoveredListener { discovered: ZeroconfHost ->
             try {
                 actionOn<State> { currentState ->
-                    setState {
-                        with(currentState) {
-                            val newInstances = discoveredInstances + discovered
-                            when (this) {
-                                is State.Initial -> copy(discoveredInstances = newInstances)
-                                is State.Loading -> copy(discoveredInstances = newInstances)
-                                is State.Error -> copy(discoveredInstances = newInstances)
-                                is State.Success -> copy(discoveredInstances = newInstances)
-                            }
-                        }
-                    }
+                    setState { currentState.withDiscoveredInstance(discovered) }
                 }
             } catch (e: Exception) {
                 KLog.e(e)
@@ -137,46 +142,30 @@ class HostSetupViewModel(
 
     private fun probeUrl(instanceUrl: String) = actionOn<State> { currentState ->
         if (instanceUrl.isBlank()) {
-            setState {
-                State.Initial(discoveredInstances = currentState.discoveredInstances)
-            }
+            setState { currentState.toInitialState() }
             return@actionOn
         }
 
-        setState {
-            State.Loading(
-                selectedInstanceUrl = instanceUrl,
-                discoveredInstances = currentState.discoveredInstances
-            )
-        }
+        setState { currentState.toLoadingState(instanceUrl) }
 
         instanceUrl.sanitizeUrl()?.let { sanitizedUrl ->
             try {
                 val discoveryInfo = repository.getDiscoveryInfo(sanitizedUrl)
-                setState {
-                    State.Success(
-                        discoveryInfo = discoveryInfo,
-                        discoveredInstances = currentState.discoveredInstances
-                    )
-                }
+                setState { currentState.toSuccessState(instanceUrl, discoveryInfo) }
             } catch (e: Exception) {
                 setState {
                     // Error during discovery
-                    State.Error(
-                        discoveredInstances = currentState.discoveredInstances,
-                        exception = DiscoveryException(
-                            hostSetupResourceProvider.invalidDiscoveryInfoMessage,
-                            e
+                    currentState.toErrorState(
+                        instanceUrl,
+                        DiscoveryException(
+                            hostSetupResourceProvider.invalidDiscoveryInfoMessage, e
                         )
                     )
                 }
             }
         } ?: setState {
             // URL can't be sanitized
-            State.Error(
-                discoveredInstances = currentState.discoveredInstances,
-                exception = null
-            )
+            currentState.toErrorState(instanceUrl)
         }
     }
 
@@ -206,6 +195,12 @@ class HostSetupViewModel(
         }
     }
 
+    fun onIgnoreTlsErrorsChanged(checked: Boolean) = actionOn<State> { currentState ->
+        if (currentState.ignoreTlsErrors == checked) return@actionOn
+        setState { currentState.withIgnoreTlsErrors(checked) }
+        instanceUrlChannel.send(currentState.selectedInstanceUrl)
+    }
+
     fun onZeroconfHostSelected(zeroconfHost: ZeroconfHost) = actionOn<State> {
         stopDiscovery()
         saveAndProceed(
@@ -229,8 +224,61 @@ class HostSetupViewModel(
             }
     }
 
+    private fun State.withDiscoveredInstance(instance: ZeroconfHost): State {
+        val newInstances = discoveredInstances + instance
+        return when (this) {
+            is State.Initial -> copy(discoveredInstances = newInstances)
+            is State.Loading -> copy(discoveredInstances = newInstances)
+            is State.Error -> copy(discoveredInstances = newInstances)
+            is State.Success -> copy(discoveredInstances = newInstances)
+        }
+    }
+
+    private fun State.toInitialState() =
+        State.Initial(
+            selectedInstanceUrl = "",
+            discoveredInstances = discoveredInstances,
+            ignoreTlsErrors = ignoreTlsErrors
+        )
+
+    private fun State.toLoadingState(instanceUrl: String) =
+        State.Loading(
+            selectedInstanceUrl = instanceUrl,
+            discoveredInstances = discoveredInstances,
+            ignoreTlsErrors = ignoreTlsErrors
+        )
+
+    private fun State.toSuccessState(instanceUrl: String, discoveryInfo: DiscoveryInfo) =
+        State.Success(
+            discoveryInfo = discoveryInfo,
+            selectedInstanceUrl = instanceUrl,
+            discoveredInstances = discoveredInstances,
+            ignoreTlsErrors = ignoreTlsErrors
+        )
+
+    private fun State.toErrorState(instanceUrl: String, exception: Exception? = null) =
+        State.Error(
+            selectedInstanceUrl = instanceUrl,
+            discoveredInstances = discoveredInstances,
+            ignoreTlsErrors = ignoreTlsErrors,
+            exception = exception
+        )
+
+    private fun State.withIgnoreTlsErrors(ignoreTlsErrors: Boolean) =
+        when (this) {
+            is State.Initial -> copy(ignoreTlsErrors = ignoreTlsErrors)
+            is State.Loading -> copy(ignoreTlsErrors = ignoreTlsErrors)
+            is State.Error -> copy(ignoreTlsErrors = ignoreTlsErrors)
+            is State.Success -> copy(ignoreTlsErrors = ignoreTlsErrors)
+        }
+
     fun stopDiscovery() {
         zeroconfDiscoveryService.stopDiscovery()
+    }
+
+    override fun onCleared() {
+        stopDiscovery()
+        super.onCleared()
     }
 
     companion object {

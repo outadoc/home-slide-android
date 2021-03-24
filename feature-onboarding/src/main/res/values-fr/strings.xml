@@ -20,6 +20,8 @@
     <string name="onboarding_setup_auth_action">Connexion avec Home\u00A0Assistant</string>
     <string name="onboarding_setup_host_discoveryError_message">Une erreur est survenue lors de la connexion à votre instance. Vérifiez que les URLs internes et externes sont correctement renseignées dans ses paramètres.</string>
     <string name="onboarding_setup_host_hint">URL de Home\u00A0Assistant</string>
+    <string name="onboarding_setup_host_ignoreTlsErrors_text">Ignorer les erreurs de certificats TLS</string>
+    <string name="onboarding_setup_host_ignoreTlsErrors_warning">Cette option est dangereuse pour votre vie privée, car elle permettra à n\'importe qui d\'intercepter vos connexions HTTPS. Si vous utilisez une autorité de certification tierce, veuillez l\'ajouter dans votre trousseau de certificats racine au lieu d\'activer cette option.</string>
     <string name="onboarding_setup_host_subtitle">Trouvez votre installation</string>
     <string name="onboarding_setup_host_zeroconf">
         <b>Psst\u00A0!</b> J\'ai aussi trouvé ces installations de Home\u00A0Assistant sur le réseau\u00A0👀</string>

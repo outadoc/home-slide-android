@@ -42,6 +42,7 @@ class DataSyncViewModel(
 
             urlPrefs.localInstanceBaseUrl = localInstanceBaseUrl
             urlPrefs.remoteInstanceBaseUrl = remoteInstanceBaseUrl
+            urlPrefs.ignoreTlsErrors = ignoreTlsErrors
             tokenPrefs.accessToken = accessToken
             tokenPrefs.refreshToken = refreshToken
             globalPrefs.isOnboardingDone = true

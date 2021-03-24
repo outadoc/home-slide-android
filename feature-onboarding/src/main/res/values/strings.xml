@@ -20,6 +20,8 @@
     <string name="onboarding_setup_auth_action">Sign in with Home\u00A0Assistant</string>
     <string name="onboarding_setup_host_discoveryError_message">An error occurred while contacting your instance. Check that the internal and external URLs are properly set up in its settings.</string>
     <string name="onboarding_setup_host_hint">Home\u00A0Assistant URL</string>
+    <string name="onboarding_setup_host_ignoreTlsErrors_text">Ignore invalid TLS certificates</string>
+    <string name="onboarding_setup_host_ignoreTlsErrors_warning">This option is dangerous for your privacy, as it will allow anyone to snoop on your HTTPS connection. If you use a custom certificate authority, please add its root to your device\'s root certificate store instead.</string>
     <string name="onboarding_setup_host_subtitle">Find your installation</string>
     <string name="onboarding_setup_host_zeroconf">
         <b>Psst! 👀</b> I\'ve also found these Home\u00A0Assistant installations on your network\u00A0👀</string>
