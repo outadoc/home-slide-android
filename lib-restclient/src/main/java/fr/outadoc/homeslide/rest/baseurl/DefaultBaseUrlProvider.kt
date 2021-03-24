@@ -63,7 +63,8 @@ class DefaultBaseUrlProvider(
                     KLog.d { "Disconnected from Wi-Fi, preferring remote base URL" }
                     preferLocalBaseUrl = false
                 }
-            })
+            }
+        )
     }
 
     override fun getBaseUrl(rank: BaseUrlRank) =

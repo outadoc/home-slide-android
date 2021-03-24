@@ -54,7 +54,7 @@ class HostSetupViewModel(
     State.Initial(
         selectedInstanceUrl = "",
         discoveredInstances = emptySet(),
-        ignoreTlsErrors = false
+        ignoreTlsErrors = urlPrefs.ignoreTlsErrors
     )
 ) {
     sealed class State(
@@ -206,7 +206,10 @@ class HostSetupViewModel(
     }
 
     fun onIgnoreTlsErrorsChanged(checked: Boolean) = actionOn<State> { currentState ->
+        urlPrefs.ignoreTlsErrors = checked
+
         if (currentState.ignoreTlsErrors == checked) return@actionOn
+
         setState { currentState.withIgnoreTlsErrors(checked) }
         instanceUrlChannel.send(currentState.selectedInstanceUrl)
     }

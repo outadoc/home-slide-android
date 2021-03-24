@@ -85,14 +85,14 @@ class MainApplication : Application() {
         }
 
         single {
-            SimpleApiClientBuilder.newBuilder<DiscoveryApi>(get())
+            SimpleApiClientBuilder.newBuilder<DiscoveryApi>(get(), get())
                 .addInterceptor(get<HttpLoggingInterceptor>())
                 .addInterceptor(get<ChuckerInterceptor>())
                 .build()
         }
 
         single {
-            SimpleApiClientBuilder.newBuilder<AuthApi>(get())
+            SimpleApiClientBuilder.newBuilder<AuthApi>(get(), get())
                 .addInterceptor(AltBaseUrlInterceptor(get()))
                 .addInterceptor(get<HttpLoggingInterceptor>())
                 .addInterceptor(get<ChuckerInterceptor>())

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Baptiste Candellier
+ * Copyright 2021 Baptiste Candellier
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,26 +14,9 @@
  *    limitations under the License.
  */
 
-package fr.outadoc.homeslide.rest.util
+package fr.outadoc.homeslide.rest.tls
 
-import okhttp3.HttpUrl
-import retrofit2.HttpException
-import retrofit2.Response
-import java.net.MalformedURLException
+import okhttp3.internal.tls.OkHostnameVerifier
 
-fun <T> Response<T>.getResponseOrThrow(): T {
-    return if (isSuccessful && body() != null) {
-        body()!!
-    } else {
-        throw HttpException(this)
-    }
-}
-
-fun String.toUrl(): HttpUrl {
-    return HttpUrl.parse(this) ?: throw MalformedURLException()
-}
-
-fun String?.toUrlOrNull(): HttpUrl? {
-    if (this == null) return null
-    return HttpUrl.parse(this)
-}
+fun getDefaultHostnameVerifier(): OkHostnameVerifier =
+    OkHostnameVerifier.INSTANCE

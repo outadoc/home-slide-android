@@ -59,12 +59,15 @@ abstract class ZeroconfDiscoveryServiceImpl<T>(
 
     override fun onServiceFound(service: NsdServiceInfo) {
         if (service.serviceType == serviceType) {
-            nsdManager.resolveService(service, object : NsdManager.ResolveListener {
-                override fun onResolveFailed(serviceInfo: NsdServiceInfo?, errorCode: Int) = Unit
-                override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
-                    onServiceDiscovered?.let { it(parseServiceInfo(serviceInfo)) }
+            nsdManager.resolveService(
+                service,
+                object : NsdManager.ResolveListener {
+                    override fun onResolveFailed(serviceInfo: NsdServiceInfo?, errorCode: Int) = Unit
+                    override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
+                        onServiceDiscovered?.let { it(parseServiceInfo(serviceInfo)) }
+                    }
                 }
-            })
+            )
         }
     }
 

@@ -57,7 +57,7 @@ fun commonModule() = module {
     single<OAuthConfiguration> { AppOAuthConfiguration() }
     single<AuthRepository> { AuthRepositoryImpl(get(), get(), get(), get(), get()) }
 
-    single<TlsConfigurationProvider> { PreferenceTlsConfigurationProvider(get()) }
+    single<TlsConfigurationProvider> { PreferenceTlsConfigurationProvider(get(), get()) }
 
     single<EntityRepository> { EntityRepositoryImpl(get(), get(), get(), get()) }
 

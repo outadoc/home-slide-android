@@ -25,14 +25,18 @@ import fr.outadoc.homeslide.rest.tls.TlsConfigurationProvider
 import fr.outadoc.homeslide.rest.tls.UnsafeHostnameVerifier
 import fr.outadoc.homeslide.rest.tls.UnsafeX509TrustManager
 import fr.outadoc.homeslide.rest.tls.createSocketFactory
-import fr.outadoc.homeslide.rest.tls.defaultTrustManager
+import fr.outadoc.homeslide.rest.tls.getDefaultHostnameVerifier
+import fr.outadoc.homeslide.rest.tls.getDefaultTrustManager
 import fr.outadoc.homeslide.rest.util.PLACEHOLDER_BASE_URL
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import okhttp3.ConnectionPool
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.internal.tls.OkHostnameVerifier
 import retrofit2.Converter
 import retrofit2.Retrofit
+import java.util.concurrent.TimeUnit
 
 class ApiClientBuilder<T>(
     private val type: Class<T>,
@@ -43,13 +47,23 @@ class ApiClientBuilder<T>(
 ) {
     private val unsafeTrustManager = UnsafeX509TrustManager(
         tlsConfigurationProvider,
-        delegate = defaultTrustManager
+        delegate = getDefaultTrustManager()
     )
 
     private val unsafeHostnameVerifier = UnsafeHostnameVerifier(
         tlsConfigurationProvider,
-        delegate = OkHostnameVerifier.INSTANCE
+        delegate = getDefaultHostnameVerifier()
     )
+
+    private val connectionPool = ConnectionPool()
+
+    init {
+        tlsConfigurationProvider.addCertificateCheckEnabledChangedListener {
+            GlobalScope.launch(Dispatchers.IO) {
+                connectionPool.evictAll()
+            }
+        }
+    }
 
     private val clientBuilder = OkHttpClient.Builder()
         .connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
@@ -57,6 +71,7 @@ class ApiClientBuilder<T>(
         .readTimeout(READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
         .sslSocketFactory(unsafeTrustManager.createSocketFactory(), unsafeTrustManager)
         .hostnameVerifier(unsafeHostnameVerifier)
+        .connectionPool(connectionPool)
         .authenticator(
             AccessTokenAuthenticator(
                 accessTokenProvider

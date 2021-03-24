@@ -26,8 +26,8 @@ import android.view.WindowManager
 fun Activity.setShowWhenLockedCompat(showWhenLocked: Boolean) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O_MR1) {
         val flags = WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
-                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD or
-                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD or
+            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
 
         if (showWhenLocked) {
             window.addFlags(flags)

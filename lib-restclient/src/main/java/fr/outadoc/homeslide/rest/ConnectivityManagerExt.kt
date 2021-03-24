@@ -20,9 +20,9 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
 import android.os.Build
-import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeoutOrNull
+import kotlin.coroutines.resume
 
 private const val TIMEOUT_PADDING_MS = 1000L
 

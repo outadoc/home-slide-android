@@ -18,4 +18,5 @@ package fr.outadoc.homeslide.rest.tls
 
 interface TlsConfigurationProvider {
     val isCertificateCheckEnabled: Boolean
+    fun addCertificateCheckEnabledChangedListener(listener: TlsConfigurationChangedListener)
 }

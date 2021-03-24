@@ -19,7 +19,7 @@ package fr.outadoc.homeslide.rest.tls
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLSession
 
-internal class UnsafeHostnameVerifier(
+class UnsafeHostnameVerifier(
     private val tlsConfigurationProvider: TlsConfigurationProvider,
     private val delegate: HostnameVerifier
 ) : HostnameVerifier {
