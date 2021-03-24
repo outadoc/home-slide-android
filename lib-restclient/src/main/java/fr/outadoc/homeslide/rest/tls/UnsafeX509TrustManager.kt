@@ -25,13 +25,13 @@ internal class UnsafeX509TrustManager(
 ) : X509TrustManager {
 
     override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
-        if (tlsConfigurationProvider.isCertificateCheckEnabled()) {
+        if (tlsConfigurationProvider.isCertificateCheckEnabled) {
             delegate.checkClientTrusted(chain, authType)
         }
     }
 
     override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
-        if (tlsConfigurationProvider.isCertificateCheckEnabled()) {
+        if (tlsConfigurationProvider.isCertificateCheckEnabled) {
             delegate.checkServerTrusted(chain, authType)
         }
     }

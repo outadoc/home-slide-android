@@ -25,7 +25,7 @@ internal class UnsafeHostnameVerifier(
 ) : HostnameVerifier {
 
     override fun verify(hostname: String?, session: SSLSession?): Boolean {
-        return !tlsConfigurationProvider.isCertificateCheckEnabled() ||
+        return !tlsConfigurationProvider.isCertificateCheckEnabled ||
             delegate.verify(hostname, session)
     }
 }
