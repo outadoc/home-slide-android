@@ -34,6 +34,13 @@
             app:summary="@string/pref_alt_base_url_summary"
             app:title="@string/pref_alt_base_url_title" />
 
+        <SwitchPreference
+            app:defaultValue="false"
+            app:icon="@drawable/ic_lock_open"
+            app:key="@string/pref_key_ignoreTlsErrors"
+            app:summaryOn="@string/onboarding_setup_host_ignoreTlsErrors_warning"
+            app:title="@string/onboarding_setup_host_ignoreTlsErrors_text" />
+
         <Preference
             app:key="pref_renew_auth"
             app:title="@string/pref_renew_auth_title" />
