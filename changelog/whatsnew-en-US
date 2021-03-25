@@ -1,9 +1,7 @@
+v1.6.6
+------
 Features:
-‣ Improve support for internal/external URLs
-‣ Add filter box in edit mode
+‣ Added an option to disable TLS certificate checks. Use with caution.
 
-Improvements:
-‣ Properly handle group toggle
-‣ Improve performance on main screen
-
-Thank you @bambidotexe for their group toggle fix!
+Fixes:
+‣ Fixed a crash during the onboarding process
