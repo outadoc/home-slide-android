@@ -1,9 +1,7 @@
+v1.6.6
+------
 Fonctionnalités :
-‣ Amélioration du support des URLs internes/externes
-‣ Ajouté la possibilité de filtrer en mode édition
+‣ Ajouté une option pour désactiver la vérification des certificats. Utilisez-la avec prudence.
 
-Améliorations :
-‣ Meilleure gestion du domaine "group"
-‣ Amélioré les performances de l'écran principal
-
-Merci à @bambidotexe pour leur correctif du domaine "group" !
+Correctifs :
+‣ Corrigé un crash durant l'onboarding
