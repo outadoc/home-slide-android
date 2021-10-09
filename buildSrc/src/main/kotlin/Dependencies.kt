@@ -141,7 +141,7 @@ object Dependencies {
     }
 
     object Mdi {
-        const val android = "fr.outadoc.mdi:mdi-android:5.9.55-a"
+        const val android = "fr.outadoc.mdi:mdi-android:6.2.95-b"
     }
 
     object OkHttp {
