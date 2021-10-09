@@ -31,7 +31,7 @@ import fr.outadoc.homeslide.rest.auth.OAuthConstants.PARAM_CLIENT_ID
 import fr.outadoc.homeslide.rest.auth.OAuthConstants.PARAM_REDIRECT_URI
 import fr.outadoc.homeslide.util.sanitizeUrl
 import fr.outadoc.homeslide.zeroconf.ZeroconfDiscoveryService
-import io.uniflow.androidx.flow.AndroidDataFlow
+import io.uniflow.android.AndroidDataFlow
 import io.uniflow.core.flow.actionOn
 import io.uniflow.core.flow.data.UIEvent
 import io.uniflow.core.flow.data.UIState

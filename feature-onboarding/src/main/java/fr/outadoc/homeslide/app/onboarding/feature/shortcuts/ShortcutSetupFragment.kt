@@ -35,7 +35,7 @@ import fr.outadoc.homeslide.app.onboarding.R
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentSetupShortcutBinding
 import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
 import fr.outadoc.homeslide.util.view.showSnackbar
-import io.uniflow.androidx.flow.onEvents
+import io.uniflow.android.livedata.onEvents
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -68,7 +68,7 @@ class ShortcutSetupFragment : Fragment() {
 
         onEvents(vm) { event ->
             binding?.apply {
-                when (event.take()) {
+                when (event) {
                     is NavigationEvent.Next -> navController.navigate(
                         ShortcutSetupFragmentDirections.successAction()
                     )

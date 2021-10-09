@@ -28,7 +28,7 @@ import androidx.navigation.findNavController
 import fr.outadoc.homeslide.app.onboarding.R
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentSuccessBinding
 import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
-import io.uniflow.androidx.flow.onEvents
+import io.uniflow.android.livedata.onEvents
 import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -58,7 +58,7 @@ class SuccessFragment : Fragment() {
 
         onEvents(vm) { event ->
             binding?.apply {
-                when (event.take()) {
+                when (event) {
                     SuccessViewModel.ShowConfettiEvent -> {
                         konfetti.doOnLayout { showConfetti() }
                     }

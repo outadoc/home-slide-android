@@ -23,7 +23,7 @@ import fr.outadoc.homeslide.hassapi.model.Tile
 import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 import fr.outadoc.homeslide.hassapi.repository.EntityRepository
 import fr.outadoc.homeslide.logging.KLog
-import io.uniflow.androidx.flow.AndroidDataFlow
+import io.uniflow.android.AndroidDataFlow
 import io.uniflow.core.flow.actionOn
 import io.uniflow.core.flow.data.UIEvent
 import io.uniflow.core.flow.data.UIState
@@ -82,8 +82,8 @@ class EntityListViewModel(
         onIO {
             try {
                 val tiles = repository.getEntityTiles()
-                setStateAsync {
-                    onDefault {
+                onDefault {
+                    setState {
                         if (tiles.isNullOrEmpty()) {
                             State.InitialError(null)
                         } else {
@@ -110,24 +110,26 @@ class EntityListViewModel(
 
     fun onEntityClick(item: Entity) = actionOn<State.Content> { currentState ->
         val action = item.primaryAction ?: return@actionOn
-        setStateAsync {
-            onDefault { onEntityLoadStart(currentState, item) }
+        onDefault {
+            setState {
+                onEntityLoadStart(currentState, item)
+            }
         }
 
         onIO {
             try {
                 repository.callService(action)
 
-                setStateAsync {
-                    onDefault { onEntityLoadStop(currentState, item, failure = false) }
+                onDefault {
+                    setState { onEntityLoadStop(currentState, item, failure = false) }
                 }
 
                 onMain { loadEntities() }
             } catch (e: Exception) {
                 KLog.e(e) { "Error while executing action" }
 
-                setStateAsync {
-                    onDefault { onEntityLoadStop(currentState, item, failure = true) }
+                onDefault {
+                    setState { onEntityLoadStop(currentState, item, failure = true) }
                 }
 
                 sendEvent {
@@ -142,14 +144,14 @@ class EntityListViewModel(
 
     fun onReorderedEntities(items: List<Tile<Entity>>) =
         actionOn<State.Editing> { currentState ->
-            setStateAsync {
-                onDefault { currentState.copy(allTiles = items) }
+            onDefault {
+                setState { currentState.copy(allTiles = items) }
             }
         }
 
     fun enterEditMode() = actionOn<State.Content> { currentState ->
-        setStateAsync {
-            onDefault {
+        onDefault {
+            setState {
                 State.Editing(
                     allTiles = currentState.allTiles.sortByVisibility(),
                     filter = ""
@@ -159,8 +161,8 @@ class EntityListViewModel(
     }
 
     fun onFilterChange(filter: String) = actionOn<State.Editing> { currentState ->
-        setStateAsync {
-            onDefault { currentState.copy(filter = filter) }
+        onDefault {
+            setState { currentState.copy(filter = filter) }
         }
     }
 
@@ -168,15 +170,15 @@ class EntityListViewModel(
         onIO {
             updateEntityDatabase(currentState)
 
-            setStateAsync {
-                onDefault { State.Content(currentState.allTiles) }
+            onDefault {
+                setState { State.Content(currentState.allTiles) }
             }
         }
     }
 
     fun showAll() = actionOn<State.Editing> { currentState ->
-        setStateAsync {
-            onDefault {
+        onDefault {
+            setState {
                 val newList = currentState.allTiles.map { tile ->
                     if (tile in currentState.displayTiles) {
                         tile.copy(isHidden = false)
@@ -189,8 +191,8 @@ class EntityListViewModel(
     }
 
     fun hideAll() = actionOn<State.Editing> { currentState ->
-        setStateAsync {
-            onDefault {
+        onDefault {
+            setState {
                 val newList = currentState.allTiles.map { tile ->
                     if (tile in currentState.displayTiles) {
                         tile.copy(isHidden = true)
@@ -241,8 +243,8 @@ class EntityListViewModel(
 
     fun onItemVisibilityChange(entity: Entity, isVisible: Boolean) =
         actionOn<State.Editing> { currentState ->
-            setStateAsync {
-                onDefault {
+            onDefault {
+                setState {
                     val newList = currentState.allTiles.map { tile ->
                         when (tile.source) {
                             entity -> tile.copy(isHidden = !isVisible)

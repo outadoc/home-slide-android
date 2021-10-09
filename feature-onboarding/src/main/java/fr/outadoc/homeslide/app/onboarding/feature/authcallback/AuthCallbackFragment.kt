@@ -27,7 +27,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentAuthCallbackBinding
 import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
-import io.uniflow.androidx.flow.onEvents
+import io.uniflow.android.livedata.onEvents
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AuthCallbackFragment : Fragment() {
@@ -45,7 +45,7 @@ class AuthCallbackFragment : Fragment() {
         }
 
         onEvents(vm) { event ->
-            when (event.take()) {
+            when (event) {
                 NavigationEvent.Next -> {
                     navigate(AuthCallbackFragmentDirections.setupShortcutsAction())
                 }
