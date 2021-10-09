@@ -75,8 +75,8 @@ object Dependencies {
 
         object Firebase {
             object Crashlytics {
-                const val core = "com.google.firebase:firebase-crashlytics-ktx:18.0.1"
-                const val classpath = "com.google.firebase:firebase-crashlytics-gradle:2.5.0"
+                const val core = "com.google.firebase:firebase-crashlytics-ktx:18.2.3"
+                const val classpath = "com.google.firebase:firebase-crashlytics-gradle:2.7.1"
                 const val plugin = "com.google.firebase.crashlytics"
             }
         }

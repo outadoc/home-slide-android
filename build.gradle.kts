@@ -46,7 +46,7 @@ allprojects {
         maven(url = "https://maven.pkg.github.com/outadoc/mdi-android") {
             credentials {
                 username = "token"
-                password = System.getenv("GITHUB_PACKAGES_TOKEN") ?: githubPackagesToken
+                password = System.getenv("GITHUB_PACKAGES_TOKEN").takeIf { it.isNotBlank() } ?: githubPackagesToken
             }
         }
     }
