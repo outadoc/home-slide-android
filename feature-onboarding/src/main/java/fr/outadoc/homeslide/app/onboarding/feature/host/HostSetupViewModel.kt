@@ -108,7 +108,8 @@ class HostSetupViewModel(
     init {
         zeroconfDiscoveryService.setOnServiceDiscoveredListener { discovered: ZeroconfHost ->
             try {
-                actionOn<State> { currentState ->
+                action { currentState ->
+                    currentState as State
                     setState { currentState.withDiscoveredInstance(discovered) }
                 }
             } catch (e: Exception) {
@@ -137,14 +138,15 @@ class HostSetupViewModel(
         zeroconfDiscoveryService.startDiscovery()
     }
 
-    fun onInstanceUrlChanged(instanceUrl: String) = actionOn<State> {
+    fun onInstanceUrlChanged(instanceUrl: String) = action {
         instanceUrlChannel.send(instanceUrl)
     }
 
-    private fun probeUrl(instanceUrl: String) = actionOn<State> { currentState ->
+    private fun probeUrl(instanceUrl: String) = action { currentState ->
+        currentState as State
         if (instanceUrl.isBlank()) {
             setState { currentState.toInitialState() }
-            return@actionOn
+            return@action
         }
 
         setState { currentState.toLoadingState(instanceUrl) }
@@ -181,7 +183,7 @@ class HostSetupViewModel(
         }
     }
 
-    fun onLoginClicked() = actionOn<State> { currentState ->
+    fun onLoginClicked() = action { currentState ->
         when (currentState) {
             is State.Success -> {
                 stopDiscovery()
@@ -205,16 +207,17 @@ class HostSetupViewModel(
         }
     }
 
-    fun onIgnoreTlsErrorsChanged(checked: Boolean) = actionOn<State> { currentState ->
+    fun onIgnoreTlsErrorsChanged(checked: Boolean) = action { currentState ->
+        currentState as State
         urlPrefs.ignoreTlsErrors = checked
 
-        if (currentState.ignoreTlsErrors == checked) return@actionOn
+        if (currentState.ignoreTlsErrors == checked) return@action
 
         setState { currentState.withIgnoreTlsErrors(checked) }
         instanceUrlChannel.send(currentState.selectedInstanceUrl)
     }
 
-    fun onZeroconfHostSelected(zeroconfHost: ZeroconfHost) = actionOn<State> {
+    fun onZeroconfHostSelected(zeroconfHost: ZeroconfHost) = action {
         stopDiscovery()
         saveAndProceed(
             localBaseUrl = zeroconfHost.localBaseUrl,
