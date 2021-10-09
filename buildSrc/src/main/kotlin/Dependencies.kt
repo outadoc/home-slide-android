@@ -25,29 +25,29 @@ object Dependencies {
     }
 
     object Android {
-        const val classpath = "com.android.tools.build:gradle:4.1.2"
+        const val classpath = "com.android.tools.build:gradle:4.2.1"
         const val application = "com.android.application"
         const val library = "com.android.library"
     }
 
     object AndroidX {
-        const val appcompat = "androidx.appcompat:appcompat:1.3.0-beta01"
+        const val appcompat = "androidx.appcompat:appcompat:1.3.0"
         const val biometric = "androidx.biometric:biometric:1.1.0"
         const val browser = "androidx.browser:browser:1.3.0"
-        const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
-        const val core = "androidx.core:core-ktx:1.3.2"
+        const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.4"
+        const val core = "androidx.core:core-ktx:1.5.0"
         const val preference = "androidx.preference:preference-ktx:1.1.1"
-        const val recyclerview = "androidx.recyclerview:recyclerview:1.1.0"
+        const val recyclerview = "androidx.recyclerview:recyclerview:1.2.1"
         const val wear = "androidx.wear:wear:1.1.0"
 
         object Lifecycle {
-            private const val version = "2.3.0"
+            private const val version = "2.3.1"
             const val liveData = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
             const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
         }
 
         object Navigation {
-            private const val version = "2.3.3"
+            private const val version = "2.3.5"
             const val fragment = "androidx.navigation:navigation-fragment-ktx:$version"
             const val ui = "androidx.navigation:navigation-ui-ktx:$version"
 
@@ -58,7 +58,7 @@ object Dependencies {
         }
 
         object Room {
-            private const val version = "2.2.6"
+            private const val version = "2.3.0"
             const val common = "androidx.room:room-ktx:$version"
             const val compiler = "androidx.room:room-compiler:$version"
         }
@@ -75,7 +75,7 @@ object Dependencies {
 
         object Firebase {
             object Crashlytics {
-                const val core = "com.google.firebase:firebase-crashlytics-ktx:17.3.1"
+                const val core = "com.google.firebase:firebase-crashlytics-ktx:18.0.1"
                 const val classpath = "com.google.firebase:firebase-crashlytics-gradle:2.5.0"
                 const val plugin = "com.google.firebase.crashlytics"
             }
@@ -86,9 +86,9 @@ object Dependencies {
         }
 
         object PlayServices {
-            const val classpath = "com.google.gms:google-services:4.3.5"
+            const val classpath = "com.google.gms:google-services:4.3.8"
             const val plugin = "com.google.gms.google-services"
-            const val wearable = "com.google.android.gms:play-services-wearable:17.0.0"
+            const val wearable = "com.google.android.gms:play-services-wearable:17.1.0"
         }
 
         object Wearable {
@@ -108,18 +108,18 @@ object Dependencies {
     }
 
     object Kotlin {
-        private const val version = "1.4.30"
+        private const val version = "1.5.10"
         const val classpath = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
 
         object Coroutines {
-            private const val version = "1.4.2"
+            private const val version = "1.5.0"
             const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
             const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
             const val jdk9 = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk9:$version"
         }
 
         object DateTime {
-            private const val version = "0.1.1"
+            private const val version = "0.2.1"
             const val core = "org.jetbrains.kotlinx:kotlinx-datetime:$version"
         }
 
@@ -131,14 +131,14 @@ object Dependencies {
         }
 
         object Serialization {
-            private const val version = "1.1.0"
+            private const val version = "1.2.1"
             const val classpath = "org.jetbrains.kotlin:kotlin-serialization:${Kotlin.version}"
             const val json = "org.jetbrains.kotlinx:kotlinx-serialization-json:$version"
         }
     }
 
     object LeakCanary {
-        const val core = "com.squareup.leakcanary:leakcanary-android:2.6"
+        const val core = "com.squareup.leakcanary:leakcanary-android:2.7"
     }
 
     object Mdi {
@@ -167,11 +167,11 @@ object Dependencies {
 
     object Test {
         const val junit = "org.junit.jupiter:junit-jupiter:5.7.0"
-        const val mockito = "org.mockito:mockito-core:3.8.0"
+        const val mockito = "org.mockito:mockito-core:3.11.1"
     }
 
     object Tools {
-        const val desugaring = "com.android.tools:desugar_jdk_libs:1.1.1"
+        const val desugaring = "com.android.tools:desugar_jdk_libs:1.1.5"
     }
 
     object Timber {
