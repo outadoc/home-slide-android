@@ -19,7 +19,6 @@ import org.gradle.api.JavaVersion
 object Dependencies {
 
     object Build {
-        const val buildToolsVersion = "30.0.1"
         const val jvmTarget = "1.8"
         val sourceCompatibility = JavaVersion.VERSION_1_8
     }

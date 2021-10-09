@@ -23,7 +23,6 @@ plugins {
 
 android {
     compileSdk = AppInfo.targetSdkVersion
-    buildToolsVersion(Dependencies.Build.buildToolsVersion)
 
     defaultConfig {
         minSdk = LibraryInfo.minSdkVersion
