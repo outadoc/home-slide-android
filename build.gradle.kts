@@ -14,8 +14,6 @@
  *    limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
-
 plugins {
     id(Dependencies.Spotless.plugin) version Dependencies.Spotless.version
 }
@@ -23,7 +21,7 @@ plugins {
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         kotlinx()
     }
 
@@ -40,7 +38,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         kotlinx()
         jitpack()
 
@@ -51,10 +49,6 @@ allprojects {
                 password = System.getenv("GITHUB_PACKAGES_TOKEN") ?: githubPackagesToken
             }
         }
-    }
-
-    tasks.withType<KotlinJvmCompile> {
-        kotlinOptions.useIR = true
     }
 }
 
