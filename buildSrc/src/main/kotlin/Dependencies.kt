@@ -98,9 +98,9 @@ object Dependencies {
     }
 
     object Koin {
-        private const val version = "2.2.2"
-        const val android = "org.koin:koin-core:$version"
-        const val viewModel = "org.koin:koin-androidx-viewmodel:$version"
+        private const val version = "3.1.2"
+        const val android = "io.insert-koin:koin-core:$version"
+        const val viewModel = "io.insert-koin:koin-android:$version"
     }
 
     object Konfetti {
@@ -156,7 +156,7 @@ object Dependencies {
     }
 
     object Skeleton {
-        const val core = "com.faltenreich:skeletonlayout:2.1.0"
+        const val core = "com.faltenreich:skeletonlayout:4.0.0"
     }
 
     object Spotless {
@@ -179,6 +179,6 @@ object Dependencies {
     }
 
     object Uniflow {
-        const val core = "io.uniflow:uniflow-androidx:0.11.6"
+        const val core = "org.uniflow-kt:uniflow-android:1.0.10"
     }
 }
