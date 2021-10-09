@@ -19,7 +19,7 @@ package fr.outadoc.homeslide.app.onboarding.feature.success
 import android.app.ActivityManager
 import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
-import io.uniflow.androidx.flow.AndroidDataFlow
+import io.uniflow.android.AndroidDataFlow
 import io.uniflow.core.flow.data.UIEvent
 
 class SuccessViewModel(

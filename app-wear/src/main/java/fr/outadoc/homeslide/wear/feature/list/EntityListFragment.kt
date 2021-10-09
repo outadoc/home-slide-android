@@ -40,8 +40,8 @@ import fr.outadoc.homeslide.wear.R
 import fr.outadoc.homeslide.wear.databinding.FragmentEntityListBinding
 import fr.outadoc.homeslide.wear.feature.about.AboutActivity
 import fr.outadoc.mdi.toIcon
-import io.uniflow.androidx.flow.onEvents
-import io.uniflow.androidx.flow.onStates
+import io.uniflow.android.livedata.onEvents
+import io.uniflow.android.livedata.onStates
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
@@ -121,7 +121,7 @@ class EntityListFragment : Fragment() {
         }
 
         onEvents(vm) { event ->
-            when (val data = event.take()) {
+            when (event) {
                 is Event.StartOnboarding -> {
                     binding?.apply {
                         layoutNoContent.textViewNoContentErrorMessage.apply {
@@ -147,7 +147,7 @@ class EntityListFragment : Fragment() {
                             ERROR_DISPLAY_DURATION_MS
                         )
                     }.also { intent ->
-                        if (!data.isInitialLoad) {
+                        if (!event.isInitialLoad) {
                             startActivity(intent)
                         }
                     }

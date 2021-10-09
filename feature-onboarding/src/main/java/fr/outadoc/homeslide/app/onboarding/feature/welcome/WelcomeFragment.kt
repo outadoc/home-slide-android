@@ -25,7 +25,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import fr.outadoc.homeslide.app.onboarding.databinding.FragmentWelcomeBinding
 import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
-import io.uniflow.androidx.flow.onEvents
+import io.uniflow.android.livedata.onEvents
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WelcomeFragment : Fragment() {
@@ -46,7 +46,7 @@ class WelcomeFragment : Fragment() {
 
         onEvents(vm) { event ->
             binding?.apply {
-                when (event.take()) {
+                when (event) {
                     is NavigationEvent.Next -> navController.navigate(
                         WelcomeFragmentDirections.setupHostAction()
                     )

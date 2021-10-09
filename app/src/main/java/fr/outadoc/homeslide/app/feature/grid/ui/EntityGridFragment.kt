@@ -61,9 +61,9 @@ import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.NetworkAccessManager
 import fr.outadoc.homeslide.util.view.addTextChangedListener
 import fr.outadoc.homeslide.util.view.showSnackbar
-import io.uniflow.androidx.flow.onEvents
-import io.uniflow.androidx.flow.onStates
-import io.uniflow.core.flow.getCurrentStateOrNull
+import io.uniflow.android.livedata.onEvents
+import io.uniflow.android.livedata.onStates
+import io.uniflow.core.flow.getStateOrNull
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
@@ -121,7 +121,7 @@ class EntityGridFragment : Fragment() {
         val itemTouchHelper = ItemTouchHelper(
             EditingModeCallback(
                 isEnabled = {
-                    vm.getCurrentStateOrNull<State>() is State.Editing
+                    vm.getStateOrNull<State>() is State.Editing
                 }
             )
         )
@@ -182,11 +182,11 @@ class EntityGridFragment : Fragment() {
         }
 
         onEvents(vm) { event ->
-            when (val data = event.take()) {
+            when (event) {
                 is Event.StartOnboarding -> startOnboarding(R.id.welcomeFragment)
                 is Event.LoggedOut -> startOnboarding(R.id.setupHostFragment)
-                is Event.Error -> if (!data.isInitialLoad) displayError(data.e)
-                is Event.NotifyUser -> displayToast(data.message)
+                is Event.Error -> if (!event.isInitialLoad) displayError(event.e)
+                is Event.NotifyUser -> displayToast(event.message)
             }
         }
 

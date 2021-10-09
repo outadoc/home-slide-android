@@ -34,8 +34,8 @@ import fr.outadoc.homeslide.app.onboarding.feature.host.HostSetupViewModel.Event
 import fr.outadoc.homeslide.app.onboarding.feature.host.HostSetupViewModel.State
 import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
 import fr.outadoc.homeslide.util.view.addTextChangedListener
-import io.uniflow.androidx.flow.onEvents
-import io.uniflow.androidx.flow.onStates
+import io.uniflow.android.livedata.onEvents
+import io.uniflow.android.livedata.onStates
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HostSetupFragment : Fragment() {
@@ -119,18 +119,18 @@ class HostSetupFragment : Fragment() {
 
         onEvents(vm) { event ->
             binding?.apply {
-                when (val data = event.take()) {
+                when (event) {
                     is Event.SetInstanceUrl ->
-                        editTextInstanceBaseUrl.setText(data.instanceUrl)
+                        editTextInstanceBaseUrl.setText(event.instanceUrl)
 
                     is Event.DisplayErrorModal ->
                         MaterialAlertDialogBuilder(requireContext())
-                            .setMessage(data.message)
+                            .setMessage(event.message)
                             .setPositiveButton(android.R.string.ok, null)
                             .show()
 
                     is NavigationEvent.Url -> navigate(
-                        HostSetupFragmentDirections.startOAuthFlowAction(data.url)
+                        HostSetupFragmentDirections.startOAuthFlowAction(event.url)
                     )
                     is NavigationEvent.Back -> navController.navigateUp()
                     else -> Unit
