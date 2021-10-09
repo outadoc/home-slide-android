@@ -75,8 +75,9 @@ class GoogleDataSyncClient(private val json: Json, private val dataClient: DataC
                 event.dataItem.uri.path == PATH_SYNC_PREFERENCES
         }.map { event ->
             val dataMap = DataMapItem.fromDataItem(event.dataItem).dataMap
-            val payloadStr = dataMap.getString(KEY_PREFERENCES_PAYLOAD)
-            json.decodeFromString<PreferencesPayload?>(payloadStr)
+            dataMap.getString(KEY_PREFERENCES_PAYLOAD)?.let { payloadStr ->
+                json.decodeFromString<PreferencesPayload?>(payloadStr)
+            }
         }.firstOrNull()
     }
 
@@ -86,8 +87,9 @@ class GoogleDataSyncClient(private val json: Json, private val dataClient: DataC
                 event.dataItem.uri.path == PATH_SYNC_DATABASE
         }.map { event ->
             val dataMap = DataMapItem.fromDataItem(event.dataItem).dataMap
-            val payloadStr = dataMap.getString(KEY_DATABASE_PAYLOAD)
-            json.decodeFromString<DatabasePayload?>(payloadStr)
+            dataMap.getString(KEY_DATABASE_PAYLOAD)?.let { payloadStr ->
+                json.decodeFromString<DatabasePayload?>(payloadStr)
+            }
         }.firstOrNull()
     }
 }
