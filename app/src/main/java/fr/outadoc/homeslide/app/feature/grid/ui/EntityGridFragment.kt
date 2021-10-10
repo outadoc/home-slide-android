@@ -105,7 +105,9 @@ class EntityGridFragment : Fragment() {
         onBackPressedCallback = requireActivity()
             .onBackPressedDispatcher
             .addCallback(this) {
-                vm.exitEditMode()
+                if (vm.getStateOrNull<State>() is State.Editing) {
+                    vm.exitEditMode()
+                }
             }
     }
 

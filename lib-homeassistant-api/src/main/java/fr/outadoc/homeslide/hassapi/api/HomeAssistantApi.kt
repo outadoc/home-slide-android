@@ -17,6 +17,7 @@
 package fr.outadoc.homeslide.hassapi.api
 
 import fr.outadoc.homeslide.hassapi.model.EntityState
+import fr.outadoc.homeslide.hassapi.model.discovery.Config
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -34,4 +35,7 @@ interface HomeAssistantApi {
         @Path("service") service: String,
         @Body params: Map<String, String>
     ): Response<List<EntityState>>
+
+    @GET("/api/config")
+    suspend fun getConfig(): Response<Config>
 }

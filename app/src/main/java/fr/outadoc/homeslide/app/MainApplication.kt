@@ -36,6 +36,7 @@ import fr.outadoc.homeslide.app.onboarding.feature.success.SuccessViewModel
 import fr.outadoc.homeslide.app.onboarding.feature.welcome.WelcomeViewModel
 import fr.outadoc.homeslide.app.preferences.PreferencePublisher
 import fr.outadoc.homeslide.app.preferences.PreferenceRepositoryImpl
+import fr.outadoc.homeslide.common.feature.auth.repository.InstanceConfigRepositoryImpl
 import fr.outadoc.homeslide.common.feature.consent.ConsentPreferenceRepository
 import fr.outadoc.homeslide.common.feature.daynight.ThemePreferenceRepository
 import fr.outadoc.homeslide.common.feature.details.vm.EntityDetailViewModel
@@ -51,6 +52,7 @@ import fr.outadoc.homeslide.hassapi.api.AuthApi
 import fr.outadoc.homeslide.hassapi.api.DiscoveryApi
 import fr.outadoc.homeslide.hassapi.api.HomeAssistantApi
 import fr.outadoc.homeslide.hassapi.repository.DiscoveryRepository
+import fr.outadoc.homeslide.hassapi.repository.InstanceConfigRepository
 import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.ApiClientBuilder
 import fr.outadoc.homeslide.rest.NetworkAccessManager
@@ -101,6 +103,7 @@ class MainApplication : Application() {
 
         single<ZeroconfDiscoveryService<ZeroconfHost>> { HassZeroconfDiscoveryServiceImpl(get()) }
         single<DiscoveryRepository> { DiscoveryRepositoryImpl(get()) }
+        single<InstanceConfigRepository> { InstanceConfigRepositoryImpl(get()) }
         single<IntentProvider> { AppIntentProvider() }
 
         single { PreferenceRepositoryImpl(get(), get()) }
@@ -131,7 +134,7 @@ class MainApplication : Application() {
                 get()
             )
         }
-        viewModel { AuthCallbackViewModel(get(), get(), get()) }
+        viewModel { AuthCallbackViewModel(get(), get(), get(), get(), get()) }
         viewModel { ShortcutSetupViewModel() }
         viewModel {
             SuccessViewModel(

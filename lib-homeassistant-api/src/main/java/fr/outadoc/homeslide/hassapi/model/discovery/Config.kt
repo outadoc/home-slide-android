@@ -20,7 +20,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class DiscoveryInfo(
+data class Config(
 
     @SerialName("base_url")
     val baseUrl: String? = null,
