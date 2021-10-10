@@ -23,6 +23,6 @@ import fr.outadoc.homeslide.rest.util.getResponseOrThrow
 
 class InstanceConfigRepositoryImpl(
     private val api: HomeAssistantApi
-): InstanceConfigRepository {
+) : InstanceConfigRepository {
     override suspend fun getConfig(): Config = api.getConfig().getResponseOrThrow()
 }
