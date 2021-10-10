@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Baptiste Candellier
+ * Copyright 2021 Baptiste Candellier
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,13 +14,15 @@
  *    limitations under the License.
  */
 
-package fr.outadoc.homeslide.hassapi.model.discovery
+package fr.outadoc.homeslide.common.feature.auth.repository
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import fr.outadoc.homeslide.hassapi.api.HomeAssistantApi
+import fr.outadoc.homeslide.hassapi.model.discovery.Config
+import fr.outadoc.homeslide.hassapi.repository.InstanceConfigRepository
+import fr.outadoc.homeslide.rest.util.getResponseOrThrow
 
-@Serializable
-data class ApiStatus(
-    @SerialName("message")
-    val message: String
-)
+class InstanceConfigRepositoryImpl(
+    private val api: HomeAssistantApi
+): InstanceConfigRepository {
+    override suspend fun getConfig(): Config = api.getConfig().getResponseOrThrow()
+}

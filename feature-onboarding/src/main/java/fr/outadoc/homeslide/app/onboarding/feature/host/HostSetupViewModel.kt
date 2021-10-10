@@ -22,8 +22,6 @@ import androidx.lifecycle.viewModelScope
 import fr.outadoc.homeslide.app.onboarding.feature.host.model.ZeroconfHost
 import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
-import fr.outadoc.homeslide.hassapi.model.discovery.ValidatedDiscoveryInfo
-import fr.outadoc.homeslide.hassapi.model.discovery.validate
 import fr.outadoc.homeslide.hassapi.repository.DiscoveryRepository
 import fr.outadoc.homeslide.logging.KLog
 import fr.outadoc.homeslide.rest.auth.OAuthConfiguration
@@ -85,8 +83,7 @@ class HostSetupViewModel(
         data class Success(
             override val selectedInstanceUrl: String,
             override val discoveredInstances: Set<ZeroconfHost>,
-            override val ignoreTlsErrors: Boolean,
-            val discoveryInfo: ValidatedDiscoveryInfo
+            override val ignoreTlsErrors: Boolean
         ) : State(discoveredInstances, selectedInstanceUrl, ignoreTlsErrors)
     }
 
@@ -153,16 +150,17 @@ class HostSetupViewModel(
 
         instanceUrl.sanitizeUrl()?.let { sanitizedUrl ->
             try {
-                val discoveryInfo = repository.getDiscoveryInfo(sanitizedUrl)
+                val isReachable = repository.isInstanceReachable(sanitizedUrl)
                 setState {
-                    when (val validated = discoveryInfo.validate()) {
-                        null -> currentState.toErrorState(
+                    if (isReachable) {
+                        currentState.toSuccessState(instanceUrl)
+                    } else {
+                        currentState.toErrorState(
                             instanceUrl,
                             DiscoveryException(
                                 hostSetupResourceProvider.invalidDiscoveryInfoMessage
                             )
                         )
-                        else -> currentState.toSuccessState(instanceUrl, validated)
                     }
                 }
             } catch (e: Exception) {
@@ -187,13 +185,9 @@ class HostSetupViewModel(
         when (currentState) {
             is State.Success -> {
                 stopDiscovery()
-
-                with(currentState.discoveryInfo) {
-                    saveAndProceed(
-                        localBaseUrl = localBaseUrl,
-                        remoteBaseUrl = remoteBaseUrl
-                    )
-                }
+                saveAndProceed(
+                    localBaseUrl = currentState.selectedInstanceUrl
+                )
             }
             is State.Error -> sendEvent {
                 val message = listOf(
@@ -220,20 +214,16 @@ class HostSetupViewModel(
     fun onZeroconfHostSelected(zeroconfHost: ZeroconfHost) = action {
         stopDiscovery()
         saveAndProceed(
-            localBaseUrl = zeroconfHost.localBaseUrl,
-            remoteBaseUrl = zeroconfHost.remoteBaseUrl
+            localBaseUrl = zeroconfHost.localBaseUrl
         )
     }
 
-    private fun saveAndProceed(localBaseUrl: String, remoteBaseUrl: String?) = action {
+    private fun saveAndProceed(localBaseUrl: String) = action {
         urlPrefs.apply {
             localInstanceBaseUrl = localBaseUrl
-            remoteInstanceBaseUrl = remoteBaseUrl
         }
 
-        // Remote should be accessible from anywhere, so use that by default
-        val urlToUseForAuth = remoteBaseUrl ?: localBaseUrl
-        urlToUseForAuth.toUri()
+        localBaseUrl.toUri()
             .toAuthenticationPageUrl()
             ?.let { url ->
                 sendEvent { NavigationEvent.Url(url) }
@@ -264,9 +254,8 @@ class HostSetupViewModel(
             ignoreTlsErrors = ignoreTlsErrors
         )
 
-    private fun State.toSuccessState(instanceUrl: String, discoveryInfo: ValidatedDiscoveryInfo) =
+    private fun State.toSuccessState(instanceUrl: String) =
         State.Success(
-            discoveryInfo = discoveryInfo,
             selectedInstanceUrl = instanceUrl,
             discoveredInstances = discoveredInstances,
             ignoreTlsErrors = ignoreTlsErrors

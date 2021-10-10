@@ -14,13 +14,10 @@
  *    limitations under the License.
  */
 
-package fr.outadoc.homeslide.hassapi.model.discovery
+package fr.outadoc.homeslide.hassapi.repository
 
-data class ValidatedDiscoveryInfo(val localBaseUrl: String, val remoteBaseUrl: String?)
+import fr.outadoc.homeslide.hassapi.model.discovery.Config
 
-fun DiscoveryInfo.validate(): ValidatedDiscoveryInfo? {
-    return ValidatedDiscoveryInfo(
-        localBaseUrl = localBaseUrl ?: baseUrl ?: return null,
-        remoteBaseUrl = remoteBaseUrl ?: baseUrl
-    )
+interface InstanceConfigRepository {
+    suspend fun getConfig(): Config
 }
