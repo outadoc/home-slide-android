@@ -1,7 +1,5 @@
-v1.6.6
+v1.7.0
 ------
 Features:
-‣ Added an option to disable TLS certificate checks. Use with caution.
-
-Fixes:
-‣ Fixed a crash during the onboarding process
+‣ Home Assistant 2021.10 compatibility
+‣ Updated Material Design Icons to 6.2.95

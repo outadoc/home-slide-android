@@ -1,7 +1,5 @@
-v1.6.6
+v1.7.0
 ------
 Fonctionnalités :
-‣ Ajouté une option pour désactiver la vérification des certificats. Utilisez-la avec prudence.
-
-Correctifs :
-‣ Corrigé un crash durant l'onboarding
+‣ Compatibilité avec Home Assistant 2021.10
+‣ Mise à jour de Material Design Icons en version 6.2.95

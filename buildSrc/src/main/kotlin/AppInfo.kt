@@ -17,8 +17,8 @@
 @Suppress("MemberVisibilityCanBePrivate")
 object AppInfo {
 
-    const val versionName = "1.6.6"
-    const val baseVersionCode = 168
+    const val versionName = "1.7.0"
+    const val baseVersionCode = 169
 
     const val targetSdkVersion = 30
 
