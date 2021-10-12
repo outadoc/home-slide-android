@@ -6,7 +6,7 @@ import io.uniflow.core.flow.DataFlow
 import io.uniflow.core.flow.data.UIState
 
 inline fun <reified T : UIState> DataFlow.actionWith(noinline onAction: ActionFunction_T<T>): Unit =
-    actionDispatcher.actionOn(UIState::class) { state ->
+    actionDispatcher.dispatchAction { state ->
         if (state is T) {
             onAction(state)
         } else {
