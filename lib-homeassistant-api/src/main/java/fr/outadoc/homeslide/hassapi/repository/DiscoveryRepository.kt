@@ -16,6 +16,8 @@
 
 package fr.outadoc.homeslide.hassapi.repository
 
+import android.net.Uri
+
 interface DiscoveryRepository {
-    suspend fun isInstanceReachable(baseUrl: String): Boolean
+    suspend fun isInstanceReachable(baseUrl: Uri): Boolean
 }

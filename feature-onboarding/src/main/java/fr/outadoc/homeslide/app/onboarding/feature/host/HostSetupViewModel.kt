@@ -146,10 +146,10 @@ class HostSetupViewModel(
 
         setState { currentState.toLoadingState(instanceUrl) }
 
-        instanceUrl.sanitizeUrl()?.let { sanitizedUrl ->
-            try {
-                val isReachable = repository.isInstanceReachable(sanitizedUrl)
-                setState {
+        val nextState = instanceUrl.sanitizeUrl()
+            ?.let { sanitizedUrl ->
+                try {
+                    val isReachable = repository.isInstanceReachable(sanitizedUrl)
                     if (isReachable) {
                         currentState.toSuccessState(instanceUrl)
                     } else {
@@ -160,10 +160,8 @@ class HostSetupViewModel(
                             )
                         )
                     }
-                }
-            } catch (e: Exception) {
-                KLog.e(e) { "Exception thrown during probe" }
-                setState {
+                } catch (e: Exception) {
+                    KLog.e(e) { "Exception thrown during probe" }
                     // Error during discovery
                     currentState.toErrorState(
                         instanceUrl,
@@ -172,11 +170,9 @@ class HostSetupViewModel(
                         )
                     )
                 }
-            }
-        } ?: setState {
-            // URL can't be sanitized
-            currentState.toErrorState(instanceUrl)
-        }
+            } ?: currentState.toErrorState(instanceUrl)
+
+        setState { nextState }
     }
 
     fun onLoginClicked() = action { currentState ->

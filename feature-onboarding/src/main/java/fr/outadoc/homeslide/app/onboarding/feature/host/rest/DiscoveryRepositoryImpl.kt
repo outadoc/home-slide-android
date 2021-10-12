@@ -16,13 +16,14 @@
 
 package fr.outadoc.homeslide.app.onboarding.feature.host.rest
 
+import android.net.Uri
 import fr.outadoc.homeslide.hassapi.api.DiscoveryApi
 import fr.outadoc.homeslide.hassapi.repository.DiscoveryRepository
 
 class DiscoveryRepositoryImpl(private val client: DiscoveryApi) : DiscoveryRepository {
 
-    override suspend fun isInstanceReachable(baseUrl: String): Boolean {
-        val response = client.getApiStatus(baseUrl, token = null)
+    override suspend fun isInstanceReachable(baseUrl: Uri): Boolean {
+        val response = client.getApiStatus(baseUrl.toString(), token = null)
 
         // If we get a 200 OK response, we're good.
         // If we get a 401 Unauthorized, it's expected - we haven't sent a token, assume we're good.

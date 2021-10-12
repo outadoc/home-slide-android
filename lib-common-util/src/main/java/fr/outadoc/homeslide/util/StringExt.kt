@@ -16,30 +16,31 @@
 
 package fr.outadoc.homeslide.util
 
+import android.net.Uri
 import androidx.core.net.toUri
 
-fun String?.sanitizeUrl(): String? {
+fun String?.sanitizeUrl(): Uri? {
     if (this == null)
         return null
 
-    val str = this
-        .trim()
-        .ensureProtocol()
+    if (isBlank()) return null
 
-    if (str.isEmpty() || str.length < 3) return null
+    return try {
+        val uri = trimEnd('/')
+            .toUri()
+            .normalizeScheme()
 
-    try {
-        str.toUri()
+        val builder = uri.buildUpon()
+
+        if (uri.scheme.isNullOrEmpty()) {
+            builder.scheme("http")
+        }
+
+        if (uri.scheme !in listOf("http", "https")) return null
+        if (uri.host.isNullOrEmpty()) return null
+
+        builder.build()
     } catch (ignored: Exception) {
-        return null
+        null
     }
-
-    if (str.last() == '/') return str.dropLast(1)
-
-    return str
-}
-
-fun String.ensureProtocol() = when {
-    this.startsWith("http://") || this.startsWith("https://") -> this
-    else -> "http://$this"
 }
