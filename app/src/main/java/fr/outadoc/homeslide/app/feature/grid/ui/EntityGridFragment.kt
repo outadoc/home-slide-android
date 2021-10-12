@@ -154,7 +154,9 @@ class EntityGridFragment : Fragment() {
             }
 
             editTextShortcutsFilter.addTextChangedListener { filter ->
-                vm.onFilterChange(filter)
+                if (vm.getStateOrNull<State>() is State.Editing) {
+                    vm.onFilterChange(filter)
+                }
             }
 
             skeleton = recyclerViewShortcuts.applySkeleton(
