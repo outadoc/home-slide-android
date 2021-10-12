@@ -48,10 +48,16 @@ class EntityListViewModel(
             val displayTiles = allTiles.filter { tile ->
                 tile.label.contains(filter, ignoreCase = true)
             }
+
+            override fun toString(): String =
+                "Editing(allTiles=[...${allTiles.size} elements...], filter=$filter)"
         }
 
         data class Content(val allTiles: List<Tile<Entity>>) : State() {
             val displayTiles = allTiles.filter { !it.isHidden }
+
+            override fun toString(): String =
+                "Content(allTiles=[...${allTiles.size} elements...])"
         }
     }
 
