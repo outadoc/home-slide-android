@@ -16,6 +16,7 @@
 
 package fr.outadoc.homeslide.common.feature.grid.vm
 
+import fr.outadoc.homeslide.common.extensions.actionWith
 import fr.outadoc.homeslide.common.feature.auth.InvalidRefreshTokenException
 import fr.outadoc.homeslide.common.preferences.GlobalPreferenceRepository
 import fr.outadoc.homeslide.hassapi.model.PersistedEntity
@@ -24,7 +25,6 @@ import fr.outadoc.homeslide.hassapi.model.entity.base.Entity
 import fr.outadoc.homeslide.hassapi.repository.EntityRepository
 import fr.outadoc.homeslide.logging.KLog
 import io.uniflow.android.AndroidDataFlow
-import io.uniflow.core.flow.actionOn
 import io.uniflow.core.flow.data.UIEvent
 import io.uniflow.core.flow.data.UIState
 import io.uniflow.core.threading.onDefault
@@ -108,8 +108,8 @@ class EntityListViewModel(
         }
     }
 
-    fun onEntityClick(item: Entity) = actionOn<State.Content> { currentState ->
-        val action = item.primaryAction ?: return@actionOn
+    fun onEntityClick(item: Entity) = actionWith<State.Content> { currentState ->
+        val action = item.primaryAction ?: return@actionWith
         onDefault {
             setState {
                 onEntityLoadStart(currentState, item)
@@ -143,13 +143,13 @@ class EntityListViewModel(
     }
 
     fun onReorderedEntities(items: List<Tile<Entity>>) =
-        actionOn<State.Editing> { currentState ->
+        actionWith<State.Editing> { currentState ->
             onDefault {
                 setState { currentState.copy(allTiles = items) }
             }
         }
 
-    fun enterEditMode() = actionOn<State.Content> { currentState ->
+    fun enterEditMode() = actionWith<State.Content> { currentState ->
         onDefault {
             setState {
                 State.Editing(
@@ -160,13 +160,13 @@ class EntityListViewModel(
         }
     }
 
-    fun onFilterChange(filter: String) = actionOn<State.Editing> { currentState ->
+    fun onFilterChange(filter: String) = actionWith<State.Editing> { currentState ->
         onDefault {
             setState { currentState.copy(filter = filter) }
         }
     }
 
-    fun exitEditMode() = actionOn<State.Editing> { currentState ->
+    fun exitEditMode() = actionWith<State.Editing> { currentState ->
         onIO {
             updateEntityDatabase(currentState)
 
@@ -176,7 +176,7 @@ class EntityListViewModel(
         }
     }
 
-    fun showAll() = actionOn<State.Editing> { currentState ->
+    fun showAll() = actionWith<State.Editing> { currentState ->
         onDefault {
             setState {
                 val newList = currentState.allTiles.map { tile ->
@@ -190,7 +190,7 @@ class EntityListViewModel(
         }
     }
 
-    fun hideAll() = actionOn<State.Editing> { currentState ->
+    fun hideAll() = actionWith<State.Editing> { currentState ->
         onDefault {
             setState {
                 val newList = currentState.allTiles.map { tile ->
@@ -242,7 +242,7 @@ class EntityListViewModel(
     }
 
     fun onItemVisibilityChange(entity: Entity, isVisible: Boolean) =
-        actionOn<State.Editing> { currentState ->
+        actionWith<State.Editing> { currentState ->
             onDefault {
                 setState {
                     val newList = currentState.allTiles.map { tile ->

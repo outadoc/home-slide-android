@@ -21,6 +21,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import fr.outadoc.homeslide.app.onboarding.feature.host.model.ZeroconfHost
 import fr.outadoc.homeslide.app.onboarding.navigation.NavigationEvent
+import fr.outadoc.homeslide.common.extensions.actionWith
 import fr.outadoc.homeslide.common.preferences.UrlPreferenceRepository
 import fr.outadoc.homeslide.hassapi.repository.DiscoveryRepository
 import fr.outadoc.homeslide.logging.KLog
@@ -30,7 +31,6 @@ import fr.outadoc.homeslide.rest.auth.OAuthConstants.PARAM_REDIRECT_URI
 import fr.outadoc.homeslide.util.sanitizeUrl
 import fr.outadoc.homeslide.zeroconf.ZeroconfDiscoveryService
 import io.uniflow.android.AndroidDataFlow
-import io.uniflow.core.flow.actionOn
 import io.uniflow.core.flow.data.UIEvent
 import io.uniflow.core.flow.data.UIState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -105,8 +105,7 @@ class HostSetupViewModel(
     init {
         zeroconfDiscoveryService.setOnServiceDiscoveredListener { discovered: ZeroconfHost ->
             try {
-                action { currentState ->
-                    currentState as State
+                actionWith<State> { currentState ->
                     setState { currentState.withDiscoveredInstance(discovered) }
                 }
             } catch (e: Exception) {
@@ -125,7 +124,7 @@ class HostSetupViewModel(
         }
     }
 
-    fun onOpen() = actionOn<State.Initial> {
+    fun onOpen() = actionWith<State.Initial> {
         sendEvent {
             Event.SetInstanceUrl(urlPrefs.localInstanceBaseUrl ?: DEFAULT_INSTANCE_URL)
         }
@@ -139,11 +138,10 @@ class HostSetupViewModel(
         instanceUrlChannel.send(instanceUrl)
     }
 
-    private fun probeUrl(instanceUrl: String) = action { currentState ->
-        currentState as State
+    private fun probeUrl(instanceUrl: String) = actionWith<State> { currentState ->
         if (instanceUrl.isBlank()) {
             setState { currentState.toInitialState() }
-            return@action
+            return@actionWith
         }
 
         setState { currentState.toLoadingState(instanceUrl) }
@@ -201,11 +199,10 @@ class HostSetupViewModel(
         }
     }
 
-    fun onIgnoreTlsErrorsChanged(checked: Boolean) = action { currentState ->
-        currentState as State
+    fun onIgnoreTlsErrorsChanged(checked: Boolean) = actionWith<State> { currentState ->
         urlPrefs.ignoreTlsErrors = checked
 
-        if (currentState.ignoreTlsErrors == checked) return@action
+        if (currentState.ignoreTlsErrors == checked) return@actionWith
 
         setState { currentState.withIgnoreTlsErrors(checked) }
         instanceUrlChannel.send(currentState.selectedInstanceUrl)
